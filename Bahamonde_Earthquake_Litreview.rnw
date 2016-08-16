@@ -6,5 +6,8 @@
 
 % Measurement
 
-% Kurtz: this is in the context of 
+% Kurtz: this is in the context of the disconnection that exists between state capacities and regime type
+%% Essentially, the criticism is that, for ex., property right protection (an usual measurement of state capacity)
+%% is highly liberal (though AJR don't say that). However, the USSR did construct a strong state, but it did not 
+%% protect any property rights (as they didn't exist).
 \citet[58]{Kurtz:2013aa}: there are two types of measurement, objective and subjective/perception-based. The latter are always biased. ``the best measures would be of the sorts of activities that all (or nearly all) states consider to be of primary importance - for thee can be assumed to be pursued vigorously across contexts, and variations in success will dpend principally on variation in the effectiveness of institutions, not on opportunity costs or political will''.
