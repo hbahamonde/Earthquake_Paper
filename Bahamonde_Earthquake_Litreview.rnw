@@ -1,0 +1,10 @@
+% Early Institutitions: Cerenos
+
+% informe del censo. 
+``Consta este cuerpo de 53 hombrs, 37 de apie y 16 de acaballo, dividido en 4 escuadras con sus respectivos cabos, y tiene un comandante nombrado por el gobierno. Dada la oracion ocupan armados el puesto que se les destina para que vijilen y en el permanecen hasta las cincom de la mańana en que son relevados por los vijilantes recorriendolo de tiempo en tiempo a fin de evitar todo desorden y gritando cada cuarto, la hora y el tiempo que hace. Las Principales obligaciones de los serenos son. Avisar en voz alta las ocurrencias notables como temblor ó fuego en algun edificio, ańadiendo en este ultimo caso el nombre de la calle en que suceda, golpear las puertas de la casa que se queme y las inmediatas, hacer tocar las iglecias...''
+
+
+% Measurement
+
+% Kurtz: this is in the context of 
+\citet[58]{Kurtz:2013aa}: there are two types of measurement, objective and subjective/perception-based. The latter are always biased. ``the best measures would be of the sorts of activities that all (or nearly all) states consider to be of primary importance - for thee can be assumed to be pursued vigorously across contexts, and variations in success will dpend principally on variation in the effectiveness of institutions, not on opportunity costs or political will''.
