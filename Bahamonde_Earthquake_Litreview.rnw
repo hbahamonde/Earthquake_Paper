@@ -11,3 +11,6 @@
 %% is highly liberal (though AJR don't say that). However, the USSR did construct a strong state, but it did not 
 %% protect any property rights (as they didn't exist).
 \citet[58]{Kurtz:2013aa}: there are two types of measurement, objective and subjective/perception-based. The latter are always biased. ``the best measures would be of the sorts of activities that all (or nearly all) states consider to be of primary importance - for thee can be assumed to be pursued vigorously across contexts, and variations in success will dpend principally on variation in the effectiveness of institutions, not on opportunity costs or political will''.
+
+	% subnational
+	``In addition, unlike in the case of some macroeconomic policies, it matters a great deal more in this literature that the effectiveness of the state varies enormously across localities and administrative levels within the same country in their effect on the development process, not at all captured in data that take a whole-country average as the point of observation, which is particularly problematic for countries with a medium- to large-sized population. On top of all this, there are inherent difficulties of measuring quality of public goods and services. There'' (\citet[865]{Bardhan2016}).
