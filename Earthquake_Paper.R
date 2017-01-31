@@ -127,10 +127,17 @@ ggplot() +
 if (!require("pacman")) install.packages("pacman"); library(pacman)
 p_load(GISTools,rgdal,RColorBrewer,maptools,ggplot2,plyr)
 
+
+# load shape file
 provinces <- readOGR(dsn = "/Users/hectorbahamonde/RU/Dissertation/Papers/Earthquake_Paper/Data/division_provincial", layer = "division_provincial")
 
-provinces <- gSimplify(provinces, tol=10000, topologyPreserve=T)
+# load eq data
+if (!require("pacman")) install.packages("pacman"); library(pacman)
+p_load(foreign)
+dat.chile <- read.csv("/Users/hectorbahamonde/RU/Dissertation/Papers/Earthquake_Paper/Data/Chile_Data_Earthquake.csv")
 
+
+provinces <- gSimplify(provinces, tol=10000, topologyPreserve=T)
 provinces <- spTransform(provinces, CRS("+proj=longlat +datum=WGS84"))
 provinces <- fortify(provinces)
 provinces <- provinces[!(provinces$long <= -76),]
@@ -138,7 +145,10 @@ provinces <- provinces[!(provinces$long <= -76),]
 ggplot() + 
         geom_polygon(aes(x=long, y=lat, group=group), fill='grey', size=.05, color='black', data=provinces, alpha=1/2) +
         theme_bw() +
-        ggtitle("Chile")
+        ggtitle("Chile") +
+        geom_point(aes(x = Longitude, y = Latitude, size=Magnitude), shape=21, data = subset(dat.chile, year<1900) , alpha = .5, color="red")
+
+
 
 
 ####
