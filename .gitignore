@@ -12,3 +12,11 @@ Resources/
 \.Rhistory
 
 Data/DPA_INE/
+
+Chile_Data_Earthquake\.RData
+
+Data/CHL_adm_shp/
+
+Data/PER_adm_shp/
+
+*.RData
