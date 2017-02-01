@@ -54,7 +54,8 @@ eq.chile.p = ggplot(dat.chile, aes(x = year, y = Magnitude, size = W.Deaths)) +
         scale_y_continuous(name='Magnitude', limits=c(3, 10), breaks = seq(3, 10, 1)) +
         theme_bw() +
         ggtitle("Chile") +
-        scale_size("Weighted Deaths")
+        scale_size("Weighted Deaths") +
+        stat_smooth(show.legend = F)
 
 
 
@@ -72,12 +73,16 @@ eq.peru.p =ggplot(dat.peru, aes(x = year, y = Magnitude, size = W.Deaths)) +
         scale_y_continuous(name='Magnitude', limits=c(3, 10), breaks = seq(3, 10, 1)) +
         theme_bw() +
         ggtitle("Peru") +
-        scale_size("Weighted Deaths")
+        scale_size("Weighted Deaths") +
+        stat_smooth(show.legend = F)
 
 ### plot sharing the same legend
 if (!require("pacman")) install.packages("pacman"); library(pacman)
 p_load(ggplot2,gridExtra,grid)
 
+
+
+# grid_arrange_shared_legend function
 grid_arrange_shared_legend <- function(..., ncol = length(list(...)), nrow = 1, position = c("bottom", "right")) {
   
   plots <- list(...)
@@ -108,10 +113,11 @@ grid_arrange_shared_legend(eq.chile.p, eq.peru.p, ncol = 1, nrow = 2)
 
 
 ############################
-#### MAPS: CHILE
+#### MAPS
 ############################
-cat("\014")
-rm(list=ls())
+
+#### MAPS: CHILE
+
 
 ## packages
 if (!require("pacman")) install.packages("pacman"); library(pacman)
@@ -132,19 +138,14 @@ chile.provinces <- fortify(chile.provinces)
 chile.provinces <- chile.provinces[!(chile.provinces$long <= -76),]
 
 
-ggplot() +  
+chile.map = ggplot() +  
         geom_polygon(aes(x=long, y=lat, group=group), fill='grey', size=.05, color='black', data=chile.provinces, alpha=1/2) +
         theme_bw() +
         ggtitle("Chile") + 
         geom_point(data=subset(dat.chile, year>=1900), aes(x=Longitude, y=Latitude, size=Magnitude), color="red", shape=21)
 
 
-############################
 #### MAPS: Peru
-############################
-
-cat("\014")
-rm(list=ls())
 
 ## packages
 if (!require("pacman")) install.packages("pacman"); library(pacman)
@@ -163,8 +164,76 @@ peru.provinces <- fortify(peru.provinces)
 #peru.provinces <- peru.provinces[!(peru.provinces$long <= -76),]
 
 
-ggplot() +  
+peru.map = ggplot() + 
         geom_polygon(aes(x=long, y=lat, group=group), fill='grey', size=.05, color='black', data=peru.provinces, alpha=1/2) +
         theme_bw() +
         ggtitle("Peru") + 
         geom_point(data=subset(dat.peru, year>=1900), aes(x=Longitude, y=Latitude, size=Magnitude), color="red", shape=21)
+
+
+# grid_arrange_shared_legend function
+grid_arrange_shared_legend <- function(..., ncol = length(list(...)), nrow = 1, position = c("bottom", "right")) {
+        
+        plots <- list(...)
+        position <- match.arg(position)
+        g <- ggplotGrob(plots[[1]] + theme(legend.position = position))$grobs
+        legend <- g[[which(sapply(g, function(x) x$name) == "guide-box")]]
+        lheight <- sum(legend$height)
+        lwidth <- sum(legend$width)
+        gl <- lapply(plots, function(x) x + theme(legend.position="none"))
+        gl <- c(gl, ncol = ncol, nrow = nrow)
+        
+        combined <- switch(position,
+                           "bottom" = arrangeGrob(do.call(arrangeGrob, gl),
+                                                  legend,
+                                                  ncol = 1,
+                                                  heights = unit.c(unit(1, "npc") - lheight, lheight)),
+                           "right" = arrangeGrob(do.call(arrangeGrob, gl),
+                                                 legend,
+                                                 ncol = 2,
+                                                 widths = unit.c(unit(1, "npc") - lwidth, lwidth)))
+        grid.newpage()
+        grid.draw(combined)
+        
+}
+
+### plot both countries
+grid_arrange_shared_legend(chile.map, peru.map, ncol = 1, nrow = 2)
+
+
+### plot both countries
+p_load(cbind.gtable)
+grid.draw(cbind(ggplotGrob(chile.map), ggplotGrob(peru.map), size="last"))
+
+
+############################
+#### Models
+############################
+
+# Merging
+
+## loading EQ datasets 
+load("/Users/hectorbahamonde/RU/Dissertation/Papers/Earthquake_Paper/Chile_Data_Earthquake.RData")
+load("/Users/hectorbahamonde/RU/Dissertation/Papers/Earthquake_Paper/Peru_Data_Earthquake.RData")
+
+## subseting EQ datasets
+dat.chile <- dat.chile[c("country", "location", "year", "Magnitude", "Deaths", "Latitude", "Longitude", "Population", "Urban", "Sector")]
+dat.peru <- dat.peru[c("country", "location", "year", "Magnitude", "Deaths", "Latitude", "Longitude", "Population", "Urban", "Sector")]
+
+## adding rows EQ dataset
+earthquakes.d <- rbind(dat.chile,dat.peru)
+
+
+
+# Output dataset
+## loading output dataset
+load("/Users/hectorbahamonde/RU/Dissertation/Papers/IncomeTaxAdoption/logitgee.RData") # Logit GEE
+## subseting EQ datasets (Only Chile and Peru)
+logitgee <- logitgee[which(logitgee$country=='Chile' | logitgee$country=='Peru'), ]
+
+
+# Merging 
+eq.output.d <- merge(earthquakes.d, logitgee,by=c("country", "year"), all.x = T) # all.x = T // keeps repeated years.
+
+
+
