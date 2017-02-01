@@ -202,7 +202,7 @@ grid_arrange_shared_legend(chile.map, peru.map, ncol = 1, nrow = 2)
 
 
 ### plot both countries
-p_load(cbind.gtable)
+p_load(grid)
 grid.draw(cbind(ggplotGrob(chile.map), ggplotGrob(peru.map), size="last"))
 
 
@@ -234,6 +234,9 @@ logitgee <- logitgee[which(logitgee$country=='Chile' | logitgee$country=='Peru')
 
 # Merging 
 eq.output.d <- merge(earthquakes.d, logitgee,by=c("country", "year"), all.x = T) # all.x = T // keeps repeated years.
+
+
+
 
 
 
