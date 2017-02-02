@@ -84,28 +84,28 @@ p_load(ggplot2,gridExtra,grid)
 
 # grid_arrange_shared_legend function
 grid_arrange_shared_legend <- function(..., ncol = length(list(...)), nrow = 1, position = c("bottom", "right")) {
-  
-  plots <- list(...)
-  position <- match.arg(position)
-  g <- ggplotGrob(plots[[1]] + theme(legend.position = position))$grobs
-  legend <- g[[which(sapply(g, function(x) x$name) == "guide-box")]]
-  lheight <- sum(legend$height)
-  lwidth <- sum(legend$width)
-  gl <- lapply(plots, function(x) x + theme(legend.position="none"))
-  gl <- c(gl, ncol = ncol, nrow = nrow)
-  
-  combined <- switch(position,
-                     "bottom" = arrangeGrob(do.call(arrangeGrob, gl),
-                                            legend,
-                                            ncol = 1,
-                                            heights = unit.c(unit(1, "npc") - lheight, lheight)),
-                     "right" = arrangeGrob(do.call(arrangeGrob, gl),
-                                           legend,
-                                           ncol = 2,
-                                           widths = unit.c(unit(1, "npc") - lwidth, lwidth)))
-  grid.newpage()
-  grid.draw(combined)
-  
+        
+        plots <- list(...)
+        position <- match.arg(position)
+        g <- ggplotGrob(plots[[1]] + theme(legend.position = position))$grobs
+        legend <- g[[which(sapply(g, function(x) x$name) == "guide-box")]]
+        lheight <- sum(legend$height)
+        lwidth <- sum(legend$width)
+        gl <- lapply(plots, function(x) x + theme(legend.position="none"))
+        gl <- c(gl, ncol = ncol, nrow = nrow)
+        
+        combined <- switch(position,
+                           "bottom" = arrangeGrob(do.call(arrangeGrob, gl),
+                                                  legend,
+                                                  ncol = 1,
+                                                  heights = unit.c(unit(1, "npc") - lheight, lheight)),
+                           "right" = arrangeGrob(do.call(arrangeGrob, gl),
+                                                 legend,
+                                                 ncol = 2,
+                                                 widths = unit.c(unit(1, "npc") - lwidth, lwidth)))
+        grid.newpage()
+        grid.draw(combined)
+        
 }
 
 ### plot both countries
@@ -236,7 +236,40 @@ logitgee <- logitgee[which(logitgee$country=='Chile' | logitgee$country=='Peru')
 eq.output.d <- merge(earthquakes.d, logitgee,by=c("country", "year"), all.x = T) # all.x = T // keeps repeated years.
 
 
+# recode sector variable
+## packages
+if (!require("pacman")) install.packages("pacman"); library(pacman)
+p_load(car)
+
+
+eq.output.d$Sector <- recode(as.factor(eq.output.d$Sector), "1 = 'Industry' ; 2 = 'Mining' ; 3 = 'Agriculture' ; '1 y 2' = 'Ind and Min' ; '1 y 3' = 'Ind and Agr' ; '2 y 3' = 'Min and Agr' ")
+
+
+# save dataset
+save(eq.output.d, file = "/Users/hectorbahamonde/RU/Dissertation/Papers/Earthquake_Paper/eq_output_d.RData")
 
 
 
+######################################################################
+# Models
+######################################################################
+cat("\014")
+rm(list=ls())
 
+# loading data
+load("/Users/hectorbahamonde/RU/Dissertation/Papers/Earthquake_Paper/eq_output_d.RData")
+dat = eq.output.d # rename dataset
+dat <- dat[which(dat$year >= 1900), ] # drop early earthquakes
+
+# dropping NAs
+dat = dat[!is.na(dat$Magnitude),]
+dat = dat[!is.na(dat$Deaths),]
+dat = dat[!is.na(dat$Sector),]
+dat = dat[!is.na(dat$Population),]
+
+# rounding lattitude/longitude
+dat$r.lat = round(dat$Latitude,1)
+dat$r.long = round(dat$Longitude,1)
+
+# formula
+fm = as.formula(Deaths ~ constmanufact + constagricult + factor(country) + factor(year) + Magnitude)
