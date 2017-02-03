@@ -273,3 +273,15 @@ dat$r.long = round(dat$Longitude,1)
 
 # formula
 fm = as.formula(Deaths ~ constmanufact + constagricult + factor(country) + factor(year) + Magnitude)
+
+# frequentist multilevel model
+pvars <- c("constagricult","constmanufact","Magnitude")
+datsc <- dat
+datsc[pvars] <- lapply(datsc[pvars],scale)
+
+
+if (!require("pacman")) install.packages("pacman"); library(pacman)
+p_load(lme4,arm)
+model <- glmer(Deaths ~ constmanufact + constagricult + Magnitude + (1 | country) + (1 | year), data = datsc, family=poisson)
+display(model)
+
