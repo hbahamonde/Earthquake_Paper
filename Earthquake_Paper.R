@@ -252,7 +252,7 @@ save(eq.output.d, file = "/Users/hectorbahamonde/RU/Dissertation/Papers/Earthqua
 
 
 ###################################################################### 
-# Models 
+# Models
 ###################################################################### 
 cat("\014") 
 rm(list=ls()) 
@@ -281,11 +281,14 @@ dat$p.Population = dat$Population/1000
 # formula 
 fm = as.formula(Deaths ~ constmanufact + constagricult + factor(country) + factor(year) + Magnitude) 
 
-# frequentist multilevel model 
+# scaling 
 pvars <- c("constagricult","constmanufact","Magnitude", "p.Population") 
 datsc <- dat 
 datsc[pvars] <- lapply(datsc[pvars],scale) 
 
+
+# Frequentist model
+###################################################################### 
 
 # load libraries
 if (!require("pacman")) install.packages("pacman"); library(pacman) 
@@ -293,10 +296,14 @@ p_load(lme4,texreg)
 
 # fit the model
 model = glmer(
-  Deaths ~ constmanufact + constagricult + Magnitude + p.Population + (1 | country) + (1 | year), 
+  Deaths ~ constmanufact + constagricult + Magnitude + p.Population + (1 | country), 
   data = datsc, family=poisson, 
   glmerControl(optimizer="bobyqa", optCtrl = list(maxfun = 100000)) # increases the number of possible iterations to avoid convergence problem 
 )
+
+# Comments:
+  # I am already weighting by population by including p.Population in the model.
+  # Only FE by country: If year is included, it is collinerar with growth, which increases year by year.
 
 
 # table
@@ -311,7 +318,8 @@ ef.1=effect(c("constmanufact"),model) ; df.ef=data.frame(ef.1)
 ef.2=effect(c("constagricult"),model) ; df.ef=data.frame(ef.2)
 
 dev.off();dev.off();dev.off()
-par(mfrow=c(2,1)) 
+layout(matrix(c(1,1,2,3), 2, 2, byrow = TRUE))
+
 plot(effect(c("constmanufact"),model),grid=TRUE)
 plot(effect(c("constagricult"),model),grid=TRUE)
 
@@ -323,6 +331,8 @@ plot(effect(c("constagricult"),model),grid=TRUE)
 # http://stats.stackexchange.com/questions/97929/lmer-model-fails-to-converge // not less than .0001, but it is very small (0.02397465) 
 
 
+# Bayesian model
+###################################################################### 
 
 
 
