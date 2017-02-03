@@ -278,15 +278,14 @@ dat$w.Deaths = round((dat$Deaths/dat$Population),5)*100
 # proportion of Population 
 dat$p.Population = dat$Population/1000 
 
-# formula 
-fm = as.formula(Deaths ~ constmanufact + constagricult + factor(country) + factor(year) + Magnitude) 
-
 # scaling 
 pvars <- c("constagricult","constmanufact","Magnitude", "p.Population") 
 datsc <- dat 
 datsc[pvars] <- lapply(datsc[pvars],scale) 
 
 
+# formula 
+fm = as.formula(Deaths ~ constmanufact + constagricult + factor(country) + factor(year) + Magnitude) 
 # Frequentist model
 ###################################################################### 
 
@@ -333,7 +332,125 @@ plot(effect(c("constagricult"),model),grid=TRUE)
 
 # Bayesian model
 ###################################################################### 
+if (!require("pacman")) install.packages("pacman"); library(pacman) 
+p_load(R2jags, coda, R2WinBUGS, lattice, rjags, runjags)
 
+
+# model
+model.jags <- function() {
+  for (i in 1:N){
+    Deaths[i] ~ dpois(lambda[i])
+    log(lambda[i]) <- 
+      offset[i] + 
+      mu + 
+      b.constmanufact[constmanufact[i]] + 
+      b.constagricult[constagricult[i]] + 
+      b.Magnitude[Magnitude[i]] + 
+      b.p.Population[p.Population[i]] + 
+      b.country[country[i]] +
+      epsilon[i]
+    
+    epsilon[i] ~ dnorm(0, tau.epsilon)
+  }
+  
+  mu ~ dnorm(0, .001)
+  mu.adj <- 
+    mu + 
+    mean(b.constmanufact[]) + 
+    mean(b.constagricult[]) + 
+    mean(b.Magnitude[]) + 
+    mean(b.p.Population[]) +
+    mean(b.country[])
+  
+  tau.epsilon <- pow(sigma.epsilon, -2)
+  sigma.epsilon ~ dunif(0, 100)
+  
+  # variable 1
+  for (j in 1:n.constmanufact){
+    b.constmanufact[j] ~ dnorm(0, tau.constmanufact)
+    b.constmanufact.adj[j] <- b.constmanufact[j] - mean(b.constmanufact[])
+  }
+  
+  tau.constmanufact <- pow(sigma.constmanufact, -2)
+  sigma.constmanufact ~ dunif(0, 100)
+  
+  # variable 2
+  for (j in 1:n.constagricult){
+    b.constagricult[j] ~ dnorm(0, tau.constagricult)
+    b.constagricult.adj[j] <- b.constagricult[j] - mean(b.constagricult[])
+  }
+  
+  tau.constagricult <- pow(sigma.constagricult, -2)
+  sigma.constagricult ~ dunif(0, 100)
+  
+  # variable 3
+  for (j in 1:n.Magnitude){
+    b.Magnitude[j] ~ dnorm(0, tau.Magnitude)
+    b.Magnitude.adj[j] <- b.Magnitude[j] - mean(b.Magnitude[])
+  }
+  
+  tau.Magnitude <- pow(sigma.Magnitude, -2)
+  sigma.Magnitude ~ dunif(0, 100)
+  
+  # variable 4
+  for (j in 1:n.p.Population){
+    b.p.Population[j] ~ dnorm(0, tau.p.Population)
+    b.p.Population.adj[j] <- b.p.Population[j] - mean(b.p.Population[])
+  }
+  
+  tau.p.Population <- pow(sigma.p.Population, -2)
+  sigma.p.Population ~ dunif(0, 100)
+  
+  # variable 5
+  for (j in 1:country){
+    b.country[j] ~ dnorm(0, tau.country)
+    b.country.adj[j] <- b.country[j] - mean(b.country[])
+  }
+  
+  tau.country <- pow(sigma.country, -2)
+  sigma.country ~ dunif(0, 100)
+  
+}
+
+
+# define the vectors of the data matrix for JAGS.
+Deaths <- datsc$Deaths
+constmanufact <- datsc$constmanufact
+constagricult <- datsc$constagricult
+Magnitude <- datsc$Magnitude
+p.Population <- datsc$p.Population
+country <- as.numeric(datsc$country)
+N <- length(datsc$constmanufact)
+
+# read in the data.
+jags.data  <- list("Deaths", "constmanufact", "constagricult", "Magnitude", "p.Population", "country", "N")
+
+jags.data  <- list(
+  constmanufact = datsc$constmanufact,
+  constagricult = datsc$constagricult,
+  Magnitude = datsc$Magnitude,
+  p.Population = datsc$p.Population,
+  country = as.numeric(datsc$country),
+  N = length(datsc$N)
+)
+
+# Define and name the parameters so JAGS monitors them.
+eq.params <- c("b.constmanufact", "b.constagricult", "b.Magnitude", "p.Population")
+
+
+# run the model
+earthquakefit <- jags(
+  data=jags.data,
+  inits=NULL,
+  eq.params,
+  n.chains=1,
+  n.iter=100,
+  n.burnin=20,
+  model.file=model.jags)
+
+
+devtools::source_url("https://raw.githubusercontent.com/jkarreth/JKmisc/master/mcmctab.R")
+mcmctab(earthquakefit)
 
 
 
