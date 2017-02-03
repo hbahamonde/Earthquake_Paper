@@ -250,42 +250,59 @@ save(eq.output.d, file = "/Users/hectorbahamonde/RU/Dissertation/Papers/Earthqua
 
 
 
-######################################################################
-# Models
-######################################################################
-cat("\014")
-rm(list=ls())
 
-# loading data
-load("/Users/hectorbahamonde/RU/Dissertation/Papers/Earthquake_Paper/eq_output_d.RData")
-dat = eq.output.d # rename dataset
-dat <- dat[which(dat$year >= 1900), ] # drop early earthquakes
+###################################################################### 
+# Models 
+###################################################################### 
+cat("\014") 
+rm(list=ls()) 
 
-# dropping NAs
-dat = dat[!is.na(dat$Magnitude),]
-dat = dat[!is.na(dat$Deaths),]
-dat = dat[!is.na(dat$Sector),]
-dat = dat[!is.na(dat$Population),]
+# loading data 
+load("/Users/hectorbahamonde/RU/Dissertation/Papers/Earthquake_Paper/eq_output_d.RData") 
+dat = eq.output.d # rename dataset 
+dat <- dat[which(dat$year >= 1900), ] # drop early earthquakes 
 
-# rounding lattitude/longitude
-dat$r.lat = round(dat$Latitude,1)
-dat$r.long = round(dat$Longitude,1)
+# dropping NAs 
+dat = dat[!is.na(dat$Magnitude),] 
+dat = dat[!is.na(dat$Deaths),] 
+dat = dat[!is.na(dat$Sector),] 
+dat = dat[!is.na(dat$Population),] 
 
-# weight population
-dat$w.Deaths = round((dat$Deaths/dat$Population),5)*100
+# rounding lattitude/longitude 
+dat$r.lat = round(dat$Latitude,1) 
+dat$r.long = round(dat$Longitude,1) 
 
-# formula
-fm = as.formula(Deaths ~ constmanufact + constagricult + factor(country) + factor(year) + Magnitude)
+# weight population 
+dat$w.Deaths = round((dat$Deaths/dat$Population),5)*100 
 
-# frequentist multilevel model
-pvars <- c("constagricult","constmanufact","Magnitude")
-datsc <- dat
-datsc[pvars] <- lapply(datsc[pvars],scale)
+# proportion of Population 
+dat$p.Population = dat$Population/1000 
+
+# formula 
+fm = as.formula(Deaths ~ constmanufact + constagricult + factor(country) + factor(year) + Magnitude) 
+
+# frequentist multilevel model 
+pvars <- c("constagricult","constmanufact","Magnitude", "p.Population") 
+datsc <- dat 
+datsc[pvars] <- lapply(datsc[pvars],scale) 
 
 
-if (!require("pacman")) install.packages("pacman"); library(pacman)
-p_load(lme4,arm,texreg)
-screenreg(lmer(w.Deaths ~ constmanufact + constagricult + Magnitude + (1 | country) + (1 | year), data = datsc))
+glmerControl(optimizer="bobyqa", optCtrl = list(maxfun = 100000)) 
+
+if (!require("pacman")) install.packages("pacman"); library(pacman) 
+p_load(lme4,arm,texreg) 
+screenreg(glmer(Deaths ~ constmanufact + constagricult + Magnitude + p.Population + (1 | country) + (1 | year), data = datsc, family=poisson, 
+                glmerControl(optimizer="bobyqa", optCtrl = list(maxfun = 100000))) # increases the number of possible iterations to avoid convergence problem 
+) 
+
+
+## convergence test 
+# model = glmer(Deaths ~ constmanufact + constagricult + Magnitude + p.Population + (1 | country) + (1 | year), data = datsc, family=poisson) 
+# relgrad <- with(model@optinfo$derivs,solve(Hessian,gradient)) 
+# max(abs(relgrad)) 
+# http://stats.stackexchange.com/questions/97929/lmer-model-fails-to-converge // not less than .0001, but it is very small (0.02397465) 
+
+
 
 
 
