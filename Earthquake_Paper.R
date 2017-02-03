@@ -288,3 +288,5 @@ p_load(lme4,arm,texreg)
 screenreg(lmer(w.Deaths ~ constmanufact + constagricult + Magnitude + (1 | country) + (1 | year), data = datsc))
 
 
+
+
