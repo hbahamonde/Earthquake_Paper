@@ -287,13 +287,33 @@ datsc <- dat
 datsc[pvars] <- lapply(datsc[pvars],scale) 
 
 
-glmerControl(optimizer="bobyqa", optCtrl = list(maxfun = 100000)) 
-
+# load libraries
 if (!require("pacman")) install.packages("pacman"); library(pacman) 
-p_load(lme4,arm,texreg) 
-screenreg(glmer(Deaths ~ constmanufact + constagricult + Magnitude + p.Population + (1 | country) + (1 | year), data = datsc, family=poisson, 
-                glmerControl(optimizer="bobyqa", optCtrl = list(maxfun = 100000))) # increases the number of possible iterations to avoid convergence problem 
-) 
+p_load(lme4,texreg) 
+
+# fit the model
+model = glmer(
+  Deaths ~ constmanufact + constagricult + Magnitude + p.Population + (1 | country) + (1 | year), 
+  data = datsc, family=poisson, 
+  glmerControl(optimizer="bobyqa", optCtrl = list(maxfun = 100000)) # increases the number of possible iterations to avoid convergence problem 
+)
+
+
+# table
+screenreg(model) 
+
+# predictions
+if (!require("pacman")) install.packages("pacman"); library(pacman) 
+p_load(effects) 
+
+# obtain a fit at different estimates of the predictor
+ef.1=effect(c("constmanufact"),model) ; df.ef=data.frame(ef.1)
+ef.2=effect(c("constagricult"),model) ; df.ef=data.frame(ef.2)
+
+dev.off();dev.off();dev.off()
+par(mfrow=c(2,1)) 
+plot(effect(c("constmanufact"),model),grid=TRUE)
+plot(effect(c("constagricult"),model),grid=TRUE)
 
 
 ## convergence test 
