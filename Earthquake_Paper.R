@@ -267,6 +267,9 @@ dat = dat[!is.na(dat$Magnitude),]
 dat = dat[!is.na(dat$Deaths),] 
 dat = dat[!is.na(dat$Sector),] 
 dat = dat[!is.na(dat$Population),] 
+dat = dat[!is.na(dat$constmanufact),] 
+dat = dat[!is.na(dat$constagricult),] 
+
 
 # rounding lattitude/longitude 
 dat$r.lat = round(dat$Latitude,1) 
@@ -332,15 +335,51 @@ plot(effect(c("constagricult"),model),grid=TRUE)
 
 # Bayesian model
 ###################################################################### 
+
+
+
+cat("\014") 
+rm(list=ls()) 
+
+# loading data 
+load("/Users/hectorbahamonde/RU/Dissertation/Papers/Earthquake_Paper/eq_output_d.RData") 
+dat = eq.output.d # rename dataset 
+dat <- dat[which(dat$year >= 1900), ] # drop early earthquakes 
+
+# dropping NAs 
+dat = dat[!is.na(dat$Magnitude),] 
+dat = dat[!is.na(dat$Deaths),] 
+dat = dat[!is.na(dat$Sector),] 
+dat = dat[!is.na(dat$Population),] 
+dat = dat[!is.na(dat$constmanufact),] 
+dat = dat[!is.na(dat$constagricult),] 
+
+
+# rounding lattitude/longitude 
+dat$r.lat = round(dat$Latitude,1) 
+dat$r.long = round(dat$Longitude,1) 
+
+# weight population 
+dat$w.Deaths = round((dat$Deaths/dat$Population),5)*100 
+
+# proportion of Population 
+dat$p.Population = dat$Population/1000 
+
+# scaling 
+pvars <- c("constagricult","constmanufact","Magnitude", "p.Population") 
+datsc <- dat 
+
 if (!require("pacman")) install.packages("pacman"); library(pacman) 
 p_load(R2jags, coda, R2WinBUGS, lattice, rjags, runjags)
 
+set.seed(602)
 
 # model
 model.jags <- function() {
   for (i in 1:N){
     Deaths[i] ~ dpois(lambda[i])
-    log(lambda[i]) <- mu + b.constmanufact[constmanufact[i]] + b.constagricult[constagricult[i]] + b.Magnitude[Magnitude[i]] + b.p.Population[p.Population[i]] + b.country[country[i]] + epsilon[i]
+    
+    log(lambda[i]) <- offset[i] + mu + b.constmanufact*constmanufact[i] + b.constagricult*constagricult[i] + b.Magnitude*Magnitude[i] + b.p.Population*p.Population[i] + b.country*country[i] + epsilon[i]
     
     epsilon[i] ~ dnorm(0, tau.epsilon)
   }
@@ -352,6 +391,7 @@ model.jags <- function() {
   sigma.epsilon ~ dunif(0, 100)
   
   # coefficients
+  offset ~ dnorm(0, 0.01)
   b.constmanufact ~ dnorm(0, 0.01)
   b.constagricult ~ dnorm(0, 0.01)
   b.Magnitude ~ dnorm (0, 0.01)
@@ -360,7 +400,7 @@ model.jags <- function() {
   # context variable
   for (j in 1:N.country){
     b.country[j] ~ dnorm(0, tau.country)
-    #b.country.adj[j] <- b.country[j] - mean(b.country[])
+    b.country.adj[j] <- b.country[j] - mean(b.country[])
   }
   
   tau.country <- pow(sigma.country, -2)
@@ -369,28 +409,31 @@ model.jags <- function() {
 }
 
 # define the vectors of the data matrix for JAGS.
-Deaths <- datsc$Deaths
-constmanufact <- datsc$constmanufact
-constagricult <- datsc$constagricult
-Magnitude <- datsc$Magnitude
-p.Population <- datsc$p.Population
-country <- as.numeric(datsc$country)
-N <- length(datsc$constmanufact)
+  Deaths <- as.vector(datsc$Deaths)
+  constmanufact <- as.vector(datsc$constmanufact)
+  constagricult <- as.vector(datsc$constagricult)
+  Magnitude <- as.vector(datsc$Magnitude)
+  p.Population <- as.vector(datsc$p.Population)
+  country <- as.numeric(as.ordered(datsc$country))
+  N.country <-  as.numeric(as.vector(length(unique(as.numeric(datsc$country)))))
+  N <-  as.numeric(nrow(datsc))
 
-# read in the data.
-jags.data  <- list("Deaths", "constmanufact", "constagricult", "Magnitude", "b.p.Population", "country", "N")
-
-jags.data  <- list(
-  constmanufact = datsc$constmanufact,
+  jags.data  <- list("Deaths", "constmanufact", "constagricult", "Magnitude", "p.Population", "country", "N.country", "N")
+  
+  jags.data  = list(
+  Deaths = datsc$Deaths,
+  constmanufact  = datsc$constmanufact,
   constagricult = datsc$constagricult,
   Magnitude = datsc$Magnitude,
   p.Population = datsc$p.Population,
+  country = as.numeric(as.ordered(datsc$country)),
   N.country = length(unique(as.numeric(datsc$country))),
-  N =  nrow(datsc)
-)
+  N = nrow(datsc)
+  )
+
 
 # Define and name the parameters so JAGS monitors them.
-eq.params <- c("b.constmanufact", "b.constagricult", "b.Magnitude", "p.Population", "country")
+eq.params <- c("b.constmanufact", "b.constagricult", "b.Magnitude", "b.p.Population")
 
 
 # run the model
@@ -399,7 +442,7 @@ earthquakefit <- jags(
   inits=NULL,
   eq.params,
   n.chains=1,
-  n.iter=100,
+  n.iter=1000,
   n.burnin=20,
   model.file=model.jags)
 
