@@ -359,6 +359,11 @@ dat = dat[!is.na(dat$constagricult),]
 dat$r.lat = round(dat$Latitude,1) 
 dat$r.long = round(dat$Longitude,1) 
 
+# 
+dat$country <- factor(dat$country)
+dat$country <- droplevels(dat$country)
+dat$country <- as.integer(dat$country)
+
 # weight population 
 dat$w.Deaths = round((dat$Deaths/dat$Population),5)*100 
 
@@ -378,9 +383,7 @@ set.seed(602)
 model.jags <- function() {
   for (i in 1:N){
     Deaths[i] ~ dpois(lambda[i])
-    
-    log(lambda[i]) <- offset[i] + mu + b.constmanufact*constmanufact[i] + b.constagricult*constagricult[i] + b.Magnitude*Magnitude[i] + b.p.Population*p.Population[i] + b.country*country[i] + epsilon[i]
-    
+    lambda[i] <- offset[i] + mu + b.constmanufact[constmanufact[i]] + b.constagricult[constagricult[i]] + b.Magnitude[Magnitude[i]] + b.p.Population[p.Population[i]] + b.country[country[i]] + epsilon[i]
     epsilon[i] ~ dnorm(0, tau.epsilon)
   }
   
