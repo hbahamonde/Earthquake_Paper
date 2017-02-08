@@ -250,41 +250,209 @@ save(eq.output.d, file = "/Users/hectorbahamonde/RU/Dissertation/Papers/Earthqua
 
 
 
-######################################################################
+
+###################################################################### 
 # Models
-######################################################################
-cat("\014")
-rm(list=ls())
+###################################################################### 
+cat("\014") 
+rm(list=ls()) 
 
-# loading data
-load("/Users/hectorbahamonde/RU/Dissertation/Papers/Earthquake_Paper/eq_output_d.RData")
-dat = eq.output.d # rename dataset
-dat <- dat[which(dat$year >= 1900), ] # drop early earthquakes
+# loading data 
+load("/Users/hectorbahamonde/RU/Dissertation/Papers/Earthquake_Paper/eq_output_d.RData") 
+dat = eq.output.d # rename dataset 
+dat <- dat[which(dat$year >= 1900), ] # drop early earthquakes 
 
-# dropping NAs
-dat = dat[!is.na(dat$Magnitude),]
-dat = dat[!is.na(dat$Deaths),]
-dat = dat[!is.na(dat$Sector),]
-dat = dat[!is.na(dat$Population),]
-
-# rounding lattitude/longitude
-dat$r.lat = round(dat$Latitude,1)
-dat$r.long = round(dat$Longitude,1)
-
-# weight population
-dat$w.Deaths = round((dat$Deaths/dat$Population),5)*100
-
-# formula
-fm = as.formula(Deaths ~ constmanufact + constagricult + factor(country) + factor(year) + Magnitude)
-
-# frequentist multilevel model
-pvars <- c("constagricult","constmanufact","Magnitude")
-datsc <- dat
-datsc[pvars] <- lapply(datsc[pvars],scale)
+# dropping NAs 
+dat = dat[!is.na(dat$Magnitude),] 
+dat = dat[!is.na(dat$Deaths),] 
+dat = dat[!is.na(dat$Sector),] 
+dat = dat[!is.na(dat$Population),] 
+dat = dat[!is.na(dat$constmanufact),] 
+dat = dat[!is.na(dat$constagricult),] 
 
 
-if (!require("pacman")) install.packages("pacman"); library(pacman)
-p_load(lme4,arm,texreg)
-screenreg(lmer(w.Deaths ~ constmanufact + constagricult + Magnitude + (1 | country) + (1 | year), data = datsc))
+# rounding lattitude/longitude 
+dat$r.lat = round(dat$Latitude,1) 
+dat$r.long = round(dat$Longitude,1) 
+
+# weight population 
+dat$w.Deaths = round((dat$Deaths/dat$Population),5)*100 
+
+# proportion of Population 
+dat$p.Population = dat$Population/1000 
+
+# scaling 
+pvars <- c("constagricult","constmanufact","Magnitude", "p.Population") 
+datsc <- dat 
+datsc[pvars] <- lapply(datsc[pvars],scale) 
+
+
+# formula 
+fm = as.formula(Deaths ~ constmanufact + constagricult + factor(country) + factor(year) + Magnitude) 
+# Frequentist model
+###################################################################### 
+
+# load libraries
+if (!require("pacman")) install.packages("pacman"); library(pacman) 
+p_load(lme4,texreg) 
+
+# fit the model
+model = glmer(
+  Deaths ~ constmanufact + constagricult + Magnitude + p.Population + (1 | country), 
+  data = datsc, family=poisson, 
+  glmerControl(optimizer="bobyqa", optCtrl = list(maxfun = 100000)) # increases the number of possible iterations to avoid convergence problem 
+)
+
+# Comments:
+  # I am already weighting by population by including p.Population in the model.
+  # Only FE by country: If year is included, it is collinerar with growth, which increases year by year.
+
+
+# table
+screenreg(model) 
+
+# predictions
+if (!require("pacman")) install.packages("pacman"); library(pacman) 
+p_load(effects) 
+
+# obtain a fit at different estimates of the predictor
+ef.1=effect(c("constmanufact"),model) ; df.ef=data.frame(ef.1)
+ef.2=effect(c("constagricult"),model) ; df.ef=data.frame(ef.2)
+
+dev.off();dev.off();dev.off()
+layout(matrix(c(1,1,2,3), 2, 2, byrow = TRUE))
+
+plot(effect(c("constmanufact"),model),grid=TRUE)
+plot(effect(c("constagricult"),model),grid=TRUE)
+
+
+## convergence test 
+# model = glmer(Deaths ~ constmanufact + constagricult + Magnitude + p.Population + (1 | country) + (1 | year), data = datsc, family=poisson) 
+# relgrad <- with(model@optinfo$derivs,solve(Hessian,gradient)) 
+# max(abs(relgrad)) 
+# http://stats.stackexchange.com/questions/97929/lmer-model-fails-to-converge // not less than .0001, but it is very small (0.02397465) 
+
+
+# Bayesian model
+###################################################################### 
+
+
+
+cat("\014") 
+rm(list=ls()) 
+
+# loading data 
+load("/Users/hectorbahamonde/RU/Dissertation/Papers/Earthquake_Paper/eq_output_d.RData") 
+dat = eq.output.d # rename dataset 
+dat <- dat[which(dat$year >= 1900), ] # drop early earthquakes 
+
+# dropping NAs 
+dat = dat[!is.na(dat$Magnitude),] 
+dat = dat[!is.na(dat$Deaths),] 
+dat = dat[!is.na(dat$Sector),] 
+dat = dat[!is.na(dat$Population),] 
+dat = dat[!is.na(dat$constmanufact),] 
+dat = dat[!is.na(dat$constagricult),] 
+
+
+# rounding lattitude/longitude 
+dat$r.lat = round(dat$Latitude,1) 
+dat$r.long = round(dat$Longitude,1) 
+
+# 
+dat$country <- factor(dat$country)
+dat$country <- droplevels(dat$country)
+dat$country <- as.integer(dat$country)
+
+# weight population 
+dat$w.Deaths = round((dat$Deaths/dat$Population),5)*100 
+
+# proportion of Population 
+dat$p.Population = dat$Population/1000 
+
+# scaling 
+pvars <- c("constagricult","constmanufact","Magnitude", "p.Population") 
+datsc <- dat 
+
+if (!require("pacman")) install.packages("pacman"); library(pacman) 
+p_load(R2jags, coda, R2WinBUGS, lattice, rjags, runjags)
+
+set.seed(602)
+
+# model
+model.jags <- function() {
+        for (i in 1:N){
+                Deaths[i] ~ dpois(lambda[i])
+                log(lambda[i]) <- mu + b.constmanufact*constmanufact[i] + b.constagricult*constagricult[i] + b.Magnitude*Magnitude[i] + #b.p.Population*p.Population[i] + 
+                        b.country[country[i]] + epsilon[i]
+                
+                epsilon[i] ~ dnorm(0, tau.epsilon)
+        }
+        
+        # special parameters
+        mu ~ dnorm(0, .001)
+        #mu.adj <- mu + mean(b.constmanufact[]) + mean(b.constagricult[]) + mean(b.Magnitude[]) + mean(b.p.Population[])
+        tau.epsilon <- pow(sigma.epsilon, -2)
+        sigma.epsilon ~ dunif(0, 100)
+        
+        # context variable
+        for (j in 1:Ncountry){
+                b.country[j] ~ dnorm(0, tau.country)
+                b.country.adj[j] <- b.country[j] - mean(b.country[])
+        }
+        
+        # for context variables
+        tau.country <- pow(sigma.country, -2)
+        sigma.country ~ dunif(0, 100)
+        
+        # coefficients
+        offset ~ dnorm(0, 0.01)
+        b.constmanufact ~ dnorm(0, 0.01)
+        b.constagricult ~ dnorm(0, 0.01)
+        b.Magnitude ~ dnorm (0, 0.01)
+        #b.p.Population ~ dnorm (0, 0.01)
+        
+}
+
+# define the vectors of the data matrix for JAGS.
+Deaths <- as.vector(datsc$Deaths)
+constmanufact <- as.vector(datsc$constmanufact)
+constagricult <- as.vector(datsc$constagricult)
+Magnitude <- as.vector(datsc$Magnitude)
+p.Population <- as.vector(datsc$p.Population)
+country <- as.numeric(as.ordered(datsc$country))
+Ncountry <-  as.numeric(as.vector(length(unique(as.numeric(datsc$country)))))
+N <-  as.numeric(nrow(datsc))
+
+
+jags.data <- list(Deaths = Deaths,
+                  constmanufact = constmanufact,
+                  constagricult = constagricult,
+                  Magnitude = Magnitude,
+                  #p.Population = p.Population,
+                  country = country,
+                  Ncountry = Ncountry,
+                  N = N)
+
+
+# Define and name the parameters so JAGS monitors them.
+eq.params <- c("b.constmanufact", "b.constagricult", "b.Magnitude"#, "b.p.Population"
+               )
+
+
+# run the model
+earthquakefit <- jags(
+        data=jags.data,
+        inits=NULL,
+        parameters.to.save = eq.params,
+        n.chains=1,
+        n.iter=1000,
+        n.burnin=20,
+        model.file=model.jags)
+
+
+devtools::source_url("https://raw.githubusercontent.com/jkarreth/JKmisc/master/mcmctab.R")
+mcmctab(earthquakefit)
+
 
 
