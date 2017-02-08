@@ -364,6 +364,9 @@ dat$country <- factor(dat$country)
 dat$country <- droplevels(dat$country)
 dat$country <- as.integer(dat$country)
 
+# 
+dat$year <- as.integer(dat$year)
+
 # weight population 
 dat$w.Deaths = round((dat$Deaths/dat$Population),5)*100 
 
@@ -383,7 +386,7 @@ set.seed(602)
 model.jags <- function() {
         for (i in 1:N){
                 Deaths[i] ~ dpois(lambda[i])
-                log(lambda[i]) <- mu + b.constmanufact*constmanufact[i] + b.constagricult*constagricult[i] + b.Magnitude*Magnitude[i] +b.country[country[i]] + epsilon[i]
+                log(lambda[i]) <- mu + b.constmanufact*constmanufact[i] + b.constagricult*constagricult[i] + b.Magnitude*Magnitude[i] + b.year*year[i] + b.country[country[i]] + epsilon[i]
                 
                 epsilon[i] ~ dnorm(0, tau.epsilon)
         }
@@ -394,15 +397,25 @@ model.jags <- function() {
         tau.epsilon <- pow(sigma.epsilon, -2)
         sigma.epsilon ~ dunif(0, 100)
         
-        # context variable
+        # country variable
         for (j in 1:Ncountry){
                 b.country[j] ~ dnorm(0, tau.country)
-                b.country.adj[j] <- b.country[j] - mean(b.country[])
+                #b.country.adj[j] <- b.country[j] - mean(b.country[])
         }
         
-        # for context variables
+        # for context variables // country variable
         tau.country <- pow(sigma.country, -2)
         sigma.country ~ dunif(0, 100)
+        
+        # year variable
+        for (k in 1:Nyear){
+                b.year[j] ~ dnorm(0, tau.year)
+                #b.year.adj[j] <- b.year[j] - mean(b.year[])
+        }
+        
+        # for context variables // year variable
+        tau.year <- pow(sigma.year, -2)
+        sigma.year ~ dunif(0, 100)
         
         # coefficients
         offset ~ dnorm(0, 0.01)
@@ -410,6 +423,7 @@ model.jags <- function() {
         b.constagricult ~ dnorm(0, 0.01)
         b.Magnitude ~ dnorm (0, 0.01)
         #b.p.Population ~ dnorm (0, 0.01)
+        b.year ~ dnorm (0, 0.01)
         
 }
 
@@ -421,7 +435,14 @@ Magnitude <- as.vector(datsc$Magnitude)
 p.Population <- as.vector(datsc$p.Population)
 country <- as.numeric(as.ordered(datsc$country))
 Ncountry <-  as.numeric(as.vector(length(unique(as.numeric(datsc$country)))))
+year <- as.vector(datsc$year)
+Nyear <- as.vector(c(1:nrow(datsc[datsc$country == 1, ]), 1:nrow(datsc[datsc$country == 2, ])))
 N <-  as.numeric(nrow(datsc))
+
+
+
+
+
 
 
 jags.data <- list(Deaths = Deaths,
@@ -431,6 +452,7 @@ jags.data <- list(Deaths = Deaths,
                   #p.Population = p.Population,
                   country = country,
                   Ncountry = Ncountry,
+                  Nyear = Nyear,
                   N = N)
 
 
