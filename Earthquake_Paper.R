@@ -383,8 +383,7 @@ set.seed(602)
 model.jags <- function() {
         for (i in 1:N){
                 Deaths[i] ~ dpois(lambda[i])
-                log(lambda[i]) <- mu + b.constmanufact*constmanufact[i] + b.constagricult*constagricult[i] + b.Magnitude*Magnitude[i] + #b.p.Population*p.Population[i] + 
-                        b.country[country[i]] + epsilon[i]
+                log(lambda[i]) <- mu + b.constmanufact*constmanufact[i] + b.constagricult*constagricult[i] + b.Magnitude*Magnitude[i] +b.country[country[i]] + epsilon[i]
                 
                 epsilon[i] ~ dnorm(0, tau.epsilon)
         }
