@@ -34,6 +34,53 @@ dat.peru$W.Deaths = (dat.peru$Deaths/dat.peru$Population)*100
 save(dat.peru, file = "/Users/hectorbahamonde/RU/Dissertation/Papers/Earthquake_Paper/Peru_Data_Earthquake.RData")
 
 
+###### MERGING ##############
+
+## subseting EQ datasets
+dat.chile <- dat.chile[c("country", "location", "year", "Magnitude", "Deaths", "Latitude", "Longitude", "Population", "Urban", "Sector")]
+dat.peru <- dat.peru[c("country", "location", "year", "Magnitude", "Deaths", "Latitude", "Longitude", "Population", "Urban", "Sector")]
+
+## adding rows EQ dataset
+earthquakes.d <- rbind(dat.chile,dat.peru)
+
+
+
+# Output dataset
+## loading output dataset
+load("/Users/hectorbahamonde/RU/Dissertation/Papers/IncomeTaxAdoption/logitgee.RData") # Logit GEE
+## subseting EQ datasets (Only Chile and Peru)
+logitgee <- logitgee[which(logitgee$country=='Chile' | logitgee$country=='Peru'), ]
+
+
+# Merging 
+eq.output.d <- merge(earthquakes.d, logitgee,by=c("country", "year"), all.x = T) # all.x = T // keeps repeated years.
+
+
+# recode sector variable
+## packages
+if (!require("pacman")) install.packages("pacman"); library(pacman)
+p_load(car)
+
+
+eq.output.d$Sector <- recode(as.factor(eq.output.d$Sector), "1 = 'Industry' ; 2 = 'Mining' ; 3 = 'Agriculture' ; '1 y 2' = 'Ind and Min' ; '1 y 3' = 'Ind and Agr' ; '2 y 3' = 'Min and Agr' ")
+
+
+# income tax variables
+incometax.d.chile = data.frame(ifelse(eq.output.d$year>=1924 & eq.output.d$country == "Chile",1,0)) # Chile,  1924 (Mamalakis [1976, p. 20]
+incometax.d.peru  = data.frame(ifelse(eq.output.d$year>=1934 & eq.output.d$country == "Peru",1,0)) # Peru, Ley 7904 de 1934
+incometax.d = incometax.d.chile + incometax.d.peru
+eq.output.d <- subset(eq.output.d, select = - incometax.d)
+
+eq.output.d <- data.frame(c(incometax.d,eq.output.d))
+colnames(eq.output.d)[1] = "incometax.d"
+
+
+# save dataset
+save(eq.output.d, file = "/Users/hectorbahamonde/RU/Dissertation/Papers/Earthquake_Paper/eq_output_d.RData")
+
+
+
+
 ############################
 #### EARTHQUAKES PLOTS
 ############################
@@ -206,50 +253,6 @@ p_load(grid)
 grid.draw(cbind(ggplotGrob(chile.map), ggplotGrob(peru.map), size="last"))
 
 
-############################
-#### Models
-############################
-
-# Merging
-
-## loading EQ datasets 
-load("/Users/hectorbahamonde/RU/Dissertation/Papers/Earthquake_Paper/Chile_Data_Earthquake.RData")
-load("/Users/hectorbahamonde/RU/Dissertation/Papers/Earthquake_Paper/Peru_Data_Earthquake.RData")
-
-## subseting EQ datasets
-dat.chile <- dat.chile[c("country", "location", "year", "Magnitude", "Deaths", "Latitude", "Longitude", "Population", "Urban", "Sector")]
-dat.peru <- dat.peru[c("country", "location", "year", "Magnitude", "Deaths", "Latitude", "Longitude", "Population", "Urban", "Sector")]
-
-## adding rows EQ dataset
-earthquakes.d <- rbind(dat.chile,dat.peru)
-
-
-
-# Output dataset
-## loading output dataset
-load("/Users/hectorbahamonde/RU/Dissertation/Papers/IncomeTaxAdoption/logitgee.RData") # Logit GEE
-## subseting EQ datasets (Only Chile and Peru)
-logitgee <- logitgee[which(logitgee$country=='Chile' | logitgee$country=='Peru'), ]
-
-
-# Merging 
-eq.output.d <- merge(earthquakes.d, logitgee,by=c("country", "year"), all.x = T) # all.x = T // keeps repeated years.
-
-
-# recode sector variable
-## packages
-if (!require("pacman")) install.packages("pacman"); library(pacman)
-p_load(car)
-
-
-eq.output.d$Sector <- recode(as.factor(eq.output.d$Sector), "1 = 'Industry' ; 2 = 'Mining' ; 3 = 'Agriculture' ; '1 y 2' = 'Ind and Min' ; '1 y 3' = 'Ind and Agr' ; '2 y 3' = 'Min and Agr' ")
-
-
-# save dataset
-save(eq.output.d, file = "/Users/hectorbahamonde/RU/Dissertation/Papers/Earthquake_Paper/eq_output_d.RData")
-
-
-
 
 ###################################################################### 
 # Models
@@ -383,7 +386,7 @@ set.seed(602)
 model.jags <- function() {
         for (i in 1:N){
                 Deaths[i] ~ dpois(lambda[i])
-                log(lambda[i]) <- mu + b.constmanufact*constmanufact[i] + b.constagricult*constagricult[i] + b.Magnitude*Magnitude[i] + b.p.Population*p.Population[i] + b.country[country[i]] + epsilon[i]
+                log(lambda[i]) <- mu + b.constmanufact[country[i]]*constmanufact[i] + b.constagricult[country[i]]*constagricult[i] + b.Magnitude*Magnitude[i] + b.p.Population[country[i]]*p.Population[i] + epsilon[i]
                 
                 epsilon[i] ~ dnorm(0, tau.epsilon)
         }
@@ -445,12 +448,29 @@ earthquakefit <- jags(
         parameters.to.save = eq.params,
         n.chains=4,
         n.iter=100000,
-        n.burnin=1000,
+        n.burnin=40000,
         model.file=model.jags)
 
 
 devtools::source_url("https://raw.githubusercontent.com/jkarreth/JKmisc/master/mcmctab.R")
 mcmctab(earthquakefit)
+
+
+
+mu <- earthquakefit$BUGSoutput$summary[grep("mu", rownames(earthquakefit$BUGSoutput$summary)), 1]
+sigma <- angell.fit$BUGSoutput$summary[grep("sigma", rownames(angell.fit$BUGSoutput$summary)), 1]
+n.sims <- 1000
+n.obs <- nrow(dat)
+y.pred2 <- matrix(data = NA, nrow = n.sims, ncol = n.obs) 
+
+set.seed(123)
+
+for (obs in 1:n.obs){
+  for(sim in 1:n.sims){
+    y.pred2[sim, obs] <- rnorm(n = 1, mean = mu[obs], sd = sigma)
+  }
+}
+
 
 plot(earthquakefit)
 
