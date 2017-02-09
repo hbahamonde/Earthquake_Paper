@@ -402,7 +402,8 @@ model.jags <- function() {
             b.constagricult[Sector[i]]*constagricult[i] + 
             b.Magnitude*Magnitude[i] +
             b.p.Population*p.Population[i] + 
-            epsilon[i]
+            epsilon[i] +
+            b.year[year[i]]
           
           epsilon[i] ~ dnorm(0, tau.epsilon)
         }
@@ -415,10 +416,23 @@ model.jags <- function() {
   tau.epsilon <- pow(sigma.epsilon, -2)
   sigma.epsilon ~ dunif(0, 100)
   
-  for (j in 1:NSector){ # Priors for varying coefficients
-    b.constmanufact[j] ~ dnorm (0, 0.001)
-    b.constagricult[j] ~ dnorm (0, 0.001)
-    }
+  for (j in 1:NSector){ # fixed effects by year
+    b.constmanufact[j] ~ dnorm(b.constmanufact.hat[j], b.constmanufact.tau[j])
+    b.constagricult[j] ~ dnorm(b.constagricult.hat[j], b.constagricult.tau[j])
+    
+    b.constmanufact.hat[j] ~ dnorm(0, 0.001)
+    b.constagricult.hat[j] ~ dnorm(0, 0.001)
+    b.constmanufact.tau[j] ~ dgamma(1, 1)
+    b.constagricult.tau[j] ~ dgamma(1, 1)
+    
+  }
+  
+
+  for (t in 1:Nyear){ # fixed effects by year // Varying intercepts for years
+    b.year[t] ~ dnorm(m.year[t], tau.year[t])
+    m.year[t] ~ dnorm(0, 0.001)
+    tau.year[t] ~ dgamma(1, 1)
+  }
   
   }
 
@@ -451,11 +465,13 @@ jags.data <- list(Deaths = Deaths,
                   #incometax.d = incometax.d,
                   # country = country,
                   # Ncountry = Ncountry,
+                  year = year,
+                  Nyear = Nyear,
                   N = N)
 
 
 # Define and name the parameters so JAGS monitors them.
-eq.params <- c("b.constmanufact", "b.constagricult", "b.Magnitude", "b.p.Population")
+eq.params <- c("b.constmanufact", "b.constagricult", "b.Magnitude", "b.p.Population", "b.year")
 
 
 # run the model
@@ -465,7 +481,7 @@ earthquakefit <- jags(
         parameters.to.save = eq.params,
         n.chains=4,
         n.iter=100000,
-        n.burnin=40000,
+        n.burnin=10000,
         model.file=model.jags)
 
 
