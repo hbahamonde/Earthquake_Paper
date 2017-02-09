@@ -385,15 +385,21 @@ p_load(R2jags, coda, R2WinBUGS, lattice, rjags, runjags)
 
 set.seed(602)
 
+
+
+
+
+
+
 # model
 model.jags <- function() {
         for (i in 1:N){
                 Deaths[i] ~ dpois(lambda[i])
           
           log(lambda[i]) <- mu + 
-            b.constmanufact[year[i]]*constmanufact[i] + 
-            b.constagricult[year[i]]*constagricult[i] + 
-            b.Magnitude*Magnitude[i] + 
+            b.constmanufact[Sector[i]]*constmanufact[i] + 
+            b.constagricult[Sector[i]]*constagricult[i] + 
+            b.Magnitude*Magnitude[i] +
             b.p.Population*p.Population[i] + 
             #b.year[year[i]] +
             epsilon[i]
@@ -412,7 +418,7 @@ model.jags <- function() {
   sigma.epsilon ~ dunif(0, 100)
   
   # context variable
-  for (j in 1:Nyear){ # Priors for varying coefficients
+  for (j in 1:NSector){ # Priors for varying coefficients
    # b.year[j] ~ dnorm(0, tau.year)
     b.constmanufact[j] ~ dnorm(0, 0.01)
     b.constagricult[j] ~ dnorm(0, 0.01)
@@ -434,16 +440,19 @@ country <- as.numeric(as.ordered(datsc$country))
 Ncountry <-  as.numeric(as.vector(length(unique(as.numeric(datsc$country)))))
 N <-  as.numeric(nrow(datsc))
 year = as.vector(datsc$year)
+Nyear = nrow(datsc)
+Sector = as.vector(as.numeric(factor(datsc$Sector)))
+NSector = as.numeric(as.vector(length(unique(as.numeric(datsc$Sector)))))
 
 jags.data <- list(Deaths = Deaths,
                   constmanufact = constmanufact,
                   constagricult = constagricult,
                   Magnitude = Magnitude,
-                  year = year,
-                  Nyear = nrow(datsc),
+                  Sector = Sector,
+                  NSector = NSector,
                   p.Population = p.Population,
-                  #country = country,
-                  #Ncountry = Ncountry,
+                  # country = country,
+                  # Ncountry = Ncountry,
                   N = N)
 
 
@@ -464,6 +473,15 @@ earthquakefit <- jags(
 
 devtools::source_url("https://raw.githubusercontent.com/jkarreth/JKmisc/master/mcmctab.R")
 mcmctab(earthquakefit)
+plot(earthquakefit)
+
+
+# Levels
+## 1: Agriculture
+## 2: Ind and Min
+## 3: Industry
+## 4: Min and Agr
+## 5: Mining
 
 
 
@@ -482,6 +500,5 @@ for (obs in 1:n.obs){
 }
 
 
-plot(earthquakefit)
 
 
