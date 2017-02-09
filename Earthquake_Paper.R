@@ -397,38 +397,32 @@ model.jags <- function() {
         for (i in 1:N){
                 Deaths[i] ~ dpois(lambda[i])
           
-          log(lambda[i]) <- mu + 
-            b.constmanufact*constmanufact[i] + 
-            b.constagricult*constagricult[i] + 
+          log(lambda[i]) <- 
+            mu + 
+            b.constmanufact[incometax.d[i]]*constmanufact[i] + 
+            b.constagricult[incometax.d[i]]*constagricult[i] + 
             b.Magnitude[Sector[i]]*Magnitude[i] +
             b.p.Population*p.Population[i] + 
-            #b.year[year[i]] +
             epsilon[i]
           
           epsilon[i] ~ dnorm(0, tau.epsilon)
         }
-  
-  # coefficients
-  #offset ~ dnorm(0, 0.01)
-  b.p.Population ~ dnorm (0, 0.01)
-  b.constmanufact ~ dnorm(0, 0.01)
-  b.constagricult ~ dnorm(0, 0.01)
-  
+
+    b.p.Population ~ dnorm (0, 0.01)
   mu ~ dnorm(0, .001)
-  #mu.adj <- mu + mean(b.constmanufact[]) + mean(b.constagricult[]) + mean(b.Magnitude[]) + mean(b.p.Population[])
+  
   tau.epsilon <- pow(sigma.epsilon, -2)
   sigma.epsilon ~ dunif(0, 100)
   
-  # context variable
   for (j in 1:NSector){ # Priors for varying coefficients
     b.Magnitude[j] ~ dnorm (0, 0.01)
-    # b.year[j] ~ dnorm(0, tau.year)
-    # b.year.adj[j] <- b.year[j] - mean(b.year[])
     }
   
-  # for context variables
-  # tau.year <- pow(sigma.year, -2)
-  # sigma.year ~ dunif(0, 100)
+  for (k in 1:2){ # Priors for varying coefficients
+    b.constmanufact[k] ~ dnorm (0, 0.01)
+    b.constagricult[k] ~ dnorm (0, 0.01)
+    }
+  
   }
 
 # define the vectors of the data matrix for JAGS.
@@ -444,6 +438,8 @@ year = as.vector(datsc$year)
 Nyear = nrow(datsc)
 Sector = as.vector(as.numeric(factor(datsc$Sector)))
 NSector = as.numeric(as.vector(length(unique(as.numeric(datsc$Sector)))))
+NIncometax = as.vector(length(unique(as.numeric(datsc$incometax.d))))
+incometax.d = as.vector(as.numeric(datsc$incometax.d))+1
 
 jags.data <- list(Deaths = Deaths,
                   constmanufact = constmanufact,
@@ -452,6 +448,8 @@ jags.data <- list(Deaths = Deaths,
                   Sector = Sector,
                   NSector = NSector,
                   p.Population = p.Population,
+                  #NIncometax = NIncometax,
+                  incometax.d = incometax.d,
                   # country = country,
                   # Ncountry = Ncountry,
                   N = N)
