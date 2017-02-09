@@ -399,33 +399,32 @@ model.jags <- function() {
           
           log(lambda[i]) <- 
             mu + 
-            b.constmanufact[incometax.d[i]]*constmanufact[i] + 
-            b.constagricult[incometax.d[i]]*constagricult[i] + 
-            b.Magnitude[Sector[i]]*Magnitude[i] +
+            b.constmanufact[Sector[i]]*constmanufact[i] + 
+            b.constagricult[Sector[i]]*constagricult[i] + 
+            b.Magnitude*Magnitude[i] +
             b.p.Population*p.Population[i] + 
             epsilon[i]
           
           epsilon[i] ~ dnorm(0, tau.epsilon)
         }
 
-    b.p.Population ~ dnorm (0, 0.01)
-  mu ~ dnorm(0, .001)
+    b.p.Population ~ dnorm (0, 0.001)
+    b.Magnitude ~ dnorm (0, 0.001)
+  
+    mu ~ dnorm(0, .001)
   
   tau.epsilon <- pow(sigma.epsilon, -2)
   sigma.epsilon ~ dunif(0, 100)
   
   for (j in 1:NSector){ # Priors for varying coefficients
-    b.Magnitude[j] ~ dnorm (0, 0.01)
-    }
-  
-  for (k in 1:2){ # Priors for varying coefficients
-    b.constmanufact[k] ~ dnorm (0, 0.01)
-    b.constagricult[k] ~ dnorm (0, 0.01)
+    b.constmanufact[j] ~ dnorm (0, 0.001)
+    b.constagricult[j] ~ dnorm (0, 0.001)
     }
   
   }
 
 # define the vectors of the data matrix for JAGS.
+w.Deaths <- as.vector(datsc$w.Deaths)
 Deaths <- as.vector(datsc$Deaths)
 constmanufact <- as.vector(datsc$constmanufact)
 constagricult <- as.vector(datsc$constagricult)
@@ -448,8 +447,8 @@ jags.data <- list(Deaths = Deaths,
                   Sector = Sector,
                   NSector = NSector,
                   p.Population = p.Population,
-                  #NIncometax = NIncometax,
-                  incometax.d = incometax.d,
+                  # NIncometax = NIncometax,
+                  #incometax.d = incometax.d,
                   # country = country,
                   # Ncountry = Ncountry,
                   N = N)
@@ -464,7 +463,7 @@ earthquakefit <- jags(
         data=jags.data,
         inits=NULL,
         parameters.to.save = eq.params,
-        n.chains=4,
+        n.chains=1,
         n.iter=100000,
         n.burnin=40000,
         model.file=model.jags)
