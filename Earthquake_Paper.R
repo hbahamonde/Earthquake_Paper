@@ -347,7 +347,7 @@ rm(list=ls())
 # loading data 
 load("/Users/hectorbahamonde/RU/Dissertation/Papers/Earthquake_Paper/eq_output_d.RData") 
 dat = eq.output.d # rename dataset 
-dat <- dat[which(dat$year >= 1900 & dat$incometax.d == 0), ] # drop early earthquakes 
+dat <- dat[which(dat$year >= 1900 & dat$incometax.d == 0 & dat$country == "Chile"), ] # drop early earthquakes 
 
 # dropping NAs 
 dat = dat[!is.na(dat$Magnitude),] 
