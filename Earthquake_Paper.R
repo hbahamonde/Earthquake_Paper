@@ -383,23 +383,24 @@ datsc <- dat
 if (!require("pacman")) install.packages("pacman"); library(pacman) 
 p_load(R2jags, coda, R2WinBUGS, lattice, rjags, runjags)
 
-set.seed(602)
-
-
 
 
 
 
 
 # model
+options(scipen=10000)
+set.seed(602)
+
+
 model.jags <- function() {
         for (i in 1:N){
                 Deaths[i] ~ dpois(lambda[i])
           
           log(lambda[i]) <- mu + 
-            b.constmanufact[Sector[i]]*constmanufact[i] + 
-            b.constagricult[Sector[i]]*constagricult[i] + 
-            b.Magnitude*Magnitude[i] +
+            b.constmanufact*constmanufact[i] + 
+            b.constagricult*constagricult[i] + 
+            b.Magnitude[Sector[i]]*Magnitude[i] +
             b.p.Population*p.Population[i] + 
             #b.year[year[i]] +
             epsilon[i]
@@ -409,9 +410,10 @@ model.jags <- function() {
   
   # coefficients
   #offset ~ dnorm(0, 0.01)
-  b.Magnitude ~ dnorm (0, 0.01)
   b.p.Population ~ dnorm (0, 0.01)
-
+  b.constmanufact ~ dnorm(0, 0.01)
+  b.constagricult ~ dnorm(0, 0.01)
+  
   mu ~ dnorm(0, .001)
   #mu.adj <- mu + mean(b.constmanufact[]) + mean(b.constagricult[]) + mean(b.Magnitude[]) + mean(b.p.Population[])
   tau.epsilon <- pow(sigma.epsilon, -2)
@@ -419,10 +421,9 @@ model.jags <- function() {
   
   # context variable
   for (j in 1:NSector){ # Priors for varying coefficients
-   # b.year[j] ~ dnorm(0, tau.year)
-    b.constmanufact[j] ~ dnorm(0, 0.01)
-    b.constagricult[j] ~ dnorm(0, 0.01)
-    #b.year.adj[j] <- b.year[j] - mean(b.year[])
+    b.Magnitude[j] ~ dnorm (0, 0.01)
+    # b.year[j] ~ dnorm(0, tau.year)
+    # b.year.adj[j] <- b.year[j] - mean(b.year[])
     }
   
   # for context variables
@@ -465,15 +466,19 @@ earthquakefit <- jags(
         data=jags.data,
         inits=NULL,
         parameters.to.save = eq.params,
-        n.chains=1,
-        n.iter=100,
-        n.burnin=20,
+        n.chains=4,
+        n.iter=100000,
+        n.burnin=40000,
         model.file=model.jags)
 
 
 devtools::source_url("https://raw.githubusercontent.com/jkarreth/JKmisc/master/mcmctab.R")
 mcmctab(earthquakefit)
+
+
 plot(earthquakefit)
+
+
 
 
 # Levels
