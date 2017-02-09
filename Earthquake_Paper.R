@@ -344,7 +344,7 @@ rm(list=ls())
 # loading data 
 load("/Users/hectorbahamonde/RU/Dissertation/Papers/Earthquake_Paper/eq_output_d.RData") 
 dat = eq.output.d # rename dataset 
-dat <- dat[which(dat$year >= 1900), ] # drop early earthquakes 
+dat <- dat[which(dat$year >= 1900 & dat$incometax.d == 0), ] # drop early earthquakes 
 
 # dropping NAs 
 dat = dat[!is.na(dat$Magnitude),] 
@@ -360,13 +360,9 @@ dat$r.lat = round(dat$Latitude,1)
 dat$r.long = round(dat$Longitude,1) 
 
 # 
-dat$countryid <- factor(dat$country)
-dat$countryid <- droplevels(dat$country)
-dat$countryid <- as.integer(dat$country)
-
-# 
-dat$year <- as.integer(dat$year)
-
+dat$country <- factor(dat$country)
+dat$country <- droplevels(dat$country)
+dat$country <- as.integer(dat$country)
 
 # weight population 
 dat$w.Deaths = round((dat$Deaths/dat$Population),5)*100 
@@ -387,7 +383,7 @@ set.seed(602)
 model.jags <- function() {
         for (i in 1:N){
                 Deaths[i] ~ dpois(lambda[i])
-                log(lambda[i]) <- mu + b.constmanufact*constmanufact[i] + b.constagricult*constagricult[i] + b.Magnitude*Magnitude[i] + b.year[yearid[i]] + b.country[countryid[i]] + epsilon[i]
+                log(lambda[i]) <- mu + b.constmanufact*constmanufact[i] + b.constagricult*constagricult[i] + b.Magnitude*Magnitude[i] + b.p.Population*p.Population[i] + b.country[country[i]] + epsilon[i]
                 
                 epsilon[i] ~ dnorm(0, tau.epsilon)
         }
@@ -398,33 +394,22 @@ model.jags <- function() {
         tau.epsilon <- pow(sigma.epsilon, -2)
         sigma.epsilon ~ dunif(0, 100)
         
-                # country variable
-                for (j in 1:N.country){
-                        b.country[j] ~ dnorm(0, tau.country)
-                        #b.country.adj[j] <- b.country[j] - mean(b.country[])
-                }
-                
-                # for context variables // country variable
-                tau.country <- pow(sigma.country, -2)
-                sigma.country ~ dunif(0, 100)
+        # context variable
+        for (j in 1:Ncountry){
+                b.country[j] ~ dnorm(0, tau.country)
+                b.country.adj[j] <- b.country[j] - mean(b.country[])
+        }
         
-                # year variable
-                for (k in 1:N.years){
-                        b.year[k] ~ dnorm(0, tau.year)
-                        #b.year.adj[k] <- b.year[k] - mean(b.year[])
-                }
-                
-                # for context variables // year variable
-                tau.year <- pow(sigma.year, -2)
-                sigma.year ~ dunif(0, 100)
+        # for context variables
+        tau.country <- pow(sigma.country, -2)
+        sigma.country ~ dunif(0, 100)
         
         # coefficients
         offset ~ dnorm(0, 0.01)
         b.constmanufact ~ dnorm(0, 0.01)
         b.constagricult ~ dnorm(0, 0.01)
         b.Magnitude ~ dnorm (0, 0.01)
-        #b.p.Population ~ dnorm (0, 0.01)
-        b.year ~ dnorm (0, 0.01)
+        b.p.Population ~ dnorm (0, 0.01)
         
 }
 
@@ -434,34 +419,23 @@ constmanufact <- as.vector(datsc$constmanufact)
 constagricult <- as.vector(datsc$constagricult)
 Magnitude <- as.vector(datsc$Magnitude)
 p.Population <- as.vector(datsc$p.Population)
-# country
-        countryid <- as.numeric(as.ordered(datsc$country))
-        N.country <-  length(unique(datsc$country))
-# year
-        #year <- as.vector(datsc$year)
-        N.years <- length(unique(datsc$year))
-        yearid <- as.numeric(as.ordered(datsc$year))
-# sample
+country <- as.numeric(as.ordered(datsc$country))
+Ncountry <-  as.numeric(as.vector(length(unique(as.numeric(datsc$country)))))
 N <-  as.numeric(nrow(datsc))
-
 
 
 jags.data <- list(Deaths = Deaths,
                   constmanufact = constmanufact,
                   constagricult = constagricult,
                   Magnitude = Magnitude,
-                  #p.Population = p.Population,
-                  countryid = countryid,
-                  N.country = N.country,
-                  #year = year,
-                  yearid = yearid,
-                  N.years = N.years,
+                  p.Population = p.Population,
+                  country = country,
+                  Ncountry = Ncountry,
                   N = N)
 
 
 # Define and name the parameters so JAGS monitors them.
-eq.params <- c("b.constmanufact", "b.constagricult", "b.Magnitude"#, "b.p.Population"
-               )
+eq.params <- c("b.constmanufact", "b.constagricult", "b.Magnitude", "b.p.Population")
 
 
 # run the model
@@ -469,14 +443,15 @@ earthquakefit <- jags(
         data=jags.data,
         inits=NULL,
         parameters.to.save = eq.params,
-        n.chains=1,
-        n.iter=1000,
-        n.burnin=20,
+        n.chains=4,
+        n.iter=100000,
+        n.burnin=1000,
         model.file=model.jags)
 
 
 devtools::source_url("https://raw.githubusercontent.com/jkarreth/JKmisc/master/mcmctab.R")
 mcmctab(earthquakefit)
 
+plot(earthquakefit)
 
 
