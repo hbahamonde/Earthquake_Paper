@@ -416,19 +416,18 @@ model.jags <- function() {
   tau.epsilon <- pow(sigma.epsilon, -2)
   sigma.epsilon ~ dunif(0, 100)
   
-  for (j in 1:NSector){ # fixed effects by year
-    b.constmanufact[j] ~ dnorm(b.constmanufact.hat[j], b.constmanufact.tau[j])
-    b.constagricult[j] ~ dnorm(b.constagricult.hat[j], b.constagricult.tau[j])
-    
-    b.constmanufact.hat[j] ~ dnorm(0, 0.001)
-    b.constagricult.hat[j] ~ dnorm(0, 0.001)
-    b.constmanufact.tau[j] ~ dgamma(1, 1)
-    b.constagricult.tau[j] ~ dgamma(1, 1)
-    
+  for (j in 1:NSector){ # varying slopes for sector
+    b.constmanufact[j] ~ dnorm(b.constmanufact.hat, b.constmanufact.tau)
+    b.constagricult[j] ~ dnorm(b.constagricult.hat, b.constagricult.tau)
   }
   
+  b.constmanufact.hat ~ dnorm(0, 0.001)
+  b.constagricult.hat ~ dnorm(0, 0.001)
+  b.constmanufact.tau ~ dgamma(1, 1)
+  b.constagricult.tau ~ dgamma(1, 1)
+  
 
-  for (t in 1:Nyear){ # fixed effects by year // Varying intercepts for years
+  for (t in 1:Nyear){ # fixed effects by year
     b.year[t] ~ dnorm(m.year[t], tau.year[t])
     m.year[t] ~ dnorm(0, 0.001)
     tau.year[t] ~ dgamma(1, 1)
