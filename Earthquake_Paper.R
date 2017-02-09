@@ -347,7 +347,7 @@ rm(list=ls())
 # loading data 
 load("/Users/hectorbahamonde/RU/Dissertation/Papers/Earthquake_Paper/eq_output_d.RData") 
 dat = eq.output.d # rename dataset 
-dat <- dat[which(dat$year >= 1900 & dat$incometax.d == 0 & dat$country == "Chile"), ] # drop early earthquakes 
+dat <- dat[which(dat$year >= 1900 & dat$country == "Chile"), ] # drop early earthquakes 
 
 # dropping NAs 
 dat = dat[!is.na(dat$Magnitude),] 
@@ -366,6 +366,9 @@ dat$r.long = round(dat$Longitude,1)
 dat$country <- factor(dat$country)
 dat$country <- droplevels(dat$country)
 dat$country <- as.integer(dat$country)
+
+# year as a counter variable
+dat$year = 1:nrow(dat)
 
 # weight population 
 dat$w.Deaths = round((dat$Deaths/dat$Population),5)*100 
@@ -386,35 +389,40 @@ set.seed(602)
 model.jags <- function() {
         for (i in 1:N){
                 Deaths[i] ~ dpois(lambda[i])
-                log(lambda[i]) <- mu + b.constmanufact[country[i]]*constmanufact[i] + b.constagricult[country[i]]*constagricult[i] + b.Magnitude*Magnitude[i] + b.p.Population[country[i]]*p.Population[i] + epsilon[i]
-                
-                epsilon[i] ~ dnorm(0, tau.epsilon)
+          
+          log(lambda[i]) <- mu + 
+            b.constmanufact[year[i]]*constmanufact[i] + 
+            b.constagricult[year[i]]*constagricult[i] + 
+            b.Magnitude*Magnitude[i] + 
+            b.p.Population*p.Population[i] + 
+            #b.year[year[i]] +
+            epsilon[i]
+          
+          epsilon[i] ~ dnorm(0, tau.epsilon)
         }
-        
-        # special parameters
-        mu ~ dnorm(0, .001)
-        #mu.adj <- mu + mean(b.constmanufact[]) + mean(b.constagricult[]) + mean(b.Magnitude[]) + mean(b.p.Population[])
-        tau.epsilon <- pow(sigma.epsilon, -2)
-        sigma.epsilon ~ dunif(0, 100)
-        
-        # context variable
-        for (j in 1:Ncountry){
-                b.country[j] ~ dnorm(0, tau.country)
-                b.country.adj[j] <- b.country[j] - mean(b.country[])
-        }
-        
-        # for context variables
-        tau.country <- pow(sigma.country, -2)
-        sigma.country ~ dunif(0, 100)
-        
-        # coefficients
-        offset ~ dnorm(0, 0.01)
-        b.constmanufact ~ dnorm(0, 0.01)
-        b.constagricult ~ dnorm(0, 0.01)
-        b.Magnitude ~ dnorm (0, 0.01)
-        b.p.Population ~ dnorm (0, 0.01)
-        
-}
+  
+  # coefficients
+  #offset ~ dnorm(0, 0.01)
+  b.Magnitude ~ dnorm (0, 0.01)
+  b.p.Population ~ dnorm (0, 0.01)
+
+  mu ~ dnorm(0, .001)
+  #mu.adj <- mu + mean(b.constmanufact[]) + mean(b.constagricult[]) + mean(b.Magnitude[]) + mean(b.p.Population[])
+  tau.epsilon <- pow(sigma.epsilon, -2)
+  sigma.epsilon ~ dunif(0, 100)
+  
+  # context variable
+  for (j in 1:Nyear){ # Priors for varying coefficients
+   # b.year[j] ~ dnorm(0, tau.year)
+    b.constmanufact[j] ~ dnorm(0, 0.01)
+    b.constagricult[j] ~ dnorm(0, 0.01)
+    #b.year.adj[j] <- b.year[j] - mean(b.year[])
+    }
+  
+  # for context variables
+  # tau.year <- pow(sigma.year, -2)
+  # sigma.year ~ dunif(0, 100)
+  }
 
 # define the vectors of the data matrix for JAGS.
 Deaths <- as.vector(datsc$Deaths)
@@ -425,15 +433,17 @@ p.Population <- as.vector(datsc$p.Population)
 country <- as.numeric(as.ordered(datsc$country))
 Ncountry <-  as.numeric(as.vector(length(unique(as.numeric(datsc$country)))))
 N <-  as.numeric(nrow(datsc))
-
+year = as.vector(datsc$year)
 
 jags.data <- list(Deaths = Deaths,
                   constmanufact = constmanufact,
                   constagricult = constagricult,
                   Magnitude = Magnitude,
+                  year = year,
+                  Nyear = nrow(datsc),
                   p.Population = p.Population,
-                  country = country,
-                  Ncountry = Ncountry,
+                  #country = country,
+                  #Ncountry = Ncountry,
                   N = N)
 
 
@@ -446,9 +456,9 @@ earthquakefit <- jags(
         data=jags.data,
         inits=NULL,
         parameters.to.save = eq.params,
-        n.chains=4,
-        n.iter=100000,
-        n.burnin=40000,
+        n.chains=1,
+        n.iter=100,
+        n.burnin=20,
         model.file=model.jags)
 
 
