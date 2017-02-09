@@ -371,7 +371,7 @@ dat$country <- as.integer(dat$country)
 dat$year = 1:nrow(dat)
 
 # weight population 
-dat$w.Deaths = round((dat$Deaths/dat$Population),5)*100 
+dat$w.Deaths = round((dat$Deaths/dat$Population),5)*10
 
 # proportion of Population 
 dat$p.Population = dat$Population/1000 
@@ -391,6 +391,36 @@ p_load(R2jags, coda, R2WinBUGS, lattice, rjags, runjags)
 # model
 options(scipen=10000)
 set.seed(602)
+
+
+model.jags.beta <- function() {
+  for(i in 1:N) {
+    w.Deaths[i] ~ dbeta(alpha[i], beta[i])
+    #
+    alpha[i] <- mu[i] * phi
+    beta[i]  <- (1-mu[i]) * phi
+    
+    logit(mu[i]) <- 
+      a +
+      b.constmanufact[Sector[i]]*constmanufact[i] + 
+      b.constagricult[Sector[i]]*constagricult[i] + 
+      b.Magnitude*Magnitude[i]
+  }
+
+  #phiinv ~ dgamma(0.1,0.01)
+  phi <- 1/0.08892867 
+  a ~ dnorm(0,.001)
+  b.Magnitude ~ dnorm(0, 0.001)
+
+for (j in 1:NSector){ # Priors for varying coefficients
+  b.constmanufact[j] ~ dnorm(0, 0.001)
+  b.constagricult[j] ~ dnorm(0, 0.001)
+  }
+}
+
+
+
+
 
 
 model.jags <- function() {
@@ -440,13 +470,14 @@ NSector = as.numeric(as.vector(length(unique(as.numeric(datsc$Sector)))))
 NIncometax = as.vector(length(unique(as.numeric(datsc$incometax.d))))
 incometax.d = as.vector(as.numeric(datsc$incometax.d))+1
 
-jags.data <- list(Deaths = Deaths,
+jags.data <- list(#Deaths = Deaths,
+                  w.Deaths = w.Deaths,
                   constmanufact = constmanufact,
                   constagricult = constagricult,
                   Magnitude = Magnitude,
                   Sector = Sector,
                   NSector = NSector,
-                  p.Population = p.Population,
+                  #p.Population = p.Population,
                   # NIncometax = NIncometax,
                   #incometax.d = incometax.d,
                   # country = country,
@@ -463,7 +494,7 @@ earthquakefit <- jags(
         data=jags.data,
         inits=NULL,
         parameters.to.save = eq.params,
-        n.chains=1,
+        n.chains=4,
         n.iter=100000,
         n.burnin=40000,
         model.file=model.jags)
