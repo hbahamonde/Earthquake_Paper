@@ -365,7 +365,7 @@ dat = dat[!is.na(dat$Sector),]
 dat = dat[!is.na(dat$Population),] 
 dat = dat[!is.na(dat$constmanufact),] 
 dat = dat[!is.na(dat$constagricult),] 
-dat = dat[!is.na(dat$incometax.y),]  # switch this one off if I am using incometax.d
+# dat = dat[!is.na(dat$incometax.y),]  # switch this one off if I am using incometax.d
 
 
 # rounding lattitude/longitude 
@@ -410,7 +410,7 @@ model.jags <- function() {
       beta0 +
       b.propagrmanu[Sector[i]]*propagrmanu[i] + 
       b.Magnitude[Sector[i]]*Magnitude[i] +
-      # b.incometax.d*incometax.d[i] +
+      b.incometax.d*incometax.d[i] +
       b.p.Population*p.Population[i] +
       # b.Urban*Urban[i] +
       b.year[yearID[i]] +
@@ -424,7 +424,7 @@ model.jags <- function() {
   b.p.Population ~ dnorm(0, 0.001)
   # b.Urban ~ dnorm(0, 0.001)
   # b.propagrmanu ~ dnorm(0, 0.001)
-  # b.incometax.d ~ dnorm(0, 0.001)
+  b.incometax.d ~ dnorm(0, 0.001)
 
 
 
@@ -488,7 +488,7 @@ jags.data <- list(Deaths = Deaths,
                   NSector = NSector,
                   p.Population = p.Population,
                   # NIncometax = NIncometax,
-                  # incometax.d = incometax.d,
+                  incometax.d = incometax.d,
                   # incometax.y = incometax.y,
                   # customtax = customtax,
                   # NIncometax.y = NIncometax.y,
@@ -503,7 +503,7 @@ jags.data <- list(Deaths = Deaths,
 
 
 # Define and name the parameters so JAGS monitors them.
-eq.params <- c("b.propagrmanu", "b.Magnitude", "b.p.Population", "b.year", "b.r.long", "b.r.lat")
+eq.params <- c("b.propagrmanu", "b.Magnitude", "b.p.Population", "b.year", "b.r.long", "b.r.lat", "b.incometax.d")
 
 
 # run the model
@@ -512,7 +512,7 @@ earthquakefit <- jags(
   inits=NULL,
   parameters.to.save = eq.params,
   n.chains=4,
-  n.iter=200000,
+  n.iter=100000,
   n.burnin=40000,
   n.thin=2,
   model.file=model.jags)
