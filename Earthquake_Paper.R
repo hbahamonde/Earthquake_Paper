@@ -410,7 +410,7 @@ model.jags <- function() {
       beta0 +
       b.propagrmanu[yearID[i]]*propagrmanu[i] + 
       b.Magnitude[Sector[i]]*Magnitude[i] +
-      b.incometax.y[yearID[i]]*incometax.y[i] +
+      b.incometax.d[yearID[i]]*incometax.d[i] +
       b.p.Population*p.Population[i] +
       b.Urban*Urban[i] +
       b.year[yearID[i]]
@@ -432,10 +432,10 @@ model.jags <- function() {
   
   
   for (t in 1:yearN){ # fixed effects of incometax.y by year
-    b.incometax.y[t] ~ dnorm(m.b.incometax.y[t], tau.b.incometax.y[t])
+    b.incometax.d[t] ~ dnorm(m.b.incometax.d[t], tau.b.incometax.d[t])
 
-    m.b.incometax.y[t] ~ dnorm(0, 0.001)
-    tau.b.incometax.y[t] ~ dgamma(1, 1)
+    m.b.incometax.d[t] ~ dnorm(0, 0.001)
+    tau.b.incometax.d[t] ~ dgamma(1, 1)
   }
   
   
@@ -490,8 +490,8 @@ jags.data <- list(Deaths = Deaths,
                   NSector = NSector,
                   p.Population = p.Population,
                   # NIncometax = NIncometax,
-                  # incometax.d = incometax.d,
-                  incometax.y = incometax.y,
+                  incometax.d = incometax.d,
+                  # incometax.y = incometax.y,
                   # customtax = customtax,
                   # NIncometax.y = NIncometax.y,
                   # country = country,
@@ -503,7 +503,7 @@ jags.data <- list(Deaths = Deaths,
 
 
 # Define and name the parameters so JAGS monitors them.
-eq.params <- c("b.propagrmanu", "b.Magnitude", "b.incometax.y", "b.p.Population", "b.Urban", "b.year")
+eq.params <- c("b.propagrmanu", "b.Magnitude", "b.incometax.d", "b.p.Population", "b.Urban", "b.year")
 
 
 # run the model
