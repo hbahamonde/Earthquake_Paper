@@ -411,12 +411,14 @@ model.jags <- function() {
       b.constagricult[yearID[i]]*constagricult[i] + 
       b.Magnitude[Sector[i]]*Magnitude[i] +
       b.incometax.d*incometax.d[i] +
-      b.p.Population*p.Population[i]
+      b.p.Population*p.Population[i] +
+      b.Urban*Urban[i]
   }
   
   beta0  ~ dnorm(0, 0.001)
   b.incometax.d ~ dnorm(0, 0.001)
   b.p.Population ~ dnorm(0, 0.001)
+  b.Urban ~ dnorm(0, 0.001)
 
 
 
@@ -472,14 +474,14 @@ jags.data <- list(Deaths = Deaths,
                   incometax.d = incometax.d,
                   # country = country,
                   # Ncountry = Ncountry,
-                  #Urban = Urban,
+                  Urban = Urban,
                   yearID = yearID,
                   yearN = yearN,
                   N = N)
 
 
 # Define and name the parameters so JAGS monitors them.
-eq.params <- c("b.constmanufact", "b.constagricult", "b.Magnitude", "b.incometax.d", "b.p.Population")
+eq.params <- c("b.constmanufact", "b.constagricult", "b.Magnitude", "b.incometax.d", "b.Urban", "b.p.Population")
 
 
 # run the model
@@ -510,21 +512,6 @@ plot(earthquakefit)
 
 
 
-
-mu <- earthquakefit$BUGSoutput$summary[grep("mu", rownames(earthquakefit$BUGSoutput$summary)), 1]
-sigma <- angell.fit$BUGSoutput$summary[grep("sigma", rownames(angell.fit$BUGSoutput$summary)), 1]
-n.sims <- 1000
-n.obs <- nrow(dat)
-y.pred2 <- matrix(data = NA, nrow = n.sims, ncol = n.obs) 
-
-set.seed(123)
-
-for (obs in 1:n.obs){
-  for(sim in 1:n.sims){
-    y.pred2[sim, obs] <- rnorm(n = 1, mean = mu[obs], sd = sigma)
-  }
-}
-
-
-
+# post estimation
+# https://www.r-bloggers.com/poisson-regression-fitted-by-glm-maximum-likelihood-and-mcmc/
 
