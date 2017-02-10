@@ -365,7 +365,7 @@ dat = dat[!is.na(dat$Sector),]
 dat = dat[!is.na(dat$Population),] 
 dat = dat[!is.na(dat$constmanufact),] 
 dat = dat[!is.na(dat$constagricult),] 
-# dat = dat[!is.na(dat$incometax.y),]  # switch this one off if I am using incometax.d
+#dat = dat[!is.na(dat$incometax.y),]  # switch this one off if I am using incometax.d
 
 
 # rounding lattitude/longitude 
@@ -511,10 +511,10 @@ earthquakefit <- jags(
   data=jags.data,
   inits=NULL,
   parameters.to.save = eq.params,
-  n.chains=4,
-  n.iter=100000,
-  n.burnin=40000,
-  n.thin=2,
+  n.chains=2,
+  n.iter=30000,
+  n.burnin=4000,
+  #n.thin=1,
   model.file=model.jags)
 
 
