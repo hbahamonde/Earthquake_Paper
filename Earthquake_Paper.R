@@ -403,15 +403,16 @@ model.jags <- function() {
             b.Magnitude*Magnitude[i] +
             b.p.Population*p.Population[i] + 
             epsilon[i] +
-            b.year[year[i]]
+            b.year[year[i]] +
+            b.incometax.d*incometax.d[i]
           
           epsilon[i] ~ dnorm(0, tau.epsilon)
         }
-
-    b.p.Population ~ dnorm (0, 0.001)
-    b.Magnitude ~ dnorm (0, 0.001)
   
-    mu ~ dnorm(0, .001)
+  b.p.Population ~ dnorm (0, 0.001)
+  b.Magnitude ~ dnorm (0, 0.001)
+  b.incometax.d ~ dnorm (0, 0.001)
+  mu ~ dnorm(0, .001)
   
   tau.epsilon <- pow(sigma.epsilon, -2)
   sigma.epsilon ~ dunif(0, 100)
@@ -461,7 +462,7 @@ jags.data <- list(Deaths = Deaths,
                   NSector = NSector,
                   p.Population = p.Population,
                   # NIncometax = NIncometax,
-                  #incometax.d = incometax.d,
+                  incometax.d = incometax.d,
                   # country = country,
                   # Ncountry = Ncountry,
                   year = year,
@@ -470,7 +471,7 @@ jags.data <- list(Deaths = Deaths,
 
 
 # Define and name the parameters so JAGS monitors them.
-eq.params <- c("b.constmanufact", "b.constagricult", "b.Magnitude", "b.p.Population", "b.year")
+eq.params <- c("b.constmanufact", "b.constagricult", "b.Magnitude", "b.p.Population", "b.year", "b.incometax.d")
 
 
 # run the model
@@ -485,7 +486,7 @@ earthquakefit <- jags(
 
 
 devtools::source_url("https://raw.githubusercontent.com/jkarreth/JKmisc/master/mcmctab.R")
-mcmctab(earthquakefit)
+mcmctab(earthquakefit) # Posterior distributions
 
 
 plot(earthquakefit)
