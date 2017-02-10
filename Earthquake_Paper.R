@@ -377,7 +377,7 @@ dat$country <- droplevels(dat$country)
 dat$country <- as.integer(dat$country)
 
 # year as a counter variable
-dat$year = 1:nrow(dat)
+# dat$year = 1:nrow(dat) # year as a counting variable
 
 # weight population 
 dat$w.Deaths = round((dat$Deaths/dat$Population),5)*10
@@ -407,24 +407,16 @@ model.jags <- function() {
     
     log(lambda[i]) <- 
       mu + 
-      b.constmanufact*constmanufact[i] + 
-      b.constagricult*constagricult[i] + 
-      b.Magnitude*Magnitude[i] +
-      b.Urban*Urban[i] + 
-      epsilon[i] +
-      b.year[year[i]] +
-      b.Sector[Sector[i]] +
+      b.constmanufact[yearID[i]]*constmanufact[i] + 
+      b.constagricult[yearID[i]]*constagricult[i] + 
+      b.Magnitude[Sector[i]]*Magnitude[i] +
+      epsilon +
       b.incometax.d*incometax.d[i] +
       b.p.Population*p.Population[i]
     
-    epsilon[i] ~ dnorm(0, tau.epsilon)
   }
-  
-  b.constmanufact ~ dnorm (0, 0.001)
-  b.constagricult ~ dnorm (0, 0.001)
-  b.Urban ~ dnorm(0, 0.001)
+  epsilon ~ dnorm(0, tau.epsilon)
   b.incometax.d ~ dnorm(0, 0.001)
-  b.Magnitude ~ dnorm(0, 0.001)
   b.p.Population ~ dnorm(0, 0.001)
   mu ~ dnorm(0, .001)
   
@@ -432,16 +424,22 @@ model.jags <- function() {
   sigma.epsilon ~ dunif(0, 100)
   
 
-  for (t in 1:Nyear){ # fixed effects by year
-    b.year[t] ~ dnorm(m.year[t], tau.year[t])
-    m.year[t] ~ dnorm(0, 0.001)
-    tau.year[t] ~ dgamma(1, 1)
+  for (t in 1:yearN){ # fixed effects of output by year
+    b.constmanufact[t] ~ dnorm(m.constmanufact[t], tau.constmanufact[t])
+    b.constagricult[t] ~ dnorm(m.constagricult[t], tau.constagricult[t])
+    
+    m.constmanufact[t] ~ dnorm(0, 0.001)
+    tau.constmanufact[t] ~ dgamma(1, 1)
+    
+    m.constagricult[t] ~ dnorm(0, 0.001)
+    tau.constagricult[t] ~ dgamma(1, 1)
+    
   }
   
   for (k in 1:NSector){ # fixed effects by sector
-    b.Sector[k] ~ dnorm(m.Sector[k], tau.Sector[k])
-    m.Sector[k] ~ dnorm(0, 0.001)
-    tau.Sector[k] ~ dgamma(1, 1)
+    b.Magnitude[k] ~ dnorm(m.Magnitude[k], tau.Magnitude[k])
+    m.Magnitude[k] ~ dnorm(0, 0.001)
+    tau.Magnitude[k] ~ dgamma(1, 1)
   }
   
 }
@@ -457,7 +455,9 @@ country <- as.numeric(as.ordered(datsc$country))
 Ncountry <-  as.numeric(as.vector(length(unique(as.numeric(datsc$country)))))
 N <-  as.numeric(nrow(datsc))
 year = as.vector(datsc$year)
-Nyear = nrow(datsc)
+# Nyear = nrow(datsc) # for year as counting variable
+yearID = as.numeric(as.ordered(datsc$year))
+yearN = length(unique(datsc$year))
 Sector = as.vector(as.numeric(factor(datsc$Sector)))
 NSector = as.numeric(as.vector(length(unique(as.numeric(datsc$Sector)))))
 NIncometax = as.vector(length(unique(as.numeric(datsc$incometax.d))))
@@ -476,14 +476,14 @@ jags.data <- list(Deaths = Deaths,
                   incometax.d = incometax.d,
                   # country = country,
                   # Ncountry = Ncountry,
-                  Urban = Urban,
-                  year = year,
-                  Nyear = Nyear,
+                  #Urban = Urban,
+                  yearID = yearID,
+                  yearN = yearN,
                   N = N)
 
 
 # Define and name the parameters so JAGS monitors them.
-eq.params <- c("b.constmanufact", "b.constagricult", "b.Magnitude", "b.year", "b.incometax.d", "b.Urban", "b.Sector", "b.p.Population")
+eq.params <- c("b.constmanufact", "b.constagricult", "b.Magnitude", "b.incometax.d", "b.p.Population")
 
 
 # run the model
@@ -493,7 +493,7 @@ earthquakefit <- jags(
   parameters.to.save = eq.params,
   n.chains=4,
   n.iter=100000,
-  n.burnin=50000,
+  n.burnin=40000,
   n.thin=2,
   model.file=model.jags)
 
