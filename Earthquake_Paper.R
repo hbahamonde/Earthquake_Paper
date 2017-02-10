@@ -181,7 +181,7 @@ p_load(rgdal, foreign, rgeos, ggplot2)
 
 
 # load shape file
-chile.provinces <- readOGR(dsn = "/Users/hectorbahamonde/RU/Dissertation/Papers/Earthquake_Paper/Data/CHL_adm_shp", layer = "CHL_adm2")
+chile.provinces <- readOGR(dsn = "/Users/hectorbahamonde/RU/Data/shape_files/division_provincial", layer = "division_provincial")
 
 # load eq data
 load("/Users/hectorbahamonde/RU/Dissertation/Papers/Earthquake_Paper/Chile_Data_Earthquake.RData")
@@ -284,8 +284,8 @@ dat = dat[!is.na(dat$constagricult),]
 
 
 # rounding lattitude/longitude 
-dat$r.lat = round(dat$Latitude,1) 
-dat$r.long = round(dat$Longitude,1) 
+dat$r.lat = round(dat$Latitude) 
+dat$r.long = round(dat$Longitude) 
 
 # weight population 
 dat$w.Deaths = round((dat$Deaths/dat$Population),5)*100 
@@ -408,37 +408,26 @@ model.jags <- function() {
     
     log(lambda[i]) <- 
       beta0 +
-      b.propagrmanu[yearID[i]]*propagrmanu[i] + 
+      b.propagrmanu*propagrmanu[i] + 
       b.Magnitude[Sector[i]]*Magnitude[i] +
-      b.incometax.d[yearID[i]]*incometax.d[i] +
+      # b.incometax.d*incometax.d[i] +
       b.p.Population*p.Population[i] +
-      b.Urban*Urban[i] +
-      b.year[yearID[i]]
+      # b.Urban*Urban[i] +
+      b.year[yearID[i]] +
+      b.r.long*r.long[i] +
+      b.r.lat*r.lat[i]
+    
   }
-  
+  b.r.lat ~ dnorm(0, 0.001)
+  b.r.long ~ dnorm(0, 0.001)
   beta0  ~ dnorm(0, 0.001)
   b.p.Population ~ dnorm(0, 0.001)
-  b.Urban ~ dnorm(0, 0.001)
+  # b.Urban ~ dnorm(0, 0.001)
+  b.propagrmanu ~ dnorm(0, 0.001)
+  # b.incometax.d ~ dnorm(0, 0.001)
 
 
 
-  for (t in 1:yearN){ # fixed effects of output by year
-    b.propagrmanu[t] ~ dnorm(m.propagrmanu[t], tau.propagrmanu[t])
-    
-    m.propagrmanu[t] ~ dnorm(0, 0.001)
-    tau.propagrmanu[t] ~ dgamma(1, 1)
-    
-  }
-  
-  
-  for (t in 1:yearN){ # fixed effects of incometax.y by year
-    b.incometax.d[t] ~ dnorm(m.b.incometax.d[t], tau.b.incometax.d[t])
-
-    m.b.incometax.d[t] ~ dnorm(0, 0.001)
-    tau.b.incometax.d[t] ~ dgamma(1, 1)
-  }
-  
-  
   for (t in 1:yearN){ # fixed effects of year
     b.year[t] ~ dnorm(m.b.year[t], tau.b.year[t])
     
@@ -478,32 +467,36 @@ incometax.y = as.vector(as.numeric(datsc$incometax.y))
 Urban = as.vector(as.numeric(datsc$Urban))
 customtax = as.vector(as.numeric(datsc$customtax))/100
 propagrmanu = as.vector(as.numeric(datsc$propagrmanu))
+r.long = as.vector(as.numeric(datsc$r.long))
+r.lat = as.vector(as.numeric(datsc$r.lat))
 
 
 jags.data <- list(Deaths = Deaths,
                   #w.Deaths = w.Deaths,
                   # constmanufact = constmanufact,
                   # constagricult = constagricult,
-                  propagrmanu = propagrmanu,
+                  propagrmanu = propagrmanu, # constagricult/constmanufact
                   Magnitude = Magnitude,
                   Sector = Sector,
                   NSector = NSector,
                   p.Population = p.Population,
                   # NIncometax = NIncometax,
-                  incometax.d = incometax.d,
+                  # incometax.d = incometax.d,
                   # incometax.y = incometax.y,
                   # customtax = customtax,
                   # NIncometax.y = NIncometax.y,
                   # country = country,
                   # Ncountry = Ncountry,
-                  Urban = Urban,
+                  # Urban = Urban,
+                  r.long = r.long,
+                  r.lat = r.lat,
                   yearID = yearID,
                   yearN = yearN,
                   N = N)
 
 
 # Define and name the parameters so JAGS monitors them.
-eq.params <- c("b.propagrmanu", "b.Magnitude", "b.incometax.d", "b.p.Population", "b.Urban", "b.year")
+eq.params <- c("b.propagrmanu", "b.Magnitude", "b.p.Population", "b.year", "b.r.long", "b.r.lat")
 
 
 # run the model
@@ -512,8 +505,8 @@ earthquakefit <- jags(
   inits=NULL,
   parameters.to.save = eq.params,
   n.chains=4,
-  n.iter=10000,
-  n.burnin=2000,
+  n.iter=20000,
+  n.burnin=8000,
   n.thin=2,
   model.file=model.jags)
 
