@@ -62,7 +62,16 @@ if (!require("pacman")) install.packages("pacman"); library(pacman)
 p_load(car)
 
 
-eq.output.d$Sector <- recode(as.factor(eq.output.d$Sector), "1 = 'Industry' ; 2 = 'Mining' ; 3 = 'Agriculture' ; '1 y 2' = 'Ind and Min' ; '1 y 3' = 'Ind and Agr' ; '2 y 3' = 'Min and Agr' ")
+eq.output.d$Sector2 <- recode(as.factor(eq.output.d$Sector), "1 = 'Industry' ; 2 = 'Mining' ; 3 = 'Agriculture' ; '1 y 2' = 'Ind and Min' ; '1 y 3' = 'Ind and Agr' ; '2 y 3' = 'Min and Agr' ")
+
+
+eq.output.d$Sector <- recode(as.factor(eq.output.d$Sector), 
+                             "1 = 'Industry' ; 
+                             2 = 'Industry' ; 
+                             3 = 'Agriculture' ; 
+                             '1 y 2' = 'Industry' ; 
+                             '1 y 3' = 'Mixed' ; 
+                             '2 y 3' = 'Mixed' ")
 
 
 # income tax variables
@@ -393,21 +402,21 @@ options(scipen=10000)
 set.seed(602)
 
 model.jags <- function() {
-        for (i in 1:N){
-                Deaths[i] ~ dpois(lambda[i])
-          
-          log(lambda[i]) <- 
-            mu + 
-            b.constmanufact[Sector[i]]*constmanufact[i] + 
-            b.constagricult[Sector[i]]*constagricult[i] + 
-            b.Magnitude*Magnitude[i] +
-            b.p.Population*p.Population[i] + 
-            epsilon[i] +
-            b.year[year[i]] +
-            b.incometax.d*incometax.d[i]
-          
-          epsilon[i] ~ dnorm(0, tau.epsilon)
-        }
+  for (i in 1:N){
+    Deaths[i] ~ dpois(lambda[i])
+    
+    log(lambda[i]) <- 
+      mu + 
+      b.constmanufact[Sector[i]]*constmanufact[i] + 
+      b.constagricult[Sector[i]]*constagricult[i] + 
+      b.Magnitude*Magnitude[i] +
+      b.p.Population*p.Population[i] + 
+      epsilon[i] +
+      b.year[year[i]] +
+      b.incometax.d*incometax.d[i]
+    
+    epsilon[i] ~ dnorm(0, tau.epsilon)
+  }
   
   b.p.Population ~ dnorm (0, 0.001)
   b.Magnitude ~ dnorm (0, 0.001)
@@ -428,13 +437,14 @@ model.jags <- function() {
   b.constagricult.tau ~ dgamma(1, 1)
   
 
+  
   for (t in 1:Nyear){ # fixed effects by year
     b.year[t] ~ dnorm(m.year[t], tau.year[t])
     m.year[t] ~ dnorm(0, 0.001)
     tau.year[t] ~ dgamma(1, 1)
   }
   
-  }
+}
 
 # define the vectors of the data matrix for JAGS.
 w.Deaths <- as.vector(datsc$w.Deaths)
@@ -476,13 +486,14 @@ eq.params <- c("b.constmanufact", "b.constagricult", "b.Magnitude", "b.p.Populat
 
 # run the model
 earthquakefit <- jags(
-        data=jags.data,
-        inits=NULL,
-        parameters.to.save = eq.params,
-        n.chains=4,
-        n.iter=100000,
-        n.burnin=10000,
-        model.file=model.jags)
+  data=jags.data,
+  inits=NULL,
+  parameters.to.save = eq.params,
+  n.chains=4,
+  n.iter=100000,
+  n.burnin=50000,
+  n.thin=2,
+  model.file=model.jags)
 
 
 devtools::source_url("https://raw.githubusercontent.com/jkarreth/JKmisc/master/mcmctab.R")
@@ -495,11 +506,10 @@ plot(earthquakefit)
 
 
 # Levels
-## 1: Agriculture
-## 2: Ind and Min
-## 3: Industry
-## 4: Min and Agr
-## 5: Mining
+## 1: Agr
+## 2: Ind
+## 3: Mixed
+
 
 
 
