@@ -408,7 +408,7 @@ model.jags <- function() {
     
     log(lambda[i]) <- 
       beta0 +
-      b.propagrmanu*propagrmanu[i] + 
+      b.propagrmanu[Sector[i]]*propagrmanu[i] + 
       b.Magnitude[Sector[i]]*Magnitude[i] +
       # b.incometax.d*incometax.d[i] +
       b.p.Population*p.Population[i] +
@@ -423,7 +423,7 @@ model.jags <- function() {
   beta0  ~ dnorm(0, 0.001)
   b.p.Population ~ dnorm(0, 0.001)
   # b.Urban ~ dnorm(0, 0.001)
-  b.propagrmanu ~ dnorm(0, 0.001)
+  # b.propagrmanu ~ dnorm(0, 0.001)
   # b.incometax.d ~ dnorm(0, 0.001)
 
 
@@ -441,6 +441,13 @@ model.jags <- function() {
     m.Magnitude[k] ~ dnorm(0, 0.001)
     tau.Magnitude[k] ~ dgamma(1, 1)
   }
+  
+  for (k in 1:NSector){ # fixed effects by sector
+    b.propagrmanu[k] ~ dnorm(m.b.propagrmanu[k], tau.b.propagrmanu[k])
+    m.b.propagrmanu[k] ~ dnorm(0, 0.001)
+    tau.b.propagrmanu[k] ~ dgamma(1, 1)
+  }
+  
   
   }
 
@@ -505,8 +512,8 @@ earthquakefit <- jags(
   inits=NULL,
   parameters.to.save = eq.params,
   n.chains=4,
-  n.iter=20000,
-  n.burnin=8000,
+  n.iter=200000,
+  n.burnin=40000,
   n.thin=2,
   model.file=model.jags)
 
