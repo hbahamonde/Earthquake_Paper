@@ -406,23 +406,19 @@ model.jags <- function() {
     Deaths[i] ~ dpois(lambda[i])
     
     log(lambda[i]) <- 
-      mu + 
+      beta0 +
       b.constmanufact[yearID[i]]*constmanufact[i] + 
       b.constagricult[yearID[i]]*constagricult[i] + 
       b.Magnitude[Sector[i]]*Magnitude[i] +
-      epsilon +
       b.incometax.d*incometax.d[i] +
       b.p.Population*p.Population[i]
-    
   }
-  epsilon ~ dnorm(0, tau.epsilon)
+  
+  beta0  ~ dnorm(0, 0.001)
   b.incometax.d ~ dnorm(0, 0.001)
   b.p.Population ~ dnorm(0, 0.001)
-  mu ~ dnorm(0, .001)
-  
-  tau.epsilon <- pow(sigma.epsilon, -2)
-  sigma.epsilon ~ dunif(0, 100)
-  
+
+
 
   for (t in 1:yearN){ # fixed effects of output by year
     b.constmanufact[t] ~ dnorm(m.constmanufact[t], tau.constmanufact[t])
@@ -492,8 +488,8 @@ earthquakefit <- jags(
   inits=NULL,
   parameters.to.save = eq.params,
   n.chains=4,
-  n.iter=100000,
-  n.burnin=40000,
+  n.iter=10000,
+  n.burnin=2000,
   n.thin=2,
   model.file=model.jags)
 
