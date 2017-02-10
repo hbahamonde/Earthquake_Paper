@@ -410,29 +410,38 @@ model.jags <- function() {
       b.constmanufact*constmanufact[i] + 
       b.constagricult*constagricult[i] + 
       b.Magnitude*Magnitude[i] +
-      b.p.Population*p.Population[i] + 
+      b.Urban*Urban[i] + 
       epsilon[i] +
       b.year[year[i]] +
-      b.incometax.d*incometax.d[i] + 
-      b.Sector*Sector[i]
+      b.Sector[Sector[i]] +
+      b.incometax.d*incometax.d[i] +
+      b.p.Population*p.Population[i]
     
     epsilon[i] ~ dnorm(0, tau.epsilon)
   }
-  b.constmanufact ~ dnorm(0, 0.001)
-  b.constagricult ~ dnorm(0, 0.001)
-  b.p.Population ~ dnorm(0, 0.001)
-  b.Magnitude ~ dnorm(0, 0.001)
+  
+  b.constmanufact ~ dnorm (0, 0.001)
+  b.constagricult ~ dnorm (0, 0.001)
+  b.Urban ~ dnorm(0, 0.001)
   b.incometax.d ~ dnorm(0, 0.001)
-  b.Sector ~ dnorm(0, 0.001)
+  b.Magnitude ~ dnorm(0, 0.001)
+  b.p.Population ~ dnorm(0, 0.001)
   mu ~ dnorm(0, .001)
   
   tau.epsilon <- pow(sigma.epsilon, -2)
   sigma.epsilon ~ dunif(0, 100)
   
+
   for (t in 1:Nyear){ # fixed effects by year
     b.year[t] ~ dnorm(m.year[t], tau.year[t])
     m.year[t] ~ dnorm(0, 0.001)
     tau.year[t] ~ dgamma(1, 1)
+  }
+  
+  for (k in 1:NSector){ # fixed effects by sector
+    b.Sector[k] ~ dnorm(m.Sector[k], tau.Sector[k])
+    m.Sector[k] ~ dnorm(0, 0.001)
+    tau.Sector[k] ~ dgamma(1, 1)
   }
   
 }
@@ -453,6 +462,7 @@ Sector = as.vector(as.numeric(factor(datsc$Sector)))
 NSector = as.numeric(as.vector(length(unique(as.numeric(datsc$Sector)))))
 NIncometax = as.vector(length(unique(as.numeric(datsc$incometax.d))))
 incometax.d = as.vector(as.numeric(datsc$incometax.d))+1
+Urban = as.vector(as.numeric(datsc$Urban))
 
 jags.data <- list(Deaths = Deaths,
                   #w.Deaths = w.Deaths,
@@ -460,19 +470,20 @@ jags.data <- list(Deaths = Deaths,
                   constagricult = constagricult,
                   Magnitude = Magnitude,
                   Sector = Sector,
-                  #NSector = NSector,
+                  NSector = NSector,
                   p.Population = p.Population,
                   # NIncometax = NIncometax,
                   incometax.d = incometax.d,
                   # country = country,
                   # Ncountry = Ncountry,
+                  Urban = Urban,
                   year = year,
                   Nyear = Nyear,
                   N = N)
 
 
 # Define and name the parameters so JAGS monitors them.
-eq.params <- c("b.constmanufact", "b.constagricult", "b.Magnitude", "b.p.Population", "b.year", "b.incometax.d", "b.Sector")
+eq.params <- c("b.constmanufact", "b.constagricult", "b.Magnitude", "b.year", "b.incometax.d", "b.Urban", "b.Sector", "b.p.Population")
 
 
 # run the model
