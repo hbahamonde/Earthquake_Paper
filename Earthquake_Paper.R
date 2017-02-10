@@ -408,8 +408,7 @@ model.jags <- function() {
     
     log(lambda[i]) <- 
       beta0 +
-      b.constmanufact[yearID[i]]*constmanufact[i] + 
-      b.constagricult[yearID[i]]*constagricult[i] + 
+      b.propagrmanu[yearID[i]]*propagrmanu[i] + 
       b.customtax[yearID[i]]*customtax[i] +
       b.Magnitude[Sector[i]]*Magnitude[i] +
       b.incometax.y[yearID[i]]*incometax.y[i] +
@@ -424,14 +423,10 @@ model.jags <- function() {
 
 
   for (t in 1:yearN){ # fixed effects of output by year
-    b.constmanufact[t] ~ dnorm(m.constmanufact[t], tau.constmanufact[t])
-    b.constagricult[t] ~ dnorm(m.constagricult[t], tau.constagricult[t])
+    b.propagrmanu[t] ~ dnorm(m.propagrmanu[t], tau.propagrmanu[t])
     
-    m.constmanufact[t] ~ dnorm(0, 0.001)
-    tau.constmanufact[t] ~ dgamma(1, 1)
-    
-    m.constagricult[t] ~ dnorm(0, 0.001)
-    tau.constagricult[t] ~ dgamma(1, 1)
+    m.propagrmanu[t] ~ dnorm(0, 0.001)
+    tau.propagrmanu[t] ~ dgamma(1, 1)
     
   }
   
@@ -481,12 +476,14 @@ NIncometax.y = as.vector(length(unique(as.numeric(datsc$incometax.y))))
 incometax.y = as.vector(as.numeric(datsc$incometax.y))
 Urban = as.vector(as.numeric(datsc$Urban))
 customtax = as.vector(as.numeric(datsc$customtax))/100
+propagrmanu = as.vector(as.numeric(datsc$propagrmanu))
 
 
 jags.data <- list(Deaths = Deaths,
                   #w.Deaths = w.Deaths,
-                  constmanufact = constmanufact,
-                  constagricult = constagricult,
+                  # constmanufact = constmanufact,
+                  # constagricult = constagricult,
+                  propagrmanu = propagrmanu,
                   Magnitude = Magnitude,
                   Sector = Sector,
                   NSector = NSector,
@@ -505,7 +502,7 @@ jags.data <- list(Deaths = Deaths,
 
 
 # Define and name the parameters so JAGS monitors them.
-eq.params <- c("b.constmanufact", "b.constagricult", "b.Magnitude", "b.incometax.y", "b.p.Population", "b.customtax")
+eq.params <- c("b.propagrmanu", "b.Magnitude", "b.incometax.y", "b.p.Population", "b.customtax")
 
 
 # run the model
