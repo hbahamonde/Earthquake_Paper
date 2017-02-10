@@ -410,6 +410,7 @@ model.jags <- function() {
       beta0 +
       b.constmanufact[yearID[i]]*constmanufact[i] + 
       b.constagricult[yearID[i]]*constagricult[i] + 
+      b.customtax[yearID[i]]*customtax[i] +
       b.Magnitude[Sector[i]]*Magnitude[i] +
       b.incometax.y[yearID[i]]*incometax.y[i] +
       b.p.Population*p.Population[i] #+
@@ -440,8 +441,15 @@ model.jags <- function() {
 
     m.b.incometax.y[t] ~ dnorm(0, 0.001)
     tau.b.incometax.y[t] ~ dgamma(1, 1)
+    }
+  
+  for (t in 1:yearN){ # fixed effects of customtax by year
+    b.customtax[t] ~ dnorm(m.b.customtax[t], tau.b.customtax[t])
     
-  }
+    m.b.customtax[t] ~ dnorm(0, 0.001)
+    tau.b.customtax[t] ~ dgamma(1, 1)
+    }
+  
   
   for (k in 1:NSector){ # fixed effects by sector
     b.Magnitude[k] ~ dnorm(m.Magnitude[k], tau.Magnitude[k])
@@ -449,7 +457,7 @@ model.jags <- function() {
     tau.Magnitude[k] ~ dgamma(1, 1)
   }
   
-}
+  }
 
 # define the vectors of the data matrix for JAGS.
 w.Deaths <- as.vector(datsc$w.Deaths)
@@ -472,6 +480,8 @@ incometax.d = as.vector(as.numeric(datsc$incometax.d))+1
 NIncometax.y = as.vector(length(unique(as.numeric(datsc$incometax.y))))
 incometax.y = as.vector(as.numeric(datsc$incometax.y))
 Urban = as.vector(as.numeric(datsc$Urban))
+customtax = as.vector(as.numeric(datsc$customtax))/100
+
 
 jags.data <- list(Deaths = Deaths,
                   #w.Deaths = w.Deaths,
@@ -484,6 +494,7 @@ jags.data <- list(Deaths = Deaths,
                   # NIncometax = NIncometax,
                   # incometax.d = incometax.d,
                   incometax.y = incometax.y,
+                  customtax = customtax,
                   # NIncometax.y = NIncometax.y,
                   # country = country,
                   # Ncountry = Ncountry,
@@ -494,7 +505,7 @@ jags.data <- list(Deaths = Deaths,
 
 
 # Define and name the parameters so JAGS monitors them.
-eq.params <- c("b.constmanufact", "b.constagricult", "b.Magnitude", "b.incometax.y", "b.p.Population")
+eq.params <- c("b.constmanufact", "b.constagricult", "b.Magnitude", "b.incometax.y", "b.p.Population", "b.customtax")
 
 
 # run the model
