@@ -365,6 +365,7 @@ dat = dat[!is.na(dat$Sector),]
 dat = dat[!is.na(dat$Population),] 
 dat = dat[!is.na(dat$constmanufact),] 
 dat = dat[!is.na(dat$constagricult),] 
+dat = dat[!is.na(dat$incometax.y),]  # switch this one off if I am using incometax.d
 
 
 # rounding lattitude/longitude 
@@ -410,15 +411,14 @@ model.jags <- function() {
       b.constmanufact[yearID[i]]*constmanufact[i] + 
       b.constagricult[yearID[i]]*constagricult[i] + 
       b.Magnitude[Sector[i]]*Magnitude[i] +
-      b.incometax.d*incometax.d[i] +
-      b.p.Population*p.Population[i] +
-      b.Urban*Urban[i]
+      b.incometax.y[yearID[i]]*incometax.y[i] +
+      b.p.Population*p.Population[i] #+
+      # b.Urban*Urban[i]
   }
   
   beta0  ~ dnorm(0, 0.001)
-  b.incometax.d ~ dnorm(0, 0.001)
   b.p.Population ~ dnorm(0, 0.001)
-  b.Urban ~ dnorm(0, 0.001)
+  # b.Urban ~ dnorm(0, 0.001)
 
 
 
@@ -431,6 +431,15 @@ model.jags <- function() {
     
     m.constagricult[t] ~ dnorm(0, 0.001)
     tau.constagricult[t] ~ dgamma(1, 1)
+    
+  }
+  
+  
+  for (t in 1:yearN){ # fixed effects of incometax.y by year
+    b.incometax.y[t] ~ dnorm(m.b.incometax.y[t], tau.b.incometax.y[t])
+
+    m.b.incometax.y[t] ~ dnorm(0, 0.001)
+    tau.b.incometax.y[t] ~ dgamma(1, 1)
     
   }
   
@@ -460,6 +469,8 @@ Sector = as.vector(as.numeric(factor(datsc$Sector)))
 NSector = as.numeric(as.vector(length(unique(as.numeric(datsc$Sector)))))
 NIncometax = as.vector(length(unique(as.numeric(datsc$incometax.d))))
 incometax.d = as.vector(as.numeric(datsc$incometax.d))+1
+NIncometax.y = as.vector(length(unique(as.numeric(datsc$incometax.y))))
+incometax.y = as.vector(as.numeric(datsc$incometax.y))
 Urban = as.vector(as.numeric(datsc$Urban))
 
 jags.data <- list(Deaths = Deaths,
@@ -471,17 +482,19 @@ jags.data <- list(Deaths = Deaths,
                   NSector = NSector,
                   p.Population = p.Population,
                   # NIncometax = NIncometax,
-                  incometax.d = incometax.d,
+                  # incometax.d = incometax.d,
+                  incometax.y = incometax.y,
+                  # NIncometax.y = NIncometax.y,
                   # country = country,
                   # Ncountry = Ncountry,
-                  Urban = Urban,
+                  # Urban = Urban,
                   yearID = yearID,
                   yearN = yearN,
                   N = N)
 
 
 # Define and name the parameters so JAGS monitors them.
-eq.params <- c("b.constmanufact", "b.constagricult", "b.Magnitude", "b.incometax.d", "b.Urban", "b.p.Population")
+eq.params <- c("b.constmanufact", "b.constagricult", "b.Magnitude", "b.incometax.y", "b.p.Population")
 
 
 # run the model
@@ -490,8 +503,8 @@ earthquakefit <- jags(
   inits=NULL,
   parameters.to.save = eq.params,
   n.chains=4,
-  n.iter=10000,
-  n.burnin=2000,
+  n.iter=100000,
+  n.burnin=40000,
   n.thin=2,
   model.file=model.jags)
 
