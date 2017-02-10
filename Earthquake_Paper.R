@@ -407,36 +407,27 @@ model.jags <- function() {
     
     log(lambda[i]) <- 
       mu + 
-      b.constmanufact[Sector[i]]*constmanufact[i] + 
-      b.constagricult[Sector[i]]*constagricult[i] + 
+      b.constmanufact*constmanufact[i] + 
+      b.constagricult*constagricult[i] + 
       b.Magnitude*Magnitude[i] +
       b.p.Population*p.Population[i] + 
       epsilon[i] +
       b.year[year[i]] +
-      b.incometax.d*incometax.d[i]
+      b.incometax.d*incometax.d[i] + 
+      b.Sector*Sector[i]
     
     epsilon[i] ~ dnorm(0, tau.epsilon)
   }
-  
-  b.p.Population ~ dnorm (0, 0.001)
-  b.Magnitude ~ dnorm (0, 0.001)
-  b.incometax.d ~ dnorm (0, 0.001)
+  b.constmanufact ~ dnorm(0, 0.001)
+  b.constagricult ~ dnorm(0, 0.001)
+  b.p.Population ~ dnorm(0, 0.001)
+  b.Magnitude ~ dnorm(0, 0.001)
+  b.incometax.d ~ dnorm(0, 0.001)
+  b.Sector ~ dnorm(0, 0.001)
   mu ~ dnorm(0, .001)
   
   tau.epsilon <- pow(sigma.epsilon, -2)
   sigma.epsilon ~ dunif(0, 100)
-  
-  for (j in 1:NSector){ # varying slopes for sector
-    b.constmanufact[j] ~ dnorm(b.constmanufact.hat, b.constmanufact.tau)
-    b.constagricult[j] ~ dnorm(b.constagricult.hat, b.constagricult.tau)
-  }
-  
-  b.constmanufact.hat ~ dnorm(0, 0.001)
-  b.constagricult.hat ~ dnorm(0, 0.001)
-  b.constmanufact.tau ~ dgamma(1, 1)
-  b.constagricult.tau ~ dgamma(1, 1)
-  
-
   
   for (t in 1:Nyear){ # fixed effects by year
     b.year[t] ~ dnorm(m.year[t], tau.year[t])
@@ -469,7 +460,7 @@ jags.data <- list(Deaths = Deaths,
                   constagricult = constagricult,
                   Magnitude = Magnitude,
                   Sector = Sector,
-                  NSector = NSector,
+                  #NSector = NSector,
                   p.Population = p.Population,
                   # NIncometax = NIncometax,
                   incometax.d = incometax.d,
@@ -481,7 +472,7 @@ jags.data <- list(Deaths = Deaths,
 
 
 # Define and name the parameters so JAGS monitors them.
-eq.params <- c("b.constmanufact", "b.constagricult", "b.Magnitude", "b.p.Population", "b.year", "b.incometax.d")
+eq.params <- c("b.constmanufact", "b.constagricult", "b.Magnitude", "b.p.Population", "b.year", "b.incometax.d", "b.Sector")
 
 
 # run the model
