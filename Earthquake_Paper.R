@@ -412,7 +412,8 @@ model.jags <- function() {
       b.Magnitude[Sector[i]]*Magnitude[i] +
       b.incometax.y[yearID[i]]*incometax.y[i] +
       b.p.Population*p.Population[i] +
-      b.Urban*Urban[i]
+      b.Urban*Urban[i] +
+      b.year[yearID[i]]
   }
   
   beta0  ~ dnorm(0, 0.001)
@@ -435,7 +436,16 @@ model.jags <- function() {
 
     m.b.incometax.y[t] ~ dnorm(0, 0.001)
     tau.b.incometax.y[t] ~ dgamma(1, 1)
-    }
+  }
+  
+  
+  for (t in 1:yearN){ # fixed effects of year
+    b.year[t] ~ dnorm(m.b.year[t], tau.b.year[t])
+    
+    m.b.year[t] ~ dnorm(0, 0.001)
+    tau.b.year[t] ~ dgamma(1, 1)
+  }
+  
   
   for (k in 1:NSector){ # fixed effects by sector
     b.Magnitude[k] ~ dnorm(m.Magnitude[k], tau.Magnitude[k])
@@ -493,7 +503,7 @@ jags.data <- list(Deaths = Deaths,
 
 
 # Define and name the parameters so JAGS monitors them.
-eq.params <- c("b.propagrmanu", "b.Magnitude", "b.incometax.y", "b.p.Population", "b.Urban")
+eq.params <- c("b.propagrmanu", "b.Magnitude", "b.incometax.y", "b.p.Population", "b.Urban", "b.year")
 
 
 # run the model
