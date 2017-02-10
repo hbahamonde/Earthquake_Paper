@@ -409,16 +409,15 @@ model.jags <- function() {
     log(lambda[i]) <- 
       beta0 +
       b.propagrmanu[yearID[i]]*propagrmanu[i] + 
-      b.customtax[yearID[i]]*customtax[i] +
       b.Magnitude[Sector[i]]*Magnitude[i] +
       b.incometax.y[yearID[i]]*incometax.y[i] +
-      b.p.Population*p.Population[i] #+
-      # b.Urban*Urban[i]
+      b.p.Population*p.Population[i] +
+      b.Urban*Urban[i]
   }
   
   beta0  ~ dnorm(0, 0.001)
   b.p.Population ~ dnorm(0, 0.001)
-  # b.Urban ~ dnorm(0, 0.001)
+  b.Urban ~ dnorm(0, 0.001)
 
 
 
@@ -437,14 +436,6 @@ model.jags <- function() {
     m.b.incometax.y[t] ~ dnorm(0, 0.001)
     tau.b.incometax.y[t] ~ dgamma(1, 1)
     }
-  
-  for (t in 1:yearN){ # fixed effects of customtax by year
-    b.customtax[t] ~ dnorm(m.b.customtax[t], tau.b.customtax[t])
-    
-    m.b.customtax[t] ~ dnorm(0, 0.001)
-    tau.b.customtax[t] ~ dgamma(1, 1)
-    }
-  
   
   for (k in 1:NSector){ # fixed effects by sector
     b.Magnitude[k] ~ dnorm(m.Magnitude[k], tau.Magnitude[k])
@@ -491,18 +482,18 @@ jags.data <- list(Deaths = Deaths,
                   # NIncometax = NIncometax,
                   # incometax.d = incometax.d,
                   incometax.y = incometax.y,
-                  customtax = customtax,
+                  # customtax = customtax,
                   # NIncometax.y = NIncometax.y,
                   # country = country,
                   # Ncountry = Ncountry,
-                  # Urban = Urban,
+                  Urban = Urban,
                   yearID = yearID,
                   yearN = yearN,
                   N = N)
 
 
 # Define and name the parameters so JAGS monitors them.
-eq.params <- c("b.propagrmanu", "b.Magnitude", "b.incometax.y", "b.p.Population", "b.customtax")
+eq.params <- c("b.propagrmanu", "b.Magnitude", "b.incometax.y", "b.p.Population", "b.Urban")
 
 
 # run the model
@@ -511,8 +502,8 @@ earthquakefit <- jags(
   inits=NULL,
   parameters.to.save = eq.params,
   n.chains=4,
-  n.iter=100000,
-  n.burnin=40000,
+  n.iter=10000,
+  n.burnin=2000,
   n.thin=2,
   model.file=model.jags)
 
