@@ -408,8 +408,8 @@ model.jags <- function() {
     
     log(lambda[i]) <- 
       beta0 +
-      b.propagrmanu[Sector[i]]*propagrmanu[i] + 
-      b.Magnitude[Sector[i]]*Magnitude[i] +
+      b.propagrmanu[yearID[i]]*propagrmanu[i] + 
+      b.Magnitude*Magnitude[i] +
       b.incometax.d*incometax.d[i] +
       b.p.Population*p.Population[i] +
       # b.Urban*Urban[i] +
@@ -425,6 +425,7 @@ model.jags <- function() {
   # b.Urban ~ dnorm(0, 0.001)
   # b.propagrmanu ~ dnorm(0, 0.001)
   b.incometax.d ~ dnorm(0, 0.001)
+  b.Magnitude ~ dnorm(0, 0.001)
 
 
 
@@ -436,13 +437,7 @@ model.jags <- function() {
   }
   
   
-  for (k in 1:NSector){ # fixed effects by sector
-    b.Magnitude[k] ~ dnorm(m.Magnitude[k], tau.Magnitude[k])
-    m.Magnitude[k] ~ dnorm(0, 0.001)
-    tau.Magnitude[k] ~ dgamma(1, 1)
-  }
-  
-  for (k in 1:NSector){ # fixed effects by sector
+  for (k in 1:yearN){ # fixed effects by year
     b.propagrmanu[k] ~ dnorm(m.b.propagrmanu[k], tau.b.propagrmanu[k])
     m.b.propagrmanu[k] ~ dnorm(0, 0.001)
     tau.b.propagrmanu[k] ~ dgamma(1, 1)
@@ -473,9 +468,11 @@ NIncometax.y = as.vector(length(unique(as.numeric(datsc$incometax.y))))
 incometax.y = as.vector(as.numeric(datsc$incometax.y))
 Urban = as.vector(as.numeric(datsc$Urban))
 customtax = as.vector(as.numeric(datsc$customtax))/100
-propagrmanu = as.vector(as.numeric(datsc$propagrmanu))
+propagrmanu = as.vector(as.numeric(datsc$constmanufact/datsc$constagricult)) # as.vector(as.numeric(datsc$propagrmanu))
 r.long = as.vector(as.numeric(datsc$r.long))
 r.lat = as.vector(as.numeric(datsc$r.lat))
+
+
 
 
 jags.data <- list(Deaths = Deaths,
@@ -485,7 +482,7 @@ jags.data <- list(Deaths = Deaths,
                   propagrmanu = propagrmanu, # constagricult/constmanufact
                   Magnitude = Magnitude,
                   Sector = Sector,
-                  NSector = NSector,
+                  # NSector = NSector,
                   p.Population = p.Population,
                   # NIncometax = NIncometax,
                   incometax.d = incometax.d,
@@ -511,9 +508,9 @@ earthquakefit <- jags(
   data=jags.data,
   inits=NULL,
   parameters.to.save = eq.params,
-  n.chains=2,
-  n.iter=30000,
-  n.burnin=4000,
+  n.chains=4,
+  n.iter=150000,
+  n.burnin=50000,
   #n.thin=1,
   model.file=model.jags)
 
@@ -536,4 +533,22 @@ plot(earthquakefit)
 
 # post estimation
 # https://www.r-bloggers.com/poisson-regression-fitted-by-glm-maximum-likelihood-and-mcmc/
+
+
+
+p_load(gtools,dplyr,reshape2,ggplot2)
+
+earthquake.out <- as.data.frame(as.matrix(as.mcmc(earthquakefit)))
+earthquake.year <- earthquake.out[, grep("b.propagrmanu[", colnames(earthquake.out), fixed=T)]
+
+earthquake.year <- earthquake.year[, c(mixedsort(names(earthquake.year)))]
+colnames(earthquake.year) <- paste("Y",unique(sort(datsc$year)), sep = "")
+
+
+earthquake.year <- summarise(group_by(melt(earthquake.year), variable), mean = mean(value), lo = quantile(value, probs = c(0.05)), hi = quantile(value, probs = c(0.95)))
+earthquake.year$variable <- as.numeric(gsub(pattern = "Y", replacement = "", x = earthquake.year$variable))
+
+ggplot(data = earthquake.year, aes(x = variable, y = mean)) + geom_hline(yintercept = 0, col = "blue") + geom_pointrange(aes(ymin = lo, ymax = hi)) + xlab("Year") + ylab("Varying intercept: earthquake") + theme_bw()
+
+
 
