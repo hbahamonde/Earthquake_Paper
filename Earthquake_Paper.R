@@ -514,14 +514,14 @@ earthquakefit <- jags(
   inits=NULL,
   parameters.to.save = eq.params,
   n.chains=4,
-  n.iter=10000,
-  n.burnin=500,
+  n.iter=10000, # 10000
+  n.burnin=2000, # 2000
   #n.thin=1,
   model.file=model.jags)
 
 
 devtools::source_url("https://raw.githubusercontent.com/jkarreth/JKmisc/master/mcmctab.R")
-mcmctab(earthquakefit) # Posterior distributions
+mcmctab(earthquakefit)[1:11,] # Posterior distributions // Year FE excluded
 
 
 plot(earthquakefit)
@@ -532,15 +532,65 @@ plot(earthquakefit)
 ## 3 Mixed
 
 
+## post-estimation
 
-#### PLOT
+
+### summary of results
+fit.mcmc <- as.mcmc(earthquakefit)
+summary(fit.mcmc)
 
 
+### traceplots
+par(mar = rep(2, 3))
+p_load(mcmcplots) #install.packages("mcmcplots")
+traplot(earthquakefit, parms = 
+          c("b.propagrmanu", 
+            "b.Magnitude", 
+            "b.p.Population", 
+            #"b.year", 
+            #"b.r.long", 
+            #"b.r.lat", 
+            "b.incometax.d", 
+            "b.Urban")
+        )
+
+
+# xyplot(fit.mcmc, layout = c(5, 15), aspect = "fill")
+autocorr.plot(fit.mcmc, layout = c(5, 15), aspect = "fill")
+
+
+# cater plot
+p_load(mcmcplots) #install.packages("mcmcplots")
+dev.off();dev.off()
+
+par(mar=c(5,10,1,1)) # bottom, then left margin, upper and right margins
+caterplot(earthquakefit, 
+          parms = c("b.propagrmanu", "b.incometax.d", "b.Magnitude", "b.Urban"), 
+          collapse = T, 
+          quantiles = list(outer=c(0.1,0.9),inner=c(0.16,0.84)),
+          reorder = F, 
+          cex.labels =0.9,
+          labels = c(
+            "Prop. Agr/Ind (Agr.)",
+            "Prop. Agr/Ind (Ind)",
+            "Prop. Agr/Ind (Mixed)",
+            "Income Tax",
+            "Eq. Magnitude (Agr.)",
+            "Eq. Magnitude (Ind.)",
+            "Eq. Magnitude (Mixed)",
+            "Urban"), 
+          col=2, 
+          style=c("gray")
+          );abline(v = 0, col = "gray60")
+          
+          
+
+#### PLOT fixed effects year
 p_load(gtools,dplyr,reshape2,ggplot2)
 
 earthquake.out <- as.data.frame(as.matrix(as.mcmc(earthquakefit)))
 
-earthquake.year <- earthquake.out[, grep("b.propagrmanu[", colnames(earthquake.out), fixed=T)]
+earthquake.year <- earthquake.out[, grep("b.year[", colnames(earthquake.out), fixed=T)]
 
 earthquake.year <- earthquake.year[, c(mixedsort(names(earthquake.year)))]
 colnames(earthquake.year) <- paste("Y",unique(sort(datsc$year)), sep = "")
@@ -553,7 +603,7 @@ ggplot(data = earthquake.year, aes(x = variable, y = mean)) +
   geom_hline(yintercept = 0, col = "blue") +
   geom_pointrange(aes(ymin = lo, ymax = hi)) + 
   xlab("Year") + 
-  ylab("Varying intercept: earthquake") + 
+  ylab("Fixed Effects: Year") + 
   theme_bw() + 
   stat_smooth(method="loess", level=0.80)
 
