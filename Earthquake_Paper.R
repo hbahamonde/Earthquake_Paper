@@ -73,7 +73,6 @@ eq.output.d$Sector <- recode(as.factor(eq.output.d$Sector),
                              '1 y 3' = 'Mixed' ; 
                              '2 y 3' = 'Mixed' ")
 
-
 # income tax variables
 incometax.d.chile = data.frame(ifelse(eq.output.d$year>=1924 & eq.output.d$country == "Chile",1,0)) # Chile,  1924 (Mamalakis [1976, p. 20]
 incometax.d.peru  = data.frame(ifelse(eq.output.d$year>=1934 & eq.output.d$country == "Peru",1,0)) # Peru, Ley 7904 de 1934
@@ -390,15 +389,20 @@ dat$p.Population = dat$Population/1000
 pvars <- c("constagricult","constmanufact","Magnitude", "p.Population") 
 datsc <- dat 
 
-if (!require("pacman")) install.packages("pacman"); library(pacman) 
-p_load(R2jags, coda, R2WinBUGS, lattice, rjags, runjags)
-
-
+# overdispersion
+p_load(AER)
+o.Deaths <- glm(Deaths ~ ., data = datsc, family = poisson)
+dispersiontest(o.Deaths,alternative = c("greater"), trafo=1) # overdispersion is -0.5
 
 
 
 
 # model
+
+if (!require("pacman")) install.packages("pacman"); library(pacman) 
+p_load(R2jags, coda, R2WinBUGS, lattice, rjags, runjags)
+
+
 options(scipen=10000)
 set.seed(602)
 
@@ -415,23 +419,16 @@ model.jags <- function() {
       b.year[yearID[i]] +
       b.r.long*r.long[i] +
       b.r.lat*r.lat[i] +
-      epsilon[i] +
       mu
-    
-    epsilon[i] ~ dnorm(0, tau.epsilon)
   }
+
   b.r.lat ~ dnorm(0, 0.001)
   b.r.long ~ dnorm(0, 0.001)
-  beta0  ~ dnorm(0, 0.001)
+  mu  ~ dnorm(0, 0.001) ## intercept
   b.p.Population ~ dnorm(0, 0.001)
   b.Urban ~ dnorm(0, 0.001)
   # b.propagrmanu ~ dnorm(0, 0.001)
   b.incometax.d ~ dnorm(0, 0.001)
-  
-  mu ~ dnorm(0, 0.0001)
-  tau.epsilon <- pow(sigma.epsilon, -2)
-  sigma.epsilon ~ dunif(0, 100)
-  
   
   for (t in 1:yearN){ # fixed effects of year
     b.year[t] ~ dnorm(m.b.year[t], tau.b.year[t])
@@ -529,6 +526,12 @@ mcmctab(earthquakefit) # Posterior distributions
 
 plot(earthquakefit)
 
+# Sectors
+## 1 Agriculture 
+## 2 Industry 
+## 3 Mixed
+
+
 
 #### PLOT
 
@@ -555,4 +558,8 @@ ggplot(data = earthquake.year, aes(x = variable, y = mean)) +
   stat_smooth(method="loess", level=0.80)
 
 
-
+## http://rstudio-pubs-static.s3.amazonaws.com/12451_53fc5e6bd80744b99158a12975c31cbf.html
+## overdispersion
+### epsilon (ϵ) represents overdispersion
+### tau (τ) is a measure of the amount of overdispersion
+### mu (μ) represents the intercept
