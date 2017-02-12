@@ -407,9 +407,6 @@ model.jags <- function() {
     Deaths[i] ~ dpois(lambda[i])
     
     log(lambda[i]) <- 
-      beta0 +
-      # b.constmanufact[yearID[i]]*constmanufact[i] + 
-      # b.constagricult*constagricult[i] + 
       b.propagrmanu[Sector[i]]*propagrmanu[i] + 
       b.Magnitude[Sector[i]]*Magnitude[i] +
       b.incometax.d*incometax.d[i] +
@@ -417,49 +414,47 @@ model.jags <- function() {
       b.Urban*Urban[i] +
       b.year[yearID[i]] +
       b.r.long*r.long[i] +
-      b.r.lat*r.lat[i]
+      b.r.lat*r.lat[i] +
+      epsilon[i] +
+      mu
     
+    epsilon[i] ~ dnorm(0, tau.epsilon)
   }
   b.r.lat ~ dnorm(0, 0.001)
   b.r.long ~ dnorm(0, 0.001)
   beta0  ~ dnorm(0, 0.001)
   b.p.Population ~ dnorm(0, 0.001)
-  # b.constmanufact ~ dnorm(0, 0.001)
-  # b.constagricult ~ dnorm(0, 0.001)
   b.Urban ~ dnorm(0, 0.001)
   # b.propagrmanu ~ dnorm(0, 0.001)
   b.incometax.d ~ dnorm(0, 0.001)
-  # b.Magnitude ~ dnorm(0, 0.001)
-
-
-
-  for (y in 1:yearN){ # fixed effects of year
-    b.year[y] ~ dnorm(m.b.year[y], tau.b.year[y])
+  
+  mu ~ dnorm(0, 0.0001)
+  tau.epsilon <- pow(sigma.epsilon, -2)
+  sigma.epsilon ~ dunif(0, 100)
+  
+  
+  for (t in 1:yearN){ # fixed effects of year
+    b.year[t] ~ dnorm(m.b.year[t], tau.b.year[t])
     
-    m.b.year[y] ~ dnorm(0, 0.001)
-    tau.b.year[y] ~ dgamma(1, 1)
+    m.b.year[t] ~ dnorm(0, 0.001)
+    tau.b.year[t] ~ dgamma(1, 1)
   }
   
   
-  for (t in 1:NSector){ # fixed effects of year
-    b.propagrmanu[t] ~ dnorm(m.b.propagrmanu[t], tau.b.propagrmanu[t])
-    
-    m.b.propagrmanu[t] ~ dnorm(0, 0.01)
-    tau.b.propagrmanu[t] ~ dgamma(1, 1)
+  for (k in 1:NSector){ # fixed effects by sector
+    b.Magnitude[k] ~ dnorm(m.Magnitude[k], tau.Magnitude[k])
+    m.Magnitude[k] ~ dnorm(0, 0.001)
+    tau.Magnitude[k] ~ dgamma(1, 1)
+  }
+  
+  for (k in 1:NSector){ # fixed effects by sector
+    b.propagrmanu[k] ~ dnorm(m.b.propagrmanu[k], tau.b.propagrmanu[k])
+    m.b.propagrmanu[k] ~ dnorm(0, 0.001)
+    tau.b.propagrmanu[k] ~ dgamma(1, 1)
   }
   
   
-  for (s in 1:NSector){ # fixed effects of year
-    b.Magnitude[s] ~ dnorm(m.b.Magnitude[s], tau.b.Magnitude[s])
-    
-    m.b.Magnitude[s] ~ dnorm(0, 0.01)
-    tau.b.Magnitude[s] ~ dgamma(1, 1)
-  }
-  
-  
-  
-
-  }
+}
 
 # define the vectors of the data matrix for JAGS.
 w.Deaths <- as.vector(datsc$w.Deaths)
@@ -483,18 +478,16 @@ NIncometax.y = as.vector(length(unique(as.numeric(datsc$incometax.y))))
 incometax.y = as.vector(as.numeric(datsc$incometax.y))
 Urban = as.vector(as.numeric(datsc$Urban))
 customtax = as.vector(as.numeric(datsc$customtax))/100
-propagrmanu = as.vector(as.numeric(datsc$constmanufact/datsc$constagricult)) # as.vector(as.numeric(datsc$propagrmanu))
-r.long = as.vector(as.numeric(datsc$Latitude))
-r.lat = as.vector(as.numeric(datsc$Longitude))
-
-
+propagrmanu = as.vector(as.numeric(datsc$propagrmanu))
+r.long = as.vector(as.numeric(datsc$r.long))
+r.lat = as.vector(as.numeric(datsc$r.lat))
 
 
 jags.data <- list(Deaths = Deaths,
                   #w.Deaths = w.Deaths,
                   # constmanufact = constmanufact,
                   # constagricult = constagricult,
-                  propagrmanu = propagrmanu, # constmanufact/datsc$constagricult
+                  propagrmanu = propagrmanu, # constagricult/constmanufact
                   Magnitude = Magnitude,
                   Sector = Sector,
                   NSector = NSector,
@@ -515,7 +508,7 @@ jags.data <- list(Deaths = Deaths,
 
 
 # Define and name the parameters so JAGS monitors them.
-eq.params <- c("b.Urban", "b.propagrmanu", "b.Magnitude", "b.p.Population", "b.year", "b.r.long", "b.r.lat", "b.incometax.d")
+eq.params <- c("b.propagrmanu", "b.Magnitude", "b.p.Population", "b.year", "b.r.long", "b.r.lat", "b.incometax.d", "b.Urban")
 
 
 # run the model
@@ -524,91 +517,42 @@ earthquakefit <- jags(
   inits=NULL,
   parameters.to.save = eq.params,
   n.chains=4,
-  n.iter=200000,
-  n.burnin=40000,
+  n.iter=10000,
+  n.burnin=500,
   #n.thin=1,
   model.file=model.jags)
 
 
-# devtools::source_url("https://raw.githubusercontent.com/jkarreth/JKmisc/master/mcmctab.R")
-
-# R function for summarizing MCMC output in a regression-style table
-# Johannes Karreth
-# Depends on packages: coda, rstan (if working with rstan objects)
-
-# Arguments: 
-# sims: output from R2jags, rjags, R2WinBUGS, R2OpenBUGS, MCMCpack, rstan
-# ci: desired credible interval, default: 0.95
-# digits: desired number of digits in the table, default: 2
-
-mcmctab <- function(sims, ci = 0.80, digits = 2){
-  require(coda)	
-  
-  if(class(sims) == "jags" | class(sims) == "rjags"){
-    sims <- as.matrix(as.mcmc(sims))
-  }
-  if(class(sims) == "bugs"){
-    sims <- sims$sims.matrix
-  }  
-  if(class(sims) == "mcmc"){
-    sims <- as.matrix(sims)
-  }    
-  if(class(sims) == "mcmc.list"){
-    sims <- as.matrix(sims)
-  }      
-  if(class(sims) == "stanfit"){
-    stan_sims <- rstan::As.mcmc.list(sims)
-    sims <- as.matrix(stan_sims)
-  }      
-  
-  dat <- t(sims)
-  mcmctab <- apply(dat, 1, 
-                   function(x) c(Mean = round(mean(x), digits = digits), # Posterior mean
-                                 SD = round(sd(x), digits = 3), # Posterior SD
-                                 Lower = as.numeric(round(quantile(x, probs = c((1 - ci) / 2)), digits = digits)), # Lower CI of posterior
-                                 Upper = as.numeric(round(quantile(x, probs = c((1 + ci) / 2)), digits = digits)), # Upper CI of posterior
-                                 Pr = round(ifelse(mean(x) > 0, length(x[x > 0]) / length(x), length(x[x < 0]) / length(x)), digits = digits) # Probability of posterior >/< 0
-                   ))
-  return(t(mcmctab))
-}
-
-
+devtools::source_url("https://raw.githubusercontent.com/jkarreth/JKmisc/master/mcmctab.R")
 mcmctab(earthquakefit) # Posterior distributions
-
-
-
 
 
 plot(earthquakefit)
 
 
-
-
-# Levels
-## 1: Agr
-## 2: Ind
-## 3: Mixed
-
-
-
-# post estimation
-# https://www.r-bloggers.com/poisson-regression-fitted-by-glm-maximum-likelihood-and-mcmc/
-
+#### PLOT
 
 
 p_load(gtools,dplyr,reshape2,ggplot2)
 
 earthquake.out <- as.data.frame(as.matrix(as.mcmc(earthquakefit)))
+
 earthquake.year <- earthquake.out[, grep("b.propagrmanu[", colnames(earthquake.out), fixed=T)]
 
 earthquake.year <- earthquake.year[, c(mixedsort(names(earthquake.year)))]
 colnames(earthquake.year) <- paste("Y",unique(sort(datsc$year)), sep = "")
 
 
-earthquake.year <- summarise(group_by(melt(earthquake.year), variable), mean = mean(value), lo = quantile(value, probs = c(0.05)), hi = quantile(value, probs = c(0.95)))
+earthquake.year <- summarise(group_by(melt(earthquake.year), variable), mean = mean(value), lo = quantile(value, probs = c(0.20)), hi = quantile(value, probs = c(0.80)))
 earthquake.year$variable <- as.numeric(gsub(pattern = "Y", replacement = "", x = earthquake.year$variable))
 
-ggplot(data = earthquake.year, aes(x = variable, y = mean)) + geom_hline(yintercept = 0, col = "blue") + geom_pointrange(aes(ymin = lo, ymax = hi)) + xlab("Year") + ylab("Varying intercept: earthquake") + theme_bw() + stat_smooth(method="loess", level=0.80)
+ggplot(data = earthquake.year, aes(x = variable, y = mean)) + 
+  geom_hline(yintercept = 0, col = "blue") +
+  geom_pointrange(aes(ymin = lo, ymax = hi)) + 
+  xlab("Year") + 
+  ylab("Varying intercept: earthquake") + 
+  theme_bw() + 
+  stat_smooth(method="loess", level=0.80)
 
 
 
