@@ -403,55 +403,7 @@ if (!require("pacman")) install.packages("pacman"); library(pacman)
 p_load(R2jags, coda, R2WinBUGS, lattice, rjags, runjags)
 
 
-options(scipen=10000)
-set.seed(602)
-
-model.jags <- function() {
-  for (i in 1:N){
-    Deaths[i] ~ dpois(lambda[i])
-    
-    log(lambda[i]) <- 
-      b.propagrmanu[Sector[i]]*propagrmanu[i] + 
-      b.Magnitude[Sector[i]]*Magnitude[i] +
-      b.incometax.d*incometax.d[i] +
-      b.p.Population*p.Population[i] +
-      b.Urban*Urban[i] +
-      b.year[yearID[i]] +
-      b.r.long*r.long[i] +
-      b.r.lat*r.lat[i] +
-      mu
-  }
-
-  b.r.lat ~ dnorm(0, 0.001)
-  b.r.long ~ dnorm(0, 0.001)
-  mu  ~ dnorm(0, 0.001) ## intercept
-  b.p.Population ~ dnorm(0, 0.001)
-  b.Urban ~ dnorm(0, 0.001)
-  # b.propagrmanu ~ dnorm(0, 0.001)
-  b.incometax.d ~ dnorm(0, 0.001)
-  
-  for (t in 1:yearN){ # fixed effects of year
-    b.year[t] ~ dnorm(m.b.year[t], tau.b.year[t])
-    
-    m.b.year[t] ~ dnorm(0, 0.001)
-    tau.b.year[t] ~ dgamma(1, 1)
-  }
-  
-  
-  for (k in 1:NSector){ # fixed effects by sector
-    b.Magnitude[k] ~ dnorm(m.Magnitude[k], tau.Magnitude[k])
-    m.Magnitude[k] ~ dnorm(0, 0.001)
-    tau.Magnitude[k] ~ dgamma(1, 1)
-  }
-  
-  for (k in 1:NSector){ # fixed effects by sector
-    b.propagrmanu[k] ~ dnorm(m.b.propagrmanu[k], tau.b.propagrmanu[k])
-    m.b.propagrmanu[k] ~ dnorm(0, 0.001)
-    tau.b.propagrmanu[k] ~ dgamma(1, 1)
-  }
-  
-  
-}
+## define data
 
 # define the vectors of the data matrix for JAGS.
 w.Deaths <- as.vector(datsc$w.Deaths)
@@ -470,7 +422,7 @@ yearN = length(unique(datsc$year))
 Sector = as.vector(as.numeric(factor(datsc$Sector)))
 NSector = as.numeric(as.vector(length(unique(as.numeric(datsc$Sector)))))
 NIncometax = as.vector(length(unique(as.numeric(datsc$incometax.d))))
-incometax.d = as.vector(as.numeric(datsc$incometax.d))+1
+incometax.d = as.vector(as.numeric(datsc$incometax.d))
 NIncometax.y = as.vector(length(unique(as.numeric(datsc$incometax.y))))
 incometax.y = as.vector(as.numeric(datsc$incometax.y))
 Urban = as.vector(as.numeric(datsc$Urban))
@@ -478,6 +430,102 @@ customtax = as.vector(as.numeric(datsc$customtax))/100
 propagrmanu = as.vector(as.numeric(datsc$propagrmanu))
 r.long = as.vector(as.numeric(datsc$r.long))
 r.lat = as.vector(as.numeric(datsc$r.lat))
+propagrmanu.range <- seq(min(propagrmanu),max(propagrmanu), by = (max(propagrmanu)-min(propagrmanu))/100)
+N.sim = length(propagrmanu.range)
+
+
+# for predictions
+Magnitude.mean <- mean(Magnitude)
+p.Population.mean <- mean(p.Population)
+Urban.mean <- mean(Urban)
+year.mean <- mean(year)
+r.long.mean <- mean(r.long)
+r.lat.mean <- mean(r.lat)
+
+
+
+options(scipen=10000)
+set.seed(602)
+
+model.jags <- function() {
+        for (i in 1:N){
+                Deaths[i] ~ dpois(lambda[i])
+                log(lambda[i]) <- 
+                        b.propagrmanu[Sector[i]]*propagrmanu[i] + 
+                        b.Magnitude[Sector[i]]*Magnitude[i] +
+                        b.incometax.d*incometax.d[i] +
+                        b.p.Population*p.Population[i] +
+                        b.Urban*Urban[i] +
+                        b.year[yearID[i]] +
+                        b.r.long*r.long[i] +
+                        b.r.lat*r.lat[i] +
+                        mu
+                }
+                
+
+# priors: covariates
+        b.r.lat ~ dnorm(0, 0.001)
+        b.r.long ~ dnorm(0, 0.001)
+        mu  ~ dnorm(0, 0.001) ## intercept
+        b.p.Population ~ dnorm(0, 0.001)
+        b.Urban ~ dnorm(0, 0.001)
+        # b.propagrmanu ~ dnorm(0, 0.001)
+        b.incometax.d ~ dnorm(0, 0.001)
+        
+        for (t in 1:yearN){ # fixed effects of year
+                b.year[t] ~ dnorm(m.b.year[t], tau.b.year[t])
+                m.b.year[t] ~ dnorm(0, 0.001)
+                tau.b.year[t] ~ dgamma(1, 1)
+                }
+        
+        for (a in 1:NSector){ # fixed effects by sector
+                b.propagrmanu[a] ~ dnorm(m.b.propagrmanu[a], tau.b.propagrmanu[a])
+                m.b.propagrmanu[a] ~ dnorm(0, 0.001)
+                tau.b.propagrmanu[a] ~ dgamma(1, 1)
+                
+                for (b in 1:NSector){ # fixed effects by sector
+                        b.Magnitude[b] ~ dnorm(m.Magnitude[b], tau.Magnitude[b])
+                        m.Magnitude[b] ~ dnorm(0, 0.001)
+                        tau.Magnitude[b] ~ dgamma(1, 1)
+                        }
+                
+                #############
+                # predictions
+                #############
+                
+                
+                ## of propagrmanu for incometax.d == 0.
+                for (c in 1:N.sim){
+                        x.0[c] <- 
+                                b.propagrmanu[]*propagrmanu.range[c] + 
+                                b.Magnitude[]*Magnitude.mean +
+                                b.incometax.d[]*incometax.d[1] +
+                                b.p.Population[]*p.Population.mean + 
+                                b.Urban[]*Urban.mean +
+                                b.year[]*year.mean +
+                                b.r.long[]*r.long.mean +
+                                b.r.lat[]*r.lat.mean +
+                                mu
+                }
+                ## of propagrmanu for incometax.d == 1.
+                for (d in 1:N.sim){
+                        x.1[d] <-
+                                b.propagrmanu[]*propagrmanu.range[d] + 
+                                b.Magnitude[]*Magnitude.mean +
+                                b.incometax.d[]*incometax.d[2] +
+                                b.p.Population[]*p.Population.mean + 
+                                b.Urban[]*Urban.mean +
+                                b.year[]*year.mean +
+                                b.r.long[]*r.long.mean +
+                                b.r.lat[]*r.lat.mean +
+                                mu
+                }
+                
+                }
+
+        
+        }# end model
+
 
 
 jags.data <- list(Deaths = Deaths,
@@ -501,6 +549,14 @@ jags.data <- list(Deaths = Deaths,
                   r.lat = r.lat,
                   yearID = yearID,
                   yearN = yearN,
+                  N.sim = N.sim,
+                  Magnitude.mean = Magnitude.mean,  # for predictions
+                  p.Population.mean = p.Population.mean,  # for predictions
+                  Urban.mean = Urban.mean,   # for predictions
+                  year.mean = year.mean,   # for predictions
+                  r.long.mean = r.long.mean,   # for predictions
+                  r.lat.mean = r.lat.mean,  # for predictions
+                  propagrmanu.range = propagrmanu.range,   # for predictions
                   N = N)
 
 
@@ -613,3 +669,71 @@ ggplot(data = earthquake.year, aes(x = variable, y = mean)) +
 ### epsilon (ϵ) represents overdispersion
 ### tau (τ) is a measure of the amount of overdispersion
 ### mu (μ) represents the intercept
+
+
+#### Predicted Probabilities.
+#### FROM: https://github.com/jkarreth/Bayes/blob/master/logit.pp.plot.instructions.R // line:52
+
+earthquake.sim.dat.lo <- as.matrix(
+        data.frame(
+                constant = 1, 
+                propagrmanu = seq(from =min(jags.data$propagrmanu), to = max(jags.data$propagrmanu)), 
+                incometax = min(datsc$incometax.d)
+        ))
+
+
+earthquakefit.mcmc <- as.mcmc(earthquakefit)
+earthquakefit.mat <- as.matrix(earthquakefit.mcmc)
+
+m.b.incometax.d <- earthquakefit.mat[ , "b.incometax.d"] ## one column for each coefficient, in this case I had 6 coefficients
+m.b.propagrmanu.d.1 <- earthquakefit.mat[ , "b.propagrmanu[1]"]
+m.b.propagrmanu.d.2 <- earthquakefit.mat[ , "b.propagrmanu[2]"]
+m.b.propagrmanu.d.3 <- earthquakefit.mat[ , "b.propagrmanu[3]"]
+b = as.matrix(data.frame(m.b.incometax.d, m.b.propagrmanu.d.1, m.b.propagrmanu.d.2, m.b.propagrmanu.d.3))
+
+swiss.coefs <- as.matrix(as.mcmc(earthquakefit))[, c(1:ncol(earthquake.sim.dat.lo))]
+Xb <- t(b %*% t(earthquake.sim.dat.lo))
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+### HERE BELOW
+
+# Generate vector with the simulated range of X1 (here, age)
+proportion.x <- as.matrix(
+        seq(from = min(datsc$propagrmanu), 
+            to = max(datsc$propagrmanu),
+            length(b))
+        )
+
+proportion.x <- seq(min(datsc$propagrmanu), max(datsc$propagrmanu))
+
+
+
+# Generate vectors set at desired values of the other covariates
+incometax.x.0 =  rep(min(datsc$incometax.d), length(proportion.x))
+incometax.x.1 =  rep(max(datsc$incometax.d), length(proportion.x))
+
+# Generate dataframe with simulated values
+X <- cbind(proportion.x,incometax.x.0,incometax.x.1)
+
+# Multiply X by the betas from your BUGS output
+Xb <- t(X%*% t(b))
