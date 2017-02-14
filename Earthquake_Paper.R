@@ -390,6 +390,7 @@ pvars <- c("constagricult","constmanufact","Magnitude", "p.Population")
 datsc <- dat 
 
 # overdispersion
+if (!require("pacman")) install.packages("pacman"); library(pacman) 
 p_load(AER)
 o.Deaths <- glm(Deaths ~ ., data = datsc, family = poisson)
 dispersiontest(o.Deaths,alternative = c("greater"), trafo=1) # overdispersion is -0.5
@@ -449,18 +450,20 @@ set.seed(602)
 
 model.jags <- function() {
         for (i in 1:N){
-                Deaths[i] ~ dpois(lambda[i])
-                log(lambda[i]) <- 
-                        b.propagrmanu[Sector[i]]*propagrmanu[i] + 
-                        b.Magnitude[Sector[i]]*Magnitude[i] +
-                        b.incometax.d*incometax.d[i] +
-                        b.p.Population*p.Population[i] +
-                        b.Urban*Urban[i] +
-                        b.year[yearID[i]] +
-                        b.r.long*r.long[i] +
-                        b.r.lat*r.lat[i] +
-                        mu
-                }
+          
+          Deaths[i] ~ dpois(lambda[i])
+                
+          log(lambda[i]) <- 
+            b.propagrmanu[Sector[i]]*propagrmanu[i] + 
+            b.Magnitude[Sector[i]]*Magnitude[i] +
+            b.incometax.d*incometax.d[i] +
+            b.p.Population*p.Population[i] +
+            b.Urban*Urban[i] +
+            b.year[yearID[i]] +
+            b.r.long*r.long[i] +
+            b.r.lat*r.lat[i] +
+            mu
+          }
                 
 
 # priors: covariates
@@ -472,59 +475,65 @@ model.jags <- function() {
         # b.propagrmanu ~ dnorm(0, 0.001)
         b.incometax.d ~ dnorm(0, 0.001)
         
-        for (t in 1:yearN){ # fixed effects of year
-                b.year[t] ~ dnorm(m.b.year[t], tau.b.year[t])
-                m.b.year[t] ~ dnorm(0, 0.001)
-                tau.b.year[t] ~ dgamma(1, 1)
-                }
-        
+
         for (a in 1:NSector){ # fixed effects by sector
                 b.propagrmanu[a] ~ dnorm(m.b.propagrmanu[a], tau.b.propagrmanu[a])
                 m.b.propagrmanu[a] ~ dnorm(0, 0.001)
                 tau.b.propagrmanu[a] ~ dgamma(1, 1)
-                
-                for (b in 1:NSector){ # fixed effects by sector
-                        b.Magnitude[b] ~ dnorm(m.Magnitude[b], tau.Magnitude[b])
-                        m.Magnitude[b] ~ dnorm(0, 0.001)
-                        tau.Magnitude[b] ~ dgamma(1, 1)
-                        }
-                
-                #############
-                # predictions
-                #############
-                
-                
-                ## of propagrmanu for incometax.d == 0.
-                for (c in 1:N.sim){
-                        x.0[c] <- 
-                                b.propagrmanu[]*propagrmanu.range[c] + 
-                                b.Magnitude[]*Magnitude.mean +
-                                b.incometax.d[]*incometax.d[1] +
-                                b.p.Population[]*p.Population.mean + 
-                                b.Urban[]*Urban.mean +
-                                b.year[]*year.mean +
-                                b.r.long[]*r.long.mean +
-                                b.r.lat[]*r.lat.mean +
-                                mu
-                }
-                ## of propagrmanu for incometax.d == 1.
-                for (d in 1:N.sim){
-                        x.1[d] <-
-                                b.propagrmanu[]*propagrmanu.range[d] + 
-                                b.Magnitude[]*Magnitude.mean +
-                                b.incometax.d[]*incometax.d[2] +
-                                b.p.Population[]*p.Population.mean + 
-                                b.Urban[]*Urban.mean +
-                                b.year[]*year.mean +
-                                b.r.long[]*r.long.mean +
-                                b.r.lat[]*r.lat.mean +
-                                mu
-                }
-                
-                }
-
+        }
         
-        }# end model
+        for (b in 1:NSector){ # fixed effects by sector
+          b.Magnitude[b] ~ dnorm(m.Magnitude[b], tau.Magnitude[b])
+          m.Magnitude[b] ~ dnorm(0, 0.001)
+          tau.Magnitude[b] ~ dgamma(1, 1)
+        }
+        
+        for (t in 1:yearN){ # fixed effects of year
+          b.year[t] ~ dnorm(m.b.year[t], tau.b.year[t])
+          m.b.year[t] ~ dnorm(0, 0.001)
+          tau.b.year[t] ~ dgamma(1, 1)
+        }
+        
+        #############
+        # predictions
+        #############
+        
+        tau ~ dgamma(0.001,0.001)
+        
+        ## of propagrmanu for incometax.d == 0.
+        for (c in 1:N.sim){
+          x.0[c] <- 
+            b.propagrmanu*propagrmanu.range[c] + 
+            b.Magnitude*Magnitude.mean +
+            b.incometax.d*incometax.d[1] +
+            b.p.Population*p.Population.mean + 
+            b.Urban*Urban.mean +
+            b.year*year.mean +
+            b.r.long*r.long.mean +
+            b.r.lat*r.lat.mean +
+            mu
+        }
+        
+        x.0.out ~ dnorm(x.0,tau)
+        
+        ## of propagrmanu for incometax.d == 1.
+        for (d in 1:N.sim){
+          x.1[d] <-
+            b.propagrmanu*propagrmanu.range[d] + 
+            b.Magnitude*Magnitude.mean +
+            b.incometax.d*incometax.d[2] +
+            b.p.Population*p.Population.mean + 
+            b.Urban*Urban.mean +
+            b.year*year.mean +
+            b.r.long*r.long.mean +
+            b.r.lat*r.lat.mean +
+            mu
+        }
+        
+        x.1.out ~ dnorm(x.1,tau)
+        
+    }# end model
+                        
 
 
 
