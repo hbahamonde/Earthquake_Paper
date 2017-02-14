@@ -398,7 +398,6 @@ dispersiontest(o.Deaths,alternative = c("greater"), trafo=1) # overdispersion is
 
 
 # model
-
 if (!require("pacman")) install.packages("pacman"); library(pacman) 
 p_load(R2jags, coda, R2WinBUGS, lattice, rjags, runjags)
 
@@ -407,50 +406,82 @@ options(scipen=10000)
 set.seed(602)
 
 model.jags <- function() {
-  for (i in 1:N){
-    Deaths[i] ~ dpois(lambda[i])
-    
-    log(lambda[i]) <- 
-      b.propagrmanu[Sector[i]]*propagrmanu[i] + 
-      b.Magnitude[Sector[i]]*Magnitude[i] +
-      b.incometax.d*incometax.d[i] +
-      b.p.Population*p.Population[i] +
-      b.Urban*Urban[i] +
-      b.year[yearID[i]] +
-      b.r.long*r.long[i] +
-      b.r.lat*r.lat[i] +
-      mu
-  }
-  
-  b.r.lat ~ dnorm(0, 0.001)
-  b.r.long ~ dnorm(0, 0.001)
-  mu  ~ dnorm(0, 0.001) ## intercept
-  b.p.Population ~ dnorm(0, 0.001)
-  b.Urban ~ dnorm(0, 0.001)
-  # b.propagrmanu ~ dnorm(0, 0.001)
-  b.incometax.d ~ dnorm(0, 0.001)
-  
-  for (t in 1:yearN){ # fixed effects of year
-    b.year[t] ~ dnorm(m.b.year[t], tau.b.year[t])
-    
-    m.b.year[t] ~ dnorm(0, 0.001)
-    tau.b.year[t] ~ dgamma(1, 1)
-  }
-  
-  
-  for (k in 1:NSector){ # fixed effects by sector
-    b.Magnitude[k] ~ dnorm(m.Magnitude[k], tau.Magnitude[k])
-    m.Magnitude[k] ~ dnorm(0, 0.001)
-    tau.Magnitude[k] ~ dgamma(1, 1)
-  }
-  
-  for (k in 1:NSector){ # fixed effects by sector
-    b.propagrmanu[k] ~ dnorm(m.b.propagrmanu[k], tau.b.propagrmanu[k])
-    m.b.propagrmanu[k] ~ dnorm(0, 0.001)
-    tau.b.propagrmanu[k] ~ dgamma(1, 1)
-  }
-  
-  
+        for (i in 1:N){
+                Deaths[i] ~ dpois(lambda[i])
+                
+                log(lambda[i]) <- 
+                        b.propagrmanu[Sector[i]]*propagrmanu[i] + 
+                        b.Magnitude[Sector[i]]*Magnitude[i] +
+                        b.incometax.d*incometax.d[i] +
+                        b.p.Population*p.Population[i] +
+                        b.Urban*Urban[i] +
+                        b.year[yearID[i]] +
+                        b.r.long*r.long[i] +
+                        b.r.lat*r.lat[i] +
+                        mu
+        }
+        
+        b.r.lat ~ dnorm(0, 0.001)
+        b.r.long ~ dnorm(0, 0.001)
+        mu  ~ dnorm(0, 0.001) ## intercept
+        b.p.Population ~ dnorm(0, 0.001)
+        b.Urban ~ dnorm(0, 0.001)
+        # b.propagrmanu ~ dnorm(0, 0.001)
+        b.incometax.d ~ dnorm(0, 0.001)
+        
+        for (t in 1:yearN){ # fixed effects of year
+                b.year[t] ~ dnorm(m.b.year[t], tau.b.year[t])
+                
+                m.b.year[t] ~ dnorm(0, 0.001)
+                tau.b.year[t] ~ dgamma(1, 1)
+        }
+        
+        
+        for (k in 1:NSector){ # fixed effects by sector
+                b.Magnitude[k] ~ dnorm(m.Magnitude[k], tau.Magnitude[k])
+                m.Magnitude[k] ~ dnorm(0, 0.001)
+                tau.Magnitude[k] ~ dgamma(1, 1)
+        }
+        
+        for (k in 1:NSector){ # fixed effects by sector
+                b.propagrmanu[k] ~ dnorm(m.b.propagrmanu[k], tau.b.propagrmanu[k])
+                m.b.propagrmanu[k] ~ dnorm(0, 0.001)
+                tau.b.propagrmanu[k] ~ dgamma(1, 1)
+        }
+        
+        # prediction 1: 
+        for (i in 1:N){
+                Deaths.1[i] ~ dpois(lambda.1[i])
+                
+                log(lambda.1[i]) <- 
+                        b.propagrmanu[Sector[i]]*propagrmanu[i] + 
+                        b.Magnitude[Sector[i]]*Magnitude[i] +
+                        b.incometax.d*incometax.d[1] +
+                        b.p.Population*p.Population[i] +
+                        b.Urban*Urban[i] +
+                        b.year[yearID[i]] +
+                        b.r.long*r.long[i] +
+                        b.r.lat*r.lat[i] +
+                        mu
+        }
+
+        # prediction 2: 
+        for (i in 1:N){
+                Deaths.2[i] ~ dpois(lambda.2[i])
+                
+                log(lambda.2[i]) <- 
+                        b.propagrmanu[Sector[i]]*propagrmanu[i] + 
+                        b.Magnitude[Sector[i]]*Magnitude[i] +
+                        b.incometax.d*incometax.d[2] +
+                        b.p.Population*p.Population[i] +
+                        b.Urban*Urban[i] +
+                        b.year[yearID[i]] +
+                        b.r.long*r.long[i] +
+                        b.r.lat*r.lat[i] +
+                        mu
+        }
+
+        
 }
 
 # define the vectors of the data matrix for JAGS.
@@ -505,19 +536,20 @@ jags.data <- list(Deaths = Deaths,
 
 
 # Define and name the parameters so JAGS monitors them.
-eq.params <- c("b.propagrmanu", "b.Magnitude", "b.p.Population", "b.year", "b.r.long", "b.r.lat", "b.incometax.d", "b.Urban")
+eq.params <- c("b.propagrmanu", "b.Magnitude", "b.p.Population", "b.year", "b.r.long", "b.r.lat", "b.incometax.d", "b.Urban", "Deaths.1.pred", "Deaths.1.pred")
 
 
 # run the model
 earthquakefit <- jags(
-  data=jags.data,
-  inits=NULL,
-  parameters.to.save = eq.params,
-  n.chains=4,
-  n.iter=10000, # 10000
-  n.burnin=3000, # 3000
-  #n.thin=1,
-  model.file=model.jags)
+        data=jags.data,
+        inits=NULL,
+        parameters.to.save = eq.params,
+        n.chains=4,
+        n.iter=10000, # 10000
+        n.burnin=3000, # 3000
+        #n.thin=1,
+        model.file=model.jags)
+
 
 
 devtools::source_url("https://raw.githubusercontent.com/jkarreth/JKmisc/master/mcmctab.R")
