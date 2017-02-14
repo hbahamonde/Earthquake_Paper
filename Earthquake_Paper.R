@@ -348,7 +348,6 @@ plot(effect(c("constagricult"),model),grid=TRUE)
 ###################################################################### 
 
 
-
 cat("\014") 
 rm(list=ls()) 
 
@@ -390,7 +389,7 @@ pvars <- c("constagricult","constmanufact","Magnitude", "p.Population")
 datsc <- dat 
 
 # overdispersion
-if (!require("pacman")) install.packages("pacman"); library(pacman) 
+if (!require("pacman")) install.packages("pacman"); library(pacman)  
 p_load(AER)
 o.Deaths <- glm(Deaths ~ ., data = datsc, family = poisson)
 dispersiontest(o.Deaths,alternative = c("greater"), trafo=1) # overdispersion is -0.5
@@ -404,7 +403,55 @@ if (!require("pacman")) install.packages("pacman"); library(pacman)
 p_load(R2jags, coda, R2WinBUGS, lattice, rjags, runjags)
 
 
-## define data
+options(scipen=10000)
+set.seed(602)
+
+model.jags <- function() {
+  for (i in 1:N){
+    Deaths[i] ~ dpois(lambda[i])
+    
+    log(lambda[i]) <- 
+      b.propagrmanu[Sector[i]]*propagrmanu[i] + 
+      b.Magnitude[Sector[i]]*Magnitude[i] +
+      b.incometax.d*incometax.d[i] +
+      b.p.Population*p.Population[i] +
+      b.Urban*Urban[i] +
+      b.year[yearID[i]] +
+      b.r.long*r.long[i] +
+      b.r.lat*r.lat[i] +
+      mu
+  }
+  
+  b.r.lat ~ dnorm(0, 0.001)
+  b.r.long ~ dnorm(0, 0.001)
+  mu  ~ dnorm(0, 0.001) ## intercept
+  b.p.Population ~ dnorm(0, 0.001)
+  b.Urban ~ dnorm(0, 0.001)
+  # b.propagrmanu ~ dnorm(0, 0.001)
+  b.incometax.d ~ dnorm(0, 0.001)
+  
+  for (t in 1:yearN){ # fixed effects of year
+    b.year[t] ~ dnorm(m.b.year[t], tau.b.year[t])
+    
+    m.b.year[t] ~ dnorm(0, 0.001)
+    tau.b.year[t] ~ dgamma(1, 1)
+  }
+  
+  
+  for (k in 1:NSector){ # fixed effects by sector
+    b.Magnitude[k] ~ dnorm(m.Magnitude[k], tau.Magnitude[k])
+    m.Magnitude[k] ~ dnorm(0, 0.001)
+    tau.Magnitude[k] ~ dgamma(1, 1)
+  }
+  
+  for (k in 1:NSector){ # fixed effects by sector
+    b.propagrmanu[k] ~ dnorm(m.b.propagrmanu[k], tau.b.propagrmanu[k])
+    m.b.propagrmanu[k] ~ dnorm(0, 0.001)
+    tau.b.propagrmanu[k] ~ dgamma(1, 1)
+  }
+  
+  
+}
 
 # define the vectors of the data matrix for JAGS.
 w.Deaths <- as.vector(datsc$w.Deaths)
@@ -431,110 +478,6 @@ customtax = as.vector(as.numeric(datsc$customtax))/100
 propagrmanu = as.vector(as.numeric(datsc$propagrmanu))
 r.long = as.vector(as.numeric(datsc$r.long))
 r.lat = as.vector(as.numeric(datsc$r.lat))
-propagrmanu.range <- seq(min(propagrmanu),max(propagrmanu), by = (max(propagrmanu)-min(propagrmanu))/100)
-N.sim = length(propagrmanu.range)
-
-
-# for predictions
-Magnitude.mean <- mean(Magnitude)
-p.Population.mean <- mean(p.Population)
-Urban.mean <- mean(Urban)
-year.mean <- mean(year)
-r.long.mean <- mean(r.long)
-r.lat.mean <- mean(r.lat)
-
-
-
-options(scipen=10000)
-set.seed(602)
-
-model.jags <- function() {
-        for (i in 1:N){
-          
-          Deaths[i] ~ dpois(lambda[i])
-                
-          log(lambda[i]) <- 
-            b.propagrmanu[Sector[i]]*propagrmanu[i] + 
-            b.Magnitude[Sector[i]]*Magnitude[i] +
-            b.incometax.d*incometax.d[i] +
-            b.p.Population*p.Population[i] +
-            b.Urban*Urban[i] +
-            b.year[yearID[i]] +
-            b.r.long*r.long[i] +
-            b.r.lat*r.lat[i] +
-            mu
-          }
-                
-
-# priors: covariates
-        b.r.lat ~ dnorm(0, 0.001)
-        b.r.long ~ dnorm(0, 0.001)
-        mu  ~ dnorm(0, 0.001) ## intercept
-        b.p.Population ~ dnorm(0, 0.001)
-        b.Urban ~ dnorm(0, 0.001)
-        # b.propagrmanu ~ dnorm(0, 0.001)
-        b.incometax.d ~ dnorm(0, 0.001)
-        
-
-        for (a in 1:NSector){ # fixed effects by sector
-                b.propagrmanu[a] ~ dnorm(m.b.propagrmanu[a], tau.b.propagrmanu[a])
-                m.b.propagrmanu[a] ~ dnorm(0, 0.001)
-                tau.b.propagrmanu[a] ~ dgamma(1, 1)
-        }
-        
-        for (b in 1:NSector){ # fixed effects by sector
-          b.Magnitude[b] ~ dnorm(m.Magnitude[b], tau.Magnitude[b])
-          m.Magnitude[b] ~ dnorm(0, 0.001)
-          tau.Magnitude[b] ~ dgamma(1, 1)
-        }
-        
-        for (t in 1:yearN){ # fixed effects of year
-          b.year[t] ~ dnorm(m.b.year[t], tau.b.year[t])
-          m.b.year[t] ~ dnorm(0, 0.001)
-          tau.b.year[t] ~ dgamma(1, 1)
-        }
-        
-        #############
-        # predictions
-        #############
-        
-        tau ~ dgamma(0.001,0.001)
-        
-        ## of propagrmanu for incometax.d == 0.
-        for (c in 1:N.sim){
-          x.0[c] <- 
-            b.propagrmanu*propagrmanu.range[c] + 
-            b.Magnitude*Magnitude.mean +
-            b.incometax.d*incometax.d[1] +
-            b.p.Population*p.Population.mean + 
-            b.Urban*Urban.mean +
-            b.year*year.mean +
-            b.r.long*r.long.mean +
-            b.r.lat*r.lat.mean +
-            mu
-        }
-        
-        x.0.out ~ dnorm(x.0,tau)
-        
-        ## of propagrmanu for incometax.d == 1.
-        for (d in 1:N.sim){
-          x.1[d] <-
-            b.propagrmanu*propagrmanu.range[d] + 
-            b.Magnitude*Magnitude.mean +
-            b.incometax.d*incometax.d[2] +
-            b.p.Population*p.Population.mean + 
-            b.Urban*Urban.mean +
-            b.year*year.mean +
-            b.r.long*r.long.mean +
-            b.r.lat*r.lat.mean +
-            mu
-        }
-        
-        x.1.out ~ dnorm(x.1,tau)
-        
-    }# end model
-                        
-
 
 
 jags.data <- list(Deaths = Deaths,
@@ -558,14 +501,6 @@ jags.data <- list(Deaths = Deaths,
                   r.lat = r.lat,
                   yearID = yearID,
                   yearN = yearN,
-                  N.sim = N.sim,
-                  Magnitude.mean = Magnitude.mean,  # for predictions
-                  p.Population.mean = p.Population.mean,  # for predictions
-                  Urban.mean = Urban.mean,   # for predictions
-                  year.mean = year.mean,   # for predictions
-                  r.long.mean = r.long.mean,   # for predictions
-                  r.lat.mean = r.lat.mean,  # for predictions
-                  propagrmanu.range = propagrmanu.range,   # for predictions
                   N = N)
 
 
