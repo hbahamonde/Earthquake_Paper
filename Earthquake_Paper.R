@@ -465,8 +465,7 @@ model.jags <- function() {
                         b.r.lat*r.lat[i] +
                         mu
         }
-        Deaths.1.pred ~ dnorm(log(lambda.1), tau)
-        
+
         # prediction 2: 
         for (i in 1:N){
                 Deaths.2[i] ~ dpois(lambda.2[i])
@@ -482,12 +481,7 @@ model.jags <- function() {
                         b.r.lat*r.lat[i] +
                         mu
         }
-        Deaths.2.pred ~ dnorm(log(lambda.2), tau)
-        tau ~ dgamma(0.001,0.001)
-        
-        
-        
-        
+
         
 }
 
