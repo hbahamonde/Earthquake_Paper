@@ -452,7 +452,7 @@ model.jags <- function() {
         
         # prediction 1: 
         for (a in 1:N.sim){
-          lambda.1[a] <- 
+          log(lambda.1[a]) <- 
             b.propagrmanu[Sector[a]]*propagrmanu.seq[a] + 
             b.Magnitude[Sector[a]]*Magnitude[a] +
             b.incometax.d*min(incometax.d) +
@@ -546,7 +546,7 @@ jags.data <- list(Deaths = Deaths,
 
 
 # Define and name the parameters so JAGS monitors them.
-eq.params <- c("b.propagrmanu", "b.Magnitude", "b.p.Population", "b.year", "b.r.long", "b.r.lat", "b.incometax.d", "b.Urban", "Deaths.1.pred", "Deaths.1.pred")
+eq.params <- c("b.propagrmanu", "b.Magnitude", "b.p.Population", "b.year", "b.r.long", "b.r.lat", "b.incometax.d", "b.Urban", "lambda.1")
 
 
 # run the model
