@@ -428,8 +428,8 @@ model.jags <- function() {
         b.Urban ~ dnorm(0, 0.001)
         # b.propagrmanu ~ dnorm(0, 0.001)
         b.incometax.d ~ dnorm(0, 0.001)
-
-
+        
+        
         for (t in 1:yearN){ # fixed effects of year
                 b.year[t] ~ dnorm(m.b.year[t], tau.b.year[t])
                 
@@ -449,8 +449,8 @@ model.jags <- function() {
                 m.b.propagrmanu[k] ~ dnorm(0, 0.001)
                 tau.b.propagrmanu[k] ~ dgamma(1, 1)
                 }
-        
         }
+
 
 # define the vectors of the data matrix for JAGS.
 w.Deaths <- as.vector(datsc$w.Deaths)
@@ -479,10 +479,14 @@ r.long = as.vector(as.numeric(datsc$r.long))
 r.lat = as.vector(as.numeric(datsc$r.lat))
 
 propagrmanu.seq = seq(
-  from = min(as.numeric(datsc$propagrmanu)),
-  to = max(as.numeric(datsc$propagrmanu)),
-  length.out = as.numeric(nrow(datsc)))
+        from = min(as.numeric(datsc$propagrmanu)),
+        to = max(as.numeric(datsc$propagrmanu)),
+        length.out = as.numeric(nrow(datsc)))
 
+N.sim = length(seq(
+        from = min(as.numeric(datsc$propagrmanu)),
+        to = max(as.numeric(datsc$propagrmanu)),
+        length.out = as.numeric(nrow(datsc))))
 
 
 
@@ -508,6 +512,7 @@ jags.data <- list(Deaths = Deaths,
                   r.lat = r.lat,
                   yearID = yearID,
                   yearN = yearN,
+                  # N.sim = N.sim, # for predictions
                   # propagrmanu.seq = propagrmanu.seq, # for predictions
                   N = N)
 
@@ -517,210 +522,17 @@ eq.params <- c("b.propagrmanu", "b.Magnitude", "b.p.Population", "b.year", "b.r.
 
 
 # run the model
-p_load(rjags)
-setwd("/Users/hectorbahamonde/RU/Dissertation/Papers/Earthquake_Paper")
+earthquakefit <- jags(
+        data=jags.data,
+        inits=NULL,
+        parameters.to.save = eq.params,
+        n.chains=4,
+        n.iter=10000, # 10000
+        n.burnin=3000, # 3000
+        #n.thin=1,
+        model.file=model.jags)
 
 
-earthquakefit <- jags.model('model.bug',
-                   data = jags.data,
-                   n.chains = 4,
-                   n.adapt = 100)
-
-#update(earthquakefit, 10000)
-
-earthquakefit.sample.coda <- coda.samples(earthquakefit, c('b.propagrmanu', 'b.incometax.d'), 100000)
-earthquakefit.sample.coda = window(earthquakefit.sample.coda, start = 30000)
-summary(earthquakefit.sample.coda)
-plot(earthquakefit.sample.coda)
-
-# post estimation
-gelman.diag(earthquakefit.sample.coda) # A rule of thumb is that values of 1.1 and less suggests adequate convergence
-gelman.plot(earthquakefit.sample.coda) # A rule of thumb is that values of 1.1 and less suggests adequate convergence
-
-
-
-
-
-
-
-
-earthquakefit.sample.jags <- jags.samples(earthquakefit, c('b.propagrmanu', 'b.incometax.d'), 1000)
-posterior_means <- lapply(earthquakefit.sample.jags, apply, 1, "mean")
-
-
-
-
-
-
-# predictions
-
-## extract fitted model as an mcmc object
-earthquakefit.m <- as.data.frame(as.matrix(as.mcmc(earthquakefit)))
-
-
-# WHEN INCOME TAX IS 0
-lambda.1.m <- earthquakefit.m[, grep("lambda.1[", colnames(earthquakefit.m), fixed=T)]
-lambda.1.m <- log(lambda.1.m) # take the log.
-
-## dataframe for plot
-colnames(lambda.1.m)[which(names(lambda.1.m) == "lambda.1[1]")] <- "lambda.1[01]"
-colnames(lambda.1.m)[which(names(lambda.1.m) == "lambda.1[2]")] <- "lambda.1[02]"
-colnames(lambda.1.m)[which(names(lambda.1.m) == "lambda.1[3]")] <- "lambda.1[03]"
-colnames(lambda.1.m)[which(names(lambda.1.m) == "lambda.1[4]")] <- "lambda.1[04]"
-colnames(lambda.1.m)[which(names(lambda.1.m) == "lambda.1[5]")] <- "lambda.1[05]"
-colnames(lambda.1.m)[which(names(lambda.1.m) == "lambda.1[6]")] <- "lambda.1[06]"
-colnames(lambda.1.m)[which(names(lambda.1.m) == "lambda.1[7]")] <- "lambda.1[07]"
-colnames(lambda.1.m)[which(names(lambda.1.m) == "lambda.1[8]")] <- "lambda.1[08]"
-colnames(lambda.1.m)[which(names(lambda.1.m) == "lambda.1[9]")] <- "lambda.1[09]"
-
-names(lambda.1.m) <- gsub("lambda.1", "lambda1", names(lambda.1.m), fixed = TRUE)
-names(lambda.1.m) <- gsub("[", "_", names(lambda.1.m), fixed = TRUE)
-names(lambda.1.m) <- gsub("]", "", names(lambda.1.m), fixed = TRUE)
-lambda.1.m <-lambda.1.m[,order(colnames(lambda.1.m))]
-
-# create data frame with means of lambda.1
-
-## means
-mean.lambda.1 <- data.frame()
-for (i in 1:ncol(lambda.1.m)){mean.lambda.1 <- rbind(mean.lambda.1, mean(lambda.1.m[,i]))}
-colnames(mean.lambda.1) <- "mean"
-
-## lower bound
-low.lambda.1 <- data.frame()
-for (i in 1:ncol(lambda.1.m)){low.lambda.1 <- rbind(low.lambda.1, CI(lambda.1.m[,i])[3])}
-colnames(low.lambda.1) <- "low"
-
-## upper bound
-up.lambda.1 <- data.frame()
-for (i in 1:ncol(lambda.1.m)){up.lambda.1 <- rbind(up.lambda.1, CI(lambda.1.m[,i])[1])}
-colnames(up.lambda.1) <- "up"
-
-### cbind all three df's
-lambda.1.plot.data = cbind(
-        mean.lambda.1, 
-        low.lambda.1, 
-        up.lambda.1, 
-        as.vector(propagrmanu.seq),
-        rep("No", length(propagrmanu.seq)),
-        seq(1:length(propagrmanu.seq))
-); 
-
-names(lambda.1.plot.data)[names(lambda.1.plot.data)=="as.vector(propagrmanu.seq)"] <- "propagrmanu.seq"
-names(lambda.1.plot.data)[names(lambda.1.plot.data)=="rep(\"No\", length(propagrmanu.seq))"] <- "Income Tax"
-names(lambda.1.plot.data)[names(lambda.1.plot.data)=="seq(1:length(propagrmanu.seq))"] <- "rownumber"
-
-
-
-# WHEN INCOME TAX IS 1
-lambda.2.m <- earthquakefit.m[, grep("lambda.2[", colnames(earthquakefit.m), fixed=T)]
-lambda.2.m <- log(lambda.2.m) # take the log.
-
-## dataframe for plot
-colnames(lambda.2.m)[which(names(lambda.2.m) == "lambda.2[1]")] <- "lambda.2[01]"
-colnames(lambda.2.m)[which(names(lambda.2.m) == "lambda.2[2]")] <- "lambda.2[02]"
-colnames(lambda.2.m)[which(names(lambda.2.m) == "lambda.2[3]")] <- "lambda.2[03]"
-colnames(lambda.2.m)[which(names(lambda.2.m) == "lambda.2[4]")] <- "lambda.2[04]"
-colnames(lambda.2.m)[which(names(lambda.2.m) == "lambda.2[5]")] <- "lambda.2[05]"
-colnames(lambda.2.m)[which(names(lambda.2.m) == "lambda.2[6]")] <- "lambda.2[06]"
-colnames(lambda.2.m)[which(names(lambda.2.m) == "lambda.2[7]")] <- "lambda.2[07]"
-colnames(lambda.2.m)[which(names(lambda.2.m) == "lambda.2[8]")] <- "lambda.2[08]"
-colnames(lambda.2.m)[which(names(lambda.2.m) == "lambda.2[9]")] <- "lambda.2[09]"
-
-names(lambda.2.m) <- gsub("lambda.2", "lambda1", names(lambda.2.m), fixed = TRUE)
-names(lambda.2.m) <- gsub("[", "_", names(lambda.2.m), fixed = TRUE)
-names(lambda.2.m) <- gsub("]", "", names(lambda.2.m), fixed = TRUE)
-lambda.2.m <-lambda.2.m[,order(colnames(lambda.2.m))]
-
-# create data frame with means of lambda.2
-
-## means
-mean.lambda.2 <- data.frame()
-for (i in 1:ncol(lambda.2.m)){mean.lambda.2 <- rbind(mean.lambda.2, mean(lambda.2.m[,i]))}
-colnames(mean.lambda.2) <- "mean"
-
-## lower bound
-low.lambda.2 <- data.frame()
-for (i in 1:ncol(lambda.2.m)){low.lambda.2 <- rbind(low.lambda.2, CI(lambda.2.m[,i])[3])}
-colnames(low.lambda.2) <- "low"
-
-## upper bound
-up.lambda.2 <- data.frame()
-for (i in 1:ncol(lambda.2.m)){up.lambda.2 <- rbind(up.lambda.2, CI(lambda.2.m[,i])[1])}
-colnames(up.lambda.2) <- "up"
-
-### cbind all three df's
-lambda.2.plot.data = cbind(
-        mean.lambda.2, 
-        low.lambda.2, 
-        up.lambda.2, 
-        as.vector(propagrmanu.seq),
-        rep("Yes", length(propagrmanu.seq)),
-        seq(1:length(propagrmanu.seq))
-        ); 
-
-names(lambda.2.plot.data)[names(lambda.2.plot.data)=="as.vector(propagrmanu.seq)"] <- "propagrmanu.seq"
-names(lambda.2.plot.data)[names(lambda.2.plot.data)=="rep(\"Yes\", length(propagrmanu.seq))"] <- "Income Tax"
-names(lambda.2.plot.data)[names(lambda.2.plot.data)=="seq(1:length(propagrmanu.seq))"] <- "rownumber"
-
-
-
-
-lambda.1.2.plot.data = rbind(lambda.1.plot.data, lambda.2.plot.data)
-lambda.1.2.plot.data <- lambda.1.2.plot.data[order(lambda.1.2.plot.data$rownumber),] 
-rownames(lambda.1.2.plot.data) <- NULL
-
-
-
-
-# plot
-if (!require("pacman")) install.packages("pacman"); library(pacman); p_load(ggplot2)
-par(mar=c(5,15,1,1)) # bottom, then left margin, upper and right margins
-
-
-
-ggplot() + 
-        # stat_smooth(data =lambda.1.plot.data, aes(x = propagrmanu.seq, y = mean, colour = "No"), method = "loess", se = F) +
-        # stat_smooth(data =lambda.2.plot.data, aes(x = propagrmanu.seq, y = mean, colour = "Yes"), method = "loess", se = F) +
-        geom_ribbon(data =lambda.1.plot.data, aes(x = propagrmanu.seq, y = mean, ymin=low, ymax=up))
-
-
-ggplot() + geom_ribbon(data = lambda.1.plot.data, 
-                       aes(x = propagrmanu.seq, 
-                           ymin = low, 
-                           ymax = up)) + 
-        stat_smooth(y = mean, method = 'loess')
-
-ggplot(lambda.1.2.plot.data) + 
-        geom_ribbon(aes(x=propagrmanu.seq, y=mean, ymin=low, ymax=up, colour="Income Tax"), alpha=.4) + 
-        stat_smooth(method = 'loess')
-
-
-
-ggplot(lambda.1.plot.data, aes(x=propagrmanu.seq, y=mean, colour = "Income Tax")) + 
-        stat_smooth(method = 'loess') + 
-        geom_ribbon(aes(ymin=low, ymax=up, linetype=NA), alpha=0.2) +
-        xlab("Proportion of Agriculture Relative to Industry") + 
-        ylab("Posterior Predictions\n(Earthquakes Death Tolls)") + 
-        theme_bw()
-
-ggplot() + 
-        geom_ribbon(aes(x=propagrmanu.seq, y=mean, ymin=low, ymax=up, fill="Low"), data= lambda.1.plot.data) + 
-        geom_ribbon(aes(x=propagrmanu.seq, y=mean, ymin=low, ymax=up, fill="High"), data= lambda.2.plot.data) +
-        stat_smooth(method = 'loess') +
-        theme_bw() +
-        xlab("Proportion of Agriculture Relative to Industry") + 
-        ylab("Posterior Predictions\n(Earthquakes Death Tolls)")
-
-        
-
-
-
-# geom_density(aes(x=Low, fill="Low"),  data= gee.sim.low.matched, alpha = .2) + 
-# geom_density(aes(x=High, fill="High"), data= gee.sim.high.matched, alpha = .2) + 
-        
-
-
-# predictions
 
 
 
