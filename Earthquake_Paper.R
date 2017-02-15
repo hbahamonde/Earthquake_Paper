@@ -527,8 +527,8 @@ earthquakefit <- jags(
         inits=NULL,
         parameters.to.save = eq.params,
         n.chains=4,
-        n.iter=10000, # 10000
-        n.burnin=3000, # 3000
+        n.iter=200000, # 10000
+        n.burnin=100000, # 3000
         #n.thin=1,
         model.file=model.jags)
 
