@@ -448,36 +448,8 @@ model.jags <- function() {
                 b.propagrmanu[k] ~ dnorm(m.b.propagrmanu[k], tau.b.propagrmanu[k])
                 m.b.propagrmanu[k] ~ dnorm(0, 0.001)
                 tau.b.propagrmanu[k] ~ dgamma(1, 1)
-        }
+                }
         
-        # prediction 1: 
-        for (a in 1:N.sim){
-          log(lambda.1[a]) <- 
-            b.propagrmanu[Sector[a]]*propagrmanu.seq[a] + 
-            b.Magnitude[Sector[a]]*Magnitude[a] +
-            b.incometax.d*min(incometax.d) +
-            b.p.Population*p.Population[a] +
-            b.Urban*Urban[a] +
-            b.year[yearID[a]] +
-            b.r.long*r.long[a] +
-            b.r.lat*r.lat[a] +
-            mu
-        }
-        
-        # prediction 2: 
-        for (b in 1:N.sim){
-          log(lambda.2[b]) <- 
-            b.propagrmanu[Sector[b]]*propagrmanu.seq[b] + 
-            b.Magnitude[Sector[b]]*Magnitude[b] +
-            b.incometax.d*max(incometax.d) +
-            b.p.Population*p.Population[b] +
-            b.Urban*Urban[b] +
-            b.year[yearID[b]] +
-            b.r.long*r.long[b] +
-            b.r.lat*r.lat[b] +
-            mu
-        }
-
         }
 
 # define the vectors of the data matrix for JAGS.
@@ -511,10 +483,6 @@ propagrmanu.seq = seq(
   to = max(as.numeric(datsc$propagrmanu)),
   length.out = as.numeric(nrow(datsc)))
 
-N.sim = length(seq(
-  from = min(as.numeric(datsc$propagrmanu)),
-  to = max(as.numeric(datsc$propagrmanu)),
-  length.out = as.numeric(nrow(datsc))))
 
 
 
@@ -540,25 +508,46 @@ jags.data <- list(Deaths = Deaths,
                   r.lat = r.lat,
                   yearID = yearID,
                   yearN = yearN,
-                  N.sim = N.sim, # for predictions
-                  propagrmanu.seq = propagrmanu.seq, # for predictions
+                  # propagrmanu.seq = propagrmanu.seq, # for predictions
                   N = N)
 
 
 # Define and name the parameters so JAGS monitors them.
-eq.params <- c("b.propagrmanu", "b.Magnitude", "b.p.Population", "b.year", "b.r.long", "b.r.lat", "b.incometax.d", "b.Urban", "lambda.1", "lambda.2")
+eq.params <- c("b.propagrmanu", "b.Magnitude", "b.p.Population", "b.year", "b.r.long", "b.r.lat", "b.incometax.d", "b.Urban")
 
 
 # run the model
-earthquakefit <- jags(
-        data=jags.data,
-        inits=NULL,
-        parameters.to.save = eq.params,
-        n.chains=4,
-        n.iter=10000, # 10000
-        n.burnin=3000, # 3000
-        #n.thin=1,
-        model.file=model.jags)
+p_load(rjags)
+setwd("/Users/hectorbahamonde/RU/Dissertation/Papers/Earthquake_Paper")
+
+
+earthquakefit <- jags.model('model.bug',
+                   data = jags.data,
+                   n.chains = 4,
+                   n.adapt = 100)
+
+#update(earthquakefit, 10000)
+
+earthquakefit.sample.coda <- coda.samples(earthquakefit, c('b.propagrmanu', 'b.incometax.d'), 100000)
+earthquakefit.sample.coda = window(earthquakefit.sample.coda, start = 30000)
+summary(earthquakefit.sample.coda)
+plot(earthquakefit.sample.coda)
+
+# post estimation
+gelman.diag(earthquakefit.sample.coda) # A rule of thumb is that values of 1.1 and less suggests adequate convergence
+gelman.plot(earthquakefit.sample.coda) # A rule of thumb is that values of 1.1 and less suggests adequate convergence
+
+
+
+
+
+
+
+
+earthquakefit.sample.jags <- jags.samples(earthquakefit, c('b.propagrmanu', 'b.incometax.d'), 1000)
+posterior_means <- lapply(earthquakefit.sample.jags, apply, 1, "mean")
+
+
 
 
 
