@@ -428,7 +428,8 @@ model.jags <- function() {
         b.Urban ~ dnorm(0, 0.001)
         # b.propagrmanu ~ dnorm(0, 0.001)
         b.incometax.d ~ dnorm(0, 0.001)
-        
+
+
         for (t in 1:yearN){ # fixed effects of year
                 b.year[t] ~ dnorm(m.b.year[t], tau.b.year[t])
                 
@@ -450,39 +451,34 @@ model.jags <- function() {
         }
         
         # prediction 1: 
-        for (i in 1:N){
-                Deaths.1[i] ~ dpois(lambda.1[i])
-                
-                log(lambda.1[i]) <- 
-                        b.propagrmanu[Sector[i]]*propagrmanu[i] + 
-                        b.Magnitude[Sector[i]]*Magnitude[i] +
-                        b.incometax.d*incometax.d[1] +
-                        b.p.Population*p.Population[i] +
-                        b.Urban*Urban[i] +
-                        b.year[yearID[i]] +
-                        b.r.long*r.long[i] +
-                        b.r.lat*r.lat[i] +
-                        mu
+        for (a in 1:N.sim){
+          lambda.1[a] <- 
+            b.propagrmanu[Sector[a]]*propagrmanu.seq[a] + 
+            b.Magnitude[Sector[a]]*Magnitude[a] +
+            b.incometax.d*min(incometax.d) +
+            b.p.Population*p.Population[a] +
+            b.Urban*Urban[a] +
+            b.year[yearID[a]] +
+            b.r.long*r.long[a] +
+            b.r.lat*r.lat[a] +
+            mu
         }
-
-        # prediction 2: 
-        for (i in 1:N){
-                Deaths.2[i] ~ dpois(lambda.2[i])
-                
-                log(lambda.2[i]) <- 
-                        b.propagrmanu[Sector[i]]*propagrmanu[i] + 
-                        b.Magnitude[Sector[i]]*Magnitude[i] +
-                        b.incometax.d*incometax.d[2] +
-                        b.p.Population*p.Population[i] +
-                        b.Urban*Urban[i] +
-                        b.year[yearID[i]] +
-                        b.r.long*r.long[i] +
-                        b.r.lat*r.lat[i] +
-                        mu
-        }
-
         
-}
+        # prediction 2: 
+        for (b in 1:N.sim){
+          log(lambda.2[b]) <- 
+            b.propagrmanu[Sector[b]]*propagrmanu.seq[b] + 
+            b.Magnitude[Sector[b]]*Magnitude[b] +
+            b.incometax.d*max(incometax.d) +
+            b.p.Population*p.Population[b] +
+            b.Urban*Urban[b] +
+            b.year[yearID[b]] +
+            b.r.long*r.long[b] +
+            b.r.lat*r.lat[b] +
+            mu
+        }
+
+        }
 
 # define the vectors of the data matrix for JAGS.
 w.Deaths <- as.vector(datsc$w.Deaths)
@@ -510,6 +506,18 @@ propagrmanu = as.vector(as.numeric(datsc$propagrmanu))
 r.long = as.vector(as.numeric(datsc$r.long))
 r.lat = as.vector(as.numeric(datsc$r.lat))
 
+propagrmanu.seq = seq(
+  from = min(as.numeric(datsc$propagrmanu)),
+  to = max(as.numeric(datsc$propagrmanu)),
+  length.out = as.numeric(nrow(datsc)))
+
+N.sim = length(seq(
+  from = min(as.numeric(datsc$propagrmanu)),
+  to = max(as.numeric(datsc$propagrmanu)),
+  length.out = as.numeric(nrow(datsc))))
+
+
+
 
 jags.data <- list(Deaths = Deaths,
                   #w.Deaths = w.Deaths,
@@ -532,6 +540,8 @@ jags.data <- list(Deaths = Deaths,
                   r.lat = r.lat,
                   yearID = yearID,
                   yearN = yearN,
+                  N.sim = N.sim, # for predictions
+                  propagrmanu.seq = propagrmanu.seq, # for predictions
                   N = N)
 
 
@@ -549,6 +559,15 @@ earthquakefit <- jags(
         n.burnin=3000, # 3000
         #n.thin=1,
         model.file=model.jags)
+
+
+
+
+# predictions
+
+x1.jags.out <- coda.samples(model=earthquakefit, variable.names = c('lambda.1'),n.iter=1000)
+
+# predictions
 
 
 
