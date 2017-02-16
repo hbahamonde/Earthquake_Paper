@@ -406,16 +406,16 @@ options(scipen=10000)
 set.seed(602)
 
 model.jags <- function() {
-        for (i in 1:N){
+        for (i in 1:N){ # number of earthquakes
                 Deaths[i] ~ dpois(lambda[i])
                 
                 log(lambda[i]) <- 
-                        b.propagrmanu[Sector[i]]*propagrmanu[i] + 
-                        b.Magnitude[Sector[i]]*Magnitude[i] +
+                        b.propagrmanu[Sector[i]]*propagrmanu[i] + # multi-level part: allow national output to vary at the local/sector level
+                        b.Magnitude[Sector[i]]*Magnitude[i] + #  multi-level part: allow national output to vary at the local/sector level
                         b.incometax.d*incometax.d[i] +
                         b.p.Population*p.Population[i] +
                         b.Urban*Urban[i] +
-                        b.year[yearID[i]] +
+                        b.year[yearID[i]] + # year fixed-effects
                         b.r.long*r.long[i] +
                         b.r.lat*r.lat[i] +
                         mu
@@ -430,24 +430,24 @@ model.jags <- function() {
         b.incometax.d ~ dnorm(0, 0.001)
         
         
-        for (t in 1:yearN){ # fixed effects of year
+        for (t in 1:yearN){ # fixed effects of year since they are unmodeled Gelman:2006bh:245
                 b.year[t] ~ dnorm(m.b.year[t], tau.b.year[t])
                 
                 m.b.year[t] ~ dnorm(0, 0.001)
-                tau.b.year[t] ~ dgamma(1, 1)
+                tau.b.year[t] ~ dgamma(1,1)
         }
         
         
-        for (k in 1:NSector){ # fixed effects by sector
+        for (k in 1:NSector){ # fixed effects of year since they are unmodeled Gelman:2006bh:245
                 b.Magnitude[k] ~ dnorm(m.Magnitude[k], tau.Magnitude[k])
                 m.Magnitude[k] ~ dnorm(0, 0.001)
-                tau.Magnitude[k] ~ dgamma(1, 1)
+                tau.Magnitude[k] ~ dgamma(1,1)
         }
         
-        for (k in 1:NSector){ # fixed effects by sector
+        for (k in 1:NSector){ # fixed effects of year since they are unmodeled Gelman:2006bh:245
                 b.propagrmanu[k] ~ dnorm(m.b.propagrmanu[k], tau.b.propagrmanu[k])
                 m.b.propagrmanu[k] ~ dnorm(0, 0.001)
-                tau.b.propagrmanu[k] ~ dgamma(1, 1)
+                tau.b.propagrmanu[k] ~ dgamma(1,1)
                 }
         }
 
@@ -518,7 +518,7 @@ jags.data <- list(Deaths = Deaths,
 
 
 # Define and name the parameters so JAGS monitors them.
-eq.params <- c("b.propagrmanu", "b.Magnitude", "b.p.Population", "b.year", "b.r.long", "b.r.lat", "b.incometax.d", "b.Urban")
+eq.params <- c("b.propagrmanu", "b.Magnitude", "b.p.Population", "b.year", "b.r.long", "b.r.lat", "b.incometax.d", "b.Urban", "lambda")
 
 
 # run the model
@@ -541,6 +541,19 @@ mcmctab(earthquakefit)[1:11,] # Posterior distributions // Year FE excluded
 
 
 plot(earthquakefit)
+
+
+## Predicted Probabilities
+
+earthquake.obs.dat <- subset(data.frame(jags.data))
+earthquake.out <- as.data.frame(as.matrix(as.mcmc(earthquakefit)))
+earthquake.p <- earthquake.out[, grep("lambda[", colnames(earthquake.out), fixed=T)]
+earthquake.p <- log(earthquake.p)
+p_load(gtools)
+earthquake.p <- earthquake.p[, c(mixedsort(names(earthquake.p)))]
+earthquake.p.mean <- apply(earthquake.p, 2, mean)
+ggplot(data = data.frame(earthquake.p, earthquake.obs.dat), aes(x = propagrmanu, y = earthquake.p.mean, colour = as.factor(Sector))) + geom_point(size = 0.9, alpha = 0.5) + theme_bw()
+
 
 # Sectors
 ## 1 Agriculture 
