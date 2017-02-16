@@ -545,14 +545,57 @@ plot(earthquakefit)
 
 ## Predicted Probabilities
 
-earthquake.obs.dat <- subset(data.frame(jags.data))
 earthquake.out <- as.data.frame(as.matrix(as.mcmc(earthquakefit)))
 earthquake.p <- earthquake.out[, grep("lambda[", colnames(earthquake.out), fixed=T)]
 earthquake.p <- log(earthquake.p)
-p_load(gtools)
+earthquake.obs.dat <- subset(data.frame(jags.data))
+
+p_load(gtools,ggplot2)
 earthquake.p <- earthquake.p[, c(mixedsort(names(earthquake.p)))]
 earthquake.p.mean <- apply(earthquake.p, 2, mean)
-ggplot(data = data.frame(earthquake.p, earthquake.obs.dat), aes(x = propagrmanu, y = earthquake.p.mean, colour = as.factor(Sector))) + geom_point(size = 0.9, alpha = 0.5) + theme_bw()
+
+ggplot(data = data.frame(earthquake.p.mean, earthquake.obs.dat), aes(x = Magnitude, y = earthquake.p.mean, colour = as.factor(incometax.d))) + geom_point() + geom_smooth(method = 'loess', level = .2) + theme_bw()
+
+
+
+##
+
+earthquake.out <- as.data.frame(as.matrix(as.mcmc(earthquakefit)))
+earthquake.p <- earthquake.out[, grep("lambda[", colnames(earthquake.out), fixed=T)]
+earthquake.p <- log(earthquake.p)
+
+mean.lambda.1 <- data.frame() 
+for (i in 1:ncol(earthquake.p)){
+        mean.lambda.1 <- rbind(mean.lambda.1, earthquake.p[,i])
+}
+
+
+mean.lambda.1 = cbind(as.vector(incometax.d),mean.lambda.1)
+rownames(mean.lambda.1) <- NULL
+colnames(mean.lambda.1) <- 1:ncol(mean.lambda.1)
+
+mean.lambda.1 = melt(mean.lambda.1, id.vars = "1")
+
+
+
+
+seq = as.data.frame(c(rep('0', 11), rep('1', 80)))
+
+seq2 = as.data.frame(rep(c(seq), 4000))
+
+
+# mean.lambda.1 = cbind(as.vector(incometax.d),mean.lambda.1)
+#colnames(mean.lambda.1) <- 1:row(mean.lambda.1)
+if (!require("pacman")) install.packages("pacman"); library(pacman) 
+p_load(reshape)
+
+
+
+
+ggplot(data = data.frame(mean.lambda.1), aes(x = 1:91)) + geom_point() + geom_smooth(method = 'loess', level = .2) + theme_bw()
+
+dataM <- melt(mean.lambda.1, id.vars = "Cat")
+
 
 
 # Sectors
