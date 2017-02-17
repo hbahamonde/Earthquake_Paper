@@ -547,14 +547,14 @@ plot(earthquakefit)
 
 earthquake.out <- as.data.frame(as.matrix(as.mcmc(earthquakefit)))
 earthquake.p <- earthquake.out[, grep("lambda[", colnames(earthquake.out), fixed=T)]
-#earthquake.p <- log(earthquake.p)
+earthquake.p <- log(earthquake.p)
 earthquake.obs.dat <- subset(data.frame(jags.data))
 
 p_load(gtools,ggplot2)
 earthquake.p <- earthquake.p[, c(mixedsort(names(earthquake.p)))]
 earthquake.p.mean <- apply(earthquake.p, 2, mean)
 
-ggplot(data = data.frame(earthquake.p.mean, earthquake.obs.dat), aes(x = Magnitude, y = earthquake.p.mean, colour = as.factor(incometax.d))) + geom_jitter(width = 0.2, height = 0.2) + geom_smooth(method = 'loess', level = .2) + theme_bw()
+ggplot(data = data.frame(earthquake.p.mean, earthquake.obs.dat), aes(x = Magnitude, y = earthquake.p.mean, colour = as.factor(incometax.d))) + geom_jitter(width = 0.5, height = 0.5) + geom_smooth(se = F, method = 'loess') + theme_bw()
 
 
 
@@ -563,7 +563,9 @@ ggplot(data = data.frame(earthquake.p.mean, earthquake.obs.dat), aes(x = Magnitu
 ### extract simulations from fitted model
 earthquake.out <- as.data.frame(as.matrix(as.mcmc(earthquakefit)))
 earthquake.p <- earthquake.out[, grep("lambda[", colnames(earthquake.out), fixed=T)]
-#earthquake.p <- log(earthquake.p)
+earthquake.p <- log(earthquake.p)
+
+
 
 lambda.1.s1 <- data.frame() 
 for (i in 1:ncol(earthquake.p)){
@@ -571,7 +573,7 @@ for (i in 1:ncol(earthquake.p)){
 }
 
 lambda.1.s1 = t(lambda.1.s1)
-rownames(lambda.1.s1) <- NULL # HERE
+rownames(lambda.1.s1) <- NULL
 
 lambda.1.s1 = cbind(rep('1', nrow(lambda.1.s1)), lambda.1.s1)
 lambda.1.s1 = as.data.frame(melt(lambda.1.s1, id.vars = "V1"))
@@ -618,13 +620,19 @@ colnames(income.tax.sim)[2] <- "simulation"
 colnames(income.tax.sim)[3] <- "proportion"
 
 
+# sample
+income.tax.sim.s = income.tax.sim[sample(nrow(income.tax.sim), 1000), ]
+
+
 ## Plot
 p_load(ggplot2)
-ggplot(data = income.tax.sim,
+ggplot(data = income.tax.sim.s,
        aes(x = proportion, y = simulation, colour = as.factor(income.tax))) + 
-        geom_jitter(width = 0.1, height = 0.8, alpha = 1/500) + 
-        #geom_smooth(method = 'loess', level = .95) +
-        theme_bw() +
+        geom_jitter(width = 0.3, height = 0.3, alpha = 1/7) + 
+        geom_smooth(method = 'lm', level = .80) +
+        ylab("Rate of Occurrence\n(lambda)") + 
+        xlab("Proportion of Agriculture in the Economy") + 
+        theme_bw() + 
         scale_colour_brewer(palette="Set1")
 
 
