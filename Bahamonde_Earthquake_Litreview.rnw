@@ -22,5 +22,9 @@
 - ``It is even acceptable to have one observation in many of the groups.''% Gelman:2006bh: 276
 ``Noninformative prior distributions are intended to allow Bayesian inference for param- eters about which not much is known beyond the data included in the analysis at hand.'' Gelman2006:520.
 - ``In fitting hierarchical models, we recommend starting with a noninformative uniform prior density on standard deviation parameters σα. We expect this will generally work well unless the number of groups J is low (below 5, say).'' Gelman2006:527
+- Language: 
+	- posterior uncertainty // 
+	- ``simulations representing draws from the joint posterior distribution'' (rephrase this // originally from http://www.stat.columbia.edu/~gelman/research/published/bayesvisualization.pdf)
+	- ``Posterior intervals are easily derived from the matrix of posterior simulations'' (rephrase this // originally from http://www.stat.columbia.edu/~gelman/research/published/bayesvisualization.pdf)
 
 \citet[]{Gelman:2006bh}
