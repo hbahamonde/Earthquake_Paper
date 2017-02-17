@@ -543,58 +543,91 @@ mcmctab(earthquakefit)[1:11,] # Posterior distributions // Year FE excluded
 plot(earthquakefit)
 
 
-## Predicted Probabilities
+## Predicted Probabilities 1
 
 earthquake.out <- as.data.frame(as.matrix(as.mcmc(earthquakefit)))
 earthquake.p <- earthquake.out[, grep("lambda[", colnames(earthquake.out), fixed=T)]
-earthquake.p <- log(earthquake.p)
+#earthquake.p <- log(earthquake.p)
 earthquake.obs.dat <- subset(data.frame(jags.data))
 
 p_load(gtools,ggplot2)
 earthquake.p <- earthquake.p[, c(mixedsort(names(earthquake.p)))]
 earthquake.p.mean <- apply(earthquake.p, 2, mean)
 
-ggplot(data = data.frame(earthquake.p.mean, earthquake.obs.dat), aes(x = Magnitude, y = earthquake.p.mean, colour = as.factor(incometax.d))) + geom_point() + geom_smooth(method = 'loess', level = .2) + theme_bw()
+ggplot(data = data.frame(earthquake.p.mean, earthquake.obs.dat), aes(x = Magnitude, y = earthquake.p.mean, colour = as.factor(incometax.d))) + geom_jitter(width = 0.2, height = 0.2) + geom_smooth(method = 'loess', level = .2) + theme_bw()
 
 
 
-##
+## Predicted Probabilities 2
 
+### extract simulations from fitted model
 earthquake.out <- as.data.frame(as.matrix(as.mcmc(earthquakefit)))
 earthquake.p <- earthquake.out[, grep("lambda[", colnames(earthquake.out), fixed=T)]
-earthquake.p <- log(earthquake.p)
+#earthquake.p <- log(earthquake.p)
 
-mean.lambda.1 <- data.frame() 
+lambda.1.s1 <- data.frame() 
 for (i in 1:ncol(earthquake.p)){
-        mean.lambda.1 <- rbind(mean.lambda.1, earthquake.p[,i])
+        lambda.1.s1 <- rbind(lambda.1.s1, earthquake.p[,i])
 }
 
+lambda.1.s1 = t(lambda.1.s1)
+rownames(lambda.1.s1) <- NULL # HERE
 
-mean.lambda.1 = cbind(as.vector(incometax.d),mean.lambda.1)
-rownames(mean.lambda.1) <- NULL
-colnames(mean.lambda.1) <- 1:ncol(mean.lambda.1)
-
-mean.lambda.1 = melt(mean.lambda.1, id.vars = "1")
-
-
+lambda.1.s1 = cbind(rep('1', nrow(lambda.1.s1)), lambda.1.s1)
+lambda.1.s1 = as.data.frame(melt(lambda.1.s1, id.vars = "V1"))
+lambda.1.s1 = lambda.1.s1["value"]
 
 
-seq = as.data.frame(c(rep('0', 11), rep('1', 80)))
+lambda.1.s1 = as.data.frame(as.numeric(as.character(lambda.1.s1$value)))
+colnames(lambda.1.s1) <- "x"
+rownames(lambda.1.s1) <- NULL
 
-seq2 = as.data.frame(rep(c(seq), 4000))
-
-
-# mean.lambda.1 = cbind(as.vector(incometax.d),mean.lambda.1)
-#colnames(mean.lambda.1) <- 1:row(mean.lambda.1)
-if (!require("pacman")) install.packages("pacman"); library(pacman) 
-p_load(reshape)
+lambda.1.s1 = as.data.frame(lambda.1.s1[-c(1:4000), ])
+colnames(lambda.1.s1) <- "x"
 
 
+# vector with 1's and 0's for years with/without income tax // group variable
+income.tax = as.vector(c(rep(rep(0, nrow(earthquake.out)), as.numeric(table(incometax.d)[1])), rep(rep(1, nrow(earthquake.out)), as.numeric(table(incometax.d)[2]))))
 
 
-ggplot(data = data.frame(mean.lambda.1), aes(x = 1:91)) + geom_point() + geom_smooth(method = 'loess', level = .2) + theme_bw()
+# vector with proportion of agr/ind
+propagrmanu.seq.plot <- data.frame() 
+for (i in 1:length(propagrmanu)){
+        propagrmanu.seq.plot <- rbind(propagrmanu.seq.plot, rep(propagrmanu[i], nrow(earthquake.out)))
+}
 
-dataM <- melt(mean.lambda.1, id.vars = "Cat")
+propagrmanu.seq.plot = t(propagrmanu.seq.plot)
+rownames(propagrmanu.seq.plot) <- NULL
+
+
+propagrmanu.seq.plot = cbind(rep('1', nrow(propagrmanu.seq.plot)), propagrmanu.seq.plot)
+propagrmanu.seq.plot = as.data.frame(melt(propagrmanu.seq.plot, id.vars = "V1"))
+propagrmanu.seq.plot = propagrmanu.seq.plot["value"]
+
+
+propagrmanu.seq.plot = as.data.frame(as.numeric(as.character(propagrmanu.seq.plot$value)))
+colnames(propagrmanu.seq.plot) <- "x"
+rownames(propagrmanu.seq.plot) <- NULL
+
+propagrmanu.seq.plot = as.data.frame(propagrmanu.seq.plot[-c(1:4000), ])
+colnames(propagrmanu.seq.plot) <- "x"
+
+# cbind all
+income.tax.sim = cbind(income.tax, lambda.1.s1,propagrmanu.seq.plot)
+colnames(income.tax.sim)[2] <- "simulation"
+colnames(income.tax.sim)[3] <- "proportion"
+
+
+## Plot
+p_load(ggplot2)
+ggplot(data = income.tax.sim,
+       aes(x = proportion, y = simulation, colour = as.factor(income.tax))) + 
+        geom_jitter(width = 0.1, height = 0.8, alpha = 1/500) + 
+        #geom_smooth(method = 'loess', level = .95) +
+        theme_bw() +
+        scale_colour_brewer(palette="Set1")
+
+
 
 
 
