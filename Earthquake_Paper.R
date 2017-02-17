@@ -103,17 +103,29 @@ p_load(ggplot2)
 
 load("/Users/hectorbahamonde/RU/Dissertation/Papers/Earthquake_Paper/Chile_Data_Earthquake.RData")
 
-eq.chile.p = ggplot(dat.chile, aes(x = year, y = Magnitude, size = W.Deaths)) +
+
+# time-series plot
+ggplot(dat.chile, aes(x = year, y = Magnitude, size = W.Deaths)) +
         geom_point(shape = 21) +
         scale_x_continuous(name='Years', limits=c(1900, 2010), breaks = seq(1900, 2010, 10)) +
         scale_y_continuous(name='Magnitude', limits=c(3, 10), breaks = seq(3, 10, 1)) +
         theme_bw() +
         ggtitle("Chile") +
         scale_size("Weighted Deaths") +
-        stat_smooth(show.legend = F)
+        stat_smooth(show.legend = F,  method = 'loess')
 
-
-
+## bar plot
+ggplot(na.omit(dat.chile), aes(factor(Deaths))) + 
+        geom_bar(width=.8) + 
+        scale_x_discrete(name='Deaths') +
+        scale_y_discrete(name='Count') +
+        theme_bw() + 
+        ggtitle("Death Tolls Associated to Earthquakes: Chile 1500-2010") + 
+        coord_flip()
+        
+# another kind-of TS plot.
+# ggplot(na.omit(dat.chile), aes(x=year, y=Deaths)) + geom_line() + theme_bw()                    
+        
 ## PERU
 load("/Users/hectorbahamonde/RU/Dissertation/Papers/Earthquake_Paper/Peru_Data_Earthquake.RData")
 
@@ -297,7 +309,6 @@ pvars <- c("constagricult","constmanufact","Magnitude", "p.Population")
 datsc <- dat 
 datsc[pvars] <- lapply(datsc[pvars],scale) 
 
-
 # formula 
 fm = as.formula(Deaths ~ constmanufact + constagricult + factor(country) + factor(year) + Magnitude) 
 # Frequentist model
@@ -355,6 +366,7 @@ rm(list=ls())
 load("/Users/hectorbahamonde/RU/Dissertation/Papers/Earthquake_Paper/eq_output_d.RData") 
 dat = eq.output.d # rename dataset 
 dat <- dat[which(dat$year >= 1900 & dat$country == "Chile"), ] # drop early earthquakes 
+
 
 # dropping NAs 
 dat = dat[!is.na(dat$Magnitude),] 
@@ -421,33 +433,33 @@ model.jags <- function() {
                         mu
         }
         
-        b.r.lat ~ dnorm(0, 0.001)
-        b.r.long ~ dnorm(0, 0.001)
-        mu  ~ dnorm(0, 0.001) ## intercept
-        b.p.Population ~ dnorm(0, 0.001)
-        b.Urban ~ dnorm(0, 0.001)
+        b.r.lat ~ dnorm(0, 0.01)
+        b.r.long ~ dnorm(0, 0.01)
+        mu  ~ dnorm(0, 0.01) ## intercept
+        b.p.Population ~ dnorm(0, 0.01)
+        b.Urban ~ dnorm(0, 0.01)
         # b.propagrmanu ~ dnorm(0, 0.001)
-        b.incometax.d ~ dnorm(0, 0.001)
+        b.incometax.d ~ dnorm(0, 0.01)
         
         
         for (t in 1:yearN){ # fixed effects of year since they are unmodeled Gelman:2006bh:245
                 b.year[t] ~ dnorm(m.b.year[t], tau.b.year[t])
                 
-                m.b.year[t] ~ dnorm(0, 0.001)
-                tau.b.year[t] ~ dgamma(1,1)
+                m.b.year[t] ~ dnorm(0, 0.01)
+                tau.b.year[t] ~ dgamma(0.5, 0.001) # Jeffreys prior
         }
         
         
         for (k in 1:NSector){ # fixed effects of year since they are unmodeled Gelman:2006bh:245
                 b.Magnitude[k] ~ dnorm(m.Magnitude[k], tau.Magnitude[k])
-                m.Magnitude[k] ~ dnorm(0, 0.001)
-                tau.Magnitude[k] ~ dgamma(1,1)
+                m.Magnitude[k] ~ dnorm(0, 0.01)
+                tau.Magnitude[k] ~ dgamma(0.5, 0.001) # Jeffreys prior
         }
         
         for (k in 1:NSector){ # fixed effects of year since they are unmodeled Gelman:2006bh:245
                 b.propagrmanu[k] ~ dnorm(m.b.propagrmanu[k], tau.b.propagrmanu[k])
-                m.b.propagrmanu[k] ~ dnorm(0, 0.001)
-                tau.b.propagrmanu[k] ~ dgamma(1,1)
+                m.b.propagrmanu[k] ~ dnorm(0, 0.01)
+                tau.b.propagrmanu[k] ~ dgamma(0.5, 0.001) # Jeffreys prior
                 }
         }
 
@@ -542,103 +554,6 @@ mcmctab(earthquakefit)[1:11,] # Posterior distributions // Year FE excluded
 
 plot(earthquakefit)
 
-
-## Predicted Probabilities 1
-
-earthquake.out <- as.data.frame(as.matrix(as.mcmc(earthquakefit)))
-earthquake.p <- earthquake.out[, grep("lambda[", colnames(earthquake.out), fixed=T)]
-earthquake.p <- log(earthquake.p)
-earthquake.obs.dat <- subset(data.frame(jags.data))
-
-p_load(gtools,ggplot2)
-earthquake.p <- earthquake.p[, c(mixedsort(names(earthquake.p)))]
-earthquake.p.mean <- apply(earthquake.p, 2, mean)
-
-ggplot(data = data.frame(earthquake.p.mean, earthquake.obs.dat), aes(x = Magnitude, y = earthquake.p.mean, colour = as.factor(incometax.d))) + geom_jitter(width = 0.5, height = 0.5) + geom_smooth(se = F, method = 'loess') + theme_bw()
-
-
-
-## Predicted Probabilities 2
-
-### extract simulations from fitted model
-earthquake.out <- as.data.frame(as.matrix(as.mcmc(earthquakefit)))
-earthquake.p <- earthquake.out[, grep("lambda[", colnames(earthquake.out), fixed=T)]
-earthquake.p <- log(earthquake.p)
-
-
-
-lambda.1.s1 <- data.frame() 
-for (i in 1:ncol(earthquake.p)){
-        lambda.1.s1 <- rbind(lambda.1.s1, earthquake.p[,i])
-}
-
-lambda.1.s1 = t(lambda.1.s1)
-rownames(lambda.1.s1) <- NULL
-
-lambda.1.s1 = cbind(rep('1', nrow(lambda.1.s1)), lambda.1.s1)
-lambda.1.s1 = as.data.frame(melt(lambda.1.s1, id.vars = "V1"))
-lambda.1.s1 = lambda.1.s1["value"]
-
-
-lambda.1.s1 = as.data.frame(as.numeric(as.character(lambda.1.s1$value)))
-colnames(lambda.1.s1) <- "x"
-rownames(lambda.1.s1) <- NULL
-
-lambda.1.s1 = as.data.frame(lambda.1.s1[-c(1:4000), ])
-colnames(lambda.1.s1) <- "x"
-
-
-# vector with 1's and 0's for years with/without income tax // group variable
-income.tax = as.vector(c(rep(rep(0, nrow(earthquake.out)), as.numeric(table(incometax.d)[1])), rep(rep(1, nrow(earthquake.out)), as.numeric(table(incometax.d)[2]))))
-
-
-# vector with proportion of agr/ind
-propagrmanu.seq.plot <- data.frame() 
-for (i in 1:length(propagrmanu)){
-        propagrmanu.seq.plot <- rbind(propagrmanu.seq.plot, rep(propagrmanu[i], nrow(earthquake.out)))
-}
-
-propagrmanu.seq.plot = t(propagrmanu.seq.plot)
-rownames(propagrmanu.seq.plot) <- NULL
-
-
-propagrmanu.seq.plot = cbind(rep('1', nrow(propagrmanu.seq.plot)), propagrmanu.seq.plot)
-propagrmanu.seq.plot = as.data.frame(melt(propagrmanu.seq.plot, id.vars = "V1"))
-propagrmanu.seq.plot = propagrmanu.seq.plot["value"]
-
-
-propagrmanu.seq.plot = as.data.frame(as.numeric(as.character(propagrmanu.seq.plot$value)))
-colnames(propagrmanu.seq.plot) <- "x"
-rownames(propagrmanu.seq.plot) <- NULL
-
-propagrmanu.seq.plot = as.data.frame(propagrmanu.seq.plot[-c(1:4000), ])
-colnames(propagrmanu.seq.plot) <- "x"
-
-# cbind all
-income.tax.sim = cbind(income.tax, lambda.1.s1,propagrmanu.seq.plot)
-colnames(income.tax.sim)[2] <- "simulation"
-colnames(income.tax.sim)[3] <- "proportion"
-
-
-# sample
-income.tax.sim.s = income.tax.sim[sample(nrow(income.tax.sim), 1000), ]
-
-
-## Plot
-p_load(ggplot2)
-ggplot(data = income.tax.sim.s,
-       aes(x = proportion, y = simulation, colour = as.factor(income.tax))) + 
-        geom_jitter(width = 0.3, height = 0.3, alpha = 1/7) + 
-        geom_smooth(method = 'lm', level = .80) +
-        ylab("Rate of Occurrence\n(lambda)") + 
-        xlab("Proportion of Agriculture in the Economy") + 
-        theme_bw() + 
-        scale_colour_brewer(palette="Set1")
-
-
-
-
-
 # Sectors
 ## 1 Agriculture 
 ## 2 Industry 
@@ -646,6 +561,12 @@ ggplot(data = income.tax.sim.s,
 
 
 ## post-estimation
+# DAY 12 Johannes p. 20.
+
+
+
+
+
 
 
 ### summary of results
