@@ -560,13 +560,44 @@ plot(earthquakefit)
 ## 3 Mixed
 
 
-## post-estimation
-# DAY 12 Johannes p. 20.
+##########################
+# Model Checking
+##########################
+
+eq.out <- as.data.frame(as.matrix(as.mcmc(earthquakefit)))
+pred.eq <- eq.out[, grep("lambda[", colnames(eq.out), fixed = T)]
+library(gtools)
+pred.eq <- pred.eq[, c(mixedsort(names(pred.eq)))]
+
+pred.eq.median <- apply(pred.eq, 2, median) # median of the column
+pred.eq.lower <- apply(pred.eq, 2, function(x) quantile(x, probs = c(0.05))) # quantile of the column
+pred.eq.upper <- apply(pred.eq, 2, function(x) quantile(x, probs = c(0.95))) # quantile of the column
+
+eq.pred <- data.frame(
+        id = 1:nrow(datsc),
+        Deaths.observed = datsc$Deaths,
+        pred.eq.median = pred.eq.median,
+        pred.eq.lower = pred.eq.lower,
+        pred.eq.upper = pred.eq.upper)
 
 
+library(ggplot2)
+ggplot(data = eq.pred, 
+       aes(x = Deaths.observed, y = reorder(id, Deaths.observed))) + 
+        geom_point(aes(
+                x = pred.eq.median, 
+                y = reorder(id,Deaths.observed))) +
+        geom_segment(aes(
+                x = pred.eq.lower, 
+                xend = pred.eq.upper, 
+                y = reorder(id, Deaths.observed), 
+                yend = reorder(id, Deaths.observed)), 
+                alpha = 0.5) + 
+        geom_point(shape = 21, colour = "red") + 
+        ylab("Observation") + xlab("Deaths") + theme_bw()
 
-
-
+##########################
+##########################
 
 
 ### summary of results
