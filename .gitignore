@@ -20,3 +20,21 @@ Data/CHL_adm_shp/
 Data/PER_adm_shp/
 
 *.RData
+
+*.aux
+
+*.bbl
+
+*.blg
+
+*.fdb_latexmk
+
+*.fls
+
+*.log
+
+*.out
+
+*.gz
+
+Bahamonde_Earthquake_Paper\.tex
