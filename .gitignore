@@ -1,26 +1,22 @@
 
 *.textClipping
 
-*.aux
+Data/division_comunal/
 
-*.bbl
+Data/division_provincial/
+
+Resources/
 
 \.DS_Store
 
 \.Rhistory
 
-*.blg
+Data/DPA_INE/
 
-*.fdb_latexmk
+Chile_Data_Earthquake\.RData
 
-*.fls
+Data/CHL_adm_shp/
 
-*.out
-
-*.log
-
-Bahamonde_Earthquake_Paper\.tex
-
-*.gz
+Data/PER_adm_shp/
 
 *.RData
