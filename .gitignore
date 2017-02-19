@@ -1,2 +1,26 @@
 
 *.textClipping
+
+*.aux
+
+*.bbl
+
+\.DS_Store
+
+\.Rhistory
+
+*.blg
+
+*.fdb_latexmk
+
+*.fls
+
+*.out
+
+*.log
+
+Bahamonde_Earthquake_Paper\.tex
+
+*.gz
+
+*.RData
