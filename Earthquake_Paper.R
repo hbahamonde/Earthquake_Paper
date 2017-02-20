@@ -662,16 +662,26 @@ var.labels = c(
 
 rownames(reg.results.table) <- var.labels
 
+
+
+
 # load libraries
 if (!require("pacman")) install.packages("pacman"); library(pacman) 
 p_load(xtable)
 
-xtable(reg.results.table,
-       caption = "Poisson Regression: Simulations from the Joint Posterior Distribution",
-       label = "reg:1", 
-       auto = TRUE
-       )
+note <- paste0(
+        "\\hline \n \\multicolumn{6}{l}", "{ \\scriptsize {\\bf Note}: ", n.iter, " iterations with ", n.burnin , " iterations discarded at the beginning.}\\\\", "\n \\multicolumn{6}{l}", "{ \\scriptsize Standard convergence diagnostics suggest good mixing and convergence.}\\\\","\n \\multicolumn{6}{l}", "{ \\scriptsize Year fixed effects, latitude and longitude were omitted in the table.}\\\\", "\n \\multicolumn{6}{l}","{ \\scriptsize A total of ", n.chains, " chains were run. ",  " All R-Hat statistics below critical levels.}\\\\")
+
+print.xtable(xtable(
+        reg.results.table, caption = "Poisson Regression: Simulated Posterior Predictions"),
+        label = "reg:1", 
+        auto = TRUE,
+        hline.after=c(-1, 0),
+        add.to.row = list(pos = list(8),command = note)
+        )
 ## ----
+
+
 
 
 
