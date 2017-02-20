@@ -105,7 +105,7 @@ t_{1,...T} & \; \text{where} \; \text{T}=\Sexpr{yearN}.
 \end{split}
 \end{equation}
 
-The $i$ indicator denotes the event (i.e. earthquake), the $j$ index expresses the type of sub-national economic composition where the earthquake hit (agricultural, industrial, or both), and the $t$ subscripts denotes the year when earthquake $i$ happened. Since earthquakes can happen more than once per year, in my dataset $i > t$. The estimated parameters $\beta_{k}$ have uninformative normally distributed priors, while the precisions $\tau_{p}$ of $\beta_{1_j}$, $\beta_{2_j}$ and $\beta_{8_t}$ have uninformative Gamma priors, of the form,
+The $i$ indicator denotes the event (i.e. earthquake), the $j$ index expresses the type of sub-national economic composition where the earthquake hit (agricultural, industrial, or both), and the $t$ subscripts denotes the year when earthquake $i$ happened. Since earthquakes can happen more than once per year, in my dataset $i > t$.\footnote{For the years in which there is just one earthquake, the `group' variable has only one observation. This does not endangers the robustness of the model. \citet[276]{Gelman:2006bh} explains that it ``is even acceptable to have one observation in many of the groups.''} The estimated parameters $\beta_{k}$ have uninformative normally distributed priors, while the precisions $\tau_{p}$ of $\beta_{1_j}$, $\beta_{2_j}$ and $\beta_{8_t}$ have uninformative Gamma priors, of the form,
 
 \begin{equation} \label{indexes:2}
 \begin{split}
@@ -113,6 +113,19 @@ The $i$ indicator denotes the event (i.e. earthquake), the $j$ index expresses t
 \tau_{p,...P} \;\sim\; & \mathcal{G}(0.5, 0.001) \; \text{where} \; \text{P}=3.
 \end{split}
 \end{equation}
+
+
+<<model:and:data:does:run, echo=FALSE, comment=NA, warning=FALSE, message=FALSE,include = FALSE, cache=FALSE>>=
+
+@
+
+
+\afterpage{
+<<regression:table, echo=FALSE, comment=NA, warning=FALSE, message=F, results='asis', cache=FALSE>>=
+
+@
+}
+
 
 
 
