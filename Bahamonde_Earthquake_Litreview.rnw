@@ -19,7 +19,7 @@
 
 - Idea: the `treatment' (proportion of AGR/IND) is at the national level, but the outcome is measured on local communities. // rephrased from \citet[237]{Gelman:2006bh}
 - ``multilevel modeling typically proceeds by adding predictors at the individual and group levels and reducing the unexplained variance at each level.'' % \citet[271]{Gelman:2006bh}
-- ``It is even acceptable to have one observation in many of the groups.''% Gelman:2006bh: 276
+- %``It is even acceptable to have one observation in many of the groups.''% Gelman:2006bh: 276
 ``Noninformative prior distributions are intended to allow Bayesian inference for param- eters about which not much is known beyond the data included in the analysis at hand.'' Gelman2006:520.
 - ``In fitting hierarchical models, we recommend starting with a noninformative uniform prior density on standard deviation parameters σα. We expect this will generally work well unless the number of groups J is low (below 5, say).'' Gelman2006:527
 - Language: 
