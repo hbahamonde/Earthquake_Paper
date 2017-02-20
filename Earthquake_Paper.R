@@ -562,13 +562,17 @@ eq.params <- c("b.propagrmanu", "b.Magnitude", "b.p.Population", "b.year", "b.r.
 ## ---- model:and:data:does:run ----
 # run the model
 
+n.iter = 200000 
+n.burnin = 100000
+n.chains = 4
+
 earthquakefit <- jags(
         data=jags.data,
         inits=NULL,
         parameters.to.save = eq.params,
-        n.chains=4,
-        n.iter=100, # 200000 this is for working model
-        n.burnin=2, # 100000 this is for working model
+        n.chains=n.chains,
+        n.iter=100, # n.iter = 200000 // this is for working model
+        n.burnin=2, # n.burnin = 100000 // this is for working model
         #n.thin=1,
         model.file=model.jags,
         progress.bar
