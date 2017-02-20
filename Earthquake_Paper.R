@@ -552,17 +552,27 @@ eq.params <- c("b.propagrmanu", "b.Magnitude", "b.p.Population", "b.year", "b.r.
 
 
 
+
+
+
+
+
+
+
 ## ---- model:and:data:does:run ----
 # run the model
+
 earthquakefit <- jags(
         data=jags.data,
         inits=NULL,
         parameters.to.save = eq.params,
         n.chains=4,
-        n.iter=200000, # 10000
-        n.burnin=100000, # 3000
+        n.iter=100, # 200000 this is for working model
+        n.burnin=2, # 100000 this is for working model
         #n.thin=1,
-        model.file=model.jags)
+        model.file=model.jags,
+        progress.bar
+        = "none")
 ## ----
 
 
@@ -573,10 +583,96 @@ earthquakefit <- jags(
 
 
 
-devtools::source_url("https://raw.githubusercontent.com/jkarreth/JKmisc/master/mcmctab.R")
-mcmctab(earthquakefit)[1:11,] # Posterior distributions // Year FE excluded
+
+## ---- regression:table ----
+
+# R function for summarizing MCMC output in a regression-style table
+# Johannes Karreth, thanks for the function!
+## SOURCE: https://raw.githubusercontent.com/jkarreth/JKmisc/master/mcmctab.R
+
+# I use this function mainly for teaching.
+
+# The function produces a table with means, SDs, credible intervals, and
+# the % of posterior draws below/above 0 from MCMC output from 
+# R2jags, rjags, R2WinBUGS, R2OpenBUGS, and MCMCpack
+
+# Depends on packages: coda, rstan (if working with rstan objects)
+
+# Arguments: 
+# sims: output from R2jags, rjags, R2WinBUGS, R2OpenBUGS, MCMCpack, rstan
+# ci: desired credible interval, default: 0.95
+# digits: desired number of digits in the table, default: 2
+
+mcmctab <- function(sims, ci = .8, digits = 2){
+        
+        require(coda)	
+        
+        if(class(sims) == "jags" | class(sims) == "rjags"){
+                sims <- as.matrix(as.mcmc(sims))
+        }
+        if(class(sims) == "bugs"){
+                sims <- sims$sims.matrix
+        }  
+        if(class(sims) == "mcmc"){
+                sims <- as.matrix(sims)
+        }    
+        if(class(sims) == "mcmc.list"){
+                sims <- as.matrix(sims)
+        }      
+        if(class(sims) == "stanfit"){
+                stan_sims <- rstan::As.mcmc.list(sims)
+                sims <- as.matrix(stan_sims)
+        }      
+        
+        dat <- t(sims)
+        mcmctab <- apply(dat, 1, 
+                         function(x) c(Mean = round(mean(x), digits = digits), # Posterior mean
+                                       SD = round(sd(x), digits = 3), # Posterior SD
+                                       Lower = as.numeric(round(quantile(x, probs = c((1 - ci) / 2)), digits = digits)), # Lower CI of posterior
+                                       Upper = as.numeric(round(quantile(x, probs = c((1 + ci) / 2)), digits = digits)), # Upper CI of posterior
+                                       Pr. = round(ifelse(mean(x) > 0, length(x[x > 0]) / length(x), length(x[x < 0]) / length(x)), digits = digits) # Probability of posterior >/< 0
+                         ))
+        return(t(mcmctab))
+}
 
 
+
+reg.results.table = data.frame(mcmctab(earthquakefit)[1:11,]) # Posterior distributions // Year FE excluded
+
+reg.results.table = reg.results.table[c(# reorder
+        6:8, # proportion variables
+        1, # income var.
+        2:4, # magnitude
+        11 # urban
+        ),] 
+
+var.labels = c( 
+        "Prop. Agr/Ind (Agr.)",
+        "Prop. Agr/Ind (Ind)",
+        "Prop. Agr/Ind (Mixed)",
+        "Income Tax",
+        "Eq. Magnitude (Agr.)",
+        "Eq. Magnitude (Ind.)",
+        "Eq. Magnitude (Mixed)",
+        "Urban")
+
+rownames(reg.results.table) <- var.labels
+
+# load libraries
+if (!require("pacman")) install.packages("pacman"); library(pacman) 
+p_load(xtable)
+
+xtable(reg.results.table,
+       caption = "Poisson Regression: Simulations from the Joint Posterior Distribution",
+       label = "reg:1", 
+       auto = TRUE
+       )
+## ----
+
+
+
+
+###
 plot(earthquakefit)
 
 # Sectors
@@ -660,16 +756,8 @@ caterplot(earthquakefit,
           quantiles = list(outer=c(0.1,0.9),inner=c(0.16,0.84)),
           reorder = F, 
           cex.labels =0.9,
-          labels = c(
-            "Prop. Agr/Ind (Agr.)",
-            "Prop. Agr/Ind (Ind)",
-            "Prop. Agr/Ind (Mixed)",
-            "Income Tax",
-            "Eq. Magnitude (Agr.)",
-            "Eq. Magnitude (Ind.)",
-            "Eq. Magnitude (Mixed)",
-            "Urban"), 
-          col=2, 
+          labels = var.labels, # calls variables from above
+          col = 2, 
           style=c("gray")
           );abline(v = 0, col = "gray60")
           
