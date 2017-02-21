@@ -607,7 +607,10 @@ earthquakefit <- jags(
 # ci: desired credible interval, default: 0.95
 # digits: desired number of digits in the table, default: 2
 
-mcmctab <- function(sims, ci = .8, digits = 2){
+
+ci.number = .8
+
+mcmctab <- function(sims, ci = ci.number, digits = 2){
         
         require(coda)	
         
@@ -628,14 +631,23 @@ mcmctab <- function(sims, ci = .8, digits = 2){
                 sims <- as.matrix(stan_sims)
         }      
         
+
         dat <- t(sims)
-        mcmctab <- apply(dat, 1, 
+        
+        mcmctab <- apply(dat, 1,
                          function(x) c(Mean = round(mean(x), digits = digits), # Posterior mean
                                        SD = round(sd(x), digits = 3), # Posterior SD
-                                       Lower = as.numeric(round(quantile(x, probs = c((1 - ci) / 2)), digits = digits)), # Lower CI of posterior
-                                       Upper = as.numeric(round(quantile(x, probs = c((1 + ci) / 2)), digits = digits)), # Upper CI of posterior
-                                       Pr. = round(ifelse(mean(x) > 0, length(x[x > 0]) / length(x), length(x[x < 0]) / length(x)), digits = digits) # Probability of posterior >/< 0
-                         ))
+                                       Lower = as.numeric(
+                                               round(quantile(x, probs = c((1 - ci) / 2)), 
+                                                     digits = digits)), # Lower CI of posterior
+                                       Upper = as.numeric(
+                                               round(quantile(x, probs = c((1 + ci) / 2)), 
+                                                     digits = digits)), # Upper CI of posterior
+                                       Pr. = round(
+                                               ifelse(mean(x) > 0, length(x[x > 0]) / length(x),
+                                                      length(x[x < 0]) / length(x)), 
+                                               digits = digits) # Probability of posterior >/< 0
+                                       ))
         return(t(mcmctab))
 }
 
@@ -670,7 +682,7 @@ if (!require("pacman")) install.packages("pacman"); library(pacman)
 p_load(xtable)
 
 note <- paste0(
-        "\\hline \n \\multicolumn{6}{l}", "{ \\scriptsize {\\bf Note}: ", n.iter, " iterations with ", n.burnin , " iterations discarded at the beginning.}\\\\", "\n \\multicolumn{6}{l}", "{ \\scriptsize Standard convergence diagnostics suggest good mixing and convergence.}\\\\","\n \\multicolumn{6}{l}", "{ \\scriptsize Year fixed effects, latitude and longitude were omitted in the table.}\\\\", "\n \\multicolumn{6}{l}","{ \\scriptsize A total of ", n.chains, " chains were run. ",  " All R-Hat statistics below critical levels.}\\\\")
+        "\\hline \n \\multicolumn{6}{l}", "{ \\scriptsize {\\bf Note}: ", n.iter, " iterations with ", n.burnin , " iterations discarded at the beginning.}\\\\", "\n \\multicolumn{6}{l}", "{ \\scriptsize ", ci.number*100 ,"\\% credible intervals in parenthesis. All R-Hat statistics below critical levels.}\\\\" ,"\n \\multicolumn{6}{l}", "{ \\scriptsize Standard convergence diagnostics suggest good mixing and convergence.}\\\\","\n \\multicolumn{6}{l}", "{ \\scriptsize Year fixed effects, latitude and longitude were omitted in the table.}\\\\", "\n \\multicolumn{6}{l}","{ \\scriptsize A total of ", n.chains, " chains were run.} \\\\")
 
 print.xtable(xtable(
         reg.results.table, caption = "Poisson Regression: Simulated Posterior Predictions"),
@@ -699,9 +711,14 @@ plot(earthquakefit)
 # Model Checking
 ##########################
 
+
+## ---- predicted:observed:plot ----
 eq.out <- as.data.frame(as.matrix(as.mcmc(earthquakefit)))
 pred.eq <- eq.out[, grep("lambda[", colnames(eq.out), fixed = T)]
-library(gtools)
+
+if (!require("pacman")) install.packages("pacman"); library(pacman) 
+p_load(gtools)
+
 pred.eq <- pred.eq[, c(mixedsort(names(pred.eq)))]
 
 pred.eq.median <- apply(pred.eq, 2, median) # median of the column
@@ -716,7 +733,9 @@ eq.pred <- data.frame(
         pred.eq.upper = pred.eq.upper)
 
 
-library(ggplot2)
+if (!require("pacman")) install.packages("pacman"); library(pacman) 
+p_load(ggplot2)
+
 ggplot(data = eq.pred, 
        aes(x = Deaths.observed, y = reorder(id, Deaths.observed))) + 
         geom_point(aes(
@@ -729,15 +748,22 @@ ggplot(data = eq.pred,
                 yend = reorder(id, Deaths.observed)), 
                 alpha = 0.5) + 
         geom_point(shape = 21, colour = "red") + 
-        ylab("Observation") + xlab("Deaths") + theme_bw()
+        ylab("Observation") + xlab("Deaths") + theme_bw() +
+        theme(axis.text.y = element_text(size=8)
+        )
+## ----
 
 ##########################
 ##########################
+
+
+
+
 
 
 ### summary of results
 fit.mcmc <- as.mcmc(earthquakefit)
-summary(fit.mcmc)
+# summary(fit.mcmc)
 
 
 ### traceplots
@@ -756,7 +782,7 @@ traplot(earthquakefit, parms =
 
 
 # xyplot(fit.mcmc, layout = c(5, 15), aspect = "fill")
-autocorr.plot(fit.mcmc, layout = c(5, 15), aspect = "fill")
+autocorr.plot(fit.mcmc, layout = c(15, 15), aspect = "fill")
 
 
 # cater plot
@@ -775,8 +801,13 @@ caterplot(earthquakefit,
           style=c("gray")
           );abline(v = 0, col = "gray60")
           
-          
 
+
+
+
+
+
+## ---- year:fixed:effects:plot ----
 #### PLOT fixed effects year
 p_load(gtools,dplyr,reshape2,ggplot2)
 
@@ -798,6 +829,9 @@ ggplot(data = earthquake.year, aes(x = variable, y = mean)) +
   ylab("Fixed Effects: Year") + 
   theme_bw() + 
   stat_smooth(method="loess", level=0.80)
+## ----
+
+
 
 
 ## http://rstudio-pubs-static.s3.amazonaws.com/12451_53fc5e6bd80744b99158a12975c31cbf.html

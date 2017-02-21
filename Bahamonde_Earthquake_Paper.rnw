@@ -52,7 +52,7 @@ ABSTRACT
 %\tableofcontents
 
 
-\newpage
+\clearpage
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % knitr stuff
@@ -126,12 +126,29 @@ The $i$ indicator denotes the event (i.e. earthquake), the $j$ index expresses t
 @
 }
 
+\clearpage
+
+\section{Appendix}
+
+% reset counter for appendix
+\subimport{/Users/hectorbahamonde/RU/Bibliografia_PoliSci/}{LaTeX_Reset_Counter_For_Appendix}
+
+<<year:fixed:effects:plot, echo = FALSE, fig.pos='h', warning = FALSE, message = F, fig.cap='Year Fixed Effects', fig.align='center', fig.width=7, fig.height=3,dpi=10000,cache = FALSE>>=
+
+@
+
+
+
+<<predicted:observed:plot, echo = FALSE, fig.pos='h', warning = FALSE, message = F, fig.cap='Assessing Model Fit', fig.align='center', fig.width=5, fig.height=9,dpi=10000,cache = FALSE>>=
+
+@
+
 
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % WORD COUNT
-\newpage
+\clearpage
 <<wordcount, echo=FALSE, cache=FALSE>>=
 library(knitr)
 
