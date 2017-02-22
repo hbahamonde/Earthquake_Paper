@@ -9,6 +9,14 @@
 
 
 
+% Endowments
+
+	% Agriculture
+	\citet[5]{Federico:2008xd}: ``The quality of the soil is determined by its physical characteristics, which include texture, structure, exchange capacity (i.e. the capacity to release nutrients to plants), alkalinity or acidity.''
+
+	\citet[8]{Federico:2008xd}: ``For instance, potatoes can be cultivated on the Peruvian highlands (ca. 3000 meters above the sea), but they take eight months, instead of two at sea-level, to grow.''
+
+
 % Electoral connection
 
 ``Having a more informed and politically active electorate strengthens incentives for governments to be responsive.'' (\citet[1415]{Besley2002})
