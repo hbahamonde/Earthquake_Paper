@@ -105,17 +105,16 @@ load("/Users/hectorbahamonde/RU/Dissertation/Papers/Earthquake_Paper/Chile_Data_
 
 
 # time-series plot
-ggplot(dat.chile, aes(x = year, y = Magnitude, size = W.Deaths)) +
+ggplot(dat.chile, aes(x = year, y = Magnitude)) +
         geom_point(shape = 21) +
-        scale_x_continuous(name='Years', limits=c(1900, 2010), breaks = seq(1900, 2010, 10)) +
-        scale_y_continuous(name='Magnitude', limits=c(3, 10), breaks = seq(3, 10, 1)) +
         theme_bw() +
         ggtitle("Chile") +
-        scale_size("Weighted Deaths") +
         stat_smooth(show.legend = F,  method = 'loess')
 
 ## bar plot
-ggplot(na.omit(dat.chile), aes(factor(Deaths))) + 
+Deaths = data.frame(dat.chile$Deaths); colnames(Deaths)[1] <- "Deaths"
+
+ggplot(na.omit(Deaths), aes(factor(Deaths))) + 
         geom_bar(width=.8) + 
         scale_x_discrete(name='Deaths') +
         scale_y_discrete(name='Count') +
