@@ -204,11 +204,16 @@ chile.provinces <- fortify(chile.provinces)
 chile.provinces <- chile.provinces[!(chile.provinces$long <= -76),]
 
 
-chile.map = ggplot() +  
+# Longitude = na.omit(dat.chile$Longitude) # 184
+# Latitude = na.omit(dat.chile$Latitude) # 184
+# Magnitude = na.omit(dat.chile$Magnitude) # 132 // I think I am going to exclude magnitudes, and just show frequency of earthquakes.
+
+ggplot() +  
         geom_polygon(aes(x=long, y=lat, group=group), fill='grey', size=.05, color='black', data=chile.provinces, alpha=1/2) +
         theme_bw() +
         ggtitle("Chile") + 
-        geom_point(data=subset(dat.chile, year>=1900), aes(x=Longitude, y=Latitude, size=Magnitude), color="red", shape=21)
+        geom_point(data=dat.chile, aes(x=Longitude, y=Latitude), shape=21, color='red')
+
 
 
 #### MAPS: Peru
