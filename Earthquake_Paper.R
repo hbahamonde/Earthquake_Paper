@@ -575,8 +575,8 @@ earthquakefit <- jags(
         inits=NULL,
         parameters.to.save = eq.params,
         n.chains=n.chains,
-        n.iter=100, # n.iter = 200000 // this is for working model
-        n.burnin=2, # n.burnin = 100000 // this is for working model
+        n.iter=200000, # n.iter = 200000 // this is for working model
+        n.burnin=100000, # n.burnin = 100000 // this is for working model
         #n.thin=1,
         model.file=model.jags,
         progress.bar
@@ -612,7 +612,7 @@ earthquakefit <- jags(
 # digits: desired number of digits in the table, default: 2
 
 
-ci.number = .8
+ci.number = .8 # modify this parameter to get desired credible intervals.
 
 mcmctab <- function(sims, ci = ci.number, digits = 2){
         
@@ -659,12 +659,17 @@ mcmctab <- function(sims, ci = ci.number, digits = 2){
 
 reg.results.table = data.frame(mcmctab(earthquakefit)[1:11,]) # Posterior distributions // Year FE excluded
 
-reg.results.table = reg.results.table[c(# reorder
-        6:8, # proportion variables
-        1, # income var.
-        2:4, # magnitude
-        11 # urban
-        ),] 
+
+reg.results.table = data.frame(rbind( # re order df by name of the rowname according to what I have and define in 'var.labels.'
+        reg.results.table[rownames(reg.results.table)==("b.propagrmanu[1]"),],
+        reg.results.table[rownames(reg.results.table)==("b.propagrmanu[2]"),],
+        reg.results.table[rownames(reg.results.table)==("b.propagrmanu[3]"),],
+        reg.results.table[rownames(reg.results.table)==("b.incometax.d"),],
+        reg.results.table[rownames(reg.results.table)==("b.Magnitude[1]"),],
+        reg.results.table[rownames(reg.results.table)==("b.Magnitude[2]"),],
+        reg.results.table[rownames(reg.results.table)==("b.Magnitude[3]"),],
+        reg.results.table[rownames(reg.results.table)==("b.Urban"),]
+))
 
 var.labels = c( 
         "Prop. Agr/Ind (Agr.)",
@@ -849,25 +854,49 @@ ggplot(data = earthquake.year, aes(x = variable, y = mean)) +
 #### FROM: https://github.com/jkarreth/Bayes/blob/master/logit.pp.plot.instructions.R // line:52
 
 
+###############################################################
+### Synthetic Control Method
+###############################################################
+
+cat("\014")
+rm(list=ls())
+
+
+# Load the earthquake data
+if (!require("pacman")) install.packages("pacman"); library(pacman)
+p_load(Synth)
+
+
+# load data 
+load("/Users/hectorbahamonde/RU/Dissertation/Papers/Earthquake_Paper/eq_output_d_Chile.RData") 
+
+# id var
+
+datsc$yearID = as.numeric(as.ordered(datsc$year))
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+# prepping data
+dat.prep = dataprep(
+        foo = datsc,
+        predictors = c(
+                "propagrmanu",
+                "Magnitude",
+                "incometax.d",
+                "Population",
+                "Urban",
+                "r.long",
+                "r.lat"
+                ),
+        predictors.op = "mean",
+        time.predictors.prior = min(datsc$year):max(datsc$year),
+        dependent = "Deaths",
+        unit.variable = "yearID",
+        time.variable = "year",
+        treatment.identifier = datsc$yearID[datsc$year==1925], # there wasn't an earthquake the year of the income tax was implemented. one year later.
+        controls.identifier = c(1:datsc$yearID[datsc$year==1925]-1, max(datsc$yearID)),
+        
+        )
 
 
 
