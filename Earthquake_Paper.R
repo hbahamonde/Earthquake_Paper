@@ -105,17 +105,16 @@ load("/Users/hectorbahamonde/RU/Dissertation/Papers/Earthquake_Paper/Chile_Data_
 
 
 # time-series plot
-ggplot(dat.chile, aes(x = year, y = Magnitude, size = W.Deaths)) +
+ggplot(dat.chile, aes(x = year, y = Magnitude)) +
         geom_point(shape = 21) +
-        scale_x_continuous(name='Years', limits=c(1900, 2010), breaks = seq(1900, 2010, 10)) +
-        scale_y_continuous(name='Magnitude', limits=c(3, 10), breaks = seq(3, 10, 1)) +
         theme_bw() +
         ggtitle("Chile") +
-        scale_size("Weighted Deaths") +
         stat_smooth(show.legend = F,  method = 'loess')
 
 ## bar plot
-ggplot(na.omit(dat.chile), aes(factor(Deaths))) + 
+Deaths = data.frame(dat.chile$Deaths); colnames(Deaths)[1] <- "Deaths"
+
+ggplot(na.omit(Deaths), aes(factor(Deaths))) + 
         geom_bar(width=.8) + 
         scale_x_discrete(name='Deaths') +
         scale_y_discrete(name='Count') +
@@ -205,11 +204,16 @@ chile.provinces <- fortify(chile.provinces)
 chile.provinces <- chile.provinces[!(chile.provinces$long <= -76),]
 
 
-chile.map = ggplot() +  
+# Longitude = na.omit(dat.chile$Longitude) # 184
+# Latitude = na.omit(dat.chile$Latitude) # 184
+# Magnitude = na.omit(dat.chile$Magnitude) # 132 // I think I am going to exclude magnitudes, and just show frequency of earthquakes.
+
+ggplot() +  
         geom_polygon(aes(x=long, y=lat, group=group), fill='grey', size=.05, color='black', data=chile.provinces, alpha=1/2) +
         theme_bw() +
         ggtitle("Chile") + 
-        geom_point(data=subset(dat.chile, year>=1900), aes(x=Longitude, y=Latitude, size=Magnitude), color="red", shape=21)
+        geom_point(data=dat.chile, aes(x=Longitude, y=Latitude), shape=21, color='red')
+
 
 
 #### MAPS: Peru
@@ -571,8 +575,8 @@ earthquakefit <- jags(
         inits=NULL,
         parameters.to.save = eq.params,
         n.chains=n.chains,
-        n.iter=100, # n.iter = 200000 // this is for working model
-        n.burnin=2, # n.burnin = 100000 // this is for working model
+        n.iter=200000, # n.iter = 200000 // this is for working model
+        n.burnin=100000, # n.burnin = 100000 // this is for working model
         #n.thin=1,
         model.file=model.jags,
         progress.bar
@@ -608,7 +612,7 @@ earthquakefit <- jags(
 # digits: desired number of digits in the table, default: 2
 
 
-ci.number = .8
+ci.number = .8 # modify this parameter to get desired credible intervals.
 
 mcmctab <- function(sims, ci = ci.number, digits = 2){
         
@@ -655,12 +659,17 @@ mcmctab <- function(sims, ci = ci.number, digits = 2){
 
 reg.results.table = data.frame(mcmctab(earthquakefit)[1:11,]) # Posterior distributions // Year FE excluded
 
-reg.results.table = reg.results.table[c(# reorder
-        6:8, # proportion variables
-        1, # income var.
-        2:4, # magnitude
-        11 # urban
-        ),] 
+
+reg.results.table = data.frame(rbind( # re order df by name of the rowname according to what I have and define in 'var.labels.'
+        reg.results.table[rownames(reg.results.table)==("b.propagrmanu[1]"),],
+        reg.results.table[rownames(reg.results.table)==("b.propagrmanu[2]"),],
+        reg.results.table[rownames(reg.results.table)==("b.propagrmanu[3]"),],
+        reg.results.table[rownames(reg.results.table)==("b.incometax.d"),],
+        reg.results.table[rownames(reg.results.table)==("b.Magnitude[1]"),],
+        reg.results.table[rownames(reg.results.table)==("b.Magnitude[2]"),],
+        reg.results.table[rownames(reg.results.table)==("b.Magnitude[3]"),],
+        reg.results.table[rownames(reg.results.table)==("b.Urban"),]
+))
 
 var.labels = c( 
         "Prop. Agr/Ind (Agr.)",
@@ -843,27 +852,4 @@ ggplot(data = earthquake.year, aes(x = variable, y = mean)) +
 
 #### Predicted Probabilities.
 #### FROM: https://github.com/jkarreth/Bayes/blob/master/logit.pp.plot.instructions.R // line:52
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 

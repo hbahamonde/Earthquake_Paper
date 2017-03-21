@@ -7,11 +7,37 @@
 % Argument
 	- The determinants of government responsiveness. % paraphrased from Besley2002: 1415
 
+	- Preparedness 
+
+	- ``Efforts to establish better preparedness for and prevention of disasters have been a priority concern of donor agencies, implementing agencies and affected countries.'' (\citet[271]{Kahn2005})
+
+	- \citet[277]{Kahn2005}: ``Richer nations will be able to invest in and enforce zoning and building codes. Building codes improve the structural soundness of a building, and this has a social value that the owner is unlikely to internalize, as it improves the quality of life of people in an immediate vicinity affected.'' % use this, but change `richer nations' for `stronger states.'
+
 	- \citet[1907]{Anbarci2005}: ``while earthquakes themselves are natural phenomena beyond the reach of humankind, our collective inaction with respect to items like the creation and enforcement of building codes, failure to retrofit structures and to enact quake-sensitive zoning clearly plays a part in determining the actual toll that a given quake takes.'' % though they focus on collective action: "collective action is, however, limited by its income and the ability of the population to arrive at an agreeable distribution of the economic burden of the actions.2 Given this, we analyze the impact of a country’s per capita income and level of inequality on earthquake fatalities." (\citet[1909]{Anbarci2005}).
 
-	- ``Differential effects of potentially catastrophic earthquakes.'' (from \citet{Anbarci2005})
+	- ``Differential effects of potentially catastrophic earthquakes.'' %(from \citet{Anbarci2005})
 
 	- ``[t]he differences in impacts between these two earthquakes is directly related to differences in the degree of disaster-mitigation and disaster-preparedness measures taken in those areas. Strict adherence to building codes (as well as zoning ordinances during the past few decades) in the latter region undoubtedly saved many lives and kept thousands of buildings from collapsing.'' \citet[130]{Noji:1996aa} % read from library. (from \citet[1910]{Anbarci2005})
+
+	- \citet[271]{Kahn2005}: ``Though richer nations do not experience fewer natural disasters than poorer nations, richer nations do suffer less death from disaster. Economic development provides implicit insurance against nature’s shocks. Democracies and nations with higher-quality institutions suffer less death from natural disaster.''
+
+	- ``death toll from quakes are greatly exacerbated by the lack of high-level construction regulations [...] the absence of licensing for contractors, engineers and architects.'' % from (from \citet[1910]{Anbarci2005})
+
+	- ``There must, of course, be rigorous enforcement. This is apparent in the 6.4 Richter-scale earthquake occurring in Changureh, Iran on June 22, 2002, which claimed 261 lives. The MCEER (2002) report on that quake notes that while Iran has building codes which are comparable to those existing in the United States, they tend to be enforced only in the country’s larger cities. In smaller villages where most of the deaths from the quake occurred, effectively no seismic-related building codes exist which, when coupled with relatively low levels of income in those areas, had lead many to build their homes with poor design/construction and with low-quality materials.'' % from \citet[1910]{Anbarci2005}.
+
+	- ``the potentially devastating effects of major earthquakes are, if not preventable, at least subject to significant mitigation.'' % from \citet[1911]{Anbarci2005}. 
+
+	- \citet[1909]{Anbarci2005}: ``mitigation activities, such as high-level building codes, are absolutely essential in alleviating the effects of severe quakes. Equally important, however, is enforcement of these codes, or other mitigation activities, which all too often is lacking, especially in developing countries. The reason for the absence of or failing to enforce high-level building codes and aggressively retrofitting structures is obvious: These activities can be extremely expensive and building a consensus to finance such activities often proves problematic. Too often, when necessary collective action fails to occur.''
+
+	- Drawbacks of this measurement
+		
+		(1) Obviously, the country needs to have earthquakes.
+		
+		(2) There are countries, like India, where there is regional variance on the frequency of earthquakes, i.e. some regions have quakes while some others do not. In the case of India, the state has implemented {\bf regional} quake mitigation policies (\citet[164]{Dunbar2003}). The specificity of this policies could undermine the assumption that the state should penetrate the `entire' territory. Additionally, the selection of which specific regions will be `treated' with mitigation policies could not be subject only to necessity but also to local clientelism (cite the Min paper on electricity.) ``The isoseismal maps [that ] are [...] used to define zones of seismic hazard,''\footnote{\citet[164]{Dunbar2003}.} might not necessarily correspond to the administrative areas in charge of delivering those policies either, opening several windows of opportunities to discretionary assignment.  Finally, following the Mercalli scale, the map was divided in different zones. Some V zones were converted in VI zones, presumably receiving more infrastructure and emergency funds. This could also have opened several windows of opportunity for local electoral brokerage and credit claiming. 
+
+		(3) Getting a death toll, or actually just having one, might be a function of state capacities (this is Paul's criticism). However, the ones who counted the death were not state agencies, but civil institutions such as the Catholic Church. % can't remember the citation. I guess it was in the census???
+
+
 
 
 % Endowments
@@ -20,6 +46,9 @@
 	\citet[5]{Federico:2008xd}: ``The quality of the soil is determined by its physical characteristics, which include texture, structure, exchange capacity (i.e. the capacity to release nutrients to plants), alkalinity or acidity.''
 
 	\citet[8]{Federico:2008xd}: ``For instance, potatoes can be cultivated on the Peruvian highlands (ca. 3000 meters above the sea), but they take eight months, instead of two at sea-level, to grow.''
+
+	% Geography
+	\citet[280]{Kahn2005}: ``Larger nations, those that are more elevated, and those that are farther from the equator are more likely to experience shocks. Controlling for the count of disasters, geography matters in determining death counts.''
 
 
 % Income / Inequality
@@ -32,11 +61,20 @@
 
 % Why not other natural catastrophe 
 
+	% other disasters such as:
+	``death counts caused by extreme temperature events, floods, landslides, and windstorms.'' % rephrase. this is from \citet[280]{Kahn2005}
+
 	% India:
 	``The codes that govern public distribution of food and calamity relief in India stem from the Famine Relief Codes put in place after 1880. They emphasize the need for local administrators to look for \emph{signs}, such as large drops in food production and increases in food prices, which \emph{signal} an impending crisis.''\footnote{Emphases are mine.} (\citet[1423]{Besley2002})
 
+
 	% General
 	\citet[]{Mutter2005}: ``Earthquakes, too, exact the greatest toll on the poorest people.''
+
+	% the correlation between disasters that allow adapting and the ones that don't, is pretty low.
+	\citet[273]{Kahn2005}: the data ``highlights the heterogeneity in deaths from disasters. For example, the correlation between average deaths from earthquakes and average deaths from windstorms is -0.02.''
+
+	% 
 
 	\citet[1908]{Anbarci2005}: ``Some natural disasters can be foreseen (or predicted with some probability) and thus measures can be taken to limit their severity.''
 
@@ -52,7 +90,7 @@
 %% Essentially, the criticism is that, for ex., property right protection (an usual measurement of state capacity)
 %% is highly liberal (though AJR don't say that). However, the USSR did construct a strong state, but it did not 
 %% protect any property rights (as they didn't exist).
-\citet[58]{Kurtz:2013aa}: there are two types of measurement, objective and subjective/perception-based. The latter are always biased. ``the best measures would be of the sorts of activities that all (or nearly all) states consider to be of primary importance - for thee can be assumed to be pursued vigorously across contexts, and variations in success will dpend principally on variation in the effectiveness of institutions, not on opportunity costs or political will''.
+\citet[58]{Kurtz:2013aa}: there are two types of measurement, objective and subjective/perception-based. The latter are always biased. ``the best measures would be of the sorts of activities that all (or nearly all) states consider to be of primary importance - for thee can be assumed to be pursued vigorously across contexts, and variations in success will depend principally on variation in the effectiveness of institutions, not on opportunity costs or political will''.
 
 	% subnational
 	``In addition, unlike in the case of some macroeconomic policies, it matters a great deal more in this literature that the effectiveness of the state varies enormously across localities and administrative levels within the same country in their effect on the development process, not at all captured in data that take a whole-country average as the point of observation, which is particularly problematic for countries with a medium- to large-sized population. On top of all this, there are inherent difficulties of measuring quality of public goods and services. There'' (\citet[865]{Bardhan2016}).
@@ -62,31 +100,70 @@
 \citet[1907]{Anbarci2005}: use ``a Negative Binomial estimation strategy with both random and fixed estimators'' to estimate death tolls.
 
 - Idea: the `treatment' (proportion of AGR/IND) is at the national level, but the outcome is measured on local communities. // rephrased from \citet[237]{Gelman:2006bh}
+
 - ``multilevel modeling typically proceeds by adding predictors at the individual and group levels and reducing the unexplained variance at each level.'' % \citet[271]{Gelman:2006bh}
+
 - %``It is even acceptable to have one observation in many of the groups.''% Gelman:2006bh: 276
 ``Noninformative prior distributions are intended to allow Bayesian inference for param- eters about which not much is known beyond the data included in the analysis at hand.'' Gelman2006:520.
+
 - ``In fitting hierarchical models, we recommend starting with a noninformative uniform prior density on standard deviation parameters σα. We expect this will generally work well unless the number of groups J is low (below 5, say).'' Gelman2006:527
+
+- ``the unit of analysis is a disaster'' (\citet[273]{Kahn2005}).
+
+- \citet[276]{Kahn2005} estimates a ZINB model.
+
 - Language: 
 	- posterior uncertainty // 
+	
 	- ``simulations representing draws from the joint posterior distribution'' (rephrase this // originally from http://www.stat.columbia.edu/~gelman/research/published/bayesvisualization.pdf)
-	- ``Posterior intervals are easily derived from the matrix of posterior simulations'' (rephrase this // originally from http://www.stat.columbia.edu/~gelman/research/published/bayesvisualization.pdf)
+	
+	- ``Posterior intervals are easily derived from the matrix of posterior simulations'' (rephrase this // originally from http://www.stat.columbia.edu/~gelman/research/published/bayesvisualization.pdf).
 
-\citet[]{Gelman:2006bh}
+	
+	- Fixed Effects
+		- Explain fixed effects and Lat. and Long. using this language: 
+			- ``Within a nation some areas are more prone to natural disasters than others'' (\citet[277]{Kahn2005}.)
+			- ``Earthquake loss can be described as the combination of the hazard, the exposure, and the vulnerability. The hazard refers to the frequency and severity of the threat or hazard. The exposure describes the people, property, systems or functions at risk of partial or total loss when exposed to hazards. Finally, the vulnerability describes the susceptibility to losses due to the exposure to the hazard.'' % from \citet[166]{Dunbar2003}.
+
+		- \citet[277]{Kahn2005} don't include ``nation fixed effects [...] it is quite difficult to create a within-nation governance database to test what are the benefits of improved national governance. Though rising national incomes can be measured, there is likely to be a long latency between economic development and improved average quality of infrastructure as new homes and new infrastructure are built of higher quality than the existing capital stock.'' % (1) However, I do just that. I construct a within-nation indicator of `stateness.' By having year and sector fixed effects I control for the evolution of observed and observed factors throughout time.  (2) Also, \citet[]{Kahn2005} is all about national income. My argument expands on this idea, but differentiates between agricultural and industrial outputs. DEFINETIVELY INCLUDE #2 AND EXPAND THIS IDEA IN THE MOTIVATION OF THE PAPER.
 
 
+
+- \citet[1923]{Anbarci2005}: include population as a variable in the equation (eq. # 5). They DO NOT weight FATALITIES by POP.
+
+
+- \citet[1920]{Anbarci2005}
 
 % Earthquakes
 
-	% Public Goods.
+	% Public Goods. 
 	\citet[1415]{Besley2002}: ``Having a more informed and politically active electorate strengthens incentives for governments to be responsive.''
 
 	\citet[1415]{Besley2002}: ``state governments are more responsive to falls in food production and crop flood damage via public food distribution and calamity relief expenditure where newspaper circulation is higher and electoral accountability greater.'' % This is terribly endogenous, but anyways.
 
+	
+	% Motivation
 	\citet[1908]{Anbarci2005}: ``Earthquakes alone claim thousands of lives a year (in some cases, more than a hundred thousand lives in a single quake).''
 
+
+	% Past Research
 	\citet{Dunbar2003}: ``considered the link between per capita income and quake deaths.'' (comment from \citet[1909]{Anbarci2005}).
 
 	\citet[1909]{Anbarci2005}: ``develop a theoretical model which shows both how per capita income and inequality are related to the actual death toll resulting from a given earthquake [and also explain why] different segments of society prove incapable of arriving at an agreeable distribution of the burden of the necessary collective action, causing the wealthy simply to self-insure against the disaster while leaving the relatively poor to its mercy.''
 
+	\citet[273]{Kahn2005}: ``In the EM-DAT data, earthquakes account for 12\% of the natural disasters shocks, 5\% are extreme temperature events, 40\% are floods, 7\% are slides, and 37\% are windstorms.''
 
-	\citet[1909]{Anbarci2005}: ``mitigation activities, such as high-level building codes, are absolutely essential in alleviating the effects of severe quakes. Equally important, however, is enforcement of these codes, or other mitigation activities, which all too often is lacking, especially in developing countries. The reason for the absence of or failing to enforce high-level building codes and aggressively retrofitting structures is obvious: These activities can be extremely expensive and building a consensus to finance such activities often proves problematic. Too often, when necessary collective action fails to occur,''
+	\citet[273]{Kahn2005}: ``Relative to their population size, Honduras, Venezuela, Nigeria, and Bangladesh suffer the most death from disaster.'' % use this to motivate my POPULATION control
+
+
+	% Measurement // data
+	
+		Since ``most of the damage in major earthquakes occurs within 30 km of the epicenter,''\footnote{\citet[172]{Dunbar2003}.} I don't necessarily drop quakes that didn't happen on land. While the epicenter might have happened a few miles away from the shore, the consequences did reach the land.
+
+		% on unbalanced panels
+		\citet[276]{Kahn2005}: ``The data set is not a balanced panel. Some nations might experience multiple shocks in the same year while others experience none.''
+
+
+
+
+
