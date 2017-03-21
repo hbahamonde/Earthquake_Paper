@@ -7,17 +7,25 @@
 % Argument
 	- The determinants of government responsiveness. % paraphrased from Besley2002: 1415
 
+	- ``Natural hazards can be seen as a function of a specific natural process and human (economic) activity'' (\citet[627]{Raschky2008}). Given that the occurrence of earthquakes are completely exogenous to political and economic development (FIND CITATION OF THIS ARGUMENT), the part that is left unexplained should be strictly associated to the quality of institutions.
+
 	- Preparedness 
 
 	- ``Efforts to establish better preparedness for and prevention of disasters have been a priority concern of donor agencies, implementing agencies and affected countries.'' (\citet[271]{Kahn2005})
+
+	-\citet[628]{Raschky2008}: ``the effects of natural hazards [do] not solely depend on a region's topographic or climatic exposure to natural processes orits (ORITS IN THE ORIGINAL) level of economic development but the region's institutional vulnerability to natural processes that ultimately determines whether natural processes result in a natural hazard or not.''
 
 	- \citet[277]{Kahn2005}: ``Richer nations will be able to invest in and enforce zoning and building codes. Building codes improve the structural soundness of a building, and this has a social value that the owner is unlikely to internalize, as it improves the quality of life of people in an immediate vicinity affected.'' % use this, but change `richer nations' for `stronger states.'
 
 	- \citet[1907]{Anbarci2005}: ``while earthquakes themselves are natural phenomena beyond the reach of humankind, our collective inaction with respect to items like the creation and enforcement of building codes, failure to retrofit structures and to enact quake-sensitive zoning clearly plays a part in determining the actual toll that a given quake takes.'' % though they focus on collective action: "collective action is, however, limited by its income and the ability of the population to arrive at an agreeable distribution of the economic burden of the actions.2 Given this, we analyze the impact of a country’s per capita income and level of inequality on earthquake fatalities." (\citet[1909]{Anbarci2005}).
 
+	- \citet[20]{Toya2007}: ``as economies develop there are fewer disaster-related deaths and damages/GDP.''
+
 	- ``Differential effects of potentially catastrophic earthquakes.'' %(from \citet{Anbarci2005})
 
 	- ``[t]he differences in impacts between these two earthquakes is directly related to differences in the degree of disaster-mitigation and disaster-preparedness measures taken in those areas. Strict adherence to building codes (as well as zoning ordinances during the past few decades) in the latter region undoubtedly saved many lives and kept thousands of buildings from collapsing.'' \citet[130]{Noji:1996aa} % read from library. (from \citet[1910]{Anbarci2005})
+
+	- \citet[789]{Kellenberg2008}: ``to be more proactive in controlling the rate or specific form of urbanization and in enacting other laws (e.g. zoning rules or building codes) that limit its citizens’ exposure to natural disasters.''
 
 	- \citet[271]{Kahn2005}: ``Though richer nations do not experience fewer natural disasters than poorer nations, richer nations do suffer less death from disaster. Economic development provides implicit insurance against nature’s shocks. Democracies and nations with higher-quality institutions suffer less death from natural disaster.''
 
@@ -25,9 +33,13 @@
 
 	- ``There must, of course, be rigorous enforcement. This is apparent in the 6.4 Richter-scale earthquake occurring in Changureh, Iran on June 22, 2002, which claimed 261 lives. The MCEER (2002) report on that quake notes that while Iran has building codes which are comparable to those existing in the United States, they tend to be enforced only in the country’s larger cities. In smaller villages where most of the deaths from the quake occurred, effectively no seismic-related building codes exist which, when coupled with relatively low levels of income in those areas, had lead many to build their homes with poor design/construction and with low-quality materials.'' % from \citet[1910]{Anbarci2005}.
 
-	- ``the potentially devastating effects of major earthquakes are, if not preventable, at least subject to significant mitigation.'' % from \citet[1911]{Anbarci2005}. 
+	- ``the potentially devastating effects of major earthquakes are, if not preventable, at least subject to significant mitigation.'' % from \citet[1911]{Anbarci2005}. Similarly, \citet[209]{Escaleras2007} argue that ``While earthquakes may not be preventable, it is possible to prevent the disasters they cause.'' 
 
 	- \citet[1909]{Anbarci2005}: ``mitigation activities, such as high-level building codes, are absolutely essential in alleviating the effects of severe quakes. Equally important, however, is enforcement of these codes, or other mitigation activities, which all too often is lacking, especially in developing countries. The reason for the absence of or failing to enforce high-level building codes and aggressively retrofitting structures is obvious: These activities can be extremely expensive and building a consensus to finance such activities often proves problematic. Too often, when necessary collective action fails to occur.''
+
+	- \citet[209]{Escaleras2007}: ``deaths were the result of'' ``the marriage of corrupt contractors and corrupt building inspectors and other public officials, resulted in ignored building codes.''
+
+	- \citet[211]{Escaleras2007}: ``public sector corruption can and often does lead to the construction of substandard housing units, private buildings, public infrastructure, and other structures that ultimately fail in the face of major earthquakes, leading to a greater death toll than would occur in the absence of such corruption.''
 
 	- Drawbacks of this measurement
 		
@@ -74,9 +86,11 @@
 	% the correlation between disasters that allow adapting and the ones that don't, is pretty low.
 	\citet[273]{Kahn2005}: the data ``highlights the heterogeneity in deaths from disasters. For example, the correlation between average deaths from earthquakes and average deaths from windstorms is -0.02.''
 
-	% 
+	% adapting behavior
 
-	\citet[1908]{Anbarci2005}: ``Some natural disasters can be foreseen (or predicted with some probability) and thus measures can be taken to limit their severity.''
+		\citet[1908]{Anbarci2005}: ``Some natural disasters can be foreseen (or predicted with some probability) and thus measures can be taken to limit their severity.''
+
+		\citet[716]{Brancati2007}: ``Earthquakes may provoke conflict more than any other type of natural disaster because they have rapid onsets [and] are not predictable.''
 
 
 % Electoral connection
@@ -95,9 +109,23 @@
 	% subnational
 	``In addition, unlike in the case of some macroeconomic policies, it matters a great deal more in this literature that the effectiveness of the state varies enormously across localities and administrative levels within the same country in their effect on the development process, not at all captured in data that take a whole-country average as the point of observation, which is particularly problematic for countries with a medium- to large-sized population. On top of all this, there are inherent difficulties of measuring quality of public goods and services. There'' (\citet[865]{Bardhan2016}).
 
+	- this is my idea: it measures the capacity of the state to send inspectors to evaluate, enforce and monitor the construction process. 
+
+
+% Advantages of this measurement 
+	% as events, death tolls are exogenous to state-capacities themselves.
+		- Earthquakes happen at any level of development (\citet{Kahn2005} and \citet{Brancati2007}) and at any level of state-capacities, then.
+
+		- \citet[728]{Brancati2007} ``Since earthquakes constitute a natural experiment, it is not necessary to include a laundry list of control variables in the analysis.''
+
+	% earthquakes measure state-capacities beyond any other `theoretical' measurement. It measures the *actual capacity* of states to monitor and enforce an institution. 
+	\citet[212]{Escaleras2007}: Regarding the earthquake in Turkey: ``Most importantly, the problem in Turkey was due not to a lack of understanding of seismically sensitive engineering or appropriate construction standards, but rather to unscrupulous and often inappropriately trained contractors who ignored the country’s building codes with the consent of government inspectors (Lewis, 2005; Bohlen, 1999; Kinzer, 1999).'' % THAT IS, THERE WERE CODES, BUT THEY WERE NOT ENFORCED.
+
+	
 % Methods
 
-\citet[1907]{Anbarci2005}: use ``a Negative Binomial estimation strategy with both random and fixed estimators'' to estimate death tolls.
+% models
+\citet[1907]{Anbarci2005}: use ``a Negative Binomial estimation strategy with both random and fixed estimators'' to estimate death tolls. \citet[276]{Kahn2005} estimates a ZINB model, \citet[729]{Brancati2007} uses ``a negative binomial model with robust standard errors clustered by country,'' \citet{Escaleras2007} uses ``a Negative Binomial specification.'' % criticize this: none of them actually test for overdispertion. 
 
 - Idea: the `treatment' (proportion of AGR/IND) is at the national level, but the outcome is measured on local communities. // rephrased from \citet[237]{Gelman:2006bh}
 
@@ -110,7 +138,7 @@
 
 - ``the unit of analysis is a disaster'' (\citet[273]{Kahn2005}).
 
-- \citet[276]{Kahn2005} estimates a ZINB model.
+
 
 - Language: 
 	- posterior uncertainty // 
@@ -123,13 +151,26 @@
 	- Fixed Effects
 		- Explain fixed effects and Lat. and Long. using this language: 
 			- ``Within a nation some areas are more prone to natural disasters than others'' (\citet[277]{Kahn2005}.)
+			
 			- ``Earthquake loss can be described as the combination of the hazard, the exposure, and the vulnerability. The hazard refers to the frequency and severity of the threat or hazard. The exposure describes the people, property, systems or functions at risk of partial or total loss when exposed to hazards. Finally, the vulnerability describes the susceptibility to losses due to the exposure to the hazard.'' % from \citet[166]{Dunbar2003}.
+
+			% controls for terrain (I do it by having lat. and long.)
+				- \citet[729]{Brancati2007}: ``Earthquakes often occur in mountainous areas, making it important to control for terrain to distinguish its effect from that of earthquakes.''
+
+			- \citet[729]{Brancati2007}: ``The analysis includes year-fixed effects to control for trends over time and a lag for the number of conflict events in the previous month.''
 
 		- \citet[277]{Kahn2005} don't include ``nation fixed effects [...] it is quite difficult to create a within-nation governance database to test what are the benefits of improved national governance. Though rising national incomes can be measured, there is likely to be a long latency between economic development and improved average quality of infrastructure as new homes and new infrastructure are built of higher quality than the existing capital stock.'' % (1) However, I do just that. I construct a within-nation indicator of `stateness.' By having year and sector fixed effects I control for the evolution of observed and observed factors throughout time.  (2) Also, \citet[]{Kahn2005} is all about national income. My argument expands on this idea, but differentiates between agricultural and industrial outputs. DEFINETIVELY INCLUDE #2 AND EXPAND THIS IDEA IN THE MOTIVATION OF THE PAPER.
 
+	- \citet[217]{Escaleras2007} study ``the FREQUENCY with which a country suffers from a major quake by calculating the number of 6+ Richter Scale quakes occurring within a given country in the prior 100 years. The expectation here is that there may be a `learning by doing' reduction in deaths in a country that is regularly hit by major quakes.'' 
+
+		- To account for accumulation of know-how, I include year fixed effects. 9``The year dummies will pick up any variation in the outcome that happen over time and that is not attributed to your other explanatory variables.'' % from stackexchange.
+
+		- % misreporting
+		\citet[201]{Stromberg2007}: ``reporting (and misreporting) of disasters varies systematically across time, levels of income, and political regimes. Reporting of small disasters is probably more complete in later years and in more developed countries.'' To account for these factors, I include year fixed effects too.
 
 
-- \citet[1923]{Anbarci2005}: include population as a variable in the equation (eq. # 5). They DO NOT weight FATALITIES by POP.
+
+- \citet[1923]{Anbarci2005}: include population as a variable in the equation (eq. # 5). They DO NOT weight FATALITIES by POP, while \citet{Escaleras2007} include population and population density. I include whether the localities were cities or not. 
 
 
 - \citet[1920]{Anbarci2005}
@@ -143,11 +184,15 @@
 
 	
 	% Motivation
-	\citet[1908]{Anbarci2005}: ``Earthquakes alone claim thousands of lives a year (in some cases, more than a hundred thousand lives in a single quake).''
+		\citet[1908]{Anbarci2005}: ``Earthquakes alone claim thousands of lives a year (in some cases, more than a hundred thousand lives in a single quake).''
+
+		\citet[719]{Brancati2007}: ``Disasters are not as well studied, however, in the field of political science.''
 
 
 	% Past Research
 	\citet{Dunbar2003}: ``considered the link between per capita income and quake deaths.'' (comment from \citet[1909]{Anbarci2005}).
+
+	\citet[]{Stromberg2007}: ``High-income countries face a lower mortality risk from natural hazards, for obvious reasons. High-income societies can better afford measures to limit the effects of natural disasters. Buildings can be constructed of stronger and more durable materials.''
 
 	\citet[1909]{Anbarci2005}: ``develop a theoretical model which shows both how per capita income and inequality are related to the actual death toll resulting from a given earthquake [and also explain why] different segments of society prove incapable of arriving at an agreeable distribution of the burden of the necessary collective action, causing the wealthy simply to self-insure against the disaster while leaving the relatively poor to its mercy.''
 
@@ -162,6 +207,20 @@
 
 		% on unbalanced panels
 		\citet[276]{Kahn2005}: ``The data set is not a balanced panel. Some nations might experience multiple shocks in the same year while others experience none.''
+
+		% other disasters in other reasearch in polisci.
+			- \citet[725]{Miguel2004} use  ``rainfall variation as an instrumental variable for economic growth.''
+
+			- \citet[210-211]{Escaleras2007}: study ``whether there is a relationship between public sector corruption and the number of deaths resulting from major earthquakes.''
+
+
+% criticize
+
+	% doesn't consider deaths
+	- \citet[731]{Brancati2007} argues that earthquakes cause intra-state conflict. However, she doesn't consider deaths, just the occurrence of the earthquake. However, not all earthquakes cause the same amount of damage, for which deaths are the most important proxy. 
+
+	% series are too short.
+	- \citet{Escaleras2007} 344 quakes between 1975-2003, \citet{Anbarci2005} 269 earthquakes occurring between 1960-2002, \citet{Kahn2005} disasters in 73 nations from 1980 to 2002, \citet{Brancati2007} 185 countries over the period from 1975 to 2002, \citet[627]{Raschky2008} investigates a ``large scale natural disasters between 1984 and 2004.''
 
 
 
