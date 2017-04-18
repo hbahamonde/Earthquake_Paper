@@ -11,13 +11,13 @@
 
 % TITLE SECTION
 
-\title{\vspace{-15mm}\fontsize{18pt}{7pt}\selectfont\textbf{Measuring State Capacities in Latin America using an Infrastructural Approach: Earthquakes and Institutional Development, 1900-2010}} % Article title
+\title{\vspace{-15mm}\fontsize{18pt}{7pt}\selectfont\textbf{\input{/Users/hectorbahamonde/RU/Dissertation/Papers/Earthquake_Paper/title.txt}\unskip}} % Article title
 
 
 \author[1]{
 \large
 \textsc{H\'ector Bahamonde}\\ 
-\thanks{I thank Bob Kaufman, Dan Kelemen, Doug Blair,  Paul Poast for all the useful comments. I also thank the School of Arts and Sciences at Rutgers for granting me funds to collect part of the data used in this project. All errors are my own.}
+\thanks{I thank Robert Kaufman, Daniel Kelemen, Douglas Blair, Paul Poast for all the useful comments. I also thank the School of Arts and Sciences at Rutgers for granting me funds to collect part of the data used in this project. All errors are my own.}
 \normalsize PhD Candidate $\bullet$ Political Science Dpt. $\bullet$ Rutgers University \\
 \normalsize \texttt{e:}\href{mailto:hector.bahamonde@rutgers.edu}{\texttt{hector.bahamonde@rutgers.edu}}\\
 \normalsize \texttt{w:}\href{http://www.hectorbahamonde.com}{\texttt{www.hectorbahamonde.com}}
@@ -38,7 +38,9 @@
 %----------------------------------------------------------------------------------------
 
 \begin{abstract}
-ABSTRACT
+Building on the fiscal sociology paradigm, this paper argues that the development of the modern fiscal apparatus in Chile was product of a sectoral conflict around in the 1920’s between the industrial and agricultural political elites. Particularly, I identify the importance of the income tax, and how it contributed to expand state capacities at the subnational level. Exploiting the quasi-randomness of earthquake shocks, I use a novel historical earthquake dataset and a Bayesian multilevel Poisson model to measure state capacities at the local level between 1900 and 2010. The results suggest that the implementation of the income tax has historically decreased the proportion of local deaths, and that the effect has been stronger in industrial localities.
+
+
 \end{abstract}
 
 \hspace*{1.3cm}{\bf Please consider downloading the last version of the paper} \href{https://github.com/hbahamonde/Earthquake_Paper/raw/master/Bahamonde_Earthquake_Paper.pdf}{\texttt{{\color{red}here}}}.
@@ -50,6 +52,11 @@ ABSTRACT
 
 
 %\tableofcontents
+% 1. Hook, Motivation, Contribution: fiscal sociology
+% 2. Argument: sectoral competition
+% 3. Measurement
+% 4. Multilevel Analyses
+% 5. Conclusions.
 
 
 \clearpage
@@ -72,7 +79,55 @@ read_chunk('/Users/hectorbahamonde/RU/Dissertation/Papers/Earthquake_Paper/Earth
 @
 
 
+
+
+
+
+
 \subsection{Multilevel Analyses}
+
+
+
+<<model:and:data:does:run, echo=FALSE, comment=NA, warning=FALSE, message=FALSE,include = FALSE, cache=FALSE,eval=FALSE>>=
+
+@
+
+
+
+
+% regression:table
+<<regression:table, echo=FALSE, comment=NA, warning=FALSE, message=F, results='asis', cache=FALSE,eval=FALSE>>=
+
+@
+
+
+
+% posterior:predictions:plot
+<<posterior:predictions:plot, echo = FALSE, fig.pos='h', warning = FALSE, message = F,fig.cap='Posterior Predictive Distributions', fig.align='center', fig.width=4,fig.height=3,dpi=10000,cache = FALSE,eval=FALSE>>=
+
+@
+
+
+
+
+\section{Appendix}
+
+% reset counter for appendix
+\subimport{/Users/hectorbahamonde/RU/Bibliografia_PoliSci/}{LaTeX_Reset_Counter_For_Appendix}
+
+<<year:fixed:effects:plot, echo = FALSE, fig.pos='h', warning = FALSE, message = F, fig.cap='Year Fixed Effects', fig.align='center', fig.width=7, fig.height=3,dpi=10000,cache = FALSE,eval=FALSE>>=
+
+@
+
+
+
+<<predicted:observed:plot, echo = FALSE, fig.pos='h', warning = FALSE, message = F, fig.cap='Assessing Model Fit', fig.align='center', fig.width=5, fig.height=9,dpi=10000,cache = FALSE,eval=FALSE>>=
+
+@
+
+
+
+
 
 % data
 In this section I model the number of dead individuals caused by earthquakes.
@@ -120,36 +175,6 @@ The $i$ subscript denotes the unit of analysis (i.e. earthquake),\footnote{\cite
 \end{equation}
 
 
-<<model:and:data:does:run, echo=FALSE, comment=NA, warning=FALSE, message=FALSE,include = FALSE, cache=FALSE>>=
-
-@
-
-
-\afterpage{
-<<regression:table, echo=FALSE, comment=NA, warning=FALSE, message=F, results='asis', cache=FALSE>>=
-
-@
-}
-
-\clearpage
-
-\section{Appendix}
-
-% reset counter for appendix
-\subimport{/Users/hectorbahamonde/RU/Bibliografia_PoliSci/}{LaTeX_Reset_Counter_For_Appendix}
-
-<<year:fixed:effects:plot, echo = FALSE, fig.pos='h', warning = FALSE, message = F, fig.cap='Year Fixed Effects', fig.align='center', fig.width=7, fig.height=3,dpi=10000,cache = FALSE>>=
-
-@
-
-
-
-<<predicted:observed:plot, echo = FALSE, fig.pos='h', warning = FALSE, message = F, fig.cap='Assessing Model Fit', fig.align='center', fig.width=5, fig.height=9,dpi=10000,cache = FALSE>>=
-
-@
-
-
-
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % WORD COUNT
@@ -193,6 +218,12 @@ count <- comma(as.numeric(count)) # add comma
 \bibliography{/Users/hectorbahamonde/RU/Bibliografia_PoliSci/library,/Users/hectorbahamonde/RU/Bibliografia_PoliSci/Bahamonde_BibTex2013}
 \bibliographystyle{plainnat}
 \end{document}
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Put the code here to not run it every time.
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 
 
