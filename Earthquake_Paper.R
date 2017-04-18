@@ -777,7 +777,10 @@ fit.mcmc <- as.mcmc(earthquakefit)
 
 ### traceplots
 par(mar = rep(2, 3))
-p_load(mcmcplots) #install.packages("mcmcplots")
+
+if (!require("pacman")) install.packages("pacman"); library(pacman) 
+p_load(mcmcplots)
+
 traplot(earthquakefit, parms = 
           c("b.propagrmanu", 
             "b.Magnitude", 
@@ -794,9 +797,13 @@ traplot(earthquakefit, parms =
 autocorr.plot(fit.mcmc, layout = c(15, 15), aspect = "fill")
 
 
+
+## ---- posterior:predictions:plot ----
 # cater plot
-p_load(mcmcplots) #install.packages("mcmcplots")
-dev.off();dev.off()
+if (!require("pacman")) install.packages("pacman"); library(pacman) 
+p_load(mcmcplots)
+
+#dev.off();dev.off()
 
 par(mar=c(5,10,1,1)) # bottom, then left margin, upper and right margins
 caterplot(earthquakefit, 
@@ -809,8 +816,7 @@ caterplot(earthquakefit,
           col = 2, 
           style=c("gray")
           );abline(v = 0, col = "gray60")
-          
-
+## ----
 
 
 
