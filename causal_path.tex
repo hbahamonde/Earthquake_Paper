@@ -1,0 +1,26 @@
+\documentclass[tikz, border=10pt]{standalone}
+\tikzset{
+    vertex/.style = {
+        circle,
+        fill            = black,
+        outer sep = 2pt,
+        inner sep = 1pt,
+    }
+}
+\begin{document}
+\begin{tikzpicture}
+    
+  % Opposition
+  \node[draw,fill=black,text=white] (ArgumentA) at (5,0) {State Capacities};
+  \node[draw] (ArgumentB) at (9,0) {Income Taxation};
+  \node[draw] (ArgumentC) at (13,0) {Elite Conflicts};
+
+\draw[<-,draw=blue] (ArgumentA) to (ArgumentB);
+\draw[<-,draw=blue] (ArgumentB) to (ArgumentC);
+
+  
+  \node at (6., -1.0) {};
+  
+  
+\end{tikzpicture}
+\end{document}
