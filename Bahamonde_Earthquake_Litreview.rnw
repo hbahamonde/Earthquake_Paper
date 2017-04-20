@@ -8,7 +8,7 @@
 	- The determinants of government responsiveness. % paraphrased from Besley2002: 1415
 
 	- Framing: 
-		(1) The income tax was product of a sectoral conflict. And in turn, ``Fiscal state capacity is essential for the state to be able to deliver public goods.'' (\citet[2]{Cardenas2010}).
+		(1) The income tax was produce of a sectoral conflict. And in turn, ``Fiscal state capacity is essential for the state to be able to deliver public goods.'' (\citet[2]{Cardenas2010}).
 
 		(2) Most studies on state-capacities and sectoral conflicts conceive their cases at the national level. This paper leverages subnational data on both sectoral competition and subnational state-capacities. % Soifer also argues that state capacities vary WITHIN the state.
 
@@ -17,20 +17,15 @@
 			% infrastructural power
 				- \citet[109]{Mann1984a}: ``I define the state and then pursue the implications of that definition. Two essential parts of the definition, centrality and territoriality, are discussed in relation to two types of state power, termed here \emph{despotic} and \emph{infrastructural} power.''
 
-				- \citet[113]{Mann1984a}: ``We might term this \emph{infrastructural power}, the capacity of the state actually to penetrate civil society, and to implement logistically political decisions throughout the realm.''
+				%- \citet[113]{Mann1984a}: ``We might term this \emph{infrastructural power}, the capacity of the state actually to penetrate civil society, and to implement logistically political decisions throughout the realm.''
 
 				- \citet[120]{Mann1984a}: ``\emph{The maintenance of internal order} protect[s] existing property relations from the mass of the propertyless. This function probably best serves a dominant economic class constituency.''
 
 				- \citet[132]{Mann1984a}: ``Any state which acquires or exploits social utility will be provided with infrastructural supports. These enable it to regulate, normatively and by force, a given set of social and territorial relations, and to erect boundaries against the outside.''
 
-				- \citet[350]{Fukuyama2013}: governance is the ``government's ability to make and enforce rules, and to deliver services, regardless of whether that government is democratic or not.''
-
 	- ``Natural hazards can be seen as a function of a specific natural process and human (economic) activity'' (\citet[627]{Raschky2008}). Given that the occurrence of earthquakes are completely exogenous to political and economic development (FIND CITATION OF THIS ARGUMENT), the part that is left unexplained should be strictly associated to the quality of institutions.
 
 	% what my measurement picks up: the effectiveness of 
-	
-	- \citet[355]{Fukuyama2013}: ``Good procedures and strong capacity are not ends in themselves. We want governments to do things like provide schooling and public health, public security, and national defense. This suggests an alternative measure of government quality, a measure of final output.'' % He's very critical of output measurements.
-
 	- ``Government enforcement of private contracts''  % from \citet[1531]{Keefer2011}
 
 	- \citet[169]{Bilham2013}: ``although engineering codes may exist in the developing nations, mechanisms to implement these codes are largely unavailable.'' % this is where state capacities come in.
@@ -68,7 +63,6 @@
 	- \citet[153]{Ambraseys2011}: ``Corruption takes the form of bribes to subvert inspection and licensing processes, and of covert activities that reduce costs and thereby compromise the quality of structures.''
 
 		% inspections are costly as perfect information is very expensive.
-		
 		- \citet[1531]{Keefer2011}: ``Earthquake-resistant features are costly to verify after construction is complete. Blondet et al. (no date) point to the clay and straw content of adobe bricks as being central to the earthquake resistance of adobe homes. Steel reinforcement bars make a well-known contribution to earthquake resistance in concrete buildings. However, not only is the steel itself invisible (encased, as it is, in concrete), but the durability of the steel depends on the quality and quantity of concrete around it. Since these features cannot easily be verified at reasonable cost, buyers are less willing to pay a higher price for quality construction and construction companies have weaker incentives to provide it.''
 
 		- \citet[167]{Bilham2013}: ``The concept of “cover-up” is particularly appropriate in the building industry since it is possible to conceal unethical construction at every stage in assembly: inappropriate foundations can be hidden beneath walls, shoddily assembled steel work can be hidden beneath concrete, poorly mixed concrete can be hidden behind paint.''
@@ -216,16 +210,16 @@
 
 
 	% using interviews
-	
 	\citet[542]{Kurtz2007}: ``Reliance on these sorts of surveys, in whole or in part, requires the assumption that the interests of investors (foreign and domestic) and the interests of the nation are essentially coterminous. But this is an exceedingly selective notion of state capacity, and efforts at measurement that hinge on surveys of businesspersons are thus likely to contain substantial biases.'' 
 		
-		- \citet[542]{Kurtz2007}: ``To the extent that public bureaucracies \emph{are} effective in imposing taxes or regulatory demands [...] they are likely to be judged `burdensome' and `growth-inhibiting' by many businesspersons.''
+		%- \citet[542]{Kurtz2007}: ``To the extent that public bureaucracies \emph{are} effective in imposing taxes or regulatory demands [...] they are likely to be judged `burdensome' and `growth-inhibiting' by many businesspersons.''
 
-		- \citet[542]{Kurtz2007}: ``Surveys of businesspeople are riddled with potential sample selection problems. They systematically censor the opinions of former investors who did not succeed in the marketplace, or potential investors who were deterred from entering local markets by pervasive malgovernance or corruption itself, and thereby sample a very unrepresentative group of firm.'' Another example is \citet[618]{Kurtz2012}.
+		- \citet[542]{Kurtz2007}: ``Surveys of businesspeople are riddled with potential sample selection problems. They systematically censor the opinions of former investors who did not succeed in the marketplace, or potential investors who were deterred from entering local markets by pervasive malgovernance or corruption itself, and thereby sample a very unrepresentative group of firm.'' %Another example is \citet[618]{Kurtz2012}.
 
-		- \citet[543]{Kurtz2007}: ``Measures of the `rule of law' have useful data on the enforceability of private and government contracts and the costs and independence of the judicial system, but are similarly conflated with policy preferences over the structure of private property rights,and business-elite oriented questions about whether judicial action `interferes' with business.''
+		% - \citet[543]{Kurtz2007}: ``Measures of the `rule of law' have useful data on the enforceability of private and government contracts and the costs and independence of the judicial system, but are similarly conflated with policy preferences over the structure of private property rights,and business-elite oriented questions about whether judicial action `interferes' with business.''
+		- \citet[543]{Kurtz2007}: ``business-elite oriented questions about whether judicial action `interferes' with business''.
 
-		- \citet[349]{Fukuyama2013}: ``There is an inherent weakness in expert surveys.''
+		%- \citet[349]{Fukuyama2013}: ``There is an inherent weakness in expert surveys.''
 
 %% Essentially, the criticism is that, for ex., property right protection (an usual measurement of state capacity)
 %% is highly liberal (though AJR don't say that). However, the USSR did construct a strong state, but it did not 
@@ -273,7 +267,7 @@
 
 	% soifer says that: what scholars usually measure is not aligned with the analytical construct of `state capacities.'
 
-		- \citet[247]{Soifer2008a}: there is a ``problem of misalignment between dimension and indicator.''
+		%- \citet[247]{Soifer2008a}: there is a ``problem of misalignment between dimension and indicator.''
 
 
 	% the focus has been centered on contemporary Latin America.
@@ -290,14 +284,20 @@
 	
 		\citet[585]{Soifer2012}: ``builds a new measure of state capacity for application to contemporary Latin America [combining] multiple dimensions (extraction, security, and the administration of basic services).''
 
-		\citet[10]{Hanson2013b}: provides 24 different types of measurements of state-capacities.
+		%\citet[10]{Hanson2013b}: provides 24 different types of measurements of state-capacities.
 
-		\citet{Mata2009} combine 12 other indicators.
+		%\citet{Mata2009} combine 12 other indicators.
 
-		\citet{Ferreira2016} review five `fragility' indices
+		%\citet[348]{Fukuyama2013}: ``For example, does a good absence of violence score mean that there is effective policing? I suspect that there isn’t much byway of street crime or military coup attempts in North Korea.'' % he's criticizing the Four of the six World Bank Institute’s Worldwide Governance Indicators purport to measure aspects of state capacity (government effectiveness, regulatory quality, political stability and absence of violence, and control of corruption) \\ 
+
+		%\citet[543]{Kurtz2007}: ``Clearly, the most comprehensive source for cross-national measures of governance is the series of indicators developed by KKM (2003, 2005) at the World Bank.''
+
+		% why tax levels not always indicate state capacities.
+		%\citet[301]{Kiser1992}: ``the high taxes on peasants that are often taken as evidence of of the despotic nature of the Chinese state were the result of rulers' lack of power. Chinese rulers consistently attempted to limit official's excessive extractions from the masses, but were unable to do so.''
+
 
 	
-% Growth and Natural Disasters
+% Growth and Natural Dissasters
 
 	\citet[352]{Noy2010}: ``Our results show that more lethal disasters, in terms of lives lost and lives affected, result in lower output growth but that more costly disasters (in terms of destroyed capital) actually appear to boost the economy in the short-run. This result is consistent with the creative destruction hypothesis that we outlined earlier.''
 
@@ -395,13 +395,11 @@
 
 		\citet[586]{Soifer2012}: ``Most scholarship on state capacity, strength, and power studies something closely akin to Mann's concept, which has been central to the study of the state. Yet we lack a satisfying conceptualization and measurement scheme for this concept.''
 
-		\citet[1]{Johnson2016}: ``State capacity has become one of the most discussed concepts in development economics and political economy.''
-
 		% Motivation on measurement
 
-		\citet[589]{Soifer2012}: ``A veritable industry of indices measuring state weakness, state failure, and state fragility has cropped up in recent years.'' However, `most fragility indices barely satisfy scientific standards.' (\citet[35]{Mata2009})
+		%\citet[589]{Soifer2012}: ``A veritable industry of indices measuring state weakness, state failure, and state fragility has cropped up in recent years.'' However, `most fragility indices barely satisfy scientific standards.' (\citet[35]{Mata2009})
 
-		\citet[347]{Fukuyama2013}: ``points to the poor state of empirical measures of the quality of states.''
+		%\citet[347]{Fukuyama2013}: ``points to the poor state of empirical measures of the quality of states.''
 
 
 	% Past Research
