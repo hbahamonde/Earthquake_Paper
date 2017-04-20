@@ -38,9 +38,7 @@
 %----------------------------------------------------------------------------------------
 
 \begin{abstract}
-Building on the fiscal sociology paradigm, this paper argues that the development of the modern fiscal apparatus in Chile was product of a sectoral conflict around in the 1920’s between the industrial and agricultural political elites. Particularly, I identify the importance of the income tax, and how it contributed to expand state capacities at the subnational level. Exploiting the quasi-randomness of earthquake shocks, I use a novel historical earthquake dataset and a Bayesian multilevel Poisson model to measure state capacities at the local level between 1900 and 2010. The results suggest that the implementation of the income tax has historically decreased the proportion of local deaths, and that the effect has been stronger in industrial localities.
-
-
+Building on the fiscal sociology paradigm, this paper argues that the development of the modern fiscal apparatus in Chile was product of a sectoral conflict around in the 1920's between the industrial and agricultural political elites. Particularly, I identify the importance of the income tax, and how it contributed to expand state capacities at the subnational level. Exploiting the quasi-randomness of earthquake shocks, I leverage a novel historical earthquake dataset and a Bayesian multilevel Poisson model to measure state capacities at the local level between 1900 and 2010. The results suggest that the implementation of the income tax has historically decreased the proportion of local deaths, and that the effect has been stronger in industrial localities.
 \end{abstract}
 
 \hspace*{1.3cm}{\bf Please consider downloading the last version of the paper} \href{https://github.com/hbahamonde/Earthquake_Paper/raw/master/Bahamonde_Earthquake_Paper.pdf}{\texttt{{\color{red}here}}}.
@@ -80,46 +78,65 @@ read_chunk('/Users/hectorbahamonde/RU/Dissertation/Papers/Earthquake_Paper/Earth
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 % Motivation
-Students of the Latin American states have several \emph{theories} to explain the causes and consequence of state capacities. Scholars also have countless alternatives to \emph{measure} state capacities. However, there exist a huge deficit. On the one hand, most state formation theories (just to name a few) are situated during precolonial times,\footnote{\citet{Mahoney:2010aa}.} during early\footnote{See \citet[]{Kurtz:2013aa} and \citet[]{Soifer2015a}.} or late\footnote{\citet{Bahamonde:2017ab}.} independent Latin America. On the other hand, we lack of a measurement that corresponds temporally with the theories we have. While our explanations of state capacities are \emph{historical} in nature, in practice most available measurements capture \emph{contemporary} levels of stateness. In this paper I try to correct this deficit by providing an explanation of the origins of state capacities in Latin America and a corresponding measurement able to capture an \emph{historical measurement} of state capacities. This paper then seeks to contribute to the state formation literature in general, both from a theoretical and methodological perspectives. 
+Students of the Latin American states have several \emph{theories} to explain the causes and consequences of state capacities. Scholars also have countless alternatives to \emph{measure} state capacities. However, there exist a huge deficit. On the one hand, most state formation theories (just to name a few) are situated during precolonial times,\footnote{\citet{Mahoney:2010aa}.} during early\footnote{See \citet[]{Kurtz:2013aa} and \citet[]{Soifer2015a}.} or late\footnote{\citet{Bahamonde:2017ab}.} independent Latin America. On the other hand, we lack of a measurement that corresponds temporally with the theories we have. While our explanations of state capacities are \emph{historical} in nature, in practice most available measurements capture \emph{contemporary} levels of stateness. In this paper I try to bridge this gap by providing an explanation of the origins of state capacities in Latin America and a corresponding indicator able to capture an \emph{historical measurement} of state capacities. This paper then seeks to contribute to the state formation literature in general, both from a theoretical and methodological perspectives. 
 
 \begin{figure}[H]
 \caption{Causal Mechanism}\centering
 \includegraphics[scale=1.3, center]{causal_path.pdf}\label{causal:mechanism:fig}
 \end{figure}
 
-% argument
-Building on the fiscal sociology paradigm, I argue that the implementation of the income tax contributed to form the Latin American state. In turn, the income tax was product of an inter-sectoral conflict between agricultural and industrial elites (see \autoref{causal:mechanism:fig}). 
+% argument and main findings
+Building on the fiscal sociology paradigm,\footnote{For an excellent overview of both classic and new fiscal sociology refer to \citet[Ch. 1]{Martin2009a}.} I argue that the implementation of the income tax contributed to form the Latin American state. In turn, the income tax was product of an inter-sectoral conflict between agricultural and industrial elites (see \autoref{causal:mechanism:fig}). Analytically, I consider sectoral conflicts as the spring of both fiscal expansion and state development. Economic sectors not only shape the economic landscape. Given that each sector has its political arm, the sectoral conflict is also a political conflict. Sectoral conflicts find their origins on the economic structural transformation characterized by ``a secular decline of agriculture and substantial expansion of manufacturing''\footnote{\citet[567]{Johnston1961}.}. These incremental long-term changes imposed tight constraints on the way politics was run by the incumbent landowning class.\footnote{\citet{Bahamonde:2017aa}.} Exploiting the quasi-randomness of earthquake shocks, I leverage a novel historical dataset on Chilean earthquakes and a Bayesian multilevel Poisson model to measure state capacities at the local level between 1900 and 2010. The capacity the Chilean state has had of enforcing and monitoring building codes is a reflexion 
 
 
-Schumpeter argued in favor of a systematic study of public finances, treating taxation both as cause (and consequence) of large-scale changes in the structure of the state.\footnote{Martin et al. (in \citet[2]{Martin2009a}).} Famously, he argued that `the budget is the skeleton of the state stripped of all misleading ideologies.'\footnote{\citet[100]{Schumpeter:1991yq}.} I contend that the expansion of the fiscal system, embodied specially in the income tax, contributed in an important way to the consolidation of the Latin American state. `Tax states' penetrate individual economies\footnote{\citet[298]{Moore2004a}.}, transforming private income into public property.\footnote{\citet[98]{Musgrave1992}.} As they do, states 
+The results suggest that the implementation of the income tax has historically decreased the proportion of local deaths, and that the effect has been stronger in industrial localities. 
 
 
+\todo{rest of the paper}
 
 
+% argument (2): fiscal system and sectoral conflicts
+The expansion of the fiscal system has a long tradition of being associated with sectoral conflicts. For example, Schumpeter sees ``taxation in terms of group conflicts,''\footnote{\citet[14]{Monson2015}.} while others as ``an outcome of economic relations''\footnote{Seligman (1895). In \citet[7]{Martin2009a}.} Following this tradition, I sketch the theory around the sectoral conflicts between the industrial and agricultural elites in Latin America. Class conflicts are more likely to resolve in favor of direct taxation where income inequality \emph{among the elite} is low.\footnote{\citet[157]{Tani1966} explains that the absence of ``wealth groups'' makes passing an income tax law easier.} Given that similar degrees of sectoral economic development can be converted into armies with similar capabilities,\footnote{\citet{Boix:2015aa}.} elites will have incentives to reach agreements rather than engage in conflict. And in the Latin American context, considering the initial institutional and economical advantages the agricultural sector enjoyed since the colonial period, reducing inter-elite inequality meant for the industrial sector to catch up with the agricultural sector. Elsewhere, I have argued that the emergence of a strong industrial elite altered not only the structure of the economy but also the inter-sectoral balance of political power, making unsustainable the political monopoly run by the landed elites.\footnote{\citet{Bahamonde:2017ab}.}
 
 
-
-
-
-
-
-they develop both the institutional  
-
-Since taxing incomes involves 
-
-According to the fiscal sociology approach, the great modern cleavage was not the rise of capitalism (Marx) nor the rise of modern bureaucracy (Weber), but the rise of the ``tax state,'' which developed institutions to penetrate individual economies.\footnote{\citet[298]{Moore2004a}. See epigraphs ( and \citet[42]{Lewis:1965nr}).} 
+% argument (3): sectoral conflicts and state capacities
+A sectoral theory focused on conflict offers a theory of the origins of state capacities as well. As others have argued, ``state formation will be more likely to the degree that powerful individual actors form two groups on the basis of divergent economic and political interests.''\footnote{\citet[1085]{Hechter1980a}.} Since state centralization affects landowners and industrialists in different ways, every sector will have different preferences about taxation and state centralization.\footnote{See \citet[289]{Acemoglu:1996rm} and \citet[50]{Best1976}.} Agriculturalists systematically resisted taxation as land fixity increased the risk premium of their main asset,\footnote{\citet[512]{Robinson2006a}.} while industrialists' preferences toward taxation were more elastic as capital could be reinvested in nontaxable sectors.\footnote{\citet[]{Hirschman:1970bl} and Ronald Rogowski in \citet[ch. 4]{Drake:1998pi}. However, see \citet[15]{Bates1985}.} 
 
 
 
 
 
 
- The income tax was both a product \emph{and} a consequence of sustained economic growth, but particularly, \emph{industrial} growth. Faster industrial output nurtured a new demanding political elite, leading to a string of institutional investments, setting countries in a long-term path of state-building. Tilly defines state capacity as ``the extent to which interventions of state agents in existing non-state resources [such as wages] alter existing distributions of those resources.''\footnote{In \citet[173]{Martin2009a}.} It is this `meddling' what cause a state to develop. For example, \citet[99]{Musgrave1992} argues that since taxation (specially on incomes) requires such a high degree of state penetration, public finances offer the key for a theory of state-building. 
 
 
-The fiscal sociology paradigm is vast.\footnote{For an excellent overview of both classic and new fiscal sociology refer to \citet[Ch. 1]{Martin2009a}.} Without trying to survey all of it, 
 
-This paper follows the classical approach famously suggested by Schumpeter in that it sees ``taxation in terms of group conflicts [and] class interests.''\footnote{\citet[14]{Monson2015}.} Similarly, Seligman in 1895 argued that ``[f]iscal conditions are always an outcome of economic relations,''\footnote{In \citet[7]{Martin2009a}.} while Goldscheid in 1925 famously argued that ``tax struggles are among the oldest forms of class struggle.''\footnote{In \citet[168]{Campbell1993}.} This paper is situated within this tradition, emphasizing the sectoral conflicts between two elites invested in different assets in Latin America. State-making depends on conflict. As others have argued, ``state formation will be more likely to the degree that powerful individual actors form two groups on the basis of divergent economic and political interests.''\footnote{\citet[1085]{Hechter1980a}.} And the conflict is sectoral in nature. State centralization affects landowners and industrialists in different ways.\footnote{\citet[289]{Acemoglu:1996rm}.} Agriculturalists systematically resisted taxation as land fixity increased the risk premium of their main asset,\footnote{\citet[512]{Robinson2006a}.} while industrialists' preferences toward taxation were more elastic as capital could be reinvested in nontaxable sectors.\footnote{\citet[]{Hirschman:1970bl} and Ronald Rogowski in \citet[ch. 4]{Drake:1998pi}. However, see \citet[15]{Bates1985}.} Taxation has always been conflictual since it has an important coercive element. As Martin et al. argue ``a tax is not a fee paid in direct exchange for a service, but rather an obligation to contribute.''\footnote{in \citet[3]{Martin2009a}.} What makes taxation relevant, conflictual and coercive is not the tribute itself (and the potential promise of provision of public goods), but its compulsoriness. Regardless of an individual's race, religion, culture or any other kind of status, the state classifies its subjects according to their incomes and oblige them to pay, punishing whoever refuses to do so. From a sociological standpoint, this ``generality makes taxation a crucial element in the development of the `imagined community' (\citet[]{Anderson2006a}) of the modern nation-state [...] Taxation enmeshes us in the web of generalized reciprocity that constitutes modern society.''\footnote{Martin et al. (in \citet[3]{Martin2009a}).}
+
+The implementation of the tax required a secular accumulation of know-how, particularly, of technologies to monitor individual incomes. Observing individual economies and transforming private income into public property is what cases the state to develop further.\footnote{\citet[98]{Musgrave1992} and \citet[298]{Moore2004a}.} In fact, \citet[99]{Musgrave1992} argues that since taxation (specially on incomes) requires such a high degree of state penetration, public finances offer the key for a theory of state-building. It was Schumpeter who argued in favor of a systematic study of public finances, treating taxation both as cause (and consequence) of large-scale changes in the structure of the state.\footnote{Martin et al. (in \citet[2]{Martin2009a}).} Famously, he argued that `the budget is the skeleton of the state stripped of all misleading ideologies.'\footnote{\citet[100]{Schumpeter:1991yq}.} I contend that the expansion of the fiscal system, embodied specially in the income tax, contributed in an important way to the consolidation of the Latin American state. 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
