@@ -17,7 +17,7 @@
 			% infrastructural power
 				- \citet[109]{Mann1984a}: ``I define the state and then pursue the implications of that definition. Two essential parts of the definition, centrality and territoriality, are discussed in relation to two types of state power, termed here \emph{despotic} and \emph{infrastructural} power.''
 
-				- \citet[113]{Mann1984a}: ``We might term this \emph{infrastructural power}, the capacity of the state actually to penetrate civil society, and to implement logistically political decisions throughout the realm.''
+				%- \citet[113]{Mann1984a}: ``We might term this \emph{infrastructural power}, the capacity of the state actually to penetrate civil society, and to implement logistically political decisions throughout the realm.''
 
 				- \citet[120]{Mann1984a}: ``\emph{The maintenance of internal order} protect[s] existing property relations from the mass of the propertyless. This function probably best serves a dominant economic class constituency.''
 
