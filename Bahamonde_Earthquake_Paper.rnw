@@ -111,8 +111,8 @@ In all Latin American economies during and right after the colonial period, agri
 \section{From Earthquake Death Tolls to State Capacities}
 
 % Outline
-% 1. There are different kinds of measures
-% 2. I adopt Mann's infrastructural power 
+% OK- 1. There are different kinds of measures
+% OK- 2. I adopt Mann's infrastructural power 
 % 3. Propose earthquakes // explain the connection.
 % 4. Advantantages/Disadvantages
 
@@ -122,35 +122,32 @@ More than being blessed, the literature is in fact cursed with the over abundanc
 
 
 % temporal
-This paper identifies a third limitation. Besides of their conceptual and analytical problems, most measurements provide an indication of contemporary state capacities. Just to name a few examples, \citet[585]{Soifer2012} ``builds a new measure of state capacity for application to contemporary Latin America [combining] multiple dimensions (extraction, security, and the administration of basic services).'' \citet[618-619]{Kurtz2012} proposes an experimental design based on list-experiments\footnote{Refer to \citet[]{Aronow2014,Blair2012,Blair2014,Corstange2008,Corstange2010,Glynn2013,Imai2011,Imai2014a,Kane2004,KiewietDeJonge2015}.} to test whether ``the bureaucracy was really based on a competitive, meritocratic process; whether tenure protections are effective; whether extralegal payments or extortion take place,'' among others. That said, economic historians and students of political development have offered other measures that seek to capture historical levels of state capacities. 
+This paper identifies a third limitation. Besides of their conceptual and analytical problems, most measurements provide a rough approximation of \emph{contemporary} state capacities. Just to name a few examples, \citet[585]{Soifer2012} ``builds a new measure of state capacity for [...] contemporary Latin America [combining] multiple dimensions (extraction, security, and the administration of basic services).'' \citet[618-619]{Kurtz2012} propose an experimental design based on list-experiments\footnote{Refer to \citet[]{Aronow2014,Blair2012,Blair2014,Corstange2008,Corstange2010,Glynn2013,Imai2011,Imai2014a,Kane2004,KiewietDeJonge2015}.} to study (in an unbiased way) bureaucrat's opinion on whether ``the bureaucracy was really based on a competitive, meritocratic process; whether tenure protections are effective; whether extralegal payments or extortion take place,'' among others. Finally, \citet{Soifer2016a} employ a survey-based design to measure sub-national state capacities. While these measurements overcome the problems mentioned above, they do not help us to study state capacities in a historical setup. Economic historians and students of political development have offered other measures that seek (or could potentially sought) to capture historical levels of state capacities, such as the opening of postal offices,\footnote{See for example \citet{Robinson2016}.} the administration of national censuses,\footnote{See for example \citet{Soifer2013a} and \citet{Centeno:2002qf}.} vaccination,\footnote{\citet{Soifer2012}.} the investment in public goods such as infrastructure and roads\footnote{See for example \citet{Mann1984a,Mann2008a,Acemoglu2005a,Saylor2012,Thies2009,Besley2010}. However see \citet[226]{Soifer2008}.} and railroads.\footnote{\citet[302]{Saylor2012} and \citet{Coatsworth1974a}.} However, the latter measurement is debatable since ``railroads were often constructed by private actors.''\footnote{\citet[593]{Soifer2012}. Footnote 11.}
 
-- censo
-- postal service
-- roads
-- train
+% my measurement
+To solve this limitations, I propose earthquake death tolls as a measurement of state capacities. Building on \citet[113]{Mann1984a}, my measurement also captures state's `infrastructural' power.\footnote{He defines infrastructural power as  ``the capacity of the state [to] actually [...] penetrate civil society, and to implement logistically political decisions throughout the realm.''} 
 
 
 
+% inspections are costly as perfect information is very expensive.
+		- \citet[1531]{Keefer2011}: ``Earthquake-resistant features are costly to verify after construction is complete. Blondet et al. (no date) point to the clay and straw content of adobe bricks as being central to the earthquake resistance of adobe homes. Steel reinforcement bars make a well-known contribution to earthquake resistance in concrete buildings. However, not only is the steel itself invisible (encased, as it is, in concrete), but the durability of the steel depends on the quality and quantity of concrete around it. Since these features cannot easily be verified at reasonable cost, buyers are less willing to pay a higher price for quality construction and construction companies have weaker incentives to provide it.''
 
-
-
-\todo{I add another problem: measurements work only in current time.}
-
-
-
-		
-	
+		- \citet[167]{Bilham2013}: ``The concept of “cover-up” is particularly appropriate in the building industry since it is possible to conceal unethical construction at every stage in assembly: inappropriate foundations can be hidden beneath walls, shoddily assembled steel work can be hidden beneath concrete, poorly mixed concrete can be hidden behind paint.''
 
 
 
 
-Building on \citet[113]{Mann1984a}, I focus on the state's infrastructural power which is ``the capacity of the state actually to penetrate civil society, and to implement logistically political decisions throughout the realm.''
+% differential
+- ``[t]he differences in impacts between these two earthquakes is directly related to differences in the degree of disaster-mitigation and disaster-preparedness measures taken in those areas. Strict adherence to building codes (as well as zoning ordinances during the past few decades) in the latter region undoubtedly saved many lives and kept thousands of buildings from collapsing.'' \citet[130]{Noji:1996aa} % read from library. (from \citet[1910]{Anbarci2005})
 
 
 
+% measurement 
 
+	% Soifer: three components
+		Soifer divides the state infrastructural power in three layers. First the `national capabilities' which `sees state infrastructural power as a characteristic of the central state' (\citet[235]{Soifer2008a}), the second is the `weight of the state' ('how the exercise of state power shapes the society it controls,' p. 236) and the third `focuses on \emph{subnational variation} in the ability of the state to exercise control within its territory' (\citet[236]{Soifer2008a}), 
 
-
+		- MY IDEA: In this paper I bring the first and third components and study how a national institution (the income tax) changed state capacities at the subnational level, unevenly reaching agricultural and industrial localities. Following \citet[246]{Soifer2008a}, this paper presents, using local death tolls, a territorially variant measurement of state power.
 
 
 

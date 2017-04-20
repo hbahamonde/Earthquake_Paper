@@ -48,7 +48,7 @@
 
 	- ``Differential effects of potentially catastrophic earthquakes.'' %(from \citet{Anbarci2005})
 
-	- ``[t]he differences in impacts between these two earthquakes is directly related to differences in the degree of disaster-mitigation and disaster-preparedness measures taken in those areas. Strict adherence to building codes (as well as zoning ordinances during the past few decades) in the latter region undoubtedly saved many lives and kept thousands of buildings from collapsing.'' \citet[130]{Noji:1996aa} % read from library. (from \citet[1910]{Anbarci2005})
+	%- ``[t]he differences in impacts between these two earthquakes is directly related to differences in the degree of disaster-mitigation and disaster-preparedness measures taken in those areas. Strict adherence to building codes (as well as zoning ordinances during the past few decades) in the latter region undoubtedly saved many lives and kept thousands of buildings from collapsing.'' \citet[130]{Noji:1996aa} % read from library. (from \citet[1910]{Anbarci2005})
 
 	- \citet[789]{Kellenberg2008}: ``to be more proactive in controlling the rate or specific form of urbanization and in enacting other laws (e.g. zoning rules or building codes) that limit its citizens' exposure to natural disasters.''
 
@@ -234,9 +234,9 @@
 		``In addition, unlike in the case of some macroeconomic policies, it matters a great deal more in this literature that the effectiveness of the state varies enormously across localities and administrative levels within the same country in their effect on the development process, not at all captured in data that take a whole-country average as the point of observation, which is particularly problematic for countries with a medium- to large-sized population. On top of all this, there are inherent difficulties of measuring quality of public goods and services. There'' (\citet[865]{Bardhan2016}).
 
 		% Soifer: three components
-		Soifer divides the state infrastructural power in three layers. First the `national capabilities' which `sees state infrastructural power as a characteristic of the central state' (\citet[235]{Soifer2008a}), the second is the `weight of the state' ('how the exercise of state power shapes the society it controls,' p. 236) and the third `focuses on \emph{subnational variation} in the ability of the state to exercise control within its territory' (\citet[236]{Soifer2008a}), 
+		%Soifer divides the state infrastructural power in three layers. First the `national capabilities' which `sees state infrastructural power as a characteristic of the central state' (\citet[235]{Soifer2008a}), the second is the `weight of the state' ('how the exercise of state power shapes the society it controls,' p. 236) and the third `focuses on \emph{subnational variation} in the ability of the state to exercise control within its territory' (\citet[236]{Soifer2008a}), 
 
-		- MY IDEA: In this paper I bring the first and third components and study how a national institution (the income tax) changed state capacities at the subnational level, unevenly reaching agricultural and industrial localities. Following \citet[246]{Soifer2008a}, this paper presents, using local death tolls, a territorially variant measurement of state power.
+		%- MY IDEA: In this paper I bring the first and third components and study how a national institution (the income tax) changed state capacities at the subnational level, unevenly reaching agricultural and industrial localities. Following \citet[246]{Soifer2008a}, this paper presents, using local death tolls, a territorially variant measurement of state power.
 
 
 	- this is my idea: it measures the capacity of the state to send inspectors to evaluate, enforce and monitor the construction process. 
