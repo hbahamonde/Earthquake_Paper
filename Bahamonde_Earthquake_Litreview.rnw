@@ -388,9 +388,9 @@
 
 		% Motivation on measurement
 
-		\citet[589]{Soifer2012}: ``A veritable industry of indices measuring state weakness, state failure, and state fragility has cropped up in recent years.'' However, `most fragility indices barely satisfy scientific standards.' (\citet[35]{Mata2009})
+		%\citet[589]{Soifer2012}: ``A veritable industry of indices measuring state weakness, state failure, and state fragility has cropped up in recent years.'' However, `most fragility indices barely satisfy scientific standards.' (\citet[35]{Mata2009})
 
-		\citet[347]{Fukuyama2013}: ``points to the poor state of empirical measures of the quality of states.''
+		%\citet[347]{Fukuyama2013}: ``points to the poor state of empirical measures of the quality of states.''
 
 
 	% Past Research

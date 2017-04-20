@@ -119,7 +119,17 @@ In all Latin American economies during and right after the colonial period, agri
 
 
 % different measures
+More than being blessed, the literature is in fact cursed with the over abundance of poor indicators of state capacities. \citet[589]{Soifer2012} explains that there exists a ``veritable industry of indices measuring state weakness, state failure, and state fragility has cropped up in recent years.'' Yet, as \citet[347]{Fukuyama2013} explains, its abundance ``points to the poor state of empirical measures of the quality of states.'' There are two main concerns. First, `most fragility indices barely satisfy scientific standards.'\footnote{\citet[35]{Mata2009}.}. And second, most
 
+
+
+
+
+		\citet[585]{Soifer2012}: ``builds a new measure of state capacity for application to contemporary Latin America [combining] multiple dimensions (extraction, security, and the administration of basic services).''
+
+		\citet[10]{Hanson2013b}: provides 24 different types of measurements of state-capacities.
+
+		\citet{Mata2009} combine 12 other indicators.
 
 
 
