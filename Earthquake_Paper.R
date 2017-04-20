@@ -843,6 +843,41 @@ ggplot(data = earthquake.year, aes(x = variable, y = mean)) +
 
 
 
+# ---- incometax ----
+
+# Load data
+load("/Users/hectorbahamonde/RU/Dissertation/Data/dissertation.Rdata") 
+
+# load libraries
+if (!require("pacman")) install.packages("pacman"); library(pacman)
+p_load(ggplot2,gridExtra)
+
+
+par(mar=c(10,10,1,1)) # bottom, then left margin, upper and right margins
+
+ggplot() + 
+        geom_smooth(data=subset(dissertation, country=="Chile"), aes(x=year, y=log(constagricult), colour="Agricultural Output"), fill=NA, size=1) +
+        geom_smooth(data=subset(dissertation, country=="Chile"), aes(x=year, y=log(constmanufact), colour="Industrial Output"), fill=NA, size=1) + 
+        xlab("Year") +
+        ylab("GDP Output (ln)") +
+        labs(colour = "Legend") +
+        scale_x_continuous(limits=c(1890,2010)) + 
+        geom_vline(data=subset(dissertation, country=="Chile"), aes(xintercept = 1924, colour= "Income Tax Law"), linetype = "longdash") + # Income Tax Law  
+        theme_bw() + 
+        theme(
+                axis.text.y = element_text(size=10), 
+                axis.text.x = element_text(size=10), 
+                axis.title.y = element_text(size=10), 
+                axis.title.x = element_text(size=10), 
+                legend.text=element_text(size=10), 
+                legend.title=element_text(size=0),
+                legend.position="bottom")  + 
+        labs(title="")
+
+# ----
+
+
+
 ## http://rstudio-pubs-static.s3.amazonaws.com/12451_53fc5e6bd80744b99158a12975c31cbf.html
 ## overdispersion
 ### epsilon (ϵ) represents overdispersion
