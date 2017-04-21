@@ -23,24 +23,24 @@
 
 				- \citet[132]{Mann1984a}: ``Any state which acquires or exploits social utility will be provided with infrastructural supports. These enable it to regulate, normatively and by force, a given set of social and territorial relations, and to erect boundaries against the outside.''
 
-	- ``Natural hazards can be seen as a function of a specific natural process and human (economic) activity'' (\citet[627]{Raschky2008}). Given that the occurrence of earthquakes are completely exogenous to political and economic development (FIND CITATION OF THIS ARGUMENT), the part that is left unexplained should be strictly associated to the quality of institutions.
+	%- ``Natural hazards can be seen as a function of a specific natural process and human (economic) activity'' (\citet[627]{Raschky2008}). 
 
 	% what my measurement picks up: the effectiveness of 
-	- ``Government enforcement of private contracts''  % from \citet[1531]{Keefer2011}
+	%- ``Government enforcement of private contracts''  % from \citet[1531]{Keefer2011}
 
-	- \citet[169]{Bilham2013}: ``although engineering codes may exist in the developing nations, mechanisms to implement these codes are largely unavailable.'' % this is where state capacities come in.
+	%- \citet[169]{Bilham2013}: ``although engineering codes may exist in the developing nations, mechanisms to implement these codes are largely unavailable.'' % this is where state capacities come in.
 
 	- Preparedness 
 
 	- ``Efforts to establish better preparedness for and prevention of disasters have been a priority concern of donor agencies, implementing agencies and affected countries.'' (\citet[271]{Kahn2005})
 
-	-\citet[628]{Raschky2008}: ``the effects of natural hazards [do] not solely depend on a region's topographic or climatic exposure to natural processes orits (ORITS IN THE ORIGINAL) level of economic development but the region's institutional vulnerability to natural processes that ultimately determines whether natural processes result in a natural hazard or not.''
+	-%\citet[628]{Raschky2008}: ``the effects of natural hazards [do] not solely depend on a region's topographic or climatic exposure to natural processes orits (ORITS IN THE ORIGINAL) level of economic development but the region's institutional vulnerability to natural processes that ultimately determines whether natural processes result in a natural hazard or not.''
 
 	- \citet[277]{Kahn2005}: ``Richer nations will be able to invest in and enforce zoning and building codes. Building codes improve the structural soundness of a building, and this has a social value that the owner is unlikely to internalize, as it improves the quality of life of people in an immediate vicinity affected.'' % use this, but change `richer nations' for `stronger states.'
 
 	- \citet[1907]{Anbarci2005}: ``while earthquakes themselves are natural phenomena beyond the reach of humankind, our collective inaction with respect to items like the creation and enforcement of building codes, failure to retrofit structures and to enact quake-sensitive zoning clearly plays a part in determining the actual toll that a given quake takes.'' % though they focus on collective action: "collective action is, however, limited by its income and the ability of the population to arrive at an agreeable distribution of the economic burden of the actions.2 Given this, we analyze the impact of a country's per capita income and level of inequality on earthquake fatalities." (\citet[1909]{Anbarci2005}).
 
-	- \citet[153]{Ambraseys2011}: ``Earthquake-resistant construction depends on responsible governance, but its implementation can be undermined by corruption or by poverty, through the use of substandard materials and assembly methods, or through the inappropriate siting of buildings.''
+	%- \citet[153]{Ambraseys2011}: ``Earthquake-resistant construction depends on responsible governance, but its implementation can be undermined by corruption or by poverty, through the use of substandard materials and assembly methods, or through the inappropriate siting of buildings.''
 
 	- \citet[167]{Bilham2013}: ``\emph{Corruption}\footnote{Emphasis in original.} in the building industry can lead to the issuance of illegal permits or unauthorized inspection certificates at all levels of the construction process.''
 
@@ -63,15 +63,15 @@
 	- \citet[153]{Ambraseys2011}: ``Corruption takes the form of bribes to subvert inspection and licensing processes, and of covert activities that reduce costs and thereby compromise the quality of structures.''
 
 		% inspections are costly as perfect information is very expensive.
-		- \citet[1531]{Keefer2011}: ``Earthquake-resistant features are costly to verify after construction is complete. Blondet et al. (no date) point to the clay and straw content of adobe bricks as being central to the earthquake resistance of adobe homes. Steel reinforcement bars make a well-known contribution to earthquake resistance in concrete buildings. However, not only is the steel itself invisible (encased, as it is, in concrete), but the durability of the steel depends on the quality and quantity of concrete around it. Since these features cannot easily be verified at reasonable cost, buyers are less willing to pay a higher price for quality construction and construction companies have weaker incentives to provide it.''
+		%- \citet[1531]{Keefer2011}: ``Earthquake-resistant features are costly to verify after construction is complete. Blondet et al. (no date) point to the clay and straw content of adobe bricks as being central to the earthquake resistance of adobe homes. Steel reinforcement bars make a well-known contribution to earthquake resistance in concrete buildings. However, not only is the steel itself invisible (encased, as it is, in concrete), but the durability of the steel depends on the quality and quantity of concrete around it. Since these features cannot easily be verified at reasonable cost, buyers are less willing to pay a higher price for quality construction and construction companies have weaker incentives to provide it.''
 
-		- \citet[167]{Bilham2013}: ``The concept of “cover-up” is particularly appropriate in the building industry since it is possible to conceal unethical construction at every stage in assembly: inappropriate foundations can be hidden beneath walls, shoddily assembled steel work can be hidden beneath concrete, poorly mixed concrete can be hidden behind paint.''
+		%- \citet[167]{Bilham2013}: ``The concept of “cover-up” is particularly appropriate in the building industry since it is possible to conceal unethical construction at every stage in assembly: inappropriate foundations can be hidden beneath walls, shoddily assembled steel work can be hidden beneath concrete, poorly mixed concrete can be hidden behind paint.''
 
 		% more on adobe
 		https://cachandochile.wordpress.com/2010/03/14/chiles-earthquake-an-arcitects-perspective/: 
 		``I've heard that the original vernacular Chilean colonial-style home developed precisely because it WAS earthquake resistant, but that over time people started reducing the thickness of the walls and changing the design and that is why adobe homes are no longer considered safe.''
 
-	- ``the potentially devastating effects of major earthquakes are, if not preventable, at least subject to significant mitigation.'' % from \citet[1911]{Anbarci2005}. Similarly, \citet[209]{Escaleras2007} argue that ``While earthquakes may not be preventable, it is possible to prevent the disasters they cause.'' 
+	- %``the potentially devastating effects of major earthquakes are, if not preventable, at least subject to significant mitigation.'' % from \citet[1911]{Anbarci2005}. Similarly, \citet[209]{Escaleras2007} argue that ``While earthquakes may not be preventable, it is possible to prevent the disasters they cause.'' 
 
 	- \citet[1909]{Anbarci2005}: ``mitigation activities, such as high-level building codes, are absolutely essential in alleviating the effects of severe quakes. Equally important, however, is enforcement of these codes, or other mitigation activities, which all too often is lacking, especially in developing countries. The reason for the absence of or failing to enforce high-level building codes and aggressively retrofitting structures is obvious: These activities can be extremely expensive and building a consensus to finance such activities often proves problematic. Too often, when necessary collective action fails to occur.''
 
@@ -83,7 +83,7 @@
 
 	- \citet[875]{Bilham2009}: ``There are numerous opportunities for corrupt practices, especially where the ratio of the cost of building to an inspector's official income is large. In a recent case in Indonesia, officials were overwhelmed by the extent and type of damage and were unable to apply their judgment concerning the safety of surviving structures evenly and objectively throughout the damaged area.''
 
-	\citet[153]{Ambraseys2011}: ``83% of all deaths from building collapse in earthquakes over the past 30 years occurred in countries that are anomalously corrupt.''
+	\citet[153]{Ambraseys2011}: ``83\% of all deaths from building collapse in earthquakes over the past 30 years occurred in countries that are anomalously corrupt.''
 
 	\citet[133]{Gros2011}: ``Neither eschatology nor demagogy explains the Haitian tragedy. Thus, this article categorically rejects both narratives and makes a more logical argument. \emph{Goudougoudou}\footnote{Emphasis in original.} was triggered by Nature, but the scale of the destruction was due to the massive failure of Haitian social institutions, namely the state, and international policy, which predated the earthquake. At its core then, this is a study of institutional failure in general and that of the Haitian state in particular. Earthquakes cannot be prevented, but there would have been considerably fewer deaths and damage to property from the Haitian earthquake, if Haiti had a working state to enforce building codes.''
 
@@ -225,7 +225,7 @@
 %% is highly liberal (though AJR don't say that). However, the USSR did construct a strong state, but it did not 
 %% protect any property rights (as they didn't exist).
 	
-	\citet[58]{Kurtz:2013aa}: there are two types of measurement, objective and subjective/perception-based. The latter are always biased.  ``the best measures would be of the sorts of activities that all (or nearly all) states consider to be of primary importance - for thee can be assumed to be pursued vigorously across contexts, and variations in success will depend principally on variation in the effectiveness of institutions, not on opportunity costs or political will.'' 
+	
 
 	- \citet[619]{Kurtz2012} ``explicitly avoid an emphasis on outputs that are at the center of political or policy debates, such as property rights.''
 
@@ -245,15 +245,17 @@
 % Advantages of this measurement 
 	% as events, death tolls are exogenous to state-capacities themselves.
 		
-		- Earthquakes happen at any level of development (\citet{Kahn2005} and \citet{Brancati2007}) and at any level of state-capacities, then.
+		- %Earthquakes happen at any level of development (\citet{Kahn2005} and \citet{Brancati2007}) and at any level of state-capacities, then.
 
-		- \citet[728]{Brancati2007} ``Since earthquakes constitute a natural experiment, it is not necessary to include a laundry list of control variables in the analysis.''
+		% - \citet[728]{Brancati2007} ``Since earthquakes constitute a natural experiment, it is not necessary to include a laundry list of control variables in the analysis.''
 
-		- \citet[32, unpublished]{Caruso2017}: ``[exploits] the exogenous variation in the location and timing of natural disasters, as well as the exposure of different cohorts to the shock.''
+		% - \citet[32, unpublished]{Caruso2017}: ``[exploits] the exogenous variation in the location and timing of natural disasters, as well as the exposure of different cohorts to the shock.''
 
-		- \citet[27]{Gignoux2016}: ``given that the occurrence of earthquakes can be viewed as quasi-random when restricting to exposed regions, this setting permits us to analyze these events as a set of repeated social experiments.'' % or "We base our identification on the quasi-random variation associated with seismic events" (p. 27 too).
+		- %\citet[27]{Gignoux2016}: ``given that the occurrence of earthquakes can be viewed as quasi-random when restricting to exposed regions, this setting permits us to analyze these events as a set of repeated social experiments.'' % or "We base our identification on the quasi-random variation associated with seismic events" (p. 27 too).
 
 	% it is objective
+
+		- \citet[58]{Kurtz:2013aa}: there are two types of measurement, objective and subjective/perception-based. The latter are always biased.  ``the best measures would be of the sorts of activities that all (or nearly all) states consider to be of primary importance - for thee can be assumed to be pursued vigorously across contexts, and variations in success will depend principally on variation in the effectiveness of institutions, not on opportunity costs or political will.'' 
 		
 		- \citet[616]{Kurtz2012}: propose a measurement that ``it is objective. That is, it does not rely on an effort to measure the beliefs of citizens about the nature of the state, the legitimacy of its leaders or the institutional procedures that selected them, or even perceptions of the efficiency of public bureaucracies.'' % SO DO I.
 
