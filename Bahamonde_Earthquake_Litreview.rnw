@@ -8,11 +8,11 @@
 	- The determinants of government responsiveness. % paraphrased from Besley2002: 1415
 
 	- Framing: 
-		(1) The income tax was produce of a sectoral conflict. And in turn, ``Fiscal state capacity is essential for the state to be able to deliver public goods.'' (\citet[2]{Cardenas2010}).
+		%(1) The income tax was produce of a sectoral conflict. And in turn, ``Fiscal state capacity is essential for the state to be able to deliver public goods.'' (\citet[2]{Cardenas2010}).
 
 		(2) Most studies on state-capacities and sectoral conflicts conceive their cases at the national level. This paper leverages subnational data on both sectoral competition and subnational state-capacities. % Soifer also argues that state capacities vary WITHIN the state.
 
-		(3) The paper expands on literature on `infrastructural' state-capacities. Enforcement of building codes not only saves lives, but also preserves levels of interpersonal trust during shock times (for the interpersonal thing, cite \citet{Carlin2014a}).
+		%(3) The paper expands on literature on `infrastructural' state-capacities. Enforcement of building codes not only saves lives, but also preserves levels of interpersonal trust during shock times (for the interpersonal thing, cite \citet{Carlin2014a}).
 
 			% infrastructural power
 				- \citet[109]{Mann1984a}: ``I define the state and then pursue the implications of that definition. Two essential parts of the definition, centrality and territoriality, are discussed in relation to two types of state power, termed here \emph{despotic} and \emph{infrastructural} power.''
@@ -52,13 +52,13 @@
 
 	- \citet[789]{Kellenberg2008}: ``to be more proactive in controlling the rate or specific form of urbanization and in enacting other laws (e.g. zoning rules or building codes) that limit its citizens' exposure to natural disasters.''
 
-	- \citet[271]{Kahn2005}: ``Though richer nations do not experience fewer natural disasters than poorer nations, richer nations do suffer less death from disaster. Economic development provides implicit insurance against nature's shocks. Democracies and nations with higher-quality institutions suffer less death from natural disaster.''
+	%- \citet[271]{Kahn2005}: ``Though richer nations do not experience fewer natural disasters than poorer nations, richer nations do suffer less death from disaster. Economic development provides implicit insurance against nature's shocks. Democracies and nations with higher-quality institutions suffer less death from natural disaster.''
 
 		For example, \citet[254]{Slater2008}: ``stresses the significance of \emph{competitive elections amid robust mass mobilization} as a spur for state-building efforts.''\footnote{Emphasis in original.}
 
 	- ``death toll from quakes are greatly exacerbated by the lack of high-level construction regulations [...] the absence of licensing for contractors, engineers and architects.'' % from (from \citet[1910]{Anbarci2005})
 
-	- ``There must, of course, be rigorous enforcement. This is apparent in the 6.4 Richter-scale earthquake occurring in Changureh, Iran on June 22, 2002, which claimed 261 lives. The MCEER (2002) report on that quake notes that while Iran has building codes which are comparable to those existing in the United States, they tend to be enforced only in the country's larger cities. In smaller villages where most of the deaths from the quake occurred, effectively no seismic-related building codes exist which, when coupled with relatively low levels of income in those areas, had lead many to build their homes with poor design/construction and with low-quality materials.'' % from \citet[1910]{Anbarci2005}.
+	% - ``There must, of course, be rigorous enforcement. This is apparent in the 6.4 Richter-scale earthquake occurring in Changureh, Iran on June 22, 2002, which claimed 261 lives. The MCEER (2002) report on that quake notes that while Iran has building codes which are comparable to those existing in the United States, they tend to be enforced only in the country's larger cities. In smaller villages where most of the deaths from the quake occurred, effectively no seismic-related building codes exist which, when coupled with relatively low levels of income in those areas, had lead many to build their homes with poor design/construction and with low-quality materials.'' % from \citet[1910]{Anbarci2005}.
 
 	- \citet[153]{Ambraseys2011}: ``Corruption takes the form of bribes to subvert inspection and licensing processes, and of covert activities that reduce costs and thereby compromise the quality of structures.''
 
@@ -93,25 +93,22 @@
 
 	- Drawbacks of this measurement
 		
-		(1) Obviously, the country needs to have earthquakes.\\ however this MIGHT have a solution:
+		%(1) Obviously, the country needs to have earthquakes.\\ however this MIGHT have a solution:
 
-			- while it's true that this measurement requires the case to have experienced a number of earthquakes, it's worthwhile noting that ``Most earthquakes occur at the various borders of the Pacific plate, the Western border of the Latin American plate, and the boundaries between the African, the Arabic and the Indian plates and the Eurasian plate.'' (\citet[1534]{Keefer2011}) This allows potential cross-country comparisons within most of the developing world.
+			%- while it's true that this measurement requires the case to have experienced a number of earthquakes, it's worthwhile noting that ``Most earthquakes occur at the various borders of the Pacific plate, the Western border of the Latin American plate, and the boundaries between the African, the Arabic and the Indian plates and the Eurasian plate.'' (\citet[1534]{Keefer2011}) This allows potential cross-country comparisons within most of the developing world.
 
-			- for example, \citet[618]{Bilham2013a} explain that ``A quarter of the world's population inhabits the nations of Iran, Afghanistan, Pakistan, India, Nepal, Bhutan, Bangladesh, Sri Lanka, and Myanmar. These countries lie on or near the northern edge of the Arabian and Indian Plates that are colliding with the southern margin of the Eurasian Plate.''
+			% - for example, \citet[618]{Bilham2013a} explain that ``A quarter of the world's population inhabits the nations of Iran, Afghanistan, Pakistan, India, Nepal, Bhutan, Bangladesh, Sri Lanka, and Myanmar. These countries lie on or near the northern edge of the Arabian and Indian Plates that are colliding with the southern margin of the Eurasian Plate.''
 
-			- other measurements also are contingent on the context. For example, \citet[593]{Soifer2012} proposes a measurement of administrative capacities focusing on how states are able to enforce voter registration `where voting is mandatory.'
+			%- other measurements also are contingent on the context. For example, \citet[593]{Soifer2012} proposes a measurement of administrative capacities focusing on how states are able to enforce voter registration `where voting is mandatory.'
 		
-		(2) There are countries, like India, where there is regional variance on the frequency of earthquakes, i.e. some regions have quakes while some others do not. In the case of India, the state has implemented {\bf regional} quake mitigation policies (\citet[164]{Dunbar2003}). The specificity of this policies could undermine the assumption that the state should penetrate the `entire' territory. Additionally, the selection of which specific regions will be `treated' with mitigation policies could not be subject only to necessity but also to local clientelism (cite the Min paper on electricity.) ``The isoseismal maps [that ] are [...] used to define zones of seismic hazard,''\footnote{\citet[164]{Dunbar2003}.} might not necessarily correspond to the administrative areas in charge of delivering those policies either, opening several windows of opportunities to discretionary assignment.  Finally, following the Mercalli scale, the map was divided in different zones. Some V zones were converted in VI zones, presumably receiving more infrastructure and emergency funds. This could also have opened several windows of opportunity for local electoral brokerage and credit claiming. 
+		% (2) There are countries, like India, where there is regional variance on the frequency of earthquakes, i.e. some regions have quakes while some others do not. In the case of India, the state has implemented {\bf regional} quake mitigation policies (\citet[164]{Dunbar2003}). The specificity of this policies could undermine the assumption that the state should penetrate the `entire' territory. Additionally, the selection of which specific regions will be `treated' with mitigation policies could not be subject only to necessity but also to local clientelism (cite the Min paper on electricity.) ``The isoseismal maps [that ] are [...] used to define zones of seismic hazard,''\footnote{\citet[164]{Dunbar2003}.} might not necessarily correspond to the administrative areas in charge of delivering those policies either, opening several windows of opportunities to discretionary assignment.  Finally, following the Mercalli scale, the map was divided in different zones. Some V zones were converted in VI zones, presumably receiving more infrastructure and emergency funds. This could also have opened several windows of opportunity for local electoral brokerage and credit claiming. 
 
-		(3) Getting a death toll, or actually just having one, might be a function of state capacities (this is Paul's criticism). However, the ones who counted the death were not state agencies, but civil institutions such as the Catholic Church. % can't remember the citation. I guess it was in the census???
+		% (3) Getting a death toll, or actually just having one, might be a function of state capacities (this is Paul's criticism). However, the ones who counted the death were not state agencies, but civil institutions such as the Catholic Church. % can't remember the citation. I guess it was in the census???
 
 
-		(4) felt intensities v. instrumental measurement
-		Before the instrumental period, magnitudes were estimated in a non-instrumental way. There are methods to approximate historical felt magnitudes to instrumental-like intensities (\citet{Szeliga2010}).
+		%(4) felt intensities v. instrumental measurement 		Before the instrumental period, magnitudes were estimated in a non-instrumental way. There are methods to approximate historical felt magnitudes to instrumental-like intensities (\citet{Szeliga2010}).
 
-		(5) \citet[1534]{Keefer2011}: ``Mortality should be lower, all else equal, the larger the distance between the hypocenter (the point within the earth where an earthquake rupture starts) and the epicenter (the point directly above it at the surface of the Earth), that is, the larger is the so-called focal depth of the quake.''
-
-		(6) It potentially represents just one dimension of state capacity. \citet[590]{Soifer2012} and others have explained that `\emph{single dimension measures of state capacity are inappropriate} for attempts to measure state capacity.'\footnote{Emphasis in original.} % However I could say that while my measurement does represent one dimension, it potentially maps into a broader range of state activities, such as the deployment of inspectors, BLA BLA BLA.
+				(6) It potentially represents just one dimension of state capacity. \citet[590]{Soifer2012} and others have explained that `\emph{single dimension measures of state capacity are inappropriate} for attempts to measure state capacity.'\footnote{Emphasis in original.} % However I could say that while my measurement does represent one dimension, it potentially maps into a broader range of state activities, such as the deployment of inspectors, BLA BLA BLA.
 
 % Endowments
 
@@ -230,11 +227,11 @@
 	
 	
 
-	- \citet[619]{Kurtz2012} ``explicitly avoid an emphasis on outputs that are at the center of political or policy debates, such as property rights.''
+	%- \citet[619]{Kurtz2012} ``explicitly avoid an emphasis on outputs that are at the center of political or policy debates, such as property rights.''
 
 	% subnational
 	
-		``In addition, unlike in the case of some macroeconomic policies, it matters a great deal more in this literature that the effectiveness of the state varies enormously across localities and administrative levels within the same country in their effect on the development process, not at all captured in data that take a whole-country average as the point of observation, which is particularly problematic for countries with a medium- to large-sized population. On top of all this, there are inherent difficulties of measuring quality of public goods and services. There'' (\citet[865]{Bardhan2016}).
+		%``In addition, unlike in the case of some macroeconomic policies, it matters a great deal more in this literature that the effectiveness of the state varies enormously across localities and administrative levels within the same country in their effect on the development process, not at all captured in data that take a whole-country average as the point of observation, which is particularly problematic for countries with a medium- to large-sized population. On top of all this, there are inherent difficulties of measuring quality of public goods and services. There'' (\citet[865]{Bardhan2016}).
 
 		% Soifer: three components
 		%Soifer divides the state infrastructural power in three layers. First the `national capabilities' which `sees state infrastructural power as a characteristic of the central state' (\citet[235]{Soifer2008a}), the second is the `weight of the state' ('how the exercise of state power shapes the society it controls,' p. 236) and the third `focuses on \emph{subnational variation} in the ability of the state to exercise control within its territory' (\citet[236]{Soifer2008a}), 
@@ -242,7 +239,7 @@
 		%- MY IDEA: In this paper I bring the first and third components and study how a national institution (the income tax) changed state capacities at the subnational level, unevenly reaching agricultural and industrial localities. Following \citet[246]{Soifer2008a}, this paper presents, using local death tolls, a territorially variant measurement of state power.
 
 
-	- this is my idea: it measures the capacity of the state to send inspectors to evaluate, enforce and monitor the construction process. 
+	%- this is my idea: it measures the capacity of the state to send inspectors to evaluate, enforce and monitor the construction process. 
 
 
 % Advantages of this measurement 
@@ -265,7 +262,7 @@
 		- %\citet[619]{Kurtz2012}: ``The problem [...] with output based measures is that they necessarily include information on policy choice.'' However, it would be hard to say that people's lives are subject to ideological or policy `preferences.' 
 		%It rather seems that protecting people's lives is actually part of the most basic kind of political contract between an individual and the state. In other words, the idea is to utilize an ``output-linked approach [where] one should only examine public sector outputs that are not particularly politicized, and generally perceived to be essential state functions across a very broad set of states.'' (\citet[619]{Kurtz2012}).
 
-		- In fact \citet[619]{Kurtz2012} proposes using ``everyday bureaucratic outputs'' such as ``building codes'' to ``test the actual efficiency of public institutions.''
+		%- In fact \citet[619]{Kurtz2012} proposes using ``everyday bureaucratic outputs'' such as ``building codes'' to ``test the actual efficiency of public institutions.''
 
 	% earthquakes measure state-capacities beyond any other `theoretical' measurement. It measures the *actual capacity* of states to monitor and enforce an institution. 
 	\citet[212]{Escaleras2007}: Regarding the earthquake in Turkey: ``Most importantly, the problem in Turkey was due not to a lack of understanding of seismically sensitive engineering or appropriate construction standards, but rather to unscrupulous and often inappropriately trained contractors who ignored the country's building codes with the consent of government inspectors (Lewis, 2005; Bohlen, 1999; Kinzer, 1999).'' % THAT IS, THERE WERE CODES, BUT THEY WERE NOT ENFORCED.
@@ -283,12 +280,12 @@
 
 	% has been used before
 
-		- \citet[419]{Carlin2014a}: Study why in some context earthquakes damage interpersonal trust. Their argument is that ``state capacity plays a decisive role in determining natural disasters' consequences for social capital.''
+		%- \citet[419]{Carlin2014a}: Study why in some context earthquakes damage interpersonal trust. Their argument is that ``state capacity plays a decisive role in determining natural disasters' consequences for social capital.''
 
 
 	% other measurements
 	
-		\citet[585]{Soifer2012}: ``builds a new measure of state capacity for application to contemporary Latin America [combining] multiple dimensions (extraction, security, and the administration of basic services).''
+		%\citet[585]{Soifer2012}: ``builds a new measure of state capacity for application to contemporary Latin America [combining] multiple dimensions (extraction, security, and the administration of basic services).''
 
 		%\citet[10]{Hanson2013b}: provides 24 different types of measurements of state-capacities.
 
@@ -374,6 +371,9 @@
 
 		- % misreporting
 		\citet[201]{Stromberg2007}: ``reporting (and misreporting) of disasters varies systematically across time, levels of income, and political regimes. Reporting of small disasters is probably more complete in later years and in more developed countries.'' To account for these factors, I include year fixed effects too.
+
+(5) \citet[1534]{Keefer2011}: ``Mortality should be lower, all else equal, the larger the distance between the hypocenter (the point within the earth where an earthquake rupture starts) and the epicenter (the point directly above it at the surface of the Earth), that is, the larger is the so-called focal depth of the quake.''
+
 
 
 
