@@ -23,24 +23,24 @@
 
 				- \citet[132]{Mann1984a}: ``Any state which acquires or exploits social utility will be provided with infrastructural supports. These enable it to regulate, normatively and by force, a given set of social and territorial relations, and to erect boundaries against the outside.''
 
-	- ``Natural hazards can be seen as a function of a specific natural process and human (economic) activity'' (\citet[627]{Raschky2008}). Given that the occurrence of earthquakes are completely exogenous to political and economic development (FIND CITATION OF THIS ARGUMENT), the part that is left unexplained should be strictly associated to the quality of institutions.
+	%- ``Natural hazards can be seen as a function of a specific natural process and human (economic) activity'' (\citet[627]{Raschky2008}). 
 
 	% what my measurement picks up: the effectiveness of 
-	- ``Government enforcement of private contracts''  % from \citet[1531]{Keefer2011}
+	%- ``Government enforcement of private contracts''  % from \citet[1531]{Keefer2011}
 
-	- \citet[169]{Bilham2013}: ``although engineering codes may exist in the developing nations, mechanisms to implement these codes are largely unavailable.'' % this is where state capacities come in.
+	%- \citet[169]{Bilham2013}: ``although engineering codes may exist in the developing nations, mechanisms to implement these codes are largely unavailable.'' % this is where state capacities come in.
 
 	- Preparedness 
 
 	- ``Efforts to establish better preparedness for and prevention of disasters have been a priority concern of donor agencies, implementing agencies and affected countries.'' (\citet[271]{Kahn2005})
 
-	-\citet[628]{Raschky2008}: ``the effects of natural hazards [do] not solely depend on a region's topographic or climatic exposure to natural processes orits (ORITS IN THE ORIGINAL) level of economic development but the region's institutional vulnerability to natural processes that ultimately determines whether natural processes result in a natural hazard or not.''
+	-%\citet[628]{Raschky2008}: ``the effects of natural hazards [do] not solely depend on a region's topographic or climatic exposure to natural processes orits (ORITS IN THE ORIGINAL) level of economic development but the region's institutional vulnerability to natural processes that ultimately determines whether natural processes result in a natural hazard or not.''
 
 	- \citet[277]{Kahn2005}: ``Richer nations will be able to invest in and enforce zoning and building codes. Building codes improve the structural soundness of a building, and this has a social value that the owner is unlikely to internalize, as it improves the quality of life of people in an immediate vicinity affected.'' % use this, but change `richer nations' for `stronger states.'
 
 	- \citet[1907]{Anbarci2005}: ``while earthquakes themselves are natural phenomena beyond the reach of humankind, our collective inaction with respect to items like the creation and enforcement of building codes, failure to retrofit structures and to enact quake-sensitive zoning clearly plays a part in determining the actual toll that a given quake takes.'' % though they focus on collective action: "collective action is, however, limited by its income and the ability of the population to arrive at an agreeable distribution of the economic burden of the actions.2 Given this, we analyze the impact of a country's per capita income and level of inequality on earthquake fatalities." (\citet[1909]{Anbarci2005}).
 
-	- \citet[153]{Ambraseys2011}: ``Earthquake-resistant construction depends on responsible governance, but its implementation can be undermined by corruption or by poverty, through the use of substandard materials and assembly methods, or through the inappropriate siting of buildings.''
+	%- \citet[153]{Ambraseys2011}: ``Earthquake-resistant construction depends on responsible governance, but its implementation can be undermined by corruption or by poverty, through the use of substandard materials and assembly methods, or through the inappropriate siting of buildings.''
 
 	- \citet[167]{Bilham2013}: ``\emph{Corruption}\footnote{Emphasis in original.} in the building industry can lead to the issuance of illegal permits or unauthorized inspection certificates at all levels of the construction process.''
 
@@ -48,7 +48,7 @@
 
 	- ``Differential effects of potentially catastrophic earthquakes.'' %(from \citet{Anbarci2005})
 
-	- ``[t]he differences in impacts between these two earthquakes is directly related to differences in the degree of disaster-mitigation and disaster-preparedness measures taken in those areas. Strict adherence to building codes (as well as zoning ordinances during the past few decades) in the latter region undoubtedly saved many lives and kept thousands of buildings from collapsing.'' \citet[130]{Noji:1996aa} % read from library. (from \citet[1910]{Anbarci2005})
+	%- ``[t]he differences in impacts between these two earthquakes is directly related to differences in the degree of disaster-mitigation and disaster-preparedness measures taken in those areas. Strict adherence to building codes (as well as zoning ordinances during the past few decades) in the latter region undoubtedly saved many lives and kept thousands of buildings from collapsing.'' \citet[130]{Noji:1996aa} % read from library. (from \citet[1910]{Anbarci2005})
 
 	- \citet[789]{Kellenberg2008}: ``to be more proactive in controlling the rate or specific form of urbanization and in enacting other laws (e.g. zoning rules or building codes) that limit its citizens' exposure to natural disasters.''
 
@@ -63,15 +63,15 @@
 	- \citet[153]{Ambraseys2011}: ``Corruption takes the form of bribes to subvert inspection and licensing processes, and of covert activities that reduce costs and thereby compromise the quality of structures.''
 
 		% inspections are costly as perfect information is very expensive.
-		- \citet[1531]{Keefer2011}: ``Earthquake-resistant features are costly to verify after construction is complete. Blondet et al. (no date) point to the clay and straw content of adobe bricks as being central to the earthquake resistance of adobe homes. Steel reinforcement bars make a well-known contribution to earthquake resistance in concrete buildings. However, not only is the steel itself invisible (encased, as it is, in concrete), but the durability of the steel depends on the quality and quantity of concrete around it. Since these features cannot easily be verified at reasonable cost, buyers are less willing to pay a higher price for quality construction and construction companies have weaker incentives to provide it.''
+		%- \citet[1531]{Keefer2011}: ``Earthquake-resistant features are costly to verify after construction is complete. Blondet et al. (no date) point to the clay and straw content of adobe bricks as being central to the earthquake resistance of adobe homes. Steel reinforcement bars make a well-known contribution to earthquake resistance in concrete buildings. However, not only is the steel itself invisible (encased, as it is, in concrete), but the durability of the steel depends on the quality and quantity of concrete around it. Since these features cannot easily be verified at reasonable cost, buyers are less willing to pay a higher price for quality construction and construction companies have weaker incentives to provide it.''
 
-		- \citet[167]{Bilham2013}: ``The concept of “cover-up” is particularly appropriate in the building industry since it is possible to conceal unethical construction at every stage in assembly: inappropriate foundations can be hidden beneath walls, shoddily assembled steel work can be hidden beneath concrete, poorly mixed concrete can be hidden behind paint.''
+		%- \citet[167]{Bilham2013}: ``The concept of “cover-up” is particularly appropriate in the building industry since it is possible to conceal unethical construction at every stage in assembly: inappropriate foundations can be hidden beneath walls, shoddily assembled steel work can be hidden beneath concrete, poorly mixed concrete can be hidden behind paint.''
 
 		% more on adobe
 		https://cachandochile.wordpress.com/2010/03/14/chiles-earthquake-an-arcitects-perspective/: 
 		``I've heard that the original vernacular Chilean colonial-style home developed precisely because it WAS earthquake resistant, but that over time people started reducing the thickness of the walls and changing the design and that is why adobe homes are no longer considered safe.''
 
-	- ``the potentially devastating effects of major earthquakes are, if not preventable, at least subject to significant mitigation.'' % from \citet[1911]{Anbarci2005}. Similarly, \citet[209]{Escaleras2007} argue that ``While earthquakes may not be preventable, it is possible to prevent the disasters they cause.'' 
+	- %``the potentially devastating effects of major earthquakes are, if not preventable, at least subject to significant mitigation.'' % from \citet[1911]{Anbarci2005}. Similarly, \citet[209]{Escaleras2007} argue that ``While earthquakes may not be preventable, it is possible to prevent the disasters they cause.'' 
 
 	- \citet[1909]{Anbarci2005}: ``mitigation activities, such as high-level building codes, are absolutely essential in alleviating the effects of severe quakes. Equally important, however, is enforcement of these codes, or other mitigation activities, which all too often is lacking, especially in developing countries. The reason for the absence of or failing to enforce high-level building codes and aggressively retrofitting structures is obvious: These activities can be extremely expensive and building a consensus to finance such activities often proves problematic. Too often, when necessary collective action fails to occur.''
 
@@ -83,7 +83,7 @@
 
 	- \citet[875]{Bilham2009}: ``There are numerous opportunities for corrupt practices, especially where the ratio of the cost of building to an inspector's official income is large. In a recent case in Indonesia, officials were overwhelmed by the extent and type of damage and were unable to apply their judgment concerning the safety of surviving structures evenly and objectively throughout the damaged area.''
 
-	\citet[153]{Ambraseys2011}: ``83% of all deaths from building collapse in earthquakes over the past 30 years occurred in countries that are anomalously corrupt.''
+	\citet[153]{Ambraseys2011}: ``83\% of all deaths from building collapse in earthquakes over the past 30 years occurred in countries that are anomalously corrupt.''
 
 	\citet[133]{Gros2011}: ``Neither eschatology nor demagogy explains the Haitian tragedy. Thus, this article categorically rejects both narratives and makes a more logical argument. \emph{Goudougoudou}\footnote{Emphasis in original.} was triggered by Nature, but the scale of the destruction was due to the massive failure of Haitian social institutions, namely the state, and international policy, which predated the earthquake. At its core then, this is a study of institutional failure in general and that of the Haitian state in particular. Earthquakes cannot be prevented, but there would have been considerably fewer deaths and damage to property from the Haitian earthquake, if Haiti had a working state to enforce building codes.''
 
@@ -179,7 +179,10 @@
 
 % why would the state be interested in preventing looting, social unrest and political turmoil?
 	
-	In the event of a heavy quake, poorly built structures are more likely to collapse. Critically, public infrastructure (such as prisons) and commerce buildings will also collapse. For example, EARTHQUAKE XYZ MADE THE MAIN PRISON COLLAPSE FREEING THOUSANDS OF CONVICTS (find citation: \citet[879]{Laursen2010}), while the collapse of commerce buildings and private houses will trigger higher levels of looting and social unrest. States are interested in preventing looting and social unrest because elected officials care about their electoral survival and legitimacy\footnote{\citet[340]{VomHau2008} argues ``that the translation of state-sponsored national ideologies into hegemonic cultural scripts is facilitated when the development of infrastructural power is temporally congruent with discursive transformations.''} (as well as the state's). Moreover, in the event of social unrest, not only the essential social Hobbesian-like contract is broken but also the expectations for social peace and the ability of the state to monopolize physical violence are questioned. % For example, Weber argued that the ``decisive means for politics is violence [...] Anyone who fails to see this is, indeed, a political infant.''
+	In the event of a heavy quake, poorly built structures are more likely to collapse. Critically, public infrastructure (such as prisons) and commerce buildings will also collapse. For example, EARTHQUAKE XYZ MADE THE MAIN PRISON COLLAPSE FREEING THOUSANDS OF CONVICTS (find citation: \citet[879]{Laursen2010}), while 
+
+
+	%the collapse of commerce buildings and private houses will trigger higher levels of looting and social unrest. States are interested in preventing looting and social unrest because elected officials care about their electoral survival and legitimacy\footnote{\citet[340]{VomHau2008} argues ``that the translation of state-sponsored national ideologies into hegemonic cultural scripts is facilitated when the development of infrastructural power is temporally congruent with discursive transformations.''} (as well as the state's). Moreover, in the event of social unrest, not only the essential social Hobbesian-like contract is broken but also the expectations for social peace and the ability of the state to monopolize physical violence are questioned. % For example, Weber argued that the ``decisive means for politics is violence [...] Anyone who fails to see this is, indeed, a political infant.''
 
 	% PERPAHS MENTION	 THE CASE OF CHILE, AND THE LIDER SUPER MARKET // LOS IMPISTOS Y LAS VENTAS FUERON CONDONADAS.
 
@@ -212,19 +215,20 @@
 	% using interviews
 	\citet[542]{Kurtz2007}: ``Reliance on these sorts of surveys, in whole or in part, requires the assumption that the interests of investors (foreign and domestic) and the interests of the nation are essentially coterminous. But this is an exceedingly selective notion of state capacity, and efforts at measurement that hinge on surveys of businesspersons are thus likely to contain substantial biases.'' 
 		
-		- \citet[542]{Kurtz2007}: ``To the extent that public bureaucracies \emph{are} effective in imposing taxes or regulatory demands [...] they are likely to be judged `burdensome' and `growth-inhibiting' by many businesspersons.''
+		%- \citet[542]{Kurtz2007}: ``To the extent that public bureaucracies \emph{are} effective in imposing taxes or regulatory demands [...] they are likely to be judged `burdensome' and `growth-inhibiting' by many businesspersons.''
 
-		- \citet[542]{Kurtz2007}: ``Surveys of businesspeople are riddled with potential sample selection problems. They systematically censor the opinions of former investors who did not succeed in the marketplace, or potential investors who were deterred from entering local markets by pervasive malgovernance or corruption itself, and thereby sample a very unrepresentative group of firm.'' Another example is \citet[618]{Kurtz2012}.
+		- \citet[542]{Kurtz2007}: ``Surveys of businesspeople are riddled with potential sample selection problems. They systematically censor the opinions of former investors who did not succeed in the marketplace, or potential investors who were deterred from entering local markets by pervasive malgovernance or corruption itself, and thereby sample a very unrepresentative group of firm.'' %Another example is \citet[618]{Kurtz2012}.
 
-		- \citet[543]{Kurtz2007}: ``Measures of the `rule of law' have useful data on the enforceability of private and government contracts and the costs and independence of the judicial system, but are similarly conflated with policy preferences over the structure of private property rights,and business-elite oriented questions about whether judicial action `interferes' with business.''
+		% - \citet[543]{Kurtz2007}: ``Measures of the `rule of law' have useful data on the enforceability of private and government contracts and the costs and independence of the judicial system, but are similarly conflated with policy preferences over the structure of private property rights,and business-elite oriented questions about whether judicial action `interferes' with business.''
+		- \citet[543]{Kurtz2007}: ``business-elite oriented questions about whether judicial action `interferes' with business''.
 
-		- \citet[349]{Fukuyama2013}: ``There is an inherent weakness in expert surveys.''
+		%- \citet[349]{Fukuyama2013}: ``There is an inherent weakness in expert surveys.''
 
 %% Essentially, the criticism is that, for ex., property right protection (an usual measurement of state capacity)
 %% is highly liberal (though AJR don't say that). However, the USSR did construct a strong state, but it did not 
 %% protect any property rights (as they didn't exist).
 	
-	\citet[58]{Kurtz:2013aa}: there are two types of measurement, objective and subjective/perception-based. The latter are always biased.  ``the best measures would be of the sorts of activities that all (or nearly all) states consider to be of primary importance - for thee can be assumed to be pursued vigorously across contexts, and variations in success will depend principally on variation in the effectiveness of institutions, not on opportunity costs or political will.'' 
+	
 
 	- \citet[619]{Kurtz2012} ``explicitly avoid an emphasis on outputs that are at the center of political or policy debates, such as property rights.''
 
@@ -233,9 +237,9 @@
 		``In addition, unlike in the case of some macroeconomic policies, it matters a great deal more in this literature that the effectiveness of the state varies enormously across localities and administrative levels within the same country in their effect on the development process, not at all captured in data that take a whole-country average as the point of observation, which is particularly problematic for countries with a medium- to large-sized population. On top of all this, there are inherent difficulties of measuring quality of public goods and services. There'' (\citet[865]{Bardhan2016}).
 
 		% Soifer: three components
-		Soifer divides the state infrastructural power in three layers. First the `national capabilities' which `sees state infrastructural power as a characteristic of the central state' (\citet[235]{Soifer2008a}), the second is the `weight of the state' ('how the exercise of state power shapes the society it controls,' p. 236) and the third `focuses on \emph{subnational variation} in the ability of the state to exercise control within its territory' (\citet[236]{Soifer2008a}), 
+		%Soifer divides the state infrastructural power in three layers. First the `national capabilities' which `sees state infrastructural power as a characteristic of the central state' (\citet[235]{Soifer2008a}), the second is the `weight of the state' ('how the exercise of state power shapes the society it controls,' p. 236) and the third `focuses on \emph{subnational variation} in the ability of the state to exercise control within its territory' (\citet[236]{Soifer2008a}), 
 
-		- MY IDEA: In this paper I bring the first and third components and study how a national institution (the income tax) changed state capacities at the subnational level, unevenly reaching agricultural and industrial localities. Following \citet[246]{Soifer2008a}, this paper presents, using local death tolls, a territorially variant measurement of state power.
+		%- MY IDEA: In this paper I bring the first and third components and study how a national institution (the income tax) changed state capacities at the subnational level, unevenly reaching agricultural and industrial localities. Following \citet[246]{Soifer2008a}, this paper presents, using local death tolls, a territorially variant measurement of state power.
 
 
 	- this is my idea: it measures the capacity of the state to send inspectors to evaluate, enforce and monitor the construction process. 
@@ -244,19 +248,22 @@
 % Advantages of this measurement 
 	% as events, death tolls are exogenous to state-capacities themselves.
 		
-		- Earthquakes happen at any level of development (\citet{Kahn2005} and \citet{Brancati2007}) and at any level of state-capacities, then.
+		- %Earthquakes happen at any level of development (\citet{Kahn2005} and \citet{Brancati2007}) and at any level of state-capacities, then.
 
-		- \citet[728]{Brancati2007} ``Since earthquakes constitute a natural experiment, it is not necessary to include a laundry list of control variables in the analysis.''
+		% - \citet[728]{Brancati2007} ``Since earthquakes constitute a natural experiment, it is not necessary to include a laundry list of control variables in the analysis.''
 
-		- \citet[32, unpublished]{Caruso2017}: ``[exploits] the exogenous variation in the location and timing of natural disasters, as well as the exposure of different cohorts to the shock.''
+		% - \citet[32, unpublished]{Caruso2017}: ``[exploits] the exogenous variation in the location and timing of natural disasters, as well as the exposure of different cohorts to the shock.''
 
-		- \citet[27]{Gignoux2016}: ``given that the occurrence of earthquakes can be viewed as quasi-random when restricting to exposed regions, this setting permits us to analyze these events as a set of repeated social experiments.'' % or "We base our identification on the quasi-random variation associated with seismic events" (p. 27 too).
+		- %\citet[27]{Gignoux2016}: ``given that the occurrence of earthquakes can be viewed as quasi-random when restricting to exposed regions, this setting permits us to analyze these events as a set of repeated social experiments.'' % or "We base our identification on the quasi-random variation associated with seismic events" (p. 27 too).
 
 	% it is objective
-		
-		- \citet[616]{Kurtz2012}: propose a measurement that ``it is objective. That is, it does not rely on an effort to measure the beliefs of citizens about the nature of the state, the legitimacy of its leaders or the institutional procedures that selected them, or even perceptions of the efficiency of public bureaucracies.'' % SO DO I.
 
-		- \citet[619]{Kurtz2012}: ``The problem [...] with output based measures is that they necessarily include information on policy choice.'' However, it would be hard to say that people's lives are subject to ideological or policy `preferences.' It rather seems that protecting people's lives is actually part of the most basic kind of political contract between an individual and the state. In other words, the idea is to utilize an ``output-linked approach [where] one should only examine public sector outputs that are not particularly politicized, and generally perceived to be essential state functions across a very broad set of states.'' (\citet[619]{Kurtz2012}).
+		- %\citet[58]{Kurtz:2013aa}: there are two types of measurement, objective and subjective/perception-based. The latter are always biased.  ``the best measures would be of the sorts of activities that all (or nearly all) states consider to be of primary importance - for thee can be assumed to be pursued vigorously across contexts, and variations in success will depend principally on variation in the effectiveness of institutions, not on opportunity costs or political will.'' 
+		
+		%- \citet[616]{Kurtz2012}: propose a measurement that ``it is objective. That is, it does not rely on an effort to measure the beliefs of citizens about the nature of the state, the legitimacy of its leaders or the institutional procedures that selected them, or even perceptions of the efficiency of public bureaucracies.'' % SO DO I.
+
+		- %\citet[619]{Kurtz2012}: ``The problem [...] with output based measures is that they necessarily include information on policy choice.'' However, it would be hard to say that people's lives are subject to ideological or policy `preferences.' 
+		%It rather seems that protecting people's lives is actually part of the most basic kind of political contract between an individual and the state. In other words, the idea is to utilize an ``output-linked approach [where] one should only examine public sector outputs that are not particularly politicized, and generally perceived to be essential state functions across a very broad set of states.'' (\citet[619]{Kurtz2012}).
 
 		- In fact \citet[619]{Kurtz2012} proposes using ``everyday bureaucratic outputs'' such as ``building codes'' to ``test the actual efficiency of public institutions.''
 
@@ -266,7 +273,7 @@
 
 	% soifer says that: what scholars usually measure is not aligned with the analytical construct of `state capacities.'
 
-		- \citet[247]{Soifer2008a}: there is a ``problem of misalignment between dimension and indicator.''
+		%- \citet[247]{Soifer2008a}: there is a ``problem of misalignment between dimension and indicator.''
 
 
 	% the focus has been centered on contemporary Latin America.
@@ -283,9 +290,17 @@
 	
 		\citet[585]{Soifer2012}: ``builds a new measure of state capacity for application to contemporary Latin America [combining] multiple dimensions (extraction, security, and the administration of basic services).''
 
-		\citet[10]{Hanson2013b}: provides 24 different types of measurements of state-capacities.
+		%\citet[10]{Hanson2013b}: provides 24 different types of measurements of state-capacities.
 
-		\citet{Mata2009} combine 12 other indicators.
+		%\citet{Mata2009} combine 12 other indicators.
+
+		%\citet[348]{Fukuyama2013}: ``For example, does a good absence of violence score mean that there is effective policing? I suspect that there isn’t much byway of street crime or military coup attempts in North Korea.'' % he's criticizing the Four of the six World Bank Institute’s Worldwide Governance Indicators purport to measure aspects of state capacity (government effectiveness, regulatory quality, political stability and absence of violence, and control of corruption) \\ 
+
+		%\citet[543]{Kurtz2007}: ``Clearly, the most comprehensive source for cross-national measures of governance is the series of indicators developed by KKM (2003, 2005) at the World Bank.''
+
+		% why tax levels not always indicate state capacities.
+		%\citet[301]{Kiser1992}: ``the high taxes on peasants that are often taken as evidence of of the despotic nature of the Chinese state were the result of rulers' lack of power. Chinese rulers consistently attempted to limit official's excessive extractions from the masses, but were unable to do so.''
+
 
 	
 % Growth and Natural Dissasters
