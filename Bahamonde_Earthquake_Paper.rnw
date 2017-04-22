@@ -80,15 +80,17 @@ read_chunk('/Users/hectorbahamonde/RU/Dissertation/Papers/Earthquake_Paper/Earth
 % Motivation
 Students of the Latin American states have several \emph{theories} to explain the causes and consequences of state capacities. Scholars also have countless alternatives to \emph{measure} state capacities. However, there exists a huge deficit. Most state formation theories (just to name a few) are situated during precolonial times,\footnote{\citet{Mahoney:2010aa}.} or during early\footnote{See \citet[]{Kurtz:2013aa} and \citet[]{Soifer2015a}.} or late\footnote{\citet{Bahamonde:2017ab}.} independent Latin America. Yet, we lack of a measurement that corresponds \emph{temporally} with the theories we have. While our explanations of state-making are \emph{historical} in nature, in practice, most available measurements capture \emph{contemporary} levels of stateness. In this paper I try to bridge this gap by providing an explanation on the origins of state capacities in Latin America and a corresponding indicator able to capture \emph{historical}levels of state capacities. This paper then seeks to contribute to the state formation literature in general, both from a theoretical and methodological perspectives. 
 
-% argument and main findings
-Building on the fiscal sociology paradigm,\footnote{For an excellent overview of both classic and new fiscal sociology refer to \citet[Ch. 1]{Martin2009a}.} I argue that the implementation of the income tax contributed to form the Latin American state. And that the income tax was product of an inter-sectoral conflict between agricultural and industrial elites (see \autoref{causal:mechanism:fig}). Analytically, I consider sectoral conflicts the spring of both fiscal expansion and state development. Economic sectors not only shape the economic landscape. Given that each sector has a corresponding political arm, the \emph{sectoral economic} conflict is also a \emph{political} conflict.\footnote{\citet{Bahamonde:2017aa}.} Sectoral conflicts find their origins in the economic structural transformation characterized by ``a secular decline of agriculture and substantial expansion of manufacturing.''\footnote{\citet[567]{Johnston1961}.} These gradual long-term changes imposed tight constraints on the way politics was run by the incumbent landowning class, who had inherited its institutional privileges since colonial times.\footnote{\citet{Bahamonde:2017ab}.} Exploiting the quasi-randomness of earthquake shocks, I leverage a novel historical dataset on Chilean earthquake death tolls and a Bayesian multilevel Poisson model to measure state capacities at the local level between 1900 and 2010. The capacity the Chilean state has had of enforcing and monitoring building codes throughout the territory has been a \emph{reflexion} of the Chilean \emph{overall} state capacities. I capture these state efforts (and the \emph{outcomes} of these efforts) throughout time at the subnational level. The results suggest that the implementation of the income tax has historically decreased the count of local deaths. This effect has been stronger in industrial localities, suggesting that the predominance of an institutional order that benefits the economic and political challenger (i.e. the industrial sector), increases overall state capacities. The rest of the paper proceeds as follows\todo{pending.}
-
 \begin{figure}[h]
 \caption{Causal Mechanism}\centering
 \includegraphics[scale=1.3, center]{causal_path.pdf}\label{causal:mechanism:fig}
 \end{figure}
 
+% argument and main findings
+Building on the fiscal sociology paradigm,\footnote{For an excellent overview of both classic and new fiscal sociology refer to \citet[Ch. 1]{Martin2009a}.} I argue that the implementation of the income tax contributed to form the Latin American state. And that the income tax was product of an inter-sectoral conflict between agricultural and industrial elites (see \autoref{causal:mechanism:fig}). Analytically, I consider sectoral conflicts the spring of both fiscal expansion and state development. Economic sectors not only shape the economic landscape. Given that each sector has a corresponding political arm, the \emph{sectoral economic} conflict is also a \emph{political} conflict.\footnote{\citet{Bahamonde:2017aa}.} Sectoral conflicts find their origins in the economic structural transformation characterized by ``a secular decline of agriculture and substantial expansion of manufacturing.''\footnote{\citet[567]{Johnston1961}.} These gradual long-term changes imposed tight constraints on the way politics was run by the incumbent landowning class, who had inherited its institutional privileges since colonial times.\footnote{\citet{Bahamonde:2017ab}.} Exploiting the quasi-randomness of earthquake shocks, I leverage a novel historical dataset on Chilean earthquake death tolls and a Bayesian multilevel Poisson model to measure state capacities at the local level between 1900 and 2010. The capacity the Chilean state has had of enforcing and monitoring building codes throughout the territory has been a \emph{reflexion} of the Chilean \emph{overall} state capacities. I capture these state efforts (and the \emph{outcomes} of these efforts) throughout time at the subnational level. The results suggest that the implementation of the income tax has historically decreased the count of local deaths. This effect has been stronger in industrial localities, suggesting that the predominance of an institutional order that benefits the economic and political challenger (i.e. the industrial sector), increases overall state capacities. The rest of the paper proceeds as follows\todo{pending.}
+
+
 \section{Fiscal Sociology, Sectoral Conflicts and Sate Consolidation}
+
 
 % argument (2): fiscal system and sectoral conflicts
 The expansion of the fiscal system has a long tradition of being associated with sectoral conflicts. For example, Schumpeter sees ``taxation in terms of group conflicts,''\footnote{\citet[14]{Monson2015}.} while others see taxation as ``an outcome of economic relations.''\footnote{Seligman (1895). In \citet[7]{Martin2009a}.} Following this tradition, I sketch the theory around the sectoral conflict that existed between the industrial and agricultural elites in Latin America. Class conflicts are more likely to resolve in favor of direct taxation when income inequality \emph{among the elite} is low.\footnote{\citet[157]{Tani1966} explains that the absence of ``wealth groups'' makes passing an income tax law easier.} Given that similar degrees of sectoral economic development can be converted into armies of similar capabilities,\footnote{\citet{Boix:2015aa}.} elites will have incentives to reach agreements rather than engaging in conflict when their economic/military capacities are similar. This is because when levels of inter-elite inequality are low, war is more likely to exhaust all existent assets without producing positive outcomes for either sector,\footnote{Richard Salvucci in \citet[48]{Uribe-Uran:2001aa}.} putting then pressures to reach agreements instead of engaging in armed conflicts. In the Latin American context, considering the initial institutional and economical advantages the agricultural sector enjoyed since colonial times, reducing inter-elite inequality meant a rapid expansion of the industrial sector. Elsewhere, I have argued that the emergence of a strong industrial elite altered not only the structure of the economy but also the inter-sectoral balance of political power, making unsustainable the political monopoly run by the landed elites.\footnote{\citet{Bahamonde:2017ab}.}
@@ -143,70 +145,40 @@ This measurement has a number of advantages and disadvantages. Unlike survey-bas
 
 \section{Multilevel Analyses}
 
-% 1. Data
-% 2. Model
 
-\paragraph{Data} I constructed a novel dataset using the \emph{Significant Earthquake Database} compiled by the National Centers for Environmental Information (NOAA) as a starting point.\footnote{\citet[]{noaa2015}.} The dataset `contains information on destructive earthquakes from 2150 B.C. to the present,' and records the number of deaths, the magnitude and year, and the latitude and longitude of every quake. Using archival census data from 1907 to 2012,\footnote{Particularly, censuses of 1907, 1920, 1930, 1940, 1952, 1960, 1970, 1982, 1992, 2002 and 2012. Some of them were kept at the \emph{Biblioteca Nacional} and others at the \emph{National Statistic Institute} historical library.} I complemented the NOAA dataset with local population at the municipality level at the moment and place of each earthquake. That way I am able to weight the death toll by local population. Using archival census data as well, I also considered the main economic activity of the affected municipality,\footnote{Agricultural, industrial, or mixed (i.e., both agricultural and industrial).} and also whether the affected locality was urban or rural.\footnote{If more than 50\% of the population lives in an urban setting, I assigned a 1 to that municipality, 0 otherwise.} The death tolls proportionated by the NOAA dataset were contrasted case by case with historical press archival information,\footnote{\emph{El Mercurio} and \emph{La Naci\'on} newspapers, both kept at the \emph{Archivo de la Biblioteca Nacional de Chile}.} and in turn magnitudes were compared to the \href{http://www.isc.ac.uk/iscbulletin/search/bulletin/}{International Seismological Centre}.\footnote{I thank Mario Pardo at the Seismological Service of the \emph{Universidad de Chile} and Diego Romero of the History Department at the \emph{Universidad Cat\'olica de Chile} for their help.}
+% earthquake:ts:plot:chile
+<<earthquake:ts:plot:chile, echo = FALSE, fig.pos='h', warning = FALSE, message = F,fig.cap='Time Cross-Sectional Earthquakes in Chile 1500-2010', fig.align='center', fig.width=7,fig.height=3,dpi=10000,cache = FALSE,eval=TRUE>>=
+
+@
+
+% explain dataset
+I constructed a novel dataset using the \emph{Significant Earthquake Database} compiled by the National Centers for Environmental Information (NOAA) as a starting point.\footnote{\citet[]{noaa2015}.} The dataset `contains information on destructive earthquakes from 2150 B.C. to the present,' and records the number of deaths, the magnitude and year, and the latitude and longitude of every quake. Using archival census data from 1907 to 2012,\footnote{Particularly, censuses of 1907, 1920, 1930, 1940, 1952, 1960, 1970, 1982, 1992, 2002 and 2012. Some of them were kept at the \emph{Biblioteca Nacional} and others at the \emph{National Statistic Institute} historical library.} I complemented the NOAA dataset with local population at the municipality level at the moment and place of each earthquake. That way I am able to weight the death toll by local population. Using archival census data as well, I also considered the main economic activity of the affected municipality,\footnote{Agricultural, industrial, or mixed (i.e., both agricultural and industrial).} and also whether the affected locality was urban or rural.\footnote{If more than 50\% of the population lives in an urban setting, I assigned a 1 to that municipality, 0 otherwise.} The death tolls proportionated by the NOAA dataset were contrasted case by case with historical press archival information,\footnote{\emph{El Mercurio} and \emph{La Naci\'on} newspapers, both kept at the \emph{Archivo de la Biblioteca Nacional de Chile}.} while magnitudes were compared to the \href{http://www.isc.ac.uk/iscbulletin/search/bulletin/}{International Seismological Centre}. All these are subnational-level variables. Next, I included national-level indicators that aim to proxy sectoral conflicts. Following \citet{Bahamonde:2017ab} and \citet{Bahamonde:2017aa}, I proxy sectoral competition and specifically, the degree in which the industrial elites challenged incumbent landowners, using industrial and agricultural sectoral growth rates as presented in the  \href{http://moxlad-staging.herokuapp.com/home/en?}{MOxLAD} data (see \autoref{fig:incometax}).\footnote{``These data build on the studies and statistical abstracts of the Economic Commission for Latin America, but also rely on Mitchell's International Historical Statistics, International Monetary Fund's International Financial Statistics, the World Bank's World Development Indicators and a variety of national sources.'' I used the \emph{agriculture value-added} and \emph{manufacturing value-added} variables. The former measures ``the output of the sector net of intermediate inputs and includes the cultivation of crops, livestock production, hunting, forestry and fishing.'' The later  ``[r]eports the output of the sector net of intermediate inputs.'' Both of them are expressed in local currency at 1970 constant prices.} The dataset spans from 1900 to 2010. According to \citet[790]{Astorga2005}, these data provide extended comparable sectoral value-added series in constant purchasing power parity prices.
 
 
+
+% case justification
+Chile is a good case since it has considerable variance regarding magnitudes and locations of the earthquakes. \autoref{fig:earthquake:ts:plot:chile} plots the earthquakes, the years and the magnitudes, while \autoref{fig:earthquake:map:plot:chile} plots the geographical distribution and magnitudes of the quakes. Both plots consider the full sample starting in 1500 and ending in 2015. The northern part of Chile has historically been an industrial region, while the southern part of Chile has traditionally been an agricultural region. Relatedly, both regions vary according to their climate as well. Chile is arid in the north, limiting agricultural activity, and has a temperate oceanic climate in the south, a more appropriated climate for agriculture. Distance from Santiago, the capital city located at the center (around latitude 33$^{\circ}$), might impose some degree of difficulty for the central government to reach out the farthest northern/southern parts of the territory. However, given that earthquakes happen at various latitudes and in different magnitudes, both regions have been exposed indistinctly to a wide range of shocks. There is also variance considering longitude. Closeness to the Andean mountains (around longitude 70$^{\circ}$) determines the ruggedness of the terrain, presumably making it harder for the state to penetrate these areas. However shocks have affected the territory from cost to mountain. In sum, quakes have shocked the country regardless of longitude and latitude, distance from the center, type of climate and main economic activity. 
+
+% earthquake:map:plot:chile
+\afterpage{
+\clearpage{
+
+<<earthquake:map:plot:chile, echo = FALSE, fig.pos='H', warning = FALSE, message = FALSE,fig.cap='Geographical Distribution of Earthquakes in Chile 1500-2015', fig.align='center', fig.width=4,fig.height=7,dpi=10000,cache = FALSE,eval=TRUE>>=
+
+@
+
+}}
 
 
 <<model:and:data:does:run, echo=FALSE, comment=NA, warning=FALSE, message=FALSE,include = FALSE, cache=FALSE,eval=FALSE>>=
 
 @
 
+% introducing the model.
+The unit of analysis is the earthquake. As an event, each earthquake has a death toll, a subnational location (a municipality) identified by its latitude and longitude, a magnitude, a local economic activity, a municipal population, and an urban/rural setting. All these factors are subnational. At the national level, the design considers sectoral outputs and a dummy variable indicating whether in a given year the income tax was adopted. Specifically, using a Bayesian Poisson regression, I model the number of dead individuals caused by earthquakes, controlling for a number of relevant factors. The main independent variables are the proportion of national agriculture output relative to industrial output, and a dummy variable which indicated whether in year $t$ the income tax law has been implemented. I expect death tolls to be lower when the national proportion of agricultural output decreases. This would indicate that in contested political economies - when the relative sectoral leverage of the landowning (industrial) elites decreases (increases) - elites would have incentives to invest in state-making institutions that would translate into lower death tolls. The implementation and \emph{praxis} of the income tax gave the state the necessary know-how to penetrate individual economies. In turn, it gave the \emph{tax state} the capacities to monitor and enforce building codes/practices at the local level. 
+Since the `treatment,' i.e. the proportion of agricultural output relative to industrial output, and the implementation of the income tax, takes place at the national level but the outcome (death tolls associated to earthquakes) is measured at the local level, I implement a multilevel model.\footnote{\citet[237]{Gelman:2006bh}. I do not claim in any way this is a causal method.} Particularly, I include year fixed-effects to account for unobservable/unmeasured yearly factors such as the evolution of the political system, demographic, climate and cultural changes, economic shocks (both national and international), and others. Particularly, the multilevel component of \autoref{model:1} allows the slopes of the national proportion of agriculture relative to industry ($\beta_{1_j}$) and the earthquake's magnitude ($\beta_{2_j}$) to vary by subnational sectoral predominance indexed by $j$. I consider whether affected localities were predominantly \emph{agricultural}, \emph{industrial} or \emph{mixed}. The latitude where the earthquake occurred was included to control for the proximity to the Andean mountains. This variable controls for a built-in tectonic predisposition of a higher propensity of earthquakes. Longitude controls for climate and other unobserved conditions that make agricultural development more difficult. In turn, both measurements serve as good proxies for terrain ruggedness and the difficulties the state had to face to centralize political power. \todo{See if I included this lit. already.} More formally, I fit the next equation,
 
 
-
-% regression:table
-<<regression:table, echo=FALSE, comment=NA, warning=FALSE, message=F, results='asis', cache=FALSE,eval=FALSE>>=
-
-@
-
-
-
-% posterior:predictions:plot
-<<posterior:predictions:plot, echo = FALSE, fig.pos='h', warning = FALSE, message = F,fig.cap='Posterior Predictive Distributions', fig.align='center', fig.width=4,fig.height=3,dpi=10000,cache = FALSE,eval=FALSE>>=
-
-@
-
-
-
-
-\section{Appendix}
-
-% reset counter for appendix
-\subimport{/Users/hectorbahamonde/RU/Bibliografia_PoliSci/}{LaTeX_Reset_Counter_For_Appendix}
-
-<<year:fixed:effects:plot, echo = FALSE, fig.pos='h', warning = FALSE, message = F, fig.cap='Year Fixed Effects', fig.align='center', fig.width=7, fig.height=3,dpi=10000,cache = FALSE,eval=FALSE>>=
-
-@
-
-
-
-<<predicted:observed:plot, echo = FALSE, fig.pos='h', warning = FALSE, message = F, fig.cap='Assessing Model Fit', fig.align='center', fig.width=5, fig.height=9,dpi=10000,cache = FALSE,eval=FALSE>>=
-
-@
-
-
-
-
-
-% data
-In this section I model the number of dead individuals caused by earthquakes.
-
-\todo{Include summary stats here. Explain what's national and what's subnational.}
-
-% model setup
-The data are fitted using a Bayesian Poisson regression. The main independent variables are the proportion of national agriculture output relative to industrial output and a dummy for whether in year $t$ the law of income tax had been implemented. I expect the yearly death tolls to be lower when the national proportion of agricultural production decreases, when the law of income taxation has been passed, and where the industry predominates at the local level. The model controls for local population, an indicator for local urban/rural, and earthquake magnitude. 
-
-
-Since the `treatment,' i.e. the proportion of agricultural output relative to industrial output, and the implementation of the income tax, takes place at the national level but the outcome (death tolls associated to earthquakes) is measured at the local level, I implement a multilevel model.\footnote{\citet[237]{Gelman:2006bh}.} 
-
-Particularly, I include year fixed-effects to account for unobservable/unmeasured yearly factors such as the evolution of the political system, demographic, climate and cultural changes, economic shocks (both national and international), and others. Particularly, the multilevel component of \autoref{model:1} allows the slopes of the national proportion of agriculture relative to industry ($\beta_{1_j}$) and the earthquake's magnitude ($\beta_{2_j}$) to vary by subnational sectoral predominance indexed by $j$. I consider whether affected localities were predominantly \emph{agricultural}, \emph{industrial} or \emph{mixed}. 
-
-
-The latitude where the earthquake occurred was included to control for the proximity to the Andean mountains. This variable controls for a built-in tectonic predisposition of a higher propensity of earthquakes. Longitude controls for climate and other unobserved conditions that make agricultural development more difficult. In turn, both measurements serve as good proxies for terrain ruggedness and the difficulties the state had to face to centralize political power. \todo{See if I included this lit. already.} More formally, I fit the next equation,
 
 
 \begin{equation} \label{model:1}
@@ -236,6 +208,42 @@ The $i$ subscript denotes the unit of analysis (i.e. earthquake),\footnote{\cite
 \tau_{p,...P} \;\sim\; & \mathcal{G}(0.5, 0.001) \; \text{where} \; \text{P}=3.
 \end{split}
 \end{equation}
+
+
+
+
+% regression:table
+<<regression:table, echo=FALSE, comment=NA, warning=FALSE, message=F, results='asis', cache=FALSE,eval=FALSE>>=
+
+@
+
+
+
+% posterior:predictions:plot
+<<posterior:predictions:plot, echo = FALSE, fig.pos='h', warning = FALSE, message = F,fig.cap='Posterior Predictive Distributions', fig.align='center', fig.width=4,fig.height=3,dpi=10000,cache = FALSE,eval=FALSE>>=
+
+@
+
+
+
+\newpage
+
+\section{Appendix}
+
+% reset counter for appendix
+\subimport{/Users/hectorbahamonde/RU/Bibliografia_PoliSci/}{LaTeX_Reset_Counter_For_Appendix}
+
+<<year:fixed:effects:plot, echo = FALSE, fig.pos='h', warning = FALSE, message = F, fig.cap='Year Fixed Effects', fig.align='center', fig.width=7, fig.height=3,dpi=10000,cache = FALSE,eval=FALSE>>=
+
+@
+
+
+
+<<predicted:observed:plot, echo = FALSE, fig.pos='h', warning = FALSE, message = F, fig.cap='Assessing Model Fit', fig.align='center', fig.width=5, fig.height=9,dpi=10000,cache = FALSE,eval=FALSE>>=
+
+@
+
+
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
