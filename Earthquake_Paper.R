@@ -723,7 +723,7 @@ if (!require("pacman")) install.packages("pacman"); library(pacman)
 p_load(xtable)
 
 note <- paste0(
-        "\\hline \n \\multicolumn{6}{l}", "{ \\scriptsize {\\bf Note}: ", n.iter, " iterations with ", n.burnin , " iterations discarded at the beginning.}\\\\", "\n \\multicolumn{6}{l}", "{ \\scriptsize ", ci.number*100 ,"\\% credible intervals in parenthesis. All R-Hat statistics below critical levels.}\\\\" ,"\n \\multicolumn{6}{l}", "{ \\scriptsize Standard convergence diagnostics suggest good mixing and convergence.}\\\\","\n \\multicolumn{6}{l}", "{ \\scriptsize Year fixed effects, latitude and longitude were omitted in the table.}\\\\", "\n \\multicolumn{6}{l}","{ \\scriptsize A total of ", n.chains, " chains were run.} \\\\")
+        "\\hline \n \\multicolumn{6}{l}", "{ \\scriptsize {\\bf Note}: ", n.iter, " iterations with a burn-in period of n = ", n.burnin , " iterations discarded.}\\\\", "\n \\multicolumn{6}{l}", "{ \\scriptsize ", ci.number*100 ,"\\% credible intervals in parenthesis. All R-Hat statistics below critical levels.}\\\\" ,"\n \\multicolumn{6}{l}", "{ \\scriptsize Standard convergence diagnostics suggest good mixing and convergence.}\\\\","\n \\multicolumn{6}{l}", "{ \\scriptsize Year fixed effects, latitude and longitude were omitted in the table.}\\\\", "\n \\multicolumn{6}{l}","{ \\scriptsize A total of ", n.chains, " chains were run.} \\\\")
 
 print.xtable(xtable(
         reg.results.table, caption = "Poisson Regression: Simulated Posterior Predictions"),
@@ -826,9 +826,12 @@ traplot(earthquakefit, parms =
 autocorr.plot(fit.mcmc, layout = c(15, 15), aspect = "fill")
 
 
-# cater plot
-p_load(mcmcplots) #install.packages("mcmcplots")
-dev.off();dev.off()
+## ---- posterior:predictions:plot ---- 
+# cater plot 
+if (!require("pacman")) install.packages("pacman"); library(pacman)  
+p_load(mcmcplots) 
+
+#dev.off();dev.off() 
 
 par(mar=c(5,10,1,1)) # bottom, then left margin, upper and right margins
 caterplot(earthquakefit, 
@@ -841,8 +844,7 @@ caterplot(earthquakefit,
           col = 2, 
           style=c("gray")
           );abline(v = 0, col = "gray60")
-          
-
+## ----
 
 
 
