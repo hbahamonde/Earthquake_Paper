@@ -708,9 +708,9 @@ var.labels = c(
         "Prop. Agr/Ind (Ind)",
         "Prop. Agr/Ind (Mixed)",
         "Income Tax",
-        "Eq. Magnitude (Agr.)",
-        "Eq. Magnitude (Ind.)",
-        "Eq. Magnitude (Mixed)",
+        "Magnitude (Agr.)",
+        "Magnitude (Ind.)",
+        "Magnitude (Mixed)",
         "Urban")
 
 rownames(reg.results.table) <- var.labels
