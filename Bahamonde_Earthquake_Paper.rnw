@@ -141,10 +141,12 @@ This measurement has a number of advantages and disadvantages. Unlike survey-bas
 
 
 
-\subsection{Multilevel Analyses}
+\section{Multilevel Analyses}
 
 % 1. Data
 % 2. Model
+
+\paragraph{Data} I constructed a novel dataset using the \emph{Significant Earthquake Database} compiled by the National Centers for Environmental Information (NOAA) as a starting point.\footnote{\citet[]{noaa2015}.} The dataset `contains information on destructive earthquakes from 2150 B.C. to the present,' and records the number of deaths, the magnitude and year, and the latitude and longitude of every quake. Using archival census data from 1907 to 2012,\footnote{Particularly, censuses of 1907, 1920, 1930, 1940, 1952, 1960, 1970, 1982, 1992, 2002 and 2012. Some of them were kept at the \emph{Biblioteca Nacional} and others at the \emph{National Statistic Institute} historical library.} I complemented the NOAA dataset with local population at the municipality level at the moment and place of each earthquake. That way I am able to weight the death toll by local population. Using archival census data as well, I also considered the main economic activity of the affected municipality,\footnote{Agricultural, industrial, or mixed (i.e., both agricultural and industrial).} and also whether the affected locality was urban or rural.\footnote{If more than 50\% of the population lives in an urban setting, I assigned a 1 to that municipality, 0 otherwise.} The death tolls proportionated by the NOAA dataset were contrasted case by case with historical press archival information,\footnote{\emph{El Mercurio} and \emph{La Naci\'on} newspapers, both kept at the \emph{Archivo de la Biblioteca Nacional de Chile}.} and in turn magnitudes were compared to the \href{http://www.isc.ac.uk/iscbulletin/search/bulletin/}{International Seismological Centre}.\footnote{I thank Mario Pardo at the Seismological Service of the \emph{Universidad de Chile} and Diego Romero of the History Department at the \emph{Universidad Cat\'olica de Chile} for their help.}
 
 
 
