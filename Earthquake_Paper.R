@@ -703,15 +703,7 @@ reg.results.table = data.frame(rbind( # re order df by name of the rowname accor
         reg.results.table[rownames(reg.results.table)==("b.Urban"),]
 ))
 
-var.labels = c( 
-        "Prop. Agr/Ind (Agr.)",
-        "Prop. Agr/Ind (Ind)",
-        "Prop. Agr/Ind (Mixed)",
-        "Income Tax",
-        "Magnitude (Agr.)",
-        "Magnitude (Ind.)",
-        "Magnitude (Mixed)",
-        "Urban")
+var.labels = c("Prop. Agr/Ind (Agr.)", "Prop. Agr/Ind (Ind)", "Prop. Agr/Ind (Mixed)", "Income Tax", "Magnitude (Agr.)", "Magnitude (Ind.)", "Magnitude (Mixed)", "Urban")
 
 rownames(reg.results.table) <- var.labels
 
@@ -727,7 +719,7 @@ note <- paste0(
 
 print.xtable(xtable(
         reg.results.table, caption = "Poisson Regression: Simulated Posterior Predictions"),
-        label = "reg:1", 
+        label = "regression:table", 
         auto = TRUE,
         hline.after=c(-1, 0),
         add.to.row = list(pos = list(8),command = note)
