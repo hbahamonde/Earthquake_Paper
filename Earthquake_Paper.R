@@ -97,6 +97,10 @@ save(eq.output.d, file = "/Users/hectorbahamonde/RU/Dissertation/Papers/Earthqua
 ## CHILE
 
 
+
+
+
+## ---- earthquake:ts:plot:chile ----
 # Load the earthquake data
 if (!require("pacman")) install.packages("pacman"); library(pacman)
 p_load(ggplot2)
@@ -108,8 +112,15 @@ load("/Users/hectorbahamonde/RU/Dissertation/Papers/Earthquake_Paper/Chile_Data_
 ggplot(dat.chile, aes(x = year, y = Magnitude)) +
         geom_point(shape = 21) +
         theme_bw() +
-        ggtitle("Chile") +
+        ggtitle(NULL) +
         stat_smooth(show.legend = F,  method = 'loess')
+## ----
+
+
+
+
+
+
 
 ## bar plot
 Deaths = data.frame(dat.chile$Deaths); colnames(Deaths)[1] <- "Deaths"
@@ -119,9 +130,11 @@ ggplot(na.omit(Deaths), aes(factor(Deaths))) +
         scale_x_discrete(name='Deaths') +
         scale_y_discrete(name='Count') +
         theme_bw() + 
-        ggtitle("Death Tolls Associated to Earthquakes: Chile 1500-2010") + 
+        ggtitle("") + #Death Tolls Associated to Earthquakes: Chile 1500-2010
         coord_flip()
-        
+
+
+
 # another kind-of TS plot.
 # ggplot(na.omit(dat.chile), aes(x=year, y=Deaths)) + geom_line() + theme_bw()                    
         
@@ -185,13 +198,20 @@ grid_arrange_shared_legend(eq.chile.p, eq.peru.p, ncol = 1, nrow = 2)
 #### MAPS: CHILE
 
 
+
+
+
+
+## ---- earthquake:map:plot:chile ----
 ## packages
 if (!require("pacman")) install.packages("pacman"); library(pacman)
 p_load(rgdal, foreign, rgeos, ggplot2)
 
 
 # load shape file
-chile.provinces <- readOGR(dsn = "/Users/hectorbahamonde/RU/Data/shape_files/division_provincial", layer = "division_provincial")
+chile.provinces <- readOGR(dsn = "/Users/hectorbahamonde/RU/Data/shape_files/division_provincial", 
+                           layer = "division_provincial",
+                           verbose = FALSE)
 
 # load eq data
 load("/Users/hectorbahamonde/RU/Dissertation/Papers/Earthquake_Paper/Chile_Data_Earthquake.RData")
@@ -211,8 +231,17 @@ chile.provinces <- chile.provinces[!(chile.provinces$long <= -76),]
 ggplot() +  
         geom_polygon(aes(x=long, y=lat, group=group), fill='grey', size=.05, color='black', data=chile.provinces, alpha=1/2) +
         theme_bw() +
-        ggtitle("Chile") + 
-        geom_point(data=dat.chile, aes(x=Longitude, y=Latitude), shape=21, color='red')
+        ggtitle(NULL) + 
+        geom_point(data=dat.chile, aes(x=Longitude, y=Latitude), shape=21, color='red') +
+        scale_y_continuous(name='Latitude') +
+        scale_x_continuous(name='Longitude')
+## ----
+
+
+
+
+
+
 
 
 
