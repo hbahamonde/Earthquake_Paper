@@ -224,24 +224,27 @@ chile.provinces <- fortify(chile.provinces)
 chile.provinces <- chile.provinces[!(chile.provinces$long <= -76),]
 
 
-# Longitude = na.omit(dat.chile$Longitude) # 184
-# Latitude = na.omit(dat.chile$Latitude) # 184
-# Magnitude = na.omit(dat.chile$Magnitude) # 132 // I think I am going to exclude magnitudes, and just show frequency of earthquakes.
+
+chile.map.plot.d <- data.frame(
+        Longitude = na.omit(dat.chile$Longitude), # 184
+        Latitude = na.omit(dat.chile$Latitude), # 184
+        Magnitude = dat.chile$Magnitude) # 132 // I think I am going to exclude magnitudes, and just show frequency of earthquakes.
+
+chile.map.plot.d = data.frame(na.omit(chile.map.plot.d));rownames(chile.map.plot.d) <- NULL
 
 ggplot() +  
         geom_polygon(aes(x=long, y=lat, group=group), fill='grey', size=.05, color='black', data=chile.provinces, alpha=1/2) +
         theme_bw() +
         ggtitle(NULL) + 
-        geom_point(data=dat.chile, aes(x=Longitude, y=Latitude), shape=21, color='red') +
+        geom_point(data=chile.map.plot.d, aes(x=Longitude, y=Latitude, shape=as.factor(round(chile.map.plot.d$Magnitude,0))), color='red') +#shape=21, 
         scale_y_continuous(name='Latitude') +
-        scale_x_continuous(name='Longitude')
+        scale_x_continuous(name='Longitude') +
+        scale_shape_discrete(name="Rounded\nMagnitude")
 ## ----
 
 
 
-
-
-
+#geom_point(data=dat.chile, aes(x=Longitude, y=Latitude), shape=21, color='red') +
 
 
 
