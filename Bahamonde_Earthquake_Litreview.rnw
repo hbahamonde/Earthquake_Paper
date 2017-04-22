@@ -145,23 +145,23 @@
 % Why not other natural catastrophe 
 
 	% other disasters such as:
-	``death counts caused by extreme temperature events, floods, landslides, and windstorms.'' % rephrase. this is from \citet[280]{Kahn2005}
+	%``death counts caused by extreme temperature events, floods, landslides, and windstorms.'' % rephrase. this is from \citet[280]{Kahn2005}
 
 	% India:
-	``The codes that govern public distribution of food and calamity relief in India stem from the Famine Relief Codes put in place after 1880. They emphasize the need for local administrators to look for \emph{signs}, such as large drops in food production and increases in food prices, which \emph{signal} an impending crisis.''\footnote{Emphases are mine.} (\citet[1423]{Besley2002})
+	%``The codes that govern public distribution of food and calamity relief in India stem from the Famine Relief Codes put in place after 1880. They emphasize the need for local administrators to look for \emph{signs}, such as large drops in food production and increases in food prices, which \emph{signal} an impending crisis.''\footnote{Emphases are mine.} (\citet[1423]{Besley2002})
 
 
 	% General
 	\citet[]{Mutter2005}: ``Earthquakes, too, exact the greatest toll on the poorest people.''
 
 	% the correlation between disasters that allow adapting and the ones that don't, is pretty low.
-	\citet[273]{Kahn2005}: the data ``highlights the heterogeneity in deaths from disasters. For example, the correlation between average deaths from earthquakes and average deaths from windstorms is -0.02.''
+	%\citet[273]{Kahn2005}: the data ``highlights the heterogeneity in deaths from disasters. For example, the correlation between average deaths from earthquakes and average deaths from windstorms is -0.02.''
 
 	% adapting behavior
 
-		\citet[1908]{Anbarci2005}: ``Some natural disasters can be foreseen (or predicted with some probability) and thus measures can be taken to limit their severity.''
+		%\citet[1908]{Anbarci2005}: ``Some natural disasters can be foreseen (or predicted with some probability) and thus measures can be taken to limit their severity.''
 
-		\citet[716]{Brancati2007}: ``Earthquakes may provoke conflict more than any other type of natural disaster because they have rapid onsets [and] are not predictable.''
+		%\citet[716]{Brancati2007}: ``Earthquakes may provoke conflict more than any other type of natural disaster because they have rapid onsets [and] are not predictable.''
 
 
 % Electoral connection
@@ -176,7 +176,7 @@
 
 % why would the state be interested in preventing looting, social unrest and political turmoil?
 	
-	In the event of a heavy quake, poorly built structures are more likely to collapse. Critically, public infrastructure (such as prisons) and commerce buildings will also collapse. For example, EARTHQUAKE XYZ MADE THE MAIN PRISON COLLAPSE FREEING THOUSANDS OF CONVICTS (find citation: \citet[879]{Laursen2010}), while 
+	%In the event of a heavy quake, poorly built structures are more likely to collapse. Critically, public infrastructure (such as prisons) and commerce buildings will also collapse. For example, EARTHQUAKE XYZ MADE THE MAIN PRISON COLLAPSE FREEING THOUSANDS OF CONVICTS (find citation: \citet[879]{Laursen2010}), while 
 
 
 	%the collapse of commerce buildings and private houses will trigger higher levels of looting and social unrest. States are interested in preventing looting and social unrest because elected officials care about their electoral survival and legitimacy\footnote{\citet[340]{VomHau2008} argues ``that the translation of state-sponsored national ideologies into hegemonic cultural scripts is facilitated when the development of infrastructural power is temporally congruent with discursive transformations.''} (as well as the state's). Moreover, in the event of social unrest, not only the essential social Hobbesian-like contract is broken but also the expectations for social peace and the ability of the state to monopolize physical violence are questioned. % For example, Weber argued that the ``decisive means for politics is violence [...] Anyone who fails to see this is, indeed, a political infant.''
