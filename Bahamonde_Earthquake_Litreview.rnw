@@ -395,11 +395,11 @@
 
 	
 	% Motivation
-		\citet[1908]{Anbarci2005}: ``Earthquakes alone claim thousands of lives a year (in some cases, more than a hundred thousand lives in a single quake).''
+		%\citet[1908]{Anbarci2005}: ``Earthquakes alone claim thousands of lives a year (in some cases, more than a hundred thousand lives in a single quake).''
 
-		\citet[719]{Brancati2007}: ``Disasters are not as well studied, however, in the field of political science.''
+		%\citet[719]{Brancati2007}: ``Disasters are not as well studied, however, in the field of political science.''
 
-		\citet[586]{Soifer2012}: ``Most scholarship on state capacity, strength, and power studies something closely akin to Mann's concept, which has been central to the study of the state. Yet we lack a satisfying conceptualization and measurement scheme for this concept.''
+		%\citet[586]{Soifer2012}: ``Most scholarship on state capacity, strength, and power studies something closely akin to Mann's concept, which has been central to the study of the state. Yet we lack a satisfying conceptualization and measurement scheme for this concept.''
 
 		% Motivation on measurement
 
@@ -422,7 +422,7 @@
 
 	% Measurement // data
 	
-		Since ``most of the damage in major earthquakes occurs within 30 km of the epicenter,''\footnote{\citet[172]{Dunbar2003}.} I don't necessarily drop quakes that didn't happen on land. While the epicenter might have happened a few miles away from the shore, the consequences did reach the land.
+		%Since ``most of the damage in major earthquakes occurs within 30 km of the epicenter,''\footnote{\citet[172]{Dunbar2003}.} I don't necessarily drop quakes that didn't happen on land. While the epicenter might have happened a few miles away from the shore, the consequences did reach the land.
 
 
 		% on unbalanced panels
