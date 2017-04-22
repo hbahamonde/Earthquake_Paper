@@ -309,11 +309,11 @@
 % Methods
 
 % models
-\citet[1907]{Anbarci2005}: use ``a Negative Binomial estimation strategy with both random and fixed estimators'' to estimate death tolls. \citet[276]{Kahn2005} estimates a ZINB model, \citet[729]{Brancati2007} uses ``a negative binomial model with robust standard errors clustered by country,'' \citet{Escaleras2007} uses ``a Negative Binomial specification.'' % criticize this: none of them actually test for overdispertion. 
+%\citet[1907]{Anbarci2005}: use ``a Negative Binomial estimation strategy with both random and fixed estimators'' to estimate death tolls. \citet[276]{Kahn2005} estimates a ZINB model, \citet[729]{Brancati2007} uses ``a negative binomial model with robust standard errors clustered by country,'' \citet{Escaleras2007} uses ``a Negative Binomial specification.'' % criticize this: none of them actually test for overdispertion. 
 
 - Idea: 
 
-	* the `treatment' (proportion of AGR/IND) is at the national level, but the outcome is measured on local communities. // rephrased from \citet[237]{Gelman:2006bh}
+	%* the `treatment' (proportion of AGR/IND) is at the national level, but the outcome is measured on local communities. // rephrased from \citet[237]{Gelman:2006bh}
 
 	* keeping magnitudes constant, the death rates are higher where the agricultural sector is stronger. 
 
@@ -327,23 +327,23 @@
 - ``multilevel modeling typically proceeds by adding predictors at the individual and group levels and reducing the unexplained variance at each level.'' % \citet[271]{Gelman:2006bh}
 
 - %``It is even acceptable to have one observation in many of the groups.''% Gelman:2006bh: 276
-``Noninformative prior distributions are intended to allow Bayesian inference for param- eters about which not much is known beyond the data included in the analysis at hand.'' Gelman2006:520.
+%``Noninformative prior distributions are intended to allow Bayesian inference for parameters about which not much is known beyond the data included in the analysis at hand.'' Gelman2006:520.
 
 - ``In fitting hierarchical models, we recommend starting with a noninformative uniform prior density on standard deviation parameters σα. We expect this will generally work well unless the number of groups J is low (below 5, say).'' Gelman2006:527
 
-- ``the unit of analysis is a disaster'' (\citet[273]{Kahn2005}).
+%- ``the unit of analysis is a disaster'' (\citet[273]{Kahn2005}).
 
 	
 	% variables that explain deaths
-	- \citet[154]{Ambraseys2011}: ``The number of fatalities depends on whether an earthquake happens at night or during the day, in the winter or in the summer, in a mountainous region or in a valley, after strong and protracted fore-shocks and with or without warning.''
+	%- \citet[154]{Ambraseys2011}: ``The number of fatalities depends on whether an earthquake happens at night or during the day, in the winter or in the summer, in a mountainous region or in a valley, after strong and protracted fore-shocks and with or without warning.''
 
-	- \citet[1309]{Lomnitz1970}: ``some of the larger Chilean earthquakes which have caused deaths'' between the 1900's and the 1960's have been afternoon quakes. % table 1, p. 1310.
+	%- \citet[1309]{Lomnitz1970}: ``some of the larger Chilean earthquakes which have caused deaths'' between the 1900's and the 1960's have been afternoon quakes. % table 1, p. 1310.
 
-	- \citet[1534]{Keefer2011}: ``the speed of tectonic movements, the degree to which the lower plate bends the upper plate.''
+	%- \citet[1534]{Keefer2011}: ``the speed of tectonic movements, the degree to which the lower plate bends the upper plate.''
 
 - Language: 
 
-	- `felt intensities' v. `instrumental magnitudes' // this is from \citet[570]{Szeliga2010}
+	%- `felt intensities' v. `instrumental magnitudes' // this is from \citet[570]{Szeliga2010}
 
 	- posterior uncertainty // 
 	
@@ -359,9 +359,9 @@
 			- ``Earthquake loss can be described as the combination of the hazard, the exposure, and the vulnerability. The hazard refers to the frequency and severity of the threat or hazard. The exposure describes the people, property, systems or functions at risk of partial or total loss when exposed to hazards. Finally, the vulnerability describes the susceptibility to losses due to the exposure to the hazard.'' % from \citet[166]{Dunbar2003}.
 
 			% controls for terrain (I do it by having lat. and long.)
-				- \citet[729]{Brancati2007}: ``Earthquakes often occur in mountainous areas, making it important to control for terrain to distinguish its effect from that of earthquakes.''
+				%- \citet[729]{Brancati2007}: ``Earthquakes often occur in mountainous areas, making it important to control for terrain to distinguish its effect from that of earthquakes.''
 
-			- \citet[729]{Brancati2007}: ``The analysis includes year-fixed effects to control for trends over time and a lag for the number of conflict events in the previous month.''
+			%- \citet[729]{Brancati2007}: ``The analysis includes year-fixed effects to control for trends over time and a lag for the number of conflict events in the previous month.''
 
 		- \citet[277]{Kahn2005} don't include ``nation fixed effects [...] it is quite difficult to create a within-nation governance database to test what are the benefits of improved national governance. Though rising national incomes can be measured, there is likely to be a long latency between economic development and improved average quality of infrastructure as new homes and new infrastructure are built of higher quality than the existing capital stock.'' % (1) However, I do just that. I construct a within-nation indicator of `stateness.' By having year and sector fixed effects I control for the evolution of observed and observed factors throughout time.  (2) Also, \citet[]{Kahn2005} is all about national income. My argument expands on this idea, but differentiates between agricultural and industrial outputs. DEFINETIVELY INCLUDE #2 AND EXPAND THIS IDEA IN THE MOTIVATION OF THE PAPER.
 
@@ -372,7 +372,7 @@
 		- % misreporting
 		\citet[201]{Stromberg2007}: ``reporting (and misreporting) of disasters varies systematically across time, levels of income, and political regimes. Reporting of small disasters is probably more complete in later years and in more developed countries.'' To account for these factors, I include year fixed effects too.
 
-(5) \citet[1534]{Keefer2011}: ``Mortality should be lower, all else equal, the larger the distance between the hypocenter (the point within the earth where an earthquake rupture starts) and the epicenter (the point directly above it at the surface of the Earth), that is, the larger is the so-called focal depth of the quake.''
+%(5) \citet[1534]{Keefer2011}: ``Mortality should be lower, all else equal, the larger the distance between the hypocenter (the point within the earth where an earthquake rupture starts) and the epicenter (the point directly above it at the surface of the Earth), that is, the larger is the so-called focal depth of the quake.''
 
 
 
@@ -391,7 +391,7 @@
 
 	\citet[1415]{Besley2002}: ``state governments are more responsive to falls in food production and crop flood damage via public food distribution and calamity relief expenditure where newspaper circulation is higher and electoral accountability greater.'' % This is terribly endogenous, but anyways.
 
-	\citet[422]{Carlin2014a}: ``analysts typically agree on a basket of `minimal' state functions including primary education, public health, rule of law, public finance management, and disaster relief.''
+	%\citet[422]{Carlin2014a}: ``analysts typically agree on a basket of `minimal' state functions including primary education, public health, rule of law, public finance management, and disaster relief.''
 
 	
 	% Motivation
