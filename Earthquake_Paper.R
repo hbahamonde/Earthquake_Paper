@@ -720,11 +720,11 @@ note <- paste0(
 print.xtable(xtable(
         reg.results.table, 
         caption = "Poisson Regression: Simulated Posterior Predictions",
-        label = "regression:table", 
+        label = "regression:table"), 
         auto = TRUE,
         hline.after=c(-1, 0),
         add.to.row = list(pos = list(8),command = note)
-        ))
+)
 ## ----
 
 
