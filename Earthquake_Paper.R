@@ -703,7 +703,7 @@ reg.results.table = data.frame(rbind( # re order df by name of the rowname accor
         reg.results.table[rownames(reg.results.table)==("b.Urban"),]
 ))
 
-var.labels = c("Prop. Agr/Ind (Agr)", "Prop. Agr/Ind (Ind)", "Prop. Agr/Ind (Mixed)", "Income Tax", "Magnitude (Agr)", "Magnitude (Ind)", "Magnitude (Mixed)", "Urban")
+var.labels = c("Agr/Ind (Agr)", "Agr/Ind (Ind)", "Agr/Ind (Mixed)", "Income Tax", "Magnitude (Agr)", "Magnitude (Ind)", "Magnitude (Mixed)", "Urban")
 
 rownames(reg.results.table) <- var.labels
 
