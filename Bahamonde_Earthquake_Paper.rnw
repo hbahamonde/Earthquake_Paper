@@ -212,14 +212,17 @@ The $i$ subscript denotes the unit of analysis (i.e. earthquake),\footnote{\cite
 \end{equation}
 
 
-% comment results
-\autoref{fig:posterior:predictions:plot} and \autoref{regression:table} show the posterior predictive distributions of the Poisson regression.
-
-
 % regression:table
 <<regression:table, echo=FALSE, comment=NA, warning=FALSE, message=F, results='asis', cache=FALSE,eval=TRUE>>=
 
 @
+
+
+
+% comment results
+\autoref{regression:table} shows the posterior predictive distributions of the Poisson regression. The table is organized as follows. First, it shows the predicted deaths counts conditional on the observed proportion of agriculture relative to industry in localities dedicated to agricultural, industrial and mixed localities (i.e. the first three rows of the table). When the national agricultural output relative to industrial output is faster, the death toll goes up by $\Sexpr{abs(round(reg.results.table[1,1],0))}$ when the quake shocks an agricultural locality (denoting a lack of political contestation), but it goes down by $\Sexpr{abs(round(reg.results.table[2,1],0))}$ deaths when the locality is industrial (suggesting the presence of political contestation). 
+
+
 
 
 
