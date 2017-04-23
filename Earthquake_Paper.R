@@ -798,24 +798,44 @@ ggplot(data = eq.pred,
 fit.mcmc <- as.mcmc(earthquakefit)
 # summary(fit.mcmc)
 
-
+## ---- traplot:plot ---- 
 ### traceplots
-par(mar = rep(2, 3))
-p_load(mcmcplots) #install.packages("mcmcplots")
-traplot(earthquakefit, parms = 
-          c("b.propagrmanu", 
-            "b.Magnitude", 
-            "b.p.Population", 
-            #"b.year", 
-            #"b.r.long", 
-            #"b.r.lat", 
-            "b.incometax.d", 
-            "b.Urban")
-        )
+if (!require("pacman")) install.packages("pacman"); library(pacman) 
+p_load(mcmcplots)
+
+parms = c("b.propagrmanu",
+  "b.Magnitude", 
+  "b.p.Population", 
+  #"b.year", 
+  #"b.r.long", 
+  #"b.r.lat", 
+  "b.incometax.d", 
+  "b.Urban")
+
+traplot(earthquakefit, parms = parms)
+## ----
 
 
-# xyplot(fit.mcmc, layout = c(5, 15), aspect = "fill")
-autocorr.plot(fit.mcmc, layout = c(15, 15), aspect = "fill")
+## ---- denplot:plot ---- 
+denplot(earthquakefit, parms = parms)
+## ----
+
+
+
+
+
+
+#### using the ggmcmc package
+if (!require("pacman")) install.packages("pacman"); library(pacman) 
+p_load(ggmcmc)
+
+fit.mcmc <- as.mcmc(earthquakefit)
+bayes.mod.fit.gg <- ggs(fit.mcmc)
+ggmcmc(bayes.mod.fit.gg, file = "/Users/hectorbahamonde/RU/Dissertation/Papers/Earthquake_Paper/diagnostic_plots.pdf")
+#### using the ggmcmc package
+
+
+
 
 
 ## ---- posterior:predictions:plot ---- 
