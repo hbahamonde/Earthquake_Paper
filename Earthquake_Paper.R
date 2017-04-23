@@ -829,7 +829,7 @@ par(mar=c(5,10,1,1)) # bottom, then left margin, upper and right margins
 caterplot(earthquakefit, 
           parms = c("b.propagrmanu", "b.incometax.d", "b.Magnitude", "b.Urban"), 
           collapse = T, 
-          quantiles = list(outer=c(0.1,0.9),inner=c(0.16,0.84)),
+          quantiles = list(outer=c(0.025,0.975),inner=c(0.025,0.975)),
           reorder = F, 
           cex.labels =0.9,
           labels = var.labels, # calls variables from above
