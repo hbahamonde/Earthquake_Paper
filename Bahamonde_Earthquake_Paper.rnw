@@ -230,13 +230,23 @@ These results combined speak to a general theory of state-capacities. While the 
 % reset counter for appendix
 \subimport{/Users/hectorbahamonde/RU/Bibliografia_PoliSci/}{LaTeX_Reset_Counter_For_Appendix}
 
-<<year:fixed:effects:plot, echo = FALSE, fig.pos='h', warning = FALSE, message = F, fig.cap='Year Fixed Effects', fig.align='center', fig.width=7, fig.height=3,dpi=10000,cache = FALSE,eval=FALSE>>=
+<<year:fixed:effects:plot, echo = FALSE, fig.pos='h', warning = FALSE, message = F, fig.cap='Year Fixed Effects', fig.align='center', fig.width=7, fig.height=3,dpi=10000,cache = FALSE,eval=TRUE>>=
 
 @
 
 
 
-<<predicted:observed:plot, echo = FALSE, fig.pos='h', warning = FALSE, message = F, fig.cap='Assessing Model Fit', fig.align='center', fig.width=5, fig.height=9,dpi=10000,cache = FALSE,eval=FALSE>>=
+<<predicted:observed:plot, echo = FALSE, fig.pos='h', warning = FALSE, message = F, fig.cap='Assessing Model Fit', fig.align='center', fig.width=5, fig.height=9,dpi=10000,cache = FALSE,eval=TRUE>>=
+
+@
+
+
+<<traplot:plot, echo = FALSE, fig.pos='h', warning = FALSE, message = F, fig.cap='Trace Plots: Four Chains', fig.align='center', fig.width=9, fig.height=9,dpi=10000,cache = FALSE,eval=TRUE>>=
+
+@
+
+
+<<denplot:plot, echo = FALSE, fig.pos='h', warning = FALSE, message = F, fig.cap='Density Plots: Four Chains', fig.align='center', fig.width=9, fig.height=9,dpi=10000,cache = FALSE,eval=TRUE>>=
 
 @
 
