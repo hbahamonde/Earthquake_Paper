@@ -973,9 +973,48 @@ p1 = ggplot() +
                 legend.text=element_text(size=10), 
                 legend.title=element_text(size=0),
                 legend.position="bottom")  + 
+        labs(title="") 
+
+#### Proportion Plot
+# load data 
+load("/Users/hectorbahamonde/RU/Dissertation/Papers/Earthquake_Paper/eq_output_d_Chile.RData") 
+
+par(mar=c(10,10,1,1)) # bottom, then left margin, upper and right margins
+
+p2 = ggplot() + 
+        geom_smooth(data=datsc, aes(x=year, y=propagrmanu), fill=NA, size=1) +
+        xlab("Year") +
+        ylab("Agr/Ind Proportion") +
+        labs(colour = "Legend") +
+        scale_y_continuous(breaks= seq(0, 1, by = 0.2)) +
+        scale_x_continuous(limits=c(1890,2010)) + 
+        geom_vline(data=subset(dissertation, country=="Chile"), aes(xintercept = 1924), linetype = "longdash", colour= "#00BA38") + # Income Tax Law
+        theme_bw() + 
+        theme(
+                axis.text.y = element_text(size=10), 
+                axis.text.x = element_text(size=10), 
+                axis.title.y = element_text(size=10), 
+                axis.title.x = element_text(size=10), 
+                legend.text=element_text(size=10), 
+                legend.title=element_text(size=0),
+                legend.position="bottom")  + 
         labs(title="")
 
+
+
+grid_arrange_shared_legend(p1, p2, ncol = 1, nrow = 2)
 # ----
+
+
+
+
+
+
+
+
+
+
+
 
 
 
