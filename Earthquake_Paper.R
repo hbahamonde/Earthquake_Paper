@@ -723,7 +723,10 @@ if (!require("pacman")) install.packages("pacman"); library(pacman)
 p_load(xtable)
 
 note <- paste0(
-        "\\hline \n \\multicolumn{6}{l}", "{ \\scriptsize {\\bf Note}: ", n.iter, " iterations with a burn-in period of n = ", n.burnin , " iterations discarded.}\\\\", "\n \\multicolumn{6}{l}", "{ \\scriptsize ", ci.number*100 ,"\\% credible intervals (upper/lower bounds). All R-Hat statistics below critical levels.}\\\\" ,"\n \\multicolumn{6}{l}", "{ \\scriptsize Standard convergence diagnostics suggest good mixing and convergence.}\\\\","\n \\multicolumn{6}{l}", "{ \\scriptsize Year fixed effects, latitude and longitude were omitted in the table.}\\\\", "\n \\multicolumn{6}{l}","{ \\scriptsize A total of ", n.chains, " chains were run.} \\\\")
+        "\\hline \n \\multicolumn{6}{l}", "{ \\scriptsize {\\bf Note}: ", n.iter, " iterations with a burn-in period of n = ", n.burnin , " iterations discarded.}\\\\", "\n \\multicolumn{6}{l}", "{ \\scriptsize ", ci.number*100 ,"\\% credible intervals (upper/lower bounds). All R-Hat statistics below critical levels.}\\\\" ,"\n \\multicolumn{6}{l}", "{ \\scriptsize Standard convergence diagnostics suggest good mixing and convergence.}\\\\","\n \\multicolumn{6}{l}", "{ \\scriptsize Year fixed effects, latitude and longitude were omitted in the table.}\\\\", 
+        "\n \\multicolumn{6}{l}","{ \\scriptsize A total of ", n.chains, " chains were run. Detailed diagnostic plots available \\href{https://github.com/hbahamonde/Earthquake_Paper/raw/master/Bahamonde_Earthquake_Paper_Diagnostic_Plots.pdf}{\\texttt here}.} \\\\")
+
+
 
 print.xtable(xtable(
         reg.results.table, 
@@ -833,15 +836,6 @@ denplot(earthquakefit, parms = parms)
 
 
 
-
-#### using the ggmcmc package
-if (!require("pacman")) install.packages("pacman"); library(pacman) 
-p_load(ggmcmc)
-
-fit.mcmc <- as.mcmc(earthquakefit)
-bayes.mod.fit.gg <- ggs(fit.mcmc)
-ggmcmc(bayes.mod.fit.gg, file = "/Users/hectorbahamonde/RU/Dissertation/Papers/Earthquake_Paper/diagnostic_plots.pdf")
-#### using the ggmcmc package
 
 
 
