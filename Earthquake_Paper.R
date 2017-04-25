@@ -612,8 +612,17 @@ earthquakefit <- jags(
         #n.thin=1,
         model.file=model.jags,
         progress.bar = "none")
-## ----
 
+#### Generates Diagnostic Plots - this links to a link in the Output Table.
+if (!require("pacman")) install.packages("pacman"); library(pacman) 
+p_load(ggmcmc)
+
+fit.mcmc <- as.mcmc(earthquakefit)
+bayes.mod.fit.gg <- ggs(fit.mcmc)
+ggmcmc(bayes.mod.fit.gg, file = "/Users/hectorbahamonde/RU/Dissertation/Papers/Earthquake_Paper/Bahamonde_Earthquake_Paper_Diagnostic_Plots.pdf")
+graphics.off()
+
+## ----
 
 
 
