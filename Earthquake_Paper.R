@@ -890,18 +890,73 @@ ggplot(data = earthquake.year, aes(x = variable, y = mean)) +
 
 
 # ---- incometax ----
-
-# Load data
-load("/Users/hectorbahamonde/RU/Dissertation/Data/dissertation.Rdata") 
-
 # load libraries
 if (!require("pacman")) install.packages("pacman"); library(pacman)
 p_load(ggplot2,gridExtra)
 
 
+# To force GGplots to share same legend.
+grid_arrange_shared_legend <- function(...) {
+        require(ggplot2)
+        require(gridExtra)
+        plots <- list(...)
+        g <- ggplotGrob(plots[[1]] + theme(legend.position="bottom"))$grobs
+        legend <- g[[which(sapply(g, function(x) x$name) == "guide-box")]]
+        lheight <- sum(legend$height)
+        grid.arrange(
+                do.call(arrangeGrob, lapply(plots, function(x)
+                        x + theme(legend.position="none"))),
+                legend,
+                ncol = 1,
+                heights = grid::unit.c(unit(1, "npc") - lheight, lheight))
+}
+
+#### multiplot
+multiplot <- function(..., plotlist=NULL, file, cols=1, layout=NULL) {
+        library(grid)
+        
+        # Make a list from the ... arguments and plotlist
+        plots <- c(list(...), plotlist)
+        
+        numPlots = length(plots)
+        
+        # If layout is NULL, then use 'cols' to determine layout
+        if (is.null(layout)) {
+                # Make the panel
+                # ncol: Number of columns of plots
+                # nrow: Number of rows needed, calculated from # of cols
+                layout <- matrix(seq(1, cols * ceiling(numPlots/cols)),
+                                 ncol = cols, nrow = ceiling(numPlots/cols))
+        }
+        
+        if (numPlots==1) {
+                print(plots[[1]])
+                
+        } else {
+                # Set up the page
+                grid.newpage()
+                pushViewport(viewport(layout = grid.layout(nrow(layout), ncol(layout))))
+                
+                # Make each plot, in the correct location
+                for (i in 1:numPlots) {
+                        # Get the i,j matrix positions of the regions that contain this subplot
+                        matchidx <- as.data.frame(which(layout == i, arr.ind = TRUE))
+                        
+                        print(plots[[i]], vp = viewport(layout.pos.row = matchidx$row,
+                                                        layout.pos.col = matchidx$col))
+                }
+        }
+}
+
+
+#### Logs Plot
+
+# Load data
+load("/Users/hectorbahamonde/RU/Dissertation/Data/dissertation.Rdata") 
+
 par(mar=c(10,10,1,1)) # bottom, then left margin, upper and right margins
 
-ggplot() + 
+p1 = ggplot() + 
         geom_smooth(data=subset(dissertation, country=="Chile"), aes(x=year, y=log(constagricult), colour="Agricultural Output"), fill=NA, size=1) +
         geom_smooth(data=subset(dissertation, country=="Chile"), aes(x=year, y=log(constmanufact), colour="Industrial Output"), fill=NA, size=1) + 
         xlab("Year") +
