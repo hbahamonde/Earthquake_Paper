@@ -1,26 +1,78 @@
-\documentclass[tikz, border=10pt]{standalone}
-\tikzset{
-    vertex/.style = {
-        circle,
-        fill            = black,
-        outer sep = 2pt,
-        inner sep = 1pt,
-    }
-}
+\documentclass[tikz, border=1pt]{standalone}
+
+\usepackage{xcolor}
+\usetikzlibrary{arrows.meta,decorations.pathreplacing,angles,quotes}
+
 \begin{document}
-\begin{tikzpicture}
-    
-  % Opposition
-  \node[draw,fill=black,text=white] (ArgumentA) at (5,0) {State Capacities};
-  \node[draw] (ArgumentB) at (9,0) {Income Taxation};
-  \node[draw] (ArgumentC) at (13,0) {Elite Conflicts};
+\begin{tikzpicture}[line width=1pt]
 
-\draw[<-,draw=blue] (ArgumentA) to (ArgumentB);
-\draw[<-,draw=blue] (ArgumentB) to (ArgumentC);
 
-  
-  \node at (6., -1.0) {};
-  
+\draw[decoration={brace,raise=1pt},decorate]
+  (0,4) -- node[above=5pt] {National and Subnational Level} (6,4);
+
+\draw[decoration={brace,raise=1pt},decorate]
+  (7,4) -- node[above=5pt] {National Level} (15,4);
+
+
+% 1
+\node[draw,align=center,fill=black,text=white] (ArgumentA1) at (1,0) {Strong\\industrial sector};
+\node[draw,align=center,fill=black,text=white] (ArgumentB1) at (4.5,0) {Low\\sectoral inequality};
+
+\node[draw,align=center,fill=yellow,text=black] (ArgumentD1) at (9,0) {\underline{Income Tax}\\{\bf did}\\reflect sectoral conflicts};
+
+% 1
+\node[draw,fill=black!30!green,text=white,align=center] (ArgumentA3) at (13,0) {{\bf High}\\ state capacities};
+
+
+
+\draw[->,draw=blue,thick] (ArgumentD1) to (ArgumentA3);
+\draw[->,draw=blue,thick] (ArgumentA1) to (ArgumentB1);
+\draw[->,draw=blue,thick] (ArgumentB1) to (ArgumentD1);
+
+
+\draw[dash dot] (ArgumentA1) -- ++(0,-1) -| (ArgumentB1) node[below, near start] {High sectoral conflict};
+
+ 
+
+\node at (6., -1.0) {};
+
+
+
+% 2
+\node[draw,align=center,fill=black,text=white] (ArgumentA2) at (1,2) {Weak\\industrial sector};
+\node[draw,align=center,fill=black,text=white] (ArgumentB2) at (4.5,2) {High\\sectoral inequality};
+\node[draw,,align=center,fill=yellow,text=black] (ArgumentD2) at (9,2) {\underline{Income Tax}\\{\bf did not}\\reflect sectoral conflicts};
+
+
+
+\node[draw,fill=red,text=white,align=center] (ArgumentA4) at (13,2) {{\bf Low}\\state capacities};
+
+
+\draw[->,draw=blue,thick] (ArgumentD2) to (ArgumentA4);
+\draw[->,draw=blue,thick] (ArgumentA2) to (ArgumentB2);
+\draw[->,draw=blue,thick] (ArgumentB2) to (ArgumentD2);
+
+
+
+\draw[dash dot] (ArgumentA2) -- ++(0,1) -| (ArgumentB2)
+node[above, near start] {Low sectoral conflict};
+
+
+
+
+\node at (6., -1.0) {};
+
+
+
+
+
+
+
+
+
+
+
+
   
 \end{tikzpicture}
 \end{document}
