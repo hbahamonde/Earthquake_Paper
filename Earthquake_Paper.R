@@ -661,7 +661,7 @@ bayes.c.eff.mean.prop.0.agr <- apply(int.sim.prop.0.agr, 2, mean)
 bayes.c.eff.lower.prop.0.agr <- apply(int.sim.prop.0.agr, 2, function(x) quantile(x, probs = c(0.1)))
 bayes.c.eff.upper.prop.0.agr <- apply(int.sim.prop.0.agr, 2, function(x) quantile(x, probs = c(0.8)))
 ## create df
-plot.dat.prop.0.agr <- data.frame(prop.range, bayes.c.eff.mean.prop.0.agr, bayes.c.eff.lower.prop.0.agr, bayes.c.eff.upper.prop.0.agr)
+plot.dat.prop.0.agr <- data.frame(prop.range, bayes.c.eff.mean.prop.0.agr, bayes.c.eff.lower.prop.0.agr, bayes.c.eff.upper.prop.0.agr); colnames(plot.dat.prop.0.agr) <- c("prop.range", "mean", "lower", "upper")
 
 
 
@@ -676,7 +676,8 @@ bayes.c.eff.mean.prop.0.ind <- apply(int.sim.prop.0.ind, 2, mean)
 bayes.c.eff.lower.prop.0.ind <- apply(int.sim.prop.0.ind, 2, function(x) quantile(x, probs = c(0.1)))
 bayes.c.eff.upper.prop.0.ind <- apply(int.sim.prop.0.ind, 2, function(x) quantile(x, probs = c(0.8)))
 ## create df
-plot.dat.prop.0.ind <- data.frame(prop.range, bayes.c.eff.mean.prop.0.ind, bayes.c.eff.lower.prop.0.ind, bayes.c.eff.upper.prop.0.ind)
+plot.dat.prop.0.ind <- data.frame(prop.range, bayes.c.eff.mean.prop.0.ind, bayes.c.eff.lower.prop.0.ind, bayes.c.eff.upper.prop.0.ind); colnames(plot.dat.prop.0.ind) <- c("prop.range", "mean", "lower", "upper")
+
 
 
 ##########################################
@@ -694,7 +695,7 @@ bayes.c.eff.mean.prop.1.agr <- apply(int.sim.prop.1.agr, 2, mean)
 bayes.c.eff.lower.prop.1.agr <- apply(int.sim.prop.1.agr, 2, function(x) quantile(x, probs = c(0.1)))
 bayes.c.eff.upper.prop.1.agr <- apply(int.sim.prop.1.agr, 2, function(x) quantile(x, probs = c(0.8)))
 ## create df
-plot.dat.prop.1.agr <- data.frame(prop.range, bayes.c.eff.mean.prop.1.agr, bayes.c.eff.lower.prop.1.agr, bayes.c.eff.upper.prop.1.agr)
+plot.dat.prop.1.agr <- data.frame(prop.range, bayes.c.eff.mean.prop.1.agr, bayes.c.eff.lower.prop.1.agr, bayes.c.eff.upper.prop.1.agr); colnames(plot.dat.prop.1.agr) <- c("prop.range", "mean", "lower", "upper")
 
 
 ### Industrial Subnational
@@ -708,7 +709,8 @@ bayes.c.eff.mean.prop.1.ind <- apply(int.sim.prop.1.ind, 2, mean)
 bayes.c.eff.lower.prop.1.ind <- apply(int.sim.prop.1.ind, 2, function(x) quantile(x, probs = c(0.1)))
 bayes.c.eff.upper.prop.1.ind <- apply(int.sim.prop.1.ind, 2, function(x) quantile(x, probs = c(0.8)))
 ## create df
-plot.dat.prop.1.ind <- data.frame(prop.range, bayes.c.eff.mean.prop.1.ind, bayes.c.eff.lower.prop.1.ind, bayes.c.eff.upper.prop.1.ind)
+plot.dat.prop.1.ind <- data.frame(prop.range, bayes.c.eff.mean.prop.1.ind, bayes.c.eff.lower.prop.1.ind, bayes.c.eff.upper.prop.1.ind); colnames(plot.dat.prop.1.ind) <- c("prop.range", "mean", "lower", "upper")
+
 
 ##########################################
 ## Plot
@@ -719,6 +721,25 @@ p_load(ggplot2)
 
 ## Use blue for Bayesian, red for frequentist estimates. Transparency to allow overlay; purple indicates complete overlay. Take a close look at the upper and lower limits of the CI for each estimate.
 ## Foundation for the plot & line for the posterior mean of the Bayesian conditional effect
+
+
+# industrial subnational
+plot.dat.prop.1.ind = as.data.frame(cbind(plot.dat.prop.1.ind, 'Implementation of Income Tax'= rep("Yes", nrow(plot.dat.prop.1.ind)))); 
+
+
+plot.dat.prop.0.ind = as.data.frame(cbind(plot.dat.prop.0.ind, 'Implementation of Income Tax'= rep("Yes", nrow(plot.dat.prop.0.ind)))); colnames(plot.dat.prop.0.ind) <- c("prop.range", "mean", "lower", "upper", "Implementation of Income Tax")
+
+ind.plot = as.data.frame(rbind(plot.dat.prop.1.ind, plot.dat.prop.0.ind))
+
+
+
+
+
+
+
+
+
+
 
 ggplot() + 
         geom_smooth(data = plot.dat.prop.1.ind, aes(x = prop.range, y = bayes.c.eff.mean.prop.1.ind), color = "green", alpha = 0.8, size = 0.5, method = 'loess') + 
