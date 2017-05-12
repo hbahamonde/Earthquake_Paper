@@ -487,7 +487,7 @@ model.jags <- function() {
                         b.year[yearID[i]] + # year fixed-effects
                         b.r.long*r.long[i] +
                         b.r.lat*r.lat[i] +
-                        b.interaction*propagrmanu[i]*incometax.d[i] + # interaction term
+                        b.interaction[Sector[i]]*propagrmanu[i]*incometax.d[i] + # interaction term
                         mu ## intercept
         }
         
@@ -498,7 +498,7 @@ model.jags <- function() {
         b.Urban ~ dnorm(0, 0.01)
         # b.propagrmanu ~ dnorm(0, 0.001)
         b.incometax.d ~ dnorm(0, 0.01)
-        b.interaction ~ dnorm(0, 0.01)
+        # b.interaction ~ dnorm(0, 0.01)
         
         
         for (t in 1:yearN){ # fixed effects
@@ -520,6 +520,13 @@ model.jags <- function() {
                 m.b.propagrmanu[k] ~ dnorm(0, 0.01)
                 tau.b.propagrmanu[k] ~ dgamma(0.5, 0.001) # uninformative prior
                 }
+        
+        ## for the beta associated with the interaction, one slope per sector
+        for (k in 1:NSector){ # 
+                b.interaction[k] ~ dnorm(m.b.interaction[k], tau.b.interaction[k])
+                m.b.interaction[k] ~ dnorm(0, 0.01)
+                tau.b.interaction[k] ~ dgamma(0.5, 0.001) # uninformative prior
+        }
         }
 
 
@@ -603,9 +610,9 @@ eq.params <- c("b.propagrmanu", "b.Magnitude", "b.p.Population", "b.year", "b.r.
 ## ---- model:and:data:does:run ----
 # run the model
 
-n.iter = 10  # n.iter = 20000 // this is for working model
-n.burnin = 2 # n.burnin = 1000 // this is for working model
-n.chains = 1 # n.chains = 4 for the working model
+n.iter = 200000  # n.iter = 20000 // this is for working model
+n.burnin = 5000 # n.burnin = 1000 // this is for working model
+n.chains = 4 # n.chains = 4 for the working model
 
 earthquakefit <- jags(
         data=jags.data,
@@ -696,8 +703,10 @@ plot.dat.prop.0.ind <- data.frame(prop.range, bayes.c.eff.mean.prop.0.ind, bayes
 ### Agricultural Subnational
 int.sim.prop.1.agr <- matrix(rep(NA, nrow(int.mcmc.dat)*length(prop.range)), nrow = nrow(int.mcmc.dat))
 for(i in 1:length(prop.range)){
-        int.sim.prop.1.agr[, i] <- int.mcmc.dat$b.incometax.d + (int.mcmc.dat$'b.propagrmanu[1]'+int.mcmc.dat$b.interaction)*prop.range[i]
+        int.sim.prop.1.agr[, i] <- int.mcmc.dat$b.incometax.d + (int.mcmc.dat$'b.propagrmanu[1]'+int.mcmc.dat$'b.interaction[1]')*prop.range[i]
 }
+
+
 ## credible intervals
 ### Note: the variance now comes from the posterior, not the vcov matrix
 bayes.c.eff.mean.prop.1.agr <- apply(int.sim.prop.1.agr, 2, mean)
@@ -710,7 +719,7 @@ plot.dat.prop.1.agr <- data.frame(prop.range, bayes.c.eff.mean.prop.1.agr, bayes
 ### Industrial Subnational
 int.sim.prop.1.ind <- matrix(rep(NA, nrow(int.mcmc.dat)*length(prop.range)), nrow = nrow(int.mcmc.dat))
 for(i in 1:length(prop.range)){
-        int.sim.prop.1.ind[, i] <- int.mcmc.dat$b.incometax.d + (int.mcmc.dat$'b.propagrmanu[2]'+int.mcmc.dat$b.interaction)*prop.range[i]
+        int.sim.prop.1.ind[, i] <- int.mcmc.dat$b.incometax.d + (int.mcmc.dat$'b.propagrmanu[2]'+int.mcmc.dat$'b.interaction[2]')*prop.range[i]
 }
 ## credible intervals
 ### Note: the variance now comes from the posterior, not the vcov matrix
@@ -736,7 +745,7 @@ ind.plot = as.data.frame(rbind(
 ind.ggplot = ggplot() + 
         geom_line(data = ind.plot, aes(x = prop.range, y = mean, colour = Tax), alpha = 0.8, size = 0.5) + 
         geom_ribbon(data = ind.plot, aes(x = prop.range, ymin = lower, ymax = upper, fill = Tax), alpha = 0.2) + 
-        xlab("Proportion Agr/Ind Output") + ylab("Casualties") + 
+        xlab("Proportion Agr/Ind Output\nNational Contestation") + ylab("Casualties") + 
         theme_bw() + 
         labs(title = "Subnational Level: Industrial") +
         theme(
@@ -758,7 +767,7 @@ agr.plot = as.data.frame(rbind(
 agr.ggplot = ggplot() + 
         geom_line(data = agr.plot, aes(x = prop.range, y = mean, colour = Tax), alpha = 0.8, size = 0.5) + 
         geom_ribbon(data = agr.plot, aes(x = prop.range, ymin = lower, ymax = upper, fill = Tax), alpha = 0.2) + 
-        xlab("Proportion Agr/Ind Output") + ylab("Casualties") + 
+        xlab("Proportion Agr/Ind Output\nNational Contestation") + ylab("Casualties") + 
         theme_bw() + 
         labs(title = "Subnational Level: Agricultural") +
         theme(
@@ -891,14 +900,16 @@ reg.results.table = data.frame(rbind( # re order df by name of the rowname accor
         reg.results.table[rownames(reg.results.table)==("b.propagrmanu[2]"),],
         reg.results.table[rownames(reg.results.table)==("b.propagrmanu[3]"),],
         reg.results.table[rownames(reg.results.table)==("b.incometax.d"),],
-        reg.results.table[rownames(reg.results.table)==("b.interaction"),],
+        reg.results.table[rownames(reg.results.table)==("b.interaction[1]"),],
+        reg.results.table[rownames(reg.results.table)==("b.interaction[2]"),],
+        reg.results.table[rownames(reg.results.table)==("b.interaction[3]"),],
         reg.results.table[rownames(reg.results.table)==("b.Magnitude[1]"),],
         reg.results.table[rownames(reg.results.table)==("b.Magnitude[2]"),],
         reg.results.table[rownames(reg.results.table)==("b.Magnitude[3]"),],
         reg.results.table[rownames(reg.results.table)==("b.Urban"),]
 ))
 
-var.labels = c("Agr/Ind (Agr)", "Agr/Ind (Ind)", "Agr/Ind (Mixed)", "Income Tax", "Agr/Ind * Income Tax", "Magnitude (Agr)", "Magnitude (Ind)", "Magnitude (Mixed)", "Urban")
+var.labels = c("Agr/Ind [Agr]", "Agr/Ind [Ind]", "Agr/Ind [Mixed]", "Income Tax", "Agr/Ind * Income Tax [Agr]",  "Agr/Ind * Income Tax [Ind]",  "Agr/Ind * Income Tax [Mixed]", "Magnitude [Agr]", "Magnitude [Ind]", "Magnitude [Mixed]", "Urban")
 
 rownames(reg.results.table) <- var.labels
 
@@ -920,7 +931,7 @@ print.xtable(xtable(
         label = "regression:table"), 
         auto = TRUE,
         hline.after=c(-1, 0),
-        add.to.row = list(pos = list(9),command = note)
+        add.to.row = list(pos = list(11),command = note)
 )
 ## ----
 
