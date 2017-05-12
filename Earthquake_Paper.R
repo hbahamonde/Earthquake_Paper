@@ -482,7 +482,7 @@ model.jags <- function() {
                         b.propagrmanu[Sector[i]]*propagrmanu[i] + # multi-level part: allow national output to vary at the local/sector level
                         b.Magnitude[Sector[i]]*Magnitude[i] + #  multi-level part: allow national output to vary at the local/sector level
                         b.incometax.d*incometax.d[i] +
-                        #b.p.Population*p.Population[i] +
+                        b.p.Population*p.Population[i] +
                         b.Urban*Urban[i] +
                         b.year[yearID[i]] + # year fixed-effects
                         b.r.long*r.long[i] +
@@ -494,7 +494,7 @@ model.jags <- function() {
         b.r.lat ~ dnorm(0, 0.01)
         b.r.long ~ dnorm(0, 0.01)
         mu  ~ dnorm(0, 0.01) ## intercept
-        #b.p.Population ~ dnorm(0, 0.01)
+        b.p.Population ~ dnorm(0, 0.01)
         b.Urban ~ dnorm(0, 0.01)
         # b.propagrmanu ~ dnorm(0, 0.001)
         b.incometax.d ~ dnorm(0, 0.01)
@@ -572,7 +572,7 @@ jags.data <- list(Deaths = Deaths,
                   Magnitude = Magnitude^2,
                   Sector = Sector,
                   NSector = NSector,
-                  #p.Population = p.Population,
+                  p.Population = p.Population,
                   # NIncometax = NIncometax,
                   incometax.d = incometax.d,
                   # incometax.y = incometax.y,
@@ -604,7 +604,7 @@ eq.params <- c("b.propagrmanu", "b.Magnitude", "b.p.Population", "b.year", "b.r.
 # run the model
 
 n.iter = 200000  # n.iter = 200000 // this is for working model
-n.burnin = 100000 # n.burnin = 100000 // this is for working model
+n.burnin = 1000 # n.burnin = 100000 // this is for working model
 n.chains = 4 # n.chains = 4 for the working model
 
 earthquakefit <- jags(
