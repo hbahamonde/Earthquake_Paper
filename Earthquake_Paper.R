@@ -740,13 +740,16 @@ ind.ggplot = ggplot() +
         theme_bw() + 
         labs(title = "Subnational Level: Industrial") +
         theme(
-                axis.text.y = element_text(size=8), 
-                axis.text.x = element_text(size=8), 
-                axis.title.y = element_text(size=8), 
-                axis.title.x = element_text(size=8), 
-                legend.text=element_text(size=8), 
-                legend.title=element_text(size=6),
-                plot.title = element_text(size=8))
+                axis.text.y = element_text(size=7), 
+                axis.text.x = element_text(size=7), 
+                axis.title.y = element_text(size=7), 
+                axis.title.x = element_text(size=7), 
+                legend.text=element_text(size=7), 
+                legend.title=element_text(size=7),
+                plot.title = element_text(size=7)) +
+        scale_fill_manual(values=c("green", "red")) +
+        scale_color_manual(values=c("green", "red"))
+
 
 # agricultural subnational
 agr.plot = as.data.frame(rbind(
@@ -759,18 +762,20 @@ agr.ggplot = ggplot() +
         theme_bw() + 
         labs(title = "Subnational Level: Agricultural") +
         theme(
-                axis.text.y = element_text(size=8), 
-                axis.text.x = element_text(size=8), 
-                axis.title.y = element_text(size=8), 
-                axis.title.x = element_text(size=8), 
-                legend.text=element_text(size=8), 
-                legend.title=element_text(size=6),
-                plot.title = element_text(size=8))
+                axis.text.y = element_text(size=7), 
+                axis.text.x = element_text(size=7), 
+                axis.title.y = element_text(size=7), 
+                axis.title.x = element_text(size=7), 
+                legend.text=element_text(size=7), 
+                legend.title=element_text(size=7),
+                plot.title = element_text(size=7)) +
+        scale_fill_manual(values=c("green", "red")) +
+        scale_color_manual(values=c("green", "red"))
 
 
 # load libraries
 if (!require("pacman")) install.packages("pacman"); library(pacman)
-p_load(gridExtra)
+p_load(gridExtra,grid,ggplot2)
 
 
 # To force GGplots to share same legend.
@@ -893,7 +898,7 @@ reg.results.table = data.frame(rbind( # re order df by name of the rowname accor
         reg.results.table[rownames(reg.results.table)==("b.Urban"),]
 ))
 
-var.labels = c("Agr/Ind (Agr)", "Agr/Ind (Ind)", "Agr/Ind (Mixed)", "Income Tax", "Agr/Ind \\times Income Tax", "Magnitude (Agr)", "Magnitude (Ind)", "Magnitude (Mixed)", "Urban")
+var.labels = c("Agr/Ind (Agr)", "Agr/Ind (Ind)", "Agr/Ind (Mixed)", "Income Tax", "Agr/Ind * Income Tax", "Magnitude (Agr)", "Magnitude (Ind)", "Magnitude (Mixed)", "Urban")
 
 rownames(reg.results.table) <- var.labels
 
