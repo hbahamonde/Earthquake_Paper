@@ -462,6 +462,9 @@ graphics.off()
 # load data 
 load("/Users/hectorbahamonde/RU/Dissertation/Papers/Earthquake_Paper/eq_output_d_Chile.RData") 
 
+
+
+
 # load libraries
 if (!require("pacman")) install.packages("pacman"); library(pacman) 
 p_load(R2jags, coda, R2WinBUGS, lattice, rjags, runjags)
@@ -479,7 +482,7 @@ model.jags <- function() {
                         b.propagrmanu[Sector[i]]*propagrmanu[i] + # multi-level part: allow national output to vary at the local/sector level
                         b.Magnitude[Sector[i]]*Magnitude[i] + #  multi-level part: allow national output to vary at the local/sector level
                         b.incometax.d*incometax.d[i] +
-                        b.p.Population*p.Population[i] +
+                        #b.p.Population*p.Population[i] +
                         b.Urban*Urban[i] +
                         b.year[yearID[i]] + # year fixed-effects
                         b.r.long*r.long[i] +
@@ -491,7 +494,7 @@ model.jags <- function() {
         b.r.lat ~ dnorm(0, 0.01)
         b.r.long ~ dnorm(0, 0.01)
         mu  ~ dnorm(0, 0.01) ## intercept
-        b.p.Population ~ dnorm(0, 0.01)
+        #b.p.Population ~ dnorm(0, 0.01)
         b.Urban ~ dnorm(0, 0.01)
         # b.propagrmanu ~ dnorm(0, 0.001)
         b.incometax.d ~ dnorm(0, 0.01)
@@ -518,6 +521,8 @@ model.jags <- function() {
                 tau.b.propagrmanu[k] ~ dgamma(0.5, 0.001) # uninformative prior
                 }
         }
+
+
 
 
 # define the vectors of the data matrix for JAGS.
@@ -567,7 +572,7 @@ jags.data <- list(Deaths = Deaths,
                   Magnitude = Magnitude^2,
                   Sector = Sector,
                   NSector = NSector,
-                  p.Population = p.Population,
+                  #p.Population = p.Population,
                   # NIncometax = NIncometax,
                   incometax.d = incometax.d,
                   # incometax.y = incometax.y,
@@ -627,6 +632,10 @@ graphics.off()
 
 
 
+##########################################
+# conditional effect of income tax
+##########################################
+
 # Interaction Term // Simulation
 
 ## passing fitted model as mcmc object
@@ -637,74 +646,74 @@ int.mcmc.dat <- as.data.frame(int.mcmc.mat)
 ## range of interest
 prop.range <- seq(min(propagrmanu), max(propagrmanu), by = 0.01)
 
-
 ##########################################
-# b.propagrmanu[1]
-##########################################
+## Bayes: b.incometax.d NO
 
-## Bayes: b.propagrmanu[1]
-int.sim.prop.1 <- matrix(rep(NA, nrow(int.mcmc.dat)*length(prop.range)), nrow = nrow(int.mcmc.dat))
+
+### Agricultural Subnational
+int.sim.prop.0.agr <- matrix(rep(NA, nrow(int.mcmc.dat)*length(prop.range)), nrow = nrow(int.mcmc.dat))
 for(i in 1:length(prop.range)){
-        int.sim.prop.1[, i] <- int.mcmc.dat$'b.propagrmanu[1]' + int.mcmc.dat$b.interaction * prop.range[i]
+        int.sim.prop.0.agr[, i] <- int.mcmc.dat$'b.propagrmanu[1]'*prop.range[i]
 }
-
 ## credible intervals
 ### Note: the variance now comes from the posterior, not the vcov matrix
-bayes.c.eff.mean.prop.1 <- apply(int.sim.prop.1, 2, mean)
-bayes.c.eff.lower.prop.1 <- apply(int.sim.prop.1, 2, function(x) quantile(x, probs = c(0.1)))
-bayes.c.eff.upper.prop.1 <- apply(int.sim.prop.1, 2, function(x) quantile(x, probs = c(0.8)))
-
+bayes.c.eff.mean.prop.0.agr <- apply(int.sim.prop.0.agr, 2, mean)
+bayes.c.eff.lower.prop.0.agr <- apply(int.sim.prop.0.agr, 2, function(x) quantile(x, probs = c(0.1)))
+bayes.c.eff.upper.prop.0.agr <- apply(int.sim.prop.0.agr, 2, function(x) quantile(x, probs = c(0.8)))
 ## create df
-plot.dat.prop.1 <- data.frame(prop.range, bayes.c.eff.mean.prop.1, bayes.c.eff.lower.prop.1, bayes.c.eff.upper.prop.1)
+plot.dat.prop.0.agr <- data.frame(prop.range, bayes.c.eff.mean.prop.0.agr, bayes.c.eff.lower.prop.0.agr, bayes.c.eff.upper.prop.0.agr)
 
 
-##########################################
-# b.propagrmanu[2]
-##########################################
 
-## Bayes: b.propagrmanu[2]
-int.sim.prop.2 <- matrix(rep(NA, nrow(int.mcmc.dat)*length(prop.range)), nrow = nrow(int.mcmc.dat))
+### Industrial Subnational
+int.sim.prop.0.ind <- matrix(rep(NA, nrow(int.mcmc.dat)*length(prop.range)), nrow = nrow(int.mcmc.dat))
 for(i in 1:length(prop.range)){
-        int.sim.prop.2[, i] <- int.mcmc.dat$'b.propagrmanu[2]' + int.mcmc.dat$b.interaction * prop.range[i]
+        int.sim.prop.0.ind[, i] <- int.mcmc.dat$'b.propagrmanu[2]'*prop.range[i]
 }
-
 ## credible intervals
 ### Note: the variance now comes from the posterior, not the vcov matrix
-bayes.c.eff.mean.prop.2 <- apply(int.sim.prop.2, 2, mean)
-bayes.c.eff.lower.prop.2 <- apply(int.sim.prop.2, 2, function(x) quantile(x, probs = c(0.1)))
-bayes.c.eff.upper.prop.2 <- apply(int.sim.prop.2, 2, function(x) quantile(x, probs = c(0.8)))
-
+bayes.c.eff.mean.prop.0.ind <- apply(int.sim.prop.0.ind, 2, mean)
+bayes.c.eff.lower.prop.0.ind <- apply(int.sim.prop.0.ind, 2, function(x) quantile(x, probs = c(0.1)))
+bayes.c.eff.upper.prop.0.ind <- apply(int.sim.prop.0.ind, 2, function(x) quantile(x, probs = c(0.8)))
 ## create df
-plot.dat.prop.2 <- data.frame(prop.range, bayes.c.eff.mean.prop.2, bayes.c.eff.lower.prop.2, bayes.c.eff.upper.prop.2)
+plot.dat.prop.0.ind <- data.frame(prop.range, bayes.c.eff.mean.prop.0.ind, bayes.c.eff.lower.prop.0.ind, bayes.c.eff.upper.prop.0.ind)
+
 
 ##########################################
-# b.propagrmanu[3]
-##########################################
 
-## Bayes: b.propagrmanu[3]
-int.sim.prop.3 <- matrix(rep(NA, nrow(int.mcmc.dat)*length(prop.range)), nrow = nrow(int.mcmc.dat))
+## Bayes: b.incometax.d YES
+
+### Agricultural Subnational
+int.sim.prop.1.agr <- matrix(rep(NA, nrow(int.mcmc.dat)*length(prop.range)), nrow = nrow(int.mcmc.dat))
 for(i in 1:length(prop.range)){
-        int.sim.prop.3[, i] <- int.mcmc.dat$'b.propagrmanu[3]' + int.mcmc.dat$b.interaction * prop.range[i]
+        int.sim.prop.1.agr[, i] <- int.mcmc.dat$b.incometax.d + (int.mcmc.dat$'b.propagrmanu[1]'+int.mcmc.dat$b.interaction)*prop.range[i]
 }
-
 ## credible intervals
 ### Note: the variance now comes from the posterior, not the vcov matrix
-bayes.c.eff.mean.prop.3 <- apply(int.sim.prop.3, 2, mean)
-bayes.c.eff.lower.prop.3 <- apply(int.sim.prop.3, 2, function(x) quantile(x, probs = c(0.1)))
-bayes.c.eff.upper.prop.3 <- apply(int.sim.prop.3, 2, function(x) quantile(x, probs = c(0.8)))
-
+bayes.c.eff.mean.prop.1.agr <- apply(int.sim.prop.1.agr, 2, mean)
+bayes.c.eff.lower.prop.1.agr <- apply(int.sim.prop.1.agr, 2, function(x) quantile(x, probs = c(0.1)))
+bayes.c.eff.upper.prop.1.agr <- apply(int.sim.prop.1.agr, 2, function(x) quantile(x, probs = c(0.8)))
 ## create df
-plot.dat.prop.3 <- data.frame(prop.range, bayes.c.eff.mean.prop.3, bayes.c.eff.lower.prop.3, bayes.c.eff.upper.prop.3)
+plot.dat.prop.1.agr <- data.frame(prop.range, bayes.c.eff.mean.prop.1.agr, bayes.c.eff.lower.prop.1.agr, bayes.c.eff.upper.prop.1.agr)
 
 
-(1-.8)/2
+### Industrial Subnational
+int.sim.prop.1.ind <- matrix(rep(NA, nrow(int.mcmc.dat)*length(prop.range)), nrow = nrow(int.mcmc.dat))
+for(i in 1:length(prop.range)){
+        int.sim.prop.1.ind[, i] <- int.mcmc.dat$b.incometax.d + (int.mcmc.dat$'b.propagrmanu[2]'+int.mcmc.dat$b.interaction)*prop.range[i]
+}
+## credible intervals
+### Note: the variance now comes from the posterior, not the vcov matrix
+bayes.c.eff.mean.prop.1.ind <- apply(int.sim.prop.1.ind, 2, mean)
+bayes.c.eff.lower.prop.1.ind <- apply(int.sim.prop.1.ind, 2, function(x) quantile(x, probs = c(0.1)))
+bayes.c.eff.upper.prop.1.ind <- apply(int.sim.prop.1.ind, 2, function(x) quantile(x, probs = c(0.8)))
+## create df
+plot.dat.prop.1.ind <- data.frame(prop.range, bayes.c.eff.mean.prop.1.ind, bayes.c.eff.lower.prop.1.ind, bayes.c.eff.upper.prop.1.ind)
 
 ##########################################
-# PLOT
-##########################################
+## Plot
 graphics.off()
 
-## Plot
 if (!require("pacman")) install.packages("pacman"); library(pacman) 
 p_load(ggplot2)
 
@@ -712,15 +721,27 @@ p_load(ggplot2)
 ## Foundation for the plot & line for the posterior mean of the Bayesian conditional effect
 
 ggplot() + 
-        # prop.1
-        geom_line(data = plot.dat.prop.1, aes(x = prop.range, y = bayes.c.eff.mean.prop.1), color = "blue", alpha = 0.8, size = 0.5) +
-        geom_ribbon(data = plot.dat.prop.1, aes(x = prop.range, ymin = bayes.c.eff.lower.prop.1, ymax = bayes.c.eff.upper.prop.1), fill = "blue", alpha = 0.2) +
-        geom_line(aes(x = prop.range, y = bayes.c.eff.lower.prop.1), color = "blue", alpha = 0.8, size = 0.5) + geom_line(aes(x = prop.range, y = bayes.c.eff.upper.prop.1), color = "blue", alpha = 0.8, size = 0.5) +
-        # prop.2
-        geom_line(data = plot.dat.prop.2, aes(x = prop.range, y = bayes.c.eff.mean.prop.2), color = "red", alpha = 0.8, size = 0.5) +
-        geom_ribbon(data = plot.dat.prop.2, aes(x = prop.range, ymin = bayes.c.eff.lower.prop.2, ymax = bayes.c.eff.upper.prop.2), fill = "red", alpha = 0.2) +
-        geom_line(aes(x = prop.range, y = bayes.c.eff.lower.prop.2), color = "red", alpha = 0.8, size = 0.5) + geom_line(aes(x = prop.range, y = bayes.c.eff.upper.prop.2), color = "red", alpha = 0.8, size = 0.5) +
-        xlab("Proportion Agricultural/Industrial Output") + ylab("Conditional effect of Prop. Agr./Ind.") + theme_bw()
+        geom_smooth(data = plot.dat.prop.1.ind, aes(x = prop.range, y = bayes.c.eff.mean.prop.1.ind), color = "green", alpha = 0.8, size = 0.5, method = 'loess') + 
+        geom_ribbon(data = plot.dat.prop.1.ind, aes(x = prop.range, ymin = bayes.c.eff.lower.prop.1.ind, ymax = bayes.c.eff.upper.prop.1.ind), fill = "green", alpha = 0.2)  + 
+        geom_smooth(data = plot.dat.prop.0.ind, aes(x = prop.range, y = bayes.c.eff.mean.prop.0.ind), color = "red", alpha = 0.8, size = 0.5, method = 'loess') +
+        geom_ribbon(data = plot.dat.prop.0.ind, aes(x = prop.range, ymin = bayes.c.eff.lower.prop.0.ind, ymax = bayes.c.eff.upper.prop.0.ind), fill = "red", alpha = 0.2) +
+        xlab("Proportion Agr/Ind Output") + ylab("Conditional effect of Income Tax") + 
+        theme_bw() + 
+        labs(title = "Subnational Level: Industrial")
+
+
+
+
+ggplot() + 
+        geom_smooth(data = plot.dat.prop.1.agr, aes(x = prop.range, y = bayes.c.eff.mean.prop.1.agr), color = "green", alpha = 0.8, size = 0.5, method = 'loess') + 
+        geom_ribbon(data = plot.dat.prop.1.agr, aes(x = prop.range, ymin = bayes.c.eff.lower.prop.1.agr, ymax = bayes.c.eff.upper.prop.1.agr), fill = "green", alpha = 0.2) +
+        geom_smooth(data = plot.dat.prop.0.agr, aes(x = prop.range, y = bayes.c.eff.mean.prop.0.agr), color = "red", alpha = 0.8, size = 0.5, method = 'loess') +
+        geom_ribbon(data = plot.dat.prop.0.agr, aes(x = prop.range, ymin = bayes.c.eff.lower.prop.0.agr, ymax = bayes.c.eff.upper.prop.0.agr), fill = "red", alpha = 0.2) +
+        xlab("Proportion Agr/Ind Output") + ylab("Conditional effect of Income Tax") + 
+        theme_bw() + 
+        labs(title = "Subnational Level: Agricultural")
+
+
 
 
 
