@@ -603,7 +603,7 @@ eq.params <- c("b.propagrmanu", "b.Magnitude", "b.p.Population", "b.year", "b.r.
 ## ---- model:and:data:does:run ----
 # run the model
 
-n.iter = 200000  # n.iter = 200000 // this is for working model
+n.iter = 20000  # n.iter = 200000 // this is for working model
 n.burnin = 1000 # n.burnin = 100000 // this is for working model
 n.chains = 4 # n.chains = 4 for the working model
 
