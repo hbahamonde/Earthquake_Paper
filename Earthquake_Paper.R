@@ -713,56 +713,97 @@ plot.dat.prop.1.ind <- data.frame(prop.range, bayes.c.eff.mean.prop.1.ind, bayes
 
 
 ##########################################
+## Use blue for Bayesian, red for frequentist estimates. Transparency to allow overlay; purple indicates complete overlay. Take a close look at the upper and lower limits of the CI for each estimate.
+## Foundation for the plot & line for the posterior mean of the Bayesian conditional effect
+
 ## Plot
 graphics.off()
 
 if (!require("pacman")) install.packages("pacman"); library(pacman) 
 p_load(ggplot2)
 
-## Use blue for Bayesian, red for frequentist estimates. Transparency to allow overlay; purple indicates complete overlay. Take a close look at the upper and lower limits of the CI for each estimate.
-## Foundation for the plot & line for the posterior mean of the Bayesian conditional effect
-
-
 # industrial subnational
-plot.dat.prop.1.ind = as.data.frame(cbind(plot.dat.prop.1.ind, 'Implementation of Income Tax'= rep("Yes", nrow(plot.dat.prop.1.ind)))); 
-
-
-plot.dat.prop.0.ind = as.data.frame(cbind(plot.dat.prop.0.ind, 'Implementation of Income Tax'= rep("Yes", nrow(plot.dat.prop.0.ind)))); colnames(plot.dat.prop.0.ind) <- c("prop.range", "mean", "lower", "upper", "Implementation of Income Tax")
-
-ind.plot = as.data.frame(rbind(plot.dat.prop.1.ind, plot.dat.prop.0.ind))
-
-
-
-
-
-
-
-
-
-
-
-ggplot() + 
-        geom_smooth(data = plot.dat.prop.1.ind, aes(x = prop.range, y = bayes.c.eff.mean.prop.1.ind), color = "green", alpha = 0.8, size = 0.5, method = 'loess') + 
-        geom_ribbon(data = plot.dat.prop.1.ind, aes(x = prop.range, ymin = bayes.c.eff.lower.prop.1.ind, ymax = bayes.c.eff.upper.prop.1.ind), fill = "green", alpha = 0.2)  + 
-        geom_smooth(data = plot.dat.prop.0.ind, aes(x = prop.range, y = bayes.c.eff.mean.prop.0.ind), color = "red", alpha = 0.8, size = 0.5, method = 'loess') +
-        geom_ribbon(data = plot.dat.prop.0.ind, aes(x = prop.range, ymin = bayes.c.eff.lower.prop.0.ind, ymax = bayes.c.eff.upper.prop.0.ind), fill = "red", alpha = 0.2) +
+ind.plot = as.data.frame(rbind(
+        as.data.frame(cbind(plot.dat.prop.1.ind, 'Tax'= rep("Yes", nrow(plot.dat.prop.1.ind)))),
+        as.data.frame(cbind(plot.dat.prop.0.ind, 'Tax'= rep("No", nrow(plot.dat.prop.0.ind))))))
+ind.ggplot = ggplot() + 
+        geom_smooth(data = ind.plot, aes(x = prop.range, y = mean, colour = Tax), alpha = 0.8, size = 0.5, method = 'loess') + 
+        geom_ribbon(data = ind.plot, aes(x = prop.range, ymin = lower, ymax = upper, fill = Tax), alpha = 0.2) + 
         xlab("Proportion Agr/Ind Output") + ylab("Conditional effect of Income Tax") + 
         theme_bw() + 
         labs(title = "Subnational Level: Industrial")
 
-
-
-
-ggplot() + 
-        geom_smooth(data = plot.dat.prop.1.agr, aes(x = prop.range, y = bayes.c.eff.mean.prop.1.agr), color = "green", alpha = 0.8, size = 0.5, method = 'loess') + 
-        geom_ribbon(data = plot.dat.prop.1.agr, aes(x = prop.range, ymin = bayes.c.eff.lower.prop.1.agr, ymax = bayes.c.eff.upper.prop.1.agr), fill = "green", alpha = 0.2) +
-        geom_smooth(data = plot.dat.prop.0.agr, aes(x = prop.range, y = bayes.c.eff.mean.prop.0.agr), color = "red", alpha = 0.8, size = 0.5, method = 'loess') +
-        geom_ribbon(data = plot.dat.prop.0.agr, aes(x = prop.range, ymin = bayes.c.eff.lower.prop.0.agr, ymax = bayes.c.eff.upper.prop.0.agr), fill = "red", alpha = 0.2) +
+# agricultural subnational
+agr.plot = as.data.frame(rbind(
+        as.data.frame(cbind(plot.dat.prop.1.agr, 'Tax'= rep("Yes", nrow(plot.dat.prop.1.agr)))),
+        as.data.frame(cbind(plot.dat.prop.0.agr, 'Tax'= rep("No", nrow(plot.dat.prop.0.agr))))))
+agr.ggplot = ggplot() + 
+        geom_smooth(data = agr.plot, aes(x = prop.range, y = mean, colour = Tax), alpha = 0.8, size = 0.5, method = 'loess') + 
+        geom_ribbon(data = agr.plot, aes(x = prop.range, ymin = lower, ymax = upper, fill = Tax), alpha = 0.2) + 
         xlab("Proportion Agr/Ind Output") + ylab("Conditional effect of Income Tax") + 
         theme_bw() + 
         labs(title = "Subnational Level: Agricultural")
 
 
+# load libraries
+if (!require("pacman")) install.packages("pacman"); library(pacman)
+p_load(gridExtra)
+
+
+# To force GGplots to share same legend.
+grid_arrange_shared_legend <- function(...) {
+        require(ggplot2)
+        require(gridExtra)
+        plots <- list(...)
+        g <- ggplotGrob(plots[[1]] + theme(legend.position="bottom"))$grobs
+        legend <- g[[which(sapply(g, function(x) x$name) == "guide-box")]]
+        lheight <- sum(legend$height)
+        grid.arrange(
+                do.call(arrangeGrob, lapply(plots, function(x)
+                        x + theme(legend.position="none"))),
+                legend,
+                ncol = 1,
+                heights = grid::unit.c(unit(1, "npc") - lheight, lheight))
+}
+
+#### multiplot
+multiplot <- function(..., plotlist=NULL, file, cols=1, layout=NULL) {
+        library(grid)
+        
+        # Make a list from the ... arguments and plotlist
+        plots <- c(list(...), plotlist)
+        
+        numPlots = length(plots)
+        
+        # If layout is NULL, then use 'cols' to determine layout
+        if (is.null(layout)) {
+                # Make the panel
+                # ncol: Number of columns of plots
+                # nrow: Number of rows needed, calculated from # of cols
+                layout <- matrix(seq(1, cols * ceiling(numPlots/cols)),
+                                 ncol = cols, nrow = ceiling(numPlots/cols))
+        }
+        
+        if (numPlots==1) {
+                print(plots[[1]])
+                
+        } else {
+                # Set up the page
+                grid.newpage()
+                pushViewport(viewport(layout = grid.layout(nrow(layout), ncol(layout))))
+                
+                # Make each plot, in the correct location
+                for (i in 1:numPlots) {
+                        # Get the i,j matrix positions of the regions that contain this subplot
+                        matchidx <- as.data.frame(which(layout == i, arr.ind = TRUE))
+                        
+                        print(plots[[i]], vp = viewport(layout.pos.row = matchidx$row,
+                                                        layout.pos.col = matchidx$col))
+                }
+        }
+}
+
+grid_arrange_shared_legend(agr.ggplot, ind.ggplot, ncol = 1, nrow = 2)
 
 
 
