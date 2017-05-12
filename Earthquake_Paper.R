@@ -564,7 +564,7 @@ jags.data <- list(Deaths = Deaths,
                   # constmanufact = constmanufact,
                   # constagricult = constagricult,
                   propagrmanu = propagrmanu, # constagricult/constmanufact
-                  Magnitude = Magnitude,
+                  Magnitude = Magnitude^2,
                   Sector = Sector,
                   NSector = NSector,
                   p.Population = p.Population,
@@ -651,8 +651,8 @@ for(i in 1:length(prop.range)){
 ## credible intervals
 ### Note: the variance now comes from the posterior, not the vcov matrix
 bayes.c.eff.mean.prop.1 <- apply(int.sim.prop.1, 2, mean)
-bayes.c.eff.lower.prop.1 <- apply(int.sim.prop.1, 2, function(x) quantile(x, probs = c(0.025)))
-bayes.c.eff.upper.prop.1 <- apply(int.sim.prop.1, 2, function(x) quantile(x, probs = c(0.975)))
+bayes.c.eff.lower.prop.1 <- apply(int.sim.prop.1, 2, function(x) quantile(x, probs = c(0.1)))
+bayes.c.eff.upper.prop.1 <- apply(int.sim.prop.1, 2, function(x) quantile(x, probs = c(0.8)))
 
 ## create df
 plot.dat.prop.1 <- data.frame(prop.range, bayes.c.eff.mean.prop.1, bayes.c.eff.lower.prop.1, bayes.c.eff.upper.prop.1)
@@ -671,8 +671,8 @@ for(i in 1:length(prop.range)){
 ## credible intervals
 ### Note: the variance now comes from the posterior, not the vcov matrix
 bayes.c.eff.mean.prop.2 <- apply(int.sim.prop.2, 2, mean)
-bayes.c.eff.lower.prop.2 <- apply(int.sim.prop.2, 2, function(x) quantile(x, probs = c(0.025)))
-bayes.c.eff.upper.prop.2 <- apply(int.sim.prop.2, 2, function(x) quantile(x, probs = c(0.975)))
+bayes.c.eff.lower.prop.2 <- apply(int.sim.prop.2, 2, function(x) quantile(x, probs = c(0.1)))
+bayes.c.eff.upper.prop.2 <- apply(int.sim.prop.2, 2, function(x) quantile(x, probs = c(0.8)))
 
 ## create df
 plot.dat.prop.2 <- data.frame(prop.range, bayes.c.eff.mean.prop.2, bayes.c.eff.lower.prop.2, bayes.c.eff.upper.prop.2)
@@ -690,16 +690,19 @@ for(i in 1:length(prop.range)){
 ## credible intervals
 ### Note: the variance now comes from the posterior, not the vcov matrix
 bayes.c.eff.mean.prop.3 <- apply(int.sim.prop.3, 2, mean)
-bayes.c.eff.lower.prop.3 <- apply(int.sim.prop.3, 2, function(x) quantile(x, probs = c(0.025)))
-bayes.c.eff.upper.prop.3 <- apply(int.sim.prop.3, 2, function(x) quantile(x, probs = c(0.975)))
+bayes.c.eff.lower.prop.3 <- apply(int.sim.prop.3, 2, function(x) quantile(x, probs = c(0.1)))
+bayes.c.eff.upper.prop.3 <- apply(int.sim.prop.3, 2, function(x) quantile(x, probs = c(0.8)))
 
 ## create df
 plot.dat.prop.3 <- data.frame(prop.range, bayes.c.eff.mean.prop.3, bayes.c.eff.lower.prop.3, bayes.c.eff.upper.prop.3)
 
 
+(1-.8)/2
+
 ##########################################
 # PLOT
 ##########################################
+graphics.off()
 
 ## Plot
 if (!require("pacman")) install.packages("pacman"); library(pacman) 
@@ -717,11 +720,8 @@ ggplot() +
         geom_line(data = plot.dat.prop.2, aes(x = prop.range, y = bayes.c.eff.mean.prop.2), color = "red", alpha = 0.8, size = 0.5) +
         geom_ribbon(data = plot.dat.prop.2, aes(x = prop.range, ymin = bayes.c.eff.lower.prop.2, ymax = bayes.c.eff.upper.prop.2), fill = "red", alpha = 0.2) +
         geom_line(aes(x = prop.range, y = bayes.c.eff.lower.prop.2), color = "red", alpha = 0.8, size = 0.5) + geom_line(aes(x = prop.range, y = bayes.c.eff.upper.prop.2), color = "red", alpha = 0.8, size = 0.5) +
-        # prop.3
-geom_line(data = plot.dat.prop.3, aes(x = prop.range, y = bayes.c.eff.mean.prop.3), color = "green", alpha = 0.8, size = 0.5) +
-        geom_ribbon(data = plot.dat.prop.3, aes(x = prop.range, ymin = bayes.c.eff.lower.prop.3, ymax = bayes.c.eff.upper.prop.3), fill = "green", alpha = 0.2) +
-        geom_line(aes(x = prop.range, y = bayes.c.eff.lower.prop.3), color = "green", alpha = 0.8, size = 0.5) + geom_line(aes(x = prop.range, y = bayes.c.eff.upper.prop.3), color = "green", alpha = 0.8, size = 0.5)
-        
+        xlab("Proportion Agricultural/Industrial Output") + ylab("Conditional effect of Prop. Agr./Ind.") + theme_bw()
+
 
 
 
