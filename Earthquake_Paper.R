@@ -603,9 +603,9 @@ eq.params <- c("b.propagrmanu", "b.Magnitude", "b.p.Population", "b.year", "b.r.
 ## ---- model:and:data:does:run ----
 # run the model
 
-n.iter = 20000  # n.iter = 200000 // this is for working model
-n.burnin = 1000 # n.burnin = 100000 // this is for working model
-n.chains = 4 # n.chains = 4 for the working model
+n.iter = 10  # n.iter = 20000 // this is for working model
+n.burnin = 2 # n.burnin = 1000 // this is for working model
+n.chains = 1 # n.chains = 4 for the working model
 
 earthquakefit <- jags(
         data=jags.data,
@@ -631,6 +631,16 @@ graphics.off()
 
 
 
+
+
+
+
+
+
+
+
+
+## ---- interaction:plots ----
 
 ##########################################
 # conditional effect of income tax
@@ -681,7 +691,6 @@ plot.dat.prop.0.ind <- data.frame(prop.range, bayes.c.eff.mean.prop.0.ind, bayes
 
 
 ##########################################
-
 ## Bayes: b.incometax.d YES
 
 ### Agricultural Subnational
@@ -717,8 +726,6 @@ plot.dat.prop.1.ind <- data.frame(prop.range, bayes.c.eff.mean.prop.1.ind, bayes
 ## Foundation for the plot & line for the posterior mean of the Bayesian conditional effect
 
 ## Plot
-graphics.off()
-
 if (!require("pacman")) install.packages("pacman"); library(pacman) 
 p_load(ggplot2)
 
@@ -727,22 +734,38 @@ ind.plot = as.data.frame(rbind(
         as.data.frame(cbind(plot.dat.prop.1.ind, 'Tax'= rep("Yes", nrow(plot.dat.prop.1.ind)))),
         as.data.frame(cbind(plot.dat.prop.0.ind, 'Tax'= rep("No", nrow(plot.dat.prop.0.ind))))))
 ind.ggplot = ggplot() + 
-        geom_smooth(data = ind.plot, aes(x = prop.range, y = mean, colour = Tax), alpha = 0.8, size = 0.5, method = 'loess') + 
+        geom_line(data = ind.plot, aes(x = prop.range, y = mean, colour = Tax), alpha = 0.8, size = 0.5) + 
         geom_ribbon(data = ind.plot, aes(x = prop.range, ymin = lower, ymax = upper, fill = Tax), alpha = 0.2) + 
-        xlab("Proportion Agr/Ind Output") + ylab("Conditional effect of Income Tax") + 
+        xlab("Proportion Agr/Ind Output") + ylab("Casualties") + 
         theme_bw() + 
-        labs(title = "Subnational Level: Industrial")
+        labs(title = "Subnational Level: Industrial") +
+        theme(
+                axis.text.y = element_text(size=8), 
+                axis.text.x = element_text(size=8), 
+                axis.title.y = element_text(size=8), 
+                axis.title.x = element_text(size=8), 
+                legend.text=element_text(size=8), 
+                legend.title=element_text(size=6),
+                plot.title = element_text(size=8))
 
 # agricultural subnational
 agr.plot = as.data.frame(rbind(
         as.data.frame(cbind(plot.dat.prop.1.agr, 'Tax'= rep("Yes", nrow(plot.dat.prop.1.agr)))),
         as.data.frame(cbind(plot.dat.prop.0.agr, 'Tax'= rep("No", nrow(plot.dat.prop.0.agr))))))
 agr.ggplot = ggplot() + 
-        geom_smooth(data = agr.plot, aes(x = prop.range, y = mean, colour = Tax), alpha = 0.8, size = 0.5, method = 'loess') + 
+        geom_line(data = agr.plot, aes(x = prop.range, y = mean, colour = Tax), alpha = 0.8, size = 0.5) + 
         geom_ribbon(data = agr.plot, aes(x = prop.range, ymin = lower, ymax = upper, fill = Tax), alpha = 0.2) + 
-        xlab("Proportion Agr/Ind Output") + ylab("Conditional effect of Income Tax") + 
+        xlab("Proportion Agr/Ind Output") + ylab("Casualties") + 
         theme_bw() + 
-        labs(title = "Subnational Level: Agricultural")
+        labs(title = "Subnational Level: Agricultural") +
+        theme(
+                axis.text.y = element_text(size=8), 
+                axis.text.x = element_text(size=8), 
+                axis.title.y = element_text(size=8), 
+                axis.title.x = element_text(size=8), 
+                legend.text=element_text(size=8), 
+                legend.title=element_text(size=6),
+                plot.title = element_text(size=8))
 
 
 # load libraries
@@ -751,59 +774,41 @@ p_load(gridExtra)
 
 
 # To force GGplots to share same legend.
-grid_arrange_shared_legend <- function(...) {
-        require(ggplot2)
-        require(gridExtra)
+grid_arrange_shared_legend <- function(..., nrow = 1, ncol = length(list(...)), position = c("bottom", "right")) {
+        
         plots <- list(...)
-        g <- ggplotGrob(plots[[1]] + theme(legend.position="bottom"))$grobs
+        position <- match.arg(position)
+        g <- ggplotGrob(plots[[1]] + theme(legend.position = position))$grobs
         legend <- g[[which(sapply(g, function(x) x$name) == "guide-box")]]
         lheight <- sum(legend$height)
-        grid.arrange(
-                do.call(arrangeGrob, lapply(plots, function(x)
-                        x + theme(legend.position="none"))),
-                legend,
-                ncol = 1,
-                heights = grid::unit.c(unit(1, "npc") - lheight, lheight))
+        lwidth <- sum(legend$width)
+        gl <- lapply(plots, function(x) x + theme(legend.position = "none"))
+        gl <- c(gl, nrow = nrow, ncol = ncol)
+        
+        combined <- switch(position,
+                           "bottom" = arrangeGrob(do.call(arrangeGrob, gl),
+                                                  legend,
+                                                  ncol = 1,
+                                                  heights = unit.c(unit(1, "npc") - lheight, lheight)),
+                           "right" = arrangeGrob(do.call(arrangeGrob, gl),
+                                                 legend,
+                                                 ncol = 2,
+                                                 widths = unit.c(unit(1, "npc") - lwidth, lwidth)))
+        grid.newpage()
+        grid.draw(combined)
+        
 }
 
-#### multiplot
-multiplot <- function(..., plotlist=NULL, file, cols=1, layout=NULL) {
-        library(grid)
-        
-        # Make a list from the ... arguments and plotlist
-        plots <- c(list(...), plotlist)
-        
-        numPlots = length(plots)
-        
-        # If layout is NULL, then use 'cols' to determine layout
-        if (is.null(layout)) {
-                # Make the panel
-                # ncol: Number of columns of plots
-                # nrow: Number of rows needed, calculated from # of cols
-                layout <- matrix(seq(1, cols * ceiling(numPlots/cols)),
-                                 ncol = cols, nrow = ceiling(numPlots/cols))
-        }
-        
-        if (numPlots==1) {
-                print(plots[[1]])
-                
-        } else {
-                # Set up the page
-                grid.newpage()
-                pushViewport(viewport(layout = grid.layout(nrow(layout), ncol(layout))))
-                
-                # Make each plot, in the correct location
-                for (i in 1:numPlots) {
-                        # Get the i,j matrix positions of the regions that contain this subplot
-                        matchidx <- as.data.frame(which(layout == i, arr.ind = TRUE))
-                        
-                        print(plots[[i]], vp = viewport(layout.pos.row = matchidx$row,
-                                                        layout.pos.col = matchidx$col))
-                }
-        }
-}
+grid_arrange_shared_legend(ind.ggplot, agr.ggplot, ncol = 2, nrow = 1)
+## ----
 
-grid_arrange_shared_legend(agr.ggplot, ind.ggplot, ncol = 1, nrow = 2)
+
+
+
+
+
+
+
 
 
 
@@ -873,7 +878,7 @@ mcmctab <- function(sims, ci = ci.number, digits = 2){
 
 
 
-reg.results.table = data.frame(mcmctab(earthquakefit)[1:11,]) # Posterior distributions // Year FE excluded
+reg.results.table = data.frame(mcmctab(earthquakefit)[1:12,]) # Posterior distributions // Year FE excluded
 
 
 reg.results.table = data.frame(rbind( # re order df by name of the rowname according to what I have and define in 'var.labels.'
@@ -881,16 +886,16 @@ reg.results.table = data.frame(rbind( # re order df by name of the rowname accor
         reg.results.table[rownames(reg.results.table)==("b.propagrmanu[2]"),],
         reg.results.table[rownames(reg.results.table)==("b.propagrmanu[3]"),],
         reg.results.table[rownames(reg.results.table)==("b.incometax.d"),],
+        reg.results.table[rownames(reg.results.table)==("b.interaction"),],
         reg.results.table[rownames(reg.results.table)==("b.Magnitude[1]"),],
         reg.results.table[rownames(reg.results.table)==("b.Magnitude[2]"),],
         reg.results.table[rownames(reg.results.table)==("b.Magnitude[3]"),],
         reg.results.table[rownames(reg.results.table)==("b.Urban"),]
 ))
 
-var.labels = c("Agr/Ind (Agr)", "Agr/Ind (Ind)", "Agr/Ind (Mixed)", "Income Tax", "Magnitude (Agr)", "Magnitude (Ind)", "Magnitude (Mixed)", "Urban")
+var.labels = c("Agr/Ind (Agr)", "Agr/Ind (Ind)", "Agr/Ind (Mixed)", "Income Tax", "Agr/Ind \\times Income Tax", "Magnitude (Agr)", "Magnitude (Ind)", "Magnitude (Mixed)", "Urban")
 
 rownames(reg.results.table) <- var.labels
-
 
 
 
@@ -910,7 +915,7 @@ print.xtable(xtable(
         label = "regression:table"), 
         auto = TRUE,
         hline.after=c(-1, 0),
-        add.to.row = list(pos = list(8),command = note)
+        add.to.row = list(pos = list(9),command = note)
 )
 ## ----
 
