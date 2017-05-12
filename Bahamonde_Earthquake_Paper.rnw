@@ -236,14 +236,20 @@ The multilevel component of \autoref{model:1} allows the slopes of the national 
 
 
 % explain table and justify main variables
-\emph{Do higher levels of sectoral contestation translate into institutional investments?} fostering better performance of the state supervising quake-resistant construction practices, decreasing this way the death toll of the average earthquake. Moreover, 
+\emph{Do higher levels of sectoral contestation translate into state development?} 
+
+This question is relevant since high-capacity states should be able to supervise quake-resistant construction practices, lowering death-tolls of the average earthquake.
+
+In this paper I concentrate on the state-\emph{building} effects of the income tax law. 
+
+When the tax was implemented under contexts of sectoral contestation, a series of inter-elite reforms crystallized a new institutional order, replacing the old one inherited since colonial times. 
+
+\autoref{regression:table} shows the posterior predictive distributions of the multi-level Poisson regression. In particular, the table shows predicted death counts conditional on observed covariates.\footnote{The other columns show the posterior standard deviations, lower and upper credible intervals of the posterior means, and also the probabilities of the posterior means.} 
+
+The main quantity of interest is the coefficient of the interaction between 
 
 
-
-
-\autoref{regression:table} shows the posterior predictive distributions of the multi-level Poisson regression. In particular, the table shows predicted death counts conditional on observed covariates.\footnote{The other columns show the posterior standard deviations, lower and upper credible intervals of the posterior means, and also the probabilities of the posterior means.} The first three rows of the table show how the slope of the proportion of national agricultural output relative to national industrial output varies by the sector that predominates at the local level.
-
-
+The first three rows of the table show how the slope of the proportion of national agricultural output relative to national industrial output varies by the sector that predominates at the local level.
 
 Given that there are national and subnational source of sectoral contestation, 
 
