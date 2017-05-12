@@ -453,6 +453,9 @@ dispersiontest(o.Deaths,alternative = c("greater"), trafo=1) # overdispersion is
 
 
 ###################################################################### 
+cat("\014")
+rm(list=ls())
+graphics.off()
 
 ## ---- model:and:data:not:run ----
 
@@ -481,6 +484,7 @@ model.jags <- function() {
                         b.year[yearID[i]] + # year fixed-effects
                         b.r.long*r.long[i] +
                         b.r.lat*r.lat[i] +
+                        b.interaction*propagrmanu[i]*incometax.d[i] + # interaction term
                         mu ## intercept
         }
         
@@ -491,6 +495,7 @@ model.jags <- function() {
         b.Urban ~ dnorm(0, 0.01)
         # b.propagrmanu ~ dnorm(0, 0.001)
         b.incometax.d ~ dnorm(0, 0.01)
+        b.interaction ~ dnorm(0, 0.01)
         
         
         for (t in 1:yearN){ # fixed effects
@@ -581,13 +586,8 @@ jags.data <- list(Deaths = Deaths,
 
 
 # Define and name the parameters so JAGS monitors them.
-eq.params <- c("b.propagrmanu", "b.Magnitude", "b.p.Population", "b.year", "b.r.long", "b.r.lat", "b.incometax.d", "b.Urban", "lambda")
-
+eq.params <- c("b.propagrmanu", "b.Magnitude", "b.p.Population", "b.year", "b.r.long", "b.r.lat", "b.incometax.d", "b.Urban", "b.interaction", "lambda")
 ## ----
-
-
-
-
 
 
 
@@ -627,8 +627,101 @@ graphics.off()
 
 
 
+# Interaction Term // Simulation
+
+## passing fitted model as mcmc object
+int.mcmc <- as.mcmc(earthquakefit)
+int.mcmc.mat <- as.matrix(int.mcmc)
+int.mcmc.dat <- as.data.frame(int.mcmc.mat)
+
+## range of interest
+prop.range <- seq(min(propagrmanu), max(propagrmanu), by = 0.01)
 
 
+##########################################
+# b.propagrmanu[1]
+##########################################
+
+## Bayes: b.propagrmanu[1]
+int.sim.prop.1 <- matrix(rep(NA, nrow(int.mcmc.dat)*length(prop.range)), nrow = nrow(int.mcmc.dat))
+for(i in 1:length(prop.range)){
+        int.sim.prop.1[, i] <- int.mcmc.dat$'b.propagrmanu[1]' + int.mcmc.dat$b.interaction * prop.range[i]
+}
+
+## credible intervals
+### Note: the variance now comes from the posterior, not the vcov matrix
+bayes.c.eff.mean.prop.1 <- apply(int.sim.prop.1, 2, mean)
+bayes.c.eff.lower.prop.1 <- apply(int.sim.prop.1, 2, function(x) quantile(x, probs = c(0.025)))
+bayes.c.eff.upper.prop.1 <- apply(int.sim.prop.1, 2, function(x) quantile(x, probs = c(0.975)))
+
+## create df
+plot.dat.prop.1 <- data.frame(prop.range, bayes.c.eff.mean.prop.1, bayes.c.eff.lower.prop.1, bayes.c.eff.upper.prop.1)
+
+
+##########################################
+# b.propagrmanu[2]
+##########################################
+
+## Bayes: b.propagrmanu[2]
+int.sim.prop.2 <- matrix(rep(NA, nrow(int.mcmc.dat)*length(prop.range)), nrow = nrow(int.mcmc.dat))
+for(i in 1:length(prop.range)){
+        int.sim.prop.2[, i] <- int.mcmc.dat$'b.propagrmanu[2]' + int.mcmc.dat$b.interaction * prop.range[i]
+}
+
+## credible intervals
+### Note: the variance now comes from the posterior, not the vcov matrix
+bayes.c.eff.mean.prop.2 <- apply(int.sim.prop.2, 2, mean)
+bayes.c.eff.lower.prop.2 <- apply(int.sim.prop.2, 2, function(x) quantile(x, probs = c(0.025)))
+bayes.c.eff.upper.prop.2 <- apply(int.sim.prop.2, 2, function(x) quantile(x, probs = c(0.975)))
+
+## create df
+plot.dat.prop.2 <- data.frame(prop.range, bayes.c.eff.mean.prop.2, bayes.c.eff.lower.prop.2, bayes.c.eff.upper.prop.2)
+
+##########################################
+# b.propagrmanu[3]
+##########################################
+
+## Bayes: b.propagrmanu[3]
+int.sim.prop.3 <- matrix(rep(NA, nrow(int.mcmc.dat)*length(prop.range)), nrow = nrow(int.mcmc.dat))
+for(i in 1:length(prop.range)){
+        int.sim.prop.3[, i] <- int.mcmc.dat$'b.propagrmanu[3]' + int.mcmc.dat$b.interaction * prop.range[i]
+}
+
+## credible intervals
+### Note: the variance now comes from the posterior, not the vcov matrix
+bayes.c.eff.mean.prop.3 <- apply(int.sim.prop.3, 2, mean)
+bayes.c.eff.lower.prop.3 <- apply(int.sim.prop.3, 2, function(x) quantile(x, probs = c(0.025)))
+bayes.c.eff.upper.prop.3 <- apply(int.sim.prop.3, 2, function(x) quantile(x, probs = c(0.975)))
+
+## create df
+plot.dat.prop.3 <- data.frame(prop.range, bayes.c.eff.mean.prop.3, bayes.c.eff.lower.prop.3, bayes.c.eff.upper.prop.3)
+
+
+##########################################
+# PLOT
+##########################################
+
+## Plot
+if (!require("pacman")) install.packages("pacman"); library(pacman) 
+p_load(ggplot2)
+
+## Use blue for Bayesian, red for frequentist estimates. Transparency to allow overlay; purple indicates complete overlay. Take a close look at the upper and lower limits of the CI for each estimate.
+## Foundation for the plot & line for the posterior mean of the Bayesian conditional effect
+
+ggplot() + 
+        # prop.1
+        geom_line(data = plot.dat.prop.1, aes(x = prop.range, y = bayes.c.eff.mean.prop.1), color = "blue", alpha = 0.8, size = 0.5) +
+        geom_ribbon(data = plot.dat.prop.1, aes(x = prop.range, ymin = bayes.c.eff.lower.prop.1, ymax = bayes.c.eff.upper.prop.1), fill = "blue", alpha = 0.2) +
+        geom_line(aes(x = prop.range, y = bayes.c.eff.lower.prop.1), color = "blue", alpha = 0.8, size = 0.5) + geom_line(aes(x = prop.range, y = bayes.c.eff.upper.prop.1), color = "blue", alpha = 0.8, size = 0.5) +
+        # prop.2
+        geom_line(data = plot.dat.prop.2, aes(x = prop.range, y = bayes.c.eff.mean.prop.2), color = "red", alpha = 0.8, size = 0.5) +
+        geom_ribbon(data = plot.dat.prop.2, aes(x = prop.range, ymin = bayes.c.eff.lower.prop.2, ymax = bayes.c.eff.upper.prop.2), fill = "red", alpha = 0.2) +
+        geom_line(aes(x = prop.range, y = bayes.c.eff.lower.prop.2), color = "red", alpha = 0.8, size = 0.5) + geom_line(aes(x = prop.range, y = bayes.c.eff.upper.prop.2), color = "red", alpha = 0.8, size = 0.5) +
+        # prop.3
+geom_line(data = plot.dat.prop.3, aes(x = prop.range, y = bayes.c.eff.mean.prop.3), color = "green", alpha = 0.8, size = 0.5) +
+        geom_ribbon(data = plot.dat.prop.3, aes(x = prop.range, ymin = bayes.c.eff.lower.prop.3, ymax = bayes.c.eff.upper.prop.3), fill = "green", alpha = 0.2) +
+        geom_line(aes(x = prop.range, y = bayes.c.eff.lower.prop.3), color = "green", alpha = 0.8, size = 0.5) + geom_line(aes(x = prop.range, y = bayes.c.eff.upper.prop.3), color = "green", alpha = 0.8, size = 0.5)
+        
 
 
 
