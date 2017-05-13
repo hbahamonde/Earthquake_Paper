@@ -610,9 +610,9 @@ eq.params <- c("b.propagrmanu", "b.Magnitude", "b.p.Population", "b.year", "b.r.
 ## ---- model:and:data:does:run ----
 # run the model
 
-n.iter = 3  # n.iter = 200000 // this is for working model
-n.burnin = 0 # n.burnin = 5000 // this is for working model
-n.chains = 1 # n.chains = 4 for the working model
+n.iter = 200000  # n.iter = 200000 // this is for working model
+n.burnin = 5000 # n.burnin = 5000 // this is for working model
+n.chains = 4 # n.chains = 4 for the working model
 
 earthquakefit <- jags(
         data=jags.data,
@@ -1214,15 +1214,16 @@ p1 = ggplot() +
         scale_x_continuous(limits=c(1890,2010)) + 
         geom_vline(data=subset(dissertation, country=="Chile"), aes(xintercept = 1924, colour= "Income Tax Law"), linetype = "longdash") + # Income Tax Law  
         theme_bw() + 
+        labs(title="") +
         theme(
-                axis.text.y = element_text(size=10), 
-                axis.text.x = element_text(size=10), 
-                axis.title.y = element_text(size=10), 
-                axis.title.x = element_text(size=10), 
-                legend.text=element_text(size=10), 
-                legend.title=element_text(size=0),
-                legend.position="bottom")  + 
-        labs(title="") 
+                axis.text.y = element_text(size=7), 
+                axis.text.x = element_text(size=7), 
+                axis.title.y = element_text(size=7), 
+                axis.title.x = element_text(size=7), 
+                legend.text=element_text(size=7), 
+                legend.title=element_text(size=7),
+                plot.title = element_text(size=7),
+                legend.position="bottom")
 
 #### Proportion Plot
 # load data 
@@ -1238,16 +1239,17 @@ p2 = ggplot() +
         scale_y_continuous(breaks= seq(0, 1, by = 0.2)) +
         scale_x_continuous(limits=c(1890,2010)) + 
         geom_vline(data=subset(dissertation, country=="Chile"), aes(xintercept = 1924), linetype = "longdash", colour= "#00BA38") + # Income Tax Law
-        theme_bw() + 
+        theme_bw() +
+        labs(title="") +
         theme(
-                axis.text.y = element_text(size=10), 
-                axis.text.x = element_text(size=10), 
-                axis.title.y = element_text(size=10), 
-                axis.title.x = element_text(size=10), 
-                legend.text=element_text(size=10), 
-                legend.title=element_text(size=0),
-                legend.position="bottom")  + 
-        labs(title="")
+                axis.text.y = element_text(size=7), 
+                axis.text.x = element_text(size=7), 
+                axis.title.y = element_text(size=7), 
+                axis.title.x = element_text(size=7), 
+                legend.text=element_text(size=7), 
+                legend.title=element_text(size=7),
+                plot.title = element_text(size=7),
+                legend.position="bottom")
 
 
 
