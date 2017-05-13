@@ -610,9 +610,9 @@ eq.params <- c("b.propagrmanu", "b.Magnitude", "b.p.Population", "b.year", "b.r.
 ## ---- model:and:data:does:run ----
 # run the model
 
-n.iter = 200000  # n.iter = 20000 // this is for working model
-n.burnin = 5000 # n.burnin = 1000 // this is for working model
-n.chains = 4 # n.chains = 4 for the working model
+n.iter = 10  # n.iter = 200000 // this is for working model
+n.burnin = 1 # n.burnin = 5000 // this is for working model
+n.chains = 1 # n.chains = 4 for the working model
 
 earthquakefit <- jags(
         data=jags.data,
