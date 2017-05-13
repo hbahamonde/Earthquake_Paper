@@ -780,8 +780,12 @@ agr.ggplot = ggplot() +
                 plot.title = element_text(size=7)) +
         scale_fill_manual(values=c("green", "red")) +
         scale_color_manual(values=c("green", "red"))
+## ----
 
 
+
+
+## ---- interaction:plots:run ----
 # load libraries
 if (!require("pacman")) install.packages("pacman"); library(pacman)
 p_load(gridExtra,grid,ggplot2)
@@ -812,13 +816,7 @@ grid_arrange_shared_legend <- function(..., nrow = 1, ncol = length(list(...)), 
         grid.draw(combined)
         
 }
-## ----
-
-
-
-
-## ---- interaction:plots:run ----
-grid_arrange_shared_legend(agr.ggplot, ind.ggplot, ncol = 2, nrow = 1)
+grid_arrange_shared_legend(ind.ggplot,agr.ggplot, ncol = 2, nrow = 1)
 ## ----
 
 
@@ -1052,11 +1050,33 @@ p_load(mcmcplots)
 
 
 parms = c(
-        #"b.propagrmanu",
-        #"b.incometax.d", 
-        "b.interaction")
+        "b.propagrmanu",
+        "b.incometax.d",
+        "b.interaction",
+        "b.Magnitude",
+        "b.p.Population",
+        "b.Urban",
+        "b.r.lat",
+        "b.r.long")
 
-traplot(earthquakefit, parms = parms)
+traplot(earthquakefit, 
+        parms=parms, 
+        style="plain", 
+        auto.layout = T,
+        main=c("Agr/Ind [Agr]",
+               "Agr/Ind [Ind]",
+               "Agr/Ind [Mixed]",
+               "Income Tax",
+               "Agr/Ind * Income Tax [Agr]",
+               "Agr/Ind * Income Tax [Ind]",
+               "Agr/Ind * Income Tax [Mixed]",
+               "Magnitude [Agr]",
+               "Magnitude [Ind]",
+               "Magnitude [Mixed]",
+               "Population",
+               "Urban")
+)
+
 ## ----
 
 
@@ -1065,16 +1085,27 @@ if (!require("pacman")) install.packages("pacman"); library(pacman)
 p_load(mcmcplots)
 
 denplot(earthquakefit, 
-        parms = "b.interaction", 
+        parms=parms, 
         style="plain", 
         ci=0.8, 
-        xlim=c(-40,50), 
-        collapse=T, 
-        col=2, 
-        lty=2, 
-        main=c("Agriculture", 
-               "Industry",
-               "Mixed"))
+        #xlim=c(-40,50), 
+        auto.layout = T,
+        #collapse=T, 
+        #col=2, 
+        lty=1, 
+        main=c("Agr/Ind [Agr]",
+               "Agr/Ind [Ind]",
+               "Agr/Ind [Mixed]",
+               "Income Tax",
+               "Agr/Ind * Income Tax [Agr]",
+               "Agr/Ind * Income Tax [Ind]",
+               "Agr/Ind * Income Tax [Mixed]",
+               "Magnitude [Agr]",
+               "Magnitude [Ind]",
+               "Magnitude [Mixed]",
+               "Population",
+               "Urban")
+        )
 
 ## ----
 
