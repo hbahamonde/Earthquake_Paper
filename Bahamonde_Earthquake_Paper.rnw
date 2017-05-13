@@ -75,6 +75,14 @@ read_chunk('/Users/hectorbahamonde/RU/Dissertation/Papers/Earthquake_Paper/Earth
 
 @
 
+<<interaction:plots:not:run, echo=FALSE, comment=NA, warning=FALSE, message=F, results='hide', cache=FALSE>>=
+
+@
+
+<<regression:table:not:run, echo=FALSE, comment=NA, warning=FALSE, message=F, results='hide', cache=FALSE>>=
+
+@
+
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 % Motivation
@@ -222,13 +230,13 @@ t_{1,...T} & \; \text{where} \; \text{T}=\Sexpr{yearN}.
 % multilevel // other variables // econometrics
 The $i$ subscript denotes the unit of analysis (i.e. earthquake),\footnote{\citet[278]{Kahn2005} follows the same strategy.} the $j$ index expresses the type of subnational economic composition of the affected locality (agricultural, industrial, or mixed), and the $t$ subscripts denotes the year when earthquake $i$ happened. Finally, $\mu$ is the intercept.  
 
-Since the `treatment,' i.e. sources of sectoral contestation, occur simultaneously at the national and subnational levels, I implement a multilevel model.\footnote{\citet[237]{Gelman:2006bh}. I do not claim in any way this is a causal method.} While the proportion of agricultural/industrial outputs and the implementation of the income tax take place at the national level, there exists a secular tendency of economic regional clusters to expand despite national sectoral growth aggregates. I conceptualize this tendency as a source of subnational sectoral contestation. For instance, when \emph{national} agricultural output is faster than industrial growth, but industrialists are the most advantaged elite at the \emph{subnational} level, speaks to a generalized situation of sectoral indeterminacy and contestation, where the landowning class is not completely the dominant elites. The emergence of these clusters are also signals of the secular relative declining of the agricultural sector. Higher levels of sectoral contestation translated into more credible threats, advancing sectoral alliances at the national level, fostering institutional investments. 
+Since the `treatment,' i.e. sources of sectoral contestation, occur simultaneously at the national and subnational levels, I implement a multilevel model.\footnote{\citet[237]{Gelman:2006bh}. I do not claim in any way this is a causal method.} While the proportion of agricultural/industrial outputs and the implementation of the income tax take place at the national level, there exists a secular tendency of economic regional clusters to expand despite national sectoral growth aggregates. I conceptualize this tendency as a source of subnational sectoral contestation. For instance, when \emph{national} agricultural output is faster than industrial growth, but industrialists are the most advantaged elite at the \emph{subnational} level, it speaks to a generalized situation of sectoral indeterminacy and contestation, where the landowning class is not completely the dominant elites. In this example, the emergence of these clusters are also signals of the secular relative declining of the agricultural sector. Higher levels of sectoral contestation translated into more credible threats, advancing sectoral alliances at the national level, fostering institutional investments. 
 
-The multilevel component of \autoref{model:1} allows the slopes of the national proportion of agriculture relative to industry ($\beta_{1_j}$) and the earthquake's magnitude ($\beta_{4_j}$) to vary by subnational sectoral predominance indexed by $j$. Since earthquakes can happen more than once per year, in my dataset $i > t$.\footnote{For the years in which there is just one earthquake, the `group' variable has only one observation. This does not endangers the robustness of the model. \citet[276]{Gelman:2006bh} explain that it ``is even acceptable to have one observation in many of the groups.''} The estimated parameters $\beta_{k}$ have noninformative normally distributed priors,\footnote{``Noninformative prior distributions are intended to allow Bayesian inference for parameters about which not much is known beyond the data included in the analysis at hand'' (\citet[520]{Gelman2006}).} while precisions $\tau_{p}$ of $\beta_{1,3_j}$, $\beta_{4_j}$ and $\beta_{9_t}$ have noninformative Gamma priors. More formally, I considered the following:
+The multilevel component of \autoref{model:1} allows the slopes of the national proportion of agriculture relative to industry ($\beta_{1_j}$) and the earthquake's magnitude ($\beta_{4_j}$) to vary by the $j$th dominant subnational sector. Since earthquakes can happen more than once per year, in my dataset $i > t$.\footnote{For the years in which there is just one earthquake, the `group' variable has only one observation. This does not endangers the robustness of the model. \citet[276]{Gelman:2006bh} explain that it ``is even acceptable to have one observation in many of the groups.''} The estimated parameters $\beta_{k}$ have noninformative normally distributed priors,\footnote{``Noninformative prior distributions are intended to allow Bayesian inference for parameters about which not much is known beyond the data included in the analysis at hand'' (\citet[520]{Gelman2006}).} while precisions $\tau_{p}$ of $\beta_{(1,3)_j}$, $\beta_{4_j}$ and $\beta_{9_t}$ have noninformative Gamma priors. More formally, I considered the following:
 
 \begin{equation*} \label{indexes:2}
 \begin{split}
-\beta_{k,...K} \;\sim\; & \mathcal{N}(0, 0.01) \; \text{where} \; \text{K}=8\\
+\beta_{k,...K} \;\sim\; & \mathcal{N}(0, 0.01) \; \text{where} \; \text{K}=9\\
 \tau_{p,...P} \;\sim\; & \mathcal{G}(0.5, 0.001) \; \text{where} \; \text{P}=3.
 \end{split}
 \end{equation*}
@@ -236,46 +244,44 @@ The multilevel component of \autoref{model:1} allows the slopes of the national 
 
 
 % explain table and justify main variables
-\emph{Do higher levels of sectoral contestation translate into state development?} 
+Developed states should be able to supervise quake-resistant construction practices, lowering death-tolls of the average earthquake. \emph{Do higher levels of sectoral contestation translate into state development?} 
 
-This question is relevant since high-capacity states should be able to supervise quake-resistant construction practices, lowering death-tolls of the average earthquake.
 
 In this paper I concentrate on the state-\emph{building} effects of the income tax law. 
 
 When the tax was implemented under contexts of sectoral contestation, a series of inter-elite reforms crystallized a new institutional order, replacing the old one inherited since colonial times. 
 
-\autoref{regression:table} shows the posterior predictive distributions of the multi-level Poisson regression. In particular, the table shows predicted death counts conditional on observed covariates.\footnote{The other columns show the posterior standard deviations, lower and upper credible intervals of the posterior means, and also the probabilities of the posterior means.} 
+\autoref{regression:table} shows the posterior predictive distributions of the multi-level Poisson regression, particularly, the predicted death counts conditional on observed covariates. 
 
-The main quantity of interest is the coefficient of the interaction between 
+The main quantity of interest is $\beta_{3_j}$, the coefficient on the interaction between the national proportion of $\frac{\text{Agriculture}}{\text{Industry}}$ and the implementation of the income tax law. 
 
+Given the initial advantage of the landed elites, a higher proportion means lower levels of sectoral contestation, while a lower proportion means higher contestation levels. 
 
-The first three rows of the table show how the slope of the proportion of national agricultural output relative to national industrial output varies by the sector that predominates at the local level.
+In turn, to model subnational sources of sectoral contestation, the coefficient is indexed by $j$, the sectoral composition of the average subnational unit. 
 
-Given that there are national and subnational source of sectoral contestation, 
-
-
-
-When the size of agriculture increases, the death toll goes up by $\Sexpr{abs(round(reg.results.table[1,1],0))}$ \emph{when the quake shocks an agricultural locality}, but it goes down by $\Sexpr{abs(round(reg.results.table[2,1],0))}$ deaths \emph{when the locality is industrial}.\footnote{The results of mixed localities are not conclusive. Certainly the death toll is negative. When the size of agriculture relative to industry increases, the death toll decreases by $\Sexpr{abs(round(reg.results.table[3,1],0))}$. However, the range is quite wide, and lies within the credible intervals of the estimated count in industrial localities.} These results serve as rough proxies for the effect of subnational sources of sectoral contestation on state-capacities. 
-
-\todo{fix below: interaction term}
+\citet{Brambor2005} explain that constitutive terms ($\beta_{1_j}$ and $\beta_{2}$) should not be interpreted, while \citet{Ai2003} explain the coefficient of the interaction term ($\beta_{3_j}$) should not be interpreted either. Following their advice, I computed and plotted the conditional effect of the implementation of the income tax law under different contexts of sectoral competition. 
 
 
+\autoref{fig:interaction:plots:run} shows that when the income tax is implemented under non-competitive circumstances, the state has less capacities enforcing building codes, increasing its vulnerability to earthquakes. As argued above, only when the tax is implemented under contexts of sectoral contestation this institution will be more likely to have state-\emph{making} capacities.
 
 
 
 % regression:table
-<<regression:table, echo=FALSE, comment=NA, warning=FALSE, message=F, results='asis', cache=FALSE,eval=TRUE>>=
+<<regression:table:run, echo=FALSE, comment=NA, warning=FALSE, message=F, results='asis', cache=FALSE,eval=TRUE>>=
 
 @
 
 
 
+My analyses show that as the relative size of agriculture increases, the income tax \emph{rises} the death toll within a $\Sexpr{abs(round(max(agr.plot$mean[agr.plot$Tax=="Yes" & agr.plot$prop.range==min(agr.plot$prop.range)])))}$-$\Sexpr{abs(round(max(agr.plot$mean[agr.plot$Tax=="Yes" & agr.plot$prop.range==max(agr.plot$prop.range)])))}$ range when the average subnational affected locality is \emph{also} agricultural (lower contestation). However, the income tax law \emph{decreases} the death-toll within a $\Sexpr{abs(round(max(ind.plot$mean[ind.plot$Tax=="Yes" & ind.plot$prop.range==min(ind.plot$prop.range)])))}$-$\Sexpr{abs(round(max(ind.plot$mean[ind.plot$Tax=="Yes" & ind.plot$prop.range==max(ind.plot$prop.range)])))}$ range when the average subnational affected locality is industrial (higher contestation).
 
-% interaction:plots
+
+
+% interaction:plots:run
 \afterpage{
 \clearpage{
 
-<<interaction:plots, echo = FALSE, fig.pos='H', warning = FALSE, message = FALSE,fig.cap='Conditional Effect of Income Tax', fig.align='center', fig.width=5 ,fig.height=3,dpi=10000,cache = FALSE,eval=TRUE>>=
+<<interaction:plots:run, echo = FALSE, fig.pos='H', warning = FALSE, message = FALSE,fig.cap='Interaction Term: Conditional Effect of Income Tax', fig.align='center', fig.width=5 ,fig.height=3,dpi=10000,cache = FALSE,eval=TRUE>>=
 
 @
 

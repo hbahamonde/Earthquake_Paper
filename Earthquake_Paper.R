@@ -610,8 +610,8 @@ eq.params <- c("b.propagrmanu", "b.Magnitude", "b.p.Population", "b.year", "b.r.
 ## ---- model:and:data:does:run ----
 # run the model
 
-n.iter = 10  # n.iter = 200000 // this is for working model
-n.burnin = 1 # n.burnin = 5000 // this is for working model
+n.iter = 3  # n.iter = 200000 // this is for working model
+n.burnin = 0 # n.burnin = 5000 // this is for working model
 n.chains = 1 # n.chains = 4 for the working model
 
 earthquakefit <- jags(
@@ -647,7 +647,7 @@ graphics.off()
 
 
 
-## ---- interaction:plots ----
+## ---- interaction:plots:not:run ----
 
 ##########################################
 # conditional effect of income tax
@@ -812,14 +812,50 @@ grid_arrange_shared_legend <- function(..., nrow = 1, ncol = length(list(...)), 
         grid.draw(combined)
         
 }
+## ----
 
-grid_arrange_shared_legend(ind.ggplot, agr.ggplot, ncol = 2, nrow = 1)
+
+
+
+## ---- interaction:plots:run ----
+grid_arrange_shared_legend(agr.ggplot, ind.ggplot, ncol = 2, nrow = 1)
 ## ----
 
 
 
 
 
+# Agr Subnational
+# Income Tax: IMPLEMENTED
+## National Agr Level : LOW
+abs(round(max(agr.plot$mean[agr.plot$Tax=="Yes" & agr.plot$prop.range==min(agr.plot$prop.range)])))
+## National Agr Level : High
+abs(round(max(agr.plot$mean[agr.plot$Tax=="Yes" & agr.plot$prop.range==max(agr.plot$prop.range)])))
+
+
+# Agr Subnational
+# Income Tax: NOT IMPLEMENTED
+# National Agr Level : LOW
+abs(round(max(agr.plot$mean[agr.plot$Tax=="No" & agr.plot$prop.range==min(agr.plot$prop.range)])))
+## National Agr Level : High
+abs(round(max(agr.plot$mean[agr.plot$Tax=="No" & agr.plot$prop.range==max(agr.plot$prop.range)])))
+
+
+
+# Ind Subnational
+# Income Tax: IMPLEMENTED
+## National Agr Level : LOW
+abs(round(max(ind.plot$mean[ind.plot$Tax=="Yes" & ind.plot$prop.range==min(ind.plot$prop.range)])))
+## National Agr Level : High
+abs(round(max(ind.plot$mean[ind.plot$Tax=="Yes" & ind.plot$prop.range==max(ind.plot$prop.range)])))
+
+
+# Ind Subnational
+# Income Tax: NOT IMPLEMENTED
+# National Agr Level : LOW
+abs(round(max(ind.plot$mean[ind.plot$Tax=="No" & ind.plot$prop.range==min(ind.plot$prop.range)])))
+## National Agr Level : High
+abs(round(max(ind.plot$mean[ind.plot$Tax=="No" & ind.plot$prop.range==max(ind.plot$prop.range)])))
 
 
 
@@ -827,7 +863,7 @@ grid_arrange_shared_legend(ind.ggplot, agr.ggplot, ncol = 2, nrow = 1)
 
 
 
-## ---- regression:table ----
+## ---- regression:table:not:run ----
 
 # R function for summarizing MCMC output in a regression-style table
 # Johannes Karreth, thanks for the function!
@@ -892,7 +928,7 @@ mcmctab <- function(sims, ci = ci.number, digits = 2){
 
 
 
-reg.results.table = data.frame(mcmctab(earthquakefit)[1:12,]) # Posterior distributions // Year FE excluded
+reg.results.table = data.frame(mcmctab(earthquakefit)[1:14,]) # Posterior distributions // Year FE excluded
 
 
 reg.results.table = data.frame(rbind( # re order df by name of the rowname according to what I have and define in 'var.labels.'
@@ -906,10 +942,11 @@ reg.results.table = data.frame(rbind( # re order df by name of the rowname accor
         reg.results.table[rownames(reg.results.table)==("b.Magnitude[1]"),],
         reg.results.table[rownames(reg.results.table)==("b.Magnitude[2]"),],
         reg.results.table[rownames(reg.results.table)==("b.Magnitude[3]"),],
+        reg.results.table[rownames(reg.results.table)==("b.p.Population"),],
         reg.results.table[rownames(reg.results.table)==("b.Urban"),]
 ))
 
-var.labels = c("Agr/Ind [Agr]", "Agr/Ind [Ind]", "Agr/Ind [Mixed]", "Income Tax", "Agr/Ind * Income Tax [Agr]",  "Agr/Ind * Income Tax [Ind]",  "Agr/Ind * Income Tax [Mixed]", "Magnitude [Agr]", "Magnitude [Ind]", "Magnitude [Mixed]", "Urban")
+var.labels = c("Agr/Ind [Agr]", "Agr/Ind [Ind]", "Agr/Ind [Mixed]", "Income Tax", "Agr/Ind * Income Tax [Agr]",  "Agr/Ind * Income Tax [Ind]",  "Agr/Ind * Income Tax [Mixed]", "Magnitude [Agr]", "Magnitude [Ind]", "Magnitude [Mixed]","Population", "Urban")
 
 rownames(reg.results.table) <- var.labels
 
@@ -922,16 +959,17 @@ p_load(xtable)
 note <- paste0(
         "\\hline \n \\multicolumn{6}{l}", "{ \\scriptsize {\\bf Note}: ", n.iter, " iterations with a burn-in period of n = ", n.burnin , " iterations discarded.}\\\\", "\n \\multicolumn{6}{l}", "{ \\scriptsize ", ci.number*100 ,"\\% credible intervals (upper/lower bounds). All R-Hat statistics below critical levels.}\\\\" ,"\n \\multicolumn{6}{l}", "{ \\scriptsize Standard convergence diagnostics suggest good mixing and convergence.}\\\\","\n \\multicolumn{6}{l}", "{ \\scriptsize Year fixed effects, latitude and longitude were omitted in the table.}\\\\", 
         "\n \\multicolumn{6}{l}","{ \\scriptsize A total of ", n.chains, " chains were run. Detailed diagnostic plots available \\href{https://github.com/hbahamonde/Earthquake_Paper/raw/master/Bahamonde_Earthquake_Paper_Diagnostic_Plots.pdf}{\\texttt here}.} \\\\")
+## ----
 
 
-
+## ---- regression:table:run ----
 print.xtable(xtable(
         reg.results.table, 
         caption = "Poisson Regression: Simulated Posterior Predictions",
         label = "regression:table"), 
         auto = TRUE,
         hline.after=c(-1, 0),
-        add.to.row = list(pos = list(11),command = note)
+        add.to.row = list(pos = list(12),command = note)
 )
 ## ----
 
@@ -1012,21 +1050,32 @@ fit.mcmc <- as.mcmc(earthquakefit)
 if (!require("pacman")) install.packages("pacman"); library(pacman) 
 p_load(mcmcplots)
 
-parms = c("b.propagrmanu",
-  "b.Magnitude", 
-  "b.p.Population", 
-  #"b.year", 
-  #"b.r.long", 
-  #"b.r.lat", 
-  "b.incometax.d", 
-  "b.Urban")
+
+parms = c(
+        #"b.propagrmanu",
+        #"b.incometax.d", 
+        "b.interaction")
 
 traplot(earthquakefit, parms = parms)
 ## ----
 
 
 ## ---- denplot:plot ---- 
-denplot(earthquakefit, parms = parms)
+if (!require("pacman")) install.packages("pacman"); library(pacman) 
+p_load(mcmcplots)
+
+denplot(earthquakefit, 
+        parms = "b.interaction", 
+        style="plain", 
+        ci=0.8, 
+        xlim=c(-40,50), 
+        collapse=T, 
+        col=2, 
+        lty=2, 
+        main=c("Agriculture", 
+               "Industry",
+               "Mixed"))
+
 ## ----
 
 
