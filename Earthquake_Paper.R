@@ -1076,7 +1076,8 @@ traplot(earthquakefit,
                "Population",
                "Urban",
                "Latitude",
-               "Longitude")
+               "Longitude"),
+        plot.title = paste(n.chains, "chains,", n.iter, "iterations and burn-in period of", n.burnin)
 )
 
 ## ----
@@ -1108,7 +1109,8 @@ denplot(earthquakefit,
                "Population",
                "Urban",
                "Latitude",
-               "Longitude")
+               "Longitude"),
+        plot.title = paste(n.chains, "chains,", n.iter, "iterations, burn-in period of", n.burnin, "and", ci.number*100, "% credible intervals")
 )
 
 ## ----
