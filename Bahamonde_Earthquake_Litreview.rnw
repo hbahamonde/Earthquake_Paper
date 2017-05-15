@@ -454,3 +454,5 @@
 % The process of state-building had started before
 
 	\citet{Kurtz2009}
+
+Hence, in years when the tax had been implemented, the state was better equipped with these state resources to confront earthquakes in a better way. And while public economists usually focus on tax revenues, I depart from this strategy. Higher revenues do not mean higher stateness levels. For example, since American institutions were deliberately designed to limit the exercise of state power, the U.S. taxes very little.\footnote{\citet[6]{Fukuyama:2004nr}.} However, it is not reasonable to say that the U.S. has a `weak state.' To summarize, sectoral contestation conceptualized as rapid national agricultural growth \emph{and} rapid subnational industrial growth, and the implementation of the income tax are positively associated with increasing levels of state capacities. 
