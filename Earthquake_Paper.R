@@ -1106,8 +1106,10 @@ denplot(earthquakefit,
                "Magnitude [Ind]",
                "Magnitude [Mixed]",
                "Population",
-               "Urban")
-        )
+               "Urban",
+               "Latitude",
+               "Longitude")
+)
 
 ## ----
 
