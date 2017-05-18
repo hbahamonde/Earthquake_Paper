@@ -112,6 +112,7 @@ load("/Users/hectorbahamonde/RU/Dissertation/Papers/Earthquake_Paper/Chile_Data_
 ggplot(dat.chile, aes(x = year, y = Magnitude)) +
         geom_point(shape = 21) +
         theme_bw() +
+        xlab("Year") +
         ggtitle(NULL) +
         stat_smooth(show.legend = F,  method = 'loess')
 ## ----
@@ -1178,78 +1179,22 @@ ggplot(data = earthquake.year, aes(x = variable, y = mean)) +
 # ---- incometax ----
 # load libraries
 if (!require("pacman")) install.packages("pacman"); library(pacman)
-p_load(ggplot2,gridExtra)
+p_load(ggplot2,grid,gridExtra)
 
-
-# To force GGplots to share same legend.
-grid_arrange_shared_legend <- function(...) {
-        require(ggplot2)
-        require(gridExtra)
-        plots <- list(...)
-        g <- ggplotGrob(plots[[1]] + theme(legend.position="bottom"))$grobs
-        legend <- g[[which(sapply(g, function(x) x$name) == "guide-box")]]
-        lheight <- sum(legend$height)
-        grid.arrange(
-                do.call(arrangeGrob, lapply(plots, function(x)
-                        x + theme(legend.position="none"))),
-                legend,
-                ncol = 1,
-                heights = grid::unit.c(unit(1, "npc") - lheight, lheight))
-}
-
-#### multiplot
-multiplot <- function(..., plotlist=NULL, file, cols=1, layout=NULL) {
-        library(grid)
-        
-        # Make a list from the ... arguments and plotlist
-        plots <- c(list(...), plotlist)
-        
-        numPlots = length(plots)
-        
-        # If layout is NULL, then use 'cols' to determine layout
-        if (is.null(layout)) {
-                # Make the panel
-                # ncol: Number of columns of plots
-                # nrow: Number of rows needed, calculated from # of cols
-                layout <- matrix(seq(1, cols * ceiling(numPlots/cols)),
-                                 ncol = cols, nrow = ceiling(numPlots/cols))
-        }
-        
-        if (numPlots==1) {
-                print(plots[[1]])
-                
-        } else {
-                # Set up the page
-                grid.newpage()
-                pushViewport(viewport(layout = grid.layout(nrow(layout), ncol(layout))))
-                
-                # Make each plot, in the correct location
-                for (i in 1:numPlots) {
-                        # Get the i,j matrix positions of the regions that contain this subplot
-                        matchidx <- as.data.frame(which(layout == i, arr.ind = TRUE))
-                        
-                        print(plots[[i]], vp = viewport(layout.pos.row = matchidx$row,
-                                                        layout.pos.col = matchidx$col))
-                }
-        }
-}
-
-
-#### Logs Plot
 
 # Load data
 load("/Users/hectorbahamonde/RU/Dissertation/Data/dissertation.Rdata") 
 
-par(mar=c(10,10,1,1)) # bottom, then left margin, upper and right margins
+# par(mar=c(3,3,3,3)) # bottom, then left margin, upper and right margins
 
 p1 = ggplot() + 
-        geom_smooth(data=subset(dissertation, country=="Chile"), aes(x=year, y=log(constagricult), colour="Agricultural Output"), fill=NA, size=1) +
-        geom_smooth(data=subset(dissertation, country=="Chile"), aes(x=year, y=log(constmanufact), colour="Industrial Output"), fill=NA, size=1) + 
+        geom_line(data=subset(dissertation, country=="Chile"), aes(x=year, y=log(constagricult), colour="Agricultural Output"), fill=NA, size=1) +
+        geom_line(data=subset(dissertation, country=="Chile"), aes(x=year, y=log(constmanufact), colour="Industrial Output"), fill=NA, size=1) + 
         xlab("Year") +
         ylab("GDP Output (ln)") +
-        labs(colour = "Legend") +
+        labs(colour = "") +
         scale_x_continuous(limits=c(1890,2010)) + 
-        geom_vline(data=subset(dissertation, country=="Chile"), aes(xintercept = 1924, colour= "Income Tax Law"), linetype = "longdash") + # Income Tax Law  
+        geom_vline(data=subset(dissertation, country=="Chile"), aes(xintercept = 1924, colour= "Income Tax Law"), linetype = "dashed") + # Income Tax Law  
         theme_bw() + 
         labs(title="") +
         theme(
@@ -1262,20 +1207,21 @@ p1 = ggplot() +
                 plot.title = element_text(size=7),
                 legend.position="bottom")
 
+
 #### Proportion Plot
 # load data 
 load("/Users/hectorbahamonde/RU/Dissertation/Papers/Earthquake_Paper/eq_output_d_Chile.RData") 
 
-par(mar=c(10,10,1,1)) # bottom, then left margin, upper and right margins
+# par(mar=c(3,3,3,3)) # bottom, then left margin, upper and right margins
 
 p2 = ggplot() + 
-        geom_smooth(data=datsc, aes(x=year, y=propagrmanu), fill=NA, size=1) +
+        geom_line(data=datsc, aes(x=year, y=propagrmanu, colour="Agr/Ind Proportion"), fill=NA, size=1) +
         xlab("Year") +
         ylab("Agr/Ind Proportion") +
-        labs(colour = "Legend") +
+        labs(colour = "") +
         scale_y_continuous(breaks= seq(0, 1, by = 0.2)) +
         scale_x_continuous(limits=c(1890,2010)) + 
-        geom_vline(data=subset(dissertation, country=="Chile"), aes(xintercept = 1924), linetype = "longdash", colour= "#00BA38") + # Income Tax Law
+        geom_vline(data=subset(dissertation, country=="Chile"), aes(xintercept = 1924, colour= "Income Tax Law"), linetype = "dashed") + # Income Tax Law  
         theme_bw() +
         labs(title="") +
         theme(
@@ -1288,9 +1234,7 @@ p2 = ggplot() +
                 plot.title = element_text(size=7),
                 legend.position="bottom")
 
-
-
-grid_arrange_shared_legend(p1, p2, ncol = 1, nrow = 2)
+grid.arrange(p1, p2, ncol = 1)
 # ----
 
 
