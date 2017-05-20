@@ -531,7 +531,7 @@ model.jags <- function() {
         }
 
 
-
+#
 
 # define the vectors of the data matrix for JAGS.
 w.Deaths <- as.vector(datsc$w.Deaths)
