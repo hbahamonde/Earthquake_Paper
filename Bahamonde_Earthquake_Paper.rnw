@@ -265,7 +265,7 @@ Developed states should be able to supervise quake-resistant construction practi
 These results suggest that when the implementation of the income tax reflected the \emph{early foundational sectoral cleavage}, the income tax law expanded the overall Chilean state capacities. The tax was not important because of the new revenue it collected, however. While Humud (1969, p. 154) explains that the income tax generated considerable resources for the Chilean treasury,\footnote{\citet[451-452]{Bowman1982}.} I contend that the tax was important for state-making because its implementation required a series of sectoral compromises, triggering a series of other institutional investments, such as the implementation of checks-and-balances (to monitor tax spending) and the development of skilled bureaucracies. These compromises were possible due to a situation of inter-sectoral equality, introduced by increasing levels of industrial expansion. While \citet{Bahamonde:2017ab} finds that industrial expansion fostered fiscal development by accelerating the implementation of the income tax, using the fiscal sociology paradigm he \emph{theorizes} that the tax \emph{made} the state. Here in this paper I provide empirical support for his claim.
 
 
-All that said, it is important to rule out the possibility that both industrial \emph{and} agricultural localities are shocked by earthquakes in the same fashion. Otherwise, there might be an endogeneity problem: sectors would be self selecting themselves into more/less earthquake-prone zones. \autoref{regression:table} shows the posterior means of magnitudes by agricultural, industrial and mixed localities. Overall, there does not seem to be substantive evidence to suggest that this is the case. In \autoref{appendix} I present a number of graphical evidence to suggest good fit and convergence of the model. Additional diagnostic plots are available \href{https://github.com/hbahamonde/Earthquake_Paper/raw/master/Bahamonde_Earthquake_Paper_Diagnostic_Plots.pdf}{\texttt{here}}. Overall, the model is robust and convergence is good.
+All that said, it is important to rule out the possibility that both industrial \emph{and} agricultural localities are shocked by earthquakes in the same fashion. Otherwise, there might be an endogeneity problem: sectors would be self selecting themselves into more/less earthquake-prone zones. \autoref{regression:table} shows the posterior means of magnitudes by agricultural, industrial and mixed localities. Overall, there does not seem to be substantive evidence to suggest that this is the case. In \autoref{appendix} I present a number of graphical evidence to suggest good fit and convergence of the model. Additional diagnostic plots are available \href{https://github.com/hbahamonde/Earthquake_Paper/raw/master/Bahamonde_Earthquake_Paper_Diagnostic_Plots.pdf}{\texttt{here}}. Overall, the model is robust and convergence is good.\todo{check hyperlink}
 
 
 \section{Final Comments\label{discussion}}
@@ -295,12 +295,20 @@ The paper also introduced a novel earthquake dataset where I leveraged the exoge
 @
 
 
-<<traplot:plot, echo = FALSE, fig.pos='h', warning = FALSE, message = F, fig.cap='Trace Plots', fig.align='center', fig.width=9, fig.height=9,dpi=10000,cache = FALSE,eval=TRUE>>=
+<<traplot:plot.sectoral, echo = FALSE, fig.pos='h', warning = FALSE, message = F, fig.cap='Trace Plots: Sectoral Conflicts Model', fig.align='center', fig.width=9, fig.height=9,dpi=10000,cache = FALSE,eval=TRUE>>=
+
+@
+
+<<traplot:plot:tax, echo = FALSE, fig.pos='h', warning = FALSE, message = F, fig.cap='Trace Plots: Income Tax Adoption Model', fig.align='center', fig.width=9, fig.height=9,dpi=10000,cache = FALSE,eval=TRUE>>=
 
 @
 
 
-<<denplot:plot, echo = FALSE, fig.pos='h', warning = FALSE, message = F, fig.cap='Density Plots', fig.align='center', fig.width=9, fig.height=9,dpi=10000,cache = FALSE,eval=TRUE>>=
+<<denplot:plot:sectoral, echo = FALSE, fig.pos='h', warning = FALSE, message = F, fig.cap='Density Plots: Sectoral Conflicts Model', fig.align='center', fig.width=9, fig.height=9,dpi=10000,cache = FALSE,eval=TRUE>>=
+
+@
+
+<<denplot:plot:tax, echo = FALSE, fig.pos='h', warning = FALSE, message = F, fig.cap='Density Plots: Income Tax Adoption Model', fig.align='center', fig.width=9, fig.height=9,dpi=10000,cache = FALSE,eval=TRUE>>=
 
 @
 
