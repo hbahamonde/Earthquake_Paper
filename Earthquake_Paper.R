@@ -468,9 +468,9 @@ dispersiontest(o.Deaths,alternative = c("greater"), trafo=1) # overdispersion is
 # Sectoral Contestation Model
 ###############################
 
-cat("\014")
-rm(list=ls())
-graphics.off()
+# cat("\014")
+# rm(list=ls())
+# graphics.off()
 
 
 
@@ -619,7 +619,7 @@ p_load(ggmcmc)
 
 fit.mcmc.sectoral <- as.mcmc(earthquakefit.sectoral)
 bayes.mod.fit.gg.sectoral <- ggs(fit.mcmc.sectoral)
-ggmcmc(bayes.mod.fit.gg.sectoral, file = "/Users/hectorbahamonde/RU/Dissertation/Papers/Earthquake_Paper/Bahamonde_Earthquake_Paper_Diagnostic_Plots_Sectoral_Competition.pdf")
+# ggmcmc(bayes.mod.fit.gg.sectoral, file = "/Users/hectorbahamonde/RU/Dissertation/Papers/Earthquake_Paper/Bahamonde_Earthquake_Paper_Diagnostic_Plots_Sectoral_Competition.pdf")
 graphics.off()
 ## ----
 
@@ -844,9 +844,9 @@ print.xtable(xtable(
 # Income Tax Adoption Model
 ###############################
 
-cat("\014")
-rm(list=ls())
-graphics.off()
+# cat("\014")
+# rm(list=ls())
+# graphics.off()
 
 ## ---- income:tax:model:and:data:not:run ----
 # load data 
@@ -974,7 +974,7 @@ p_load(ggmcmc)
 
 fit.mcmc.tax <- as.mcmc(earthquakefit.tax)
 bayes.mod.fit.gg.tax <- ggs(fit.mcmc.tax)
-ggmcmc(bayes.mod.fit.gg.tax, file = "/Users/hectorbahamonde/RU/Dissertation/Papers/Earthquake_Paper/Bahamonde_Earthquake_Paper_Diagnostic_Plots_Income_Tax_Model.pdf")
+# ggmcmc(bayes.mod.fit.gg.tax, file = "/Users/hectorbahamonde/RU/Dissertation/Papers/Earthquake_Paper/Bahamonde_Earthquake_Paper_Diagnostic_Plots_Income_Tax_Model.pdf")
 graphics.off()
 ## ----
 
@@ -1220,44 +1220,79 @@ abs(round(max(agr.plot$mean[agr.plot$Tax=="Yes" & agr.plot$prop.range==max(agr.p
 
 
 ## ---- predicted:observed:plot ----
-eq.out <- as.data.frame(as.matrix(as.mcmc(earthquakefit)))
-pred.eq <- eq.out[, grep("lambda[", colnames(eq.out), fixed = T)]
+# Sectoral
+eq.out.sectoral <- as.data.frame(as.matrix(as.mcmc(earthquakefit.sectoral)))
+
+pred.eq.sectoral <- eq.out.sectoral[, grep("lambda[", colnames(eq.out.sectoral), fixed = T)]
 
 if (!require("pacman")) install.packages("pacman"); library(pacman) 
 p_load(gtools)
 
-pred.eq <- pred.eq[, c(mixedsort(names(pred.eq)))]
+pred.eq.sectoral <- pred.eq.sectoral[, c(mixedsort(names(pred.eq.sectoral)))]
 
-pred.eq.median <- apply(pred.eq, 2, median) # median of the column
-pred.eq.lower <- apply(pred.eq, 2, function(x) quantile(x, probs = c(0.05))) # quantile of the column
-pred.eq.upper <- apply(pred.eq, 2, function(x) quantile(x, probs = c(0.95))) # quantile of the column
+median <- apply(pred.eq.sectoral, 2, median) # median of the column
+lower <- apply(pred.eq.sectoral, 2, function(x) quantile(x, probs = c(0.05))) # quantile of the column
+upper <- apply(pred.eq.sectoral, 2, function(x) quantile(x, probs = c(0.95))) # quantile of the column
 
-eq.pred <- data.frame(
+eq.pred.sectoral <- data.frame(
+        Model = rep("Sectoral Competition", nrow(datsc)),
         id = 1:nrow(datsc),
         Deaths.observed = datsc$Deaths,
-        pred.eq.median = pred.eq.median,
-        pred.eq.lower = pred.eq.lower,
-        pred.eq.upper = pred.eq.upper)
+        median = median,
+        lower = lower,
+        upper = upper)
+
+
+
+# Tax
+eq.out.tax <- as.data.frame(as.matrix(as.mcmc(earthquakefit.tax)))
+
+pred.eq.tax <- eq.out.tax[, grep("lambda[", colnames(eq.out.tax), fixed = T)]
+
+if (!require("pacman")) install.packages("pacman"); library(pacman) 
+p_load(gtools)
+
+pred.eq.tax <- pred.eq.tax[, c(mixedsort(names(pred.eq.tax)))]
+
+median <- apply(pred.eq.tax, 2, median) # median of the column
+lower <- apply(pred.eq.tax, 2, function(x) quantile(x, probs = c(0.05))) # quantile of the column
+upper <- apply(pred.eq.tax, 2, function(x) quantile(x, probs = c(0.95))) # quantile of the column
+
+eq.pred.tax <- data.frame(
+        Model = rep("Income Tax Adoption", nrow(datsc)),
+        id = 1:nrow(datsc),
+        Deaths.observed = datsc$Deaths,
+        median = median,
+        lower = lower,
+        upper = upper)
+
+# Consolidating Both DF's
+model.checking.plot.df = as.data.frame(rbind(eq.pred.tax,eq.pred.sectoral))
+
+
+
 
 
 if (!require("pacman")) install.packages("pacman"); library(pacman) 
 p_load(ggplot2)
 
-ggplot(data = eq.pred, 
+ggplot(data = model.checking.plot.df, 
        aes(x = Deaths.observed, y = reorder(id, Deaths.observed))) + 
         geom_point(aes(
-                x = pred.eq.median, 
+                colour = Model,
+                x = median, 
                 y = reorder(id,Deaths.observed))) +
         geom_segment(aes(
-                x = pred.eq.lower, 
-                xend = pred.eq.upper, 
+                colour = Model,
+                x = lower, 
+                xend = upper, 
                 y = reorder(id, Deaths.observed), 
                 yend = reorder(id, Deaths.observed)), 
                 alpha = 0.5) + 
         geom_point(shape = 21, colour = "red") + 
-        ylab("Observation") + xlab("Deaths") + theme_bw() +
-        theme(axis.text.y = element_text(size=8)
-        )
+        ylab("Observation") + xlab("Deaths") + 
+        theme_bw() +
+        theme(axis.text.y = element_text(size=8))
 ## ----
 
 ##########################
@@ -1265,59 +1300,82 @@ ggplot(data = eq.pred,
 
 
 
-
-
-
-### summary of results
-fit.mcmc <- as.mcmc(earthquakefit)
-# summary(fit.mcmc)
-
-## ---- traplot:plot ---- 
+## ---- traplot:plot:sectoral ---- 
 ### traceplots
 if (!require("pacman")) install.packages("pacman"); library(pacman) 
 p_load(mcmcplots)
 
 
-parms = c(
+parms.sectoral = c(
         "b.propagrmanu",
-        "b.incometax.d",
-        "b.interaction",
         "b.Magnitude",
         "b.p.Population",
         "b.Urban",
         "b.r.lat",
         "b.r.long")
 
-traplot(earthquakefit, 
-        parms=parms, 
+labels.sectoral = c("Agr/Ind [Agr]",
+                    "Agr/Ind [Ind]",
+                    "Agr/Ind [Mixed]",
+                    "Magnitude [Agr]",
+                    "Magnitude [Ind]",
+                    "Magnitude [Mixed]",
+                    "Population",
+                    "Urban",
+                    "Latitude",
+                    "Longitude")
+
+traplot(earthquakefit.sectoral, 
+        parms=parms.sectoral, 
         style="plain", 
         auto.layout = T,
-        main=c("Agr/Ind [Agr]",
-               "Agr/Ind [Ind]",
-               "Agr/Ind [Mixed]",
-               "Income Tax",
-               "Agr/Ind * Income Tax [Agr]",
-               "Agr/Ind * Income Tax [Ind]",
-               "Agr/Ind * Income Tax [Mixed]",
-               "Magnitude [Agr]",
-               "Magnitude [Ind]",
-               "Magnitude [Mixed]",
-               "Population",
-               "Urban",
-               "Latitude",
-               "Longitude"),
-        plot.title = paste(n.chains, "chains,", n.iter, "iterations and burn-in period of", n.burnin)
+        main=labels.sectoral,
+        plot.title = paste(n.chains.sectoral, "chains,", n.iter.sectoral, "iterations and burn-in period of", n.burnin.sectoral)
 )
-
 ## ----
 
 
-## ---- denplot:plot ---- 
+
+
+## ---- traplot:plot:tax ---- 
+### traceplots
 if (!require("pacman")) install.packages("pacman"); library(pacman) 
 p_load(mcmcplots)
 
-denplot(earthquakefit, 
-        parms=parms, 
+
+parms.tax = c(
+        "b.incometax.d",
+        "b.Magnitude",
+        "b.p.Population",
+        "b.Urban",
+        "b.r.lat",
+        "b.r.long")
+
+labels.tax = c("Income Tax",
+               "Magnitude",
+               "Population",
+               "Urban",
+               "Latitude",
+               "Longitude")
+
+traplot(earthquakefit.tax, 
+        parms=parms.tax, 
+        style="plain", 
+        auto.layout = T,
+        main=labels.tax,
+        plot.title = paste(n.chains.tax, "chains,", n.iter.tax, "iterations and burn-in period of", n.burnin.tax)
+)
+## ----
+
+
+
+
+## ---- denplot:plot:tax ---- 
+if (!require("pacman")) install.packages("pacman"); library(pacman) 
+p_load(mcmcplots)
+
+denplot(earthquakefit.tax, 
+        parms=parms.tax, 
         style="plain", 
         ci=0.8, 
         #xlim=c(-40,50), 
@@ -1325,28 +1383,30 @@ denplot(earthquakefit,
         #collapse=T, 
         #col=2, 
         lty=1, 
-        main=c("Agr/Ind [Agr]",
-               "Agr/Ind [Ind]",
-               "Agr/Ind [Mixed]",
-               "Income Tax",
-               "Agr/Ind * Income Tax [Agr]",
-               "Agr/Ind * Income Tax [Ind]",
-               "Agr/Ind * Income Tax [Mixed]",
-               "Magnitude [Agr]",
-               "Magnitude [Ind]",
-               "Magnitude [Mixed]",
-               "Population",
-               "Urban",
-               "Latitude",
-               "Longitude"),
-        plot.title = paste(n.chains, "chains,", n.iter, "iterations, burn-in period of", n.burnin, "and", ci.number*100, "% credible intervals")
+        main=c(labels.tax),
+        plot.title = paste(n.chains.tax, "chains,", n.iter.tax, "iterations, burn-in period of", n.burnin.tax, "and", ci.number.tax*100, "% credible intervals")
 )
-
 ## ----
 
 
 
+## ---- denplot:plot:sectoral ---- 
+if (!require("pacman")) install.packages("pacman"); library(pacman) 
+p_load(mcmcplots)
 
+denplot(earthquakefit.sectoral, 
+        parms=parms.sectoral, 
+        style="plain", 
+        ci=0.8, 
+        #xlim=c(-40,50), 
+        auto.layout = T,
+        #collapse=T, 
+        #col=2, 
+        lty=1, 
+        main=c(labels.sectoral),
+        plot.title = paste(n.chains.sectoral, "chains,", n.iter.sectoral, "iterations, burn-in period of", n.burnin.sectoral, "and", ci.number.sectoral*100, "% credible intervals")
+)
+## ----
 
 
 
@@ -1379,27 +1439,52 @@ caterplot(earthquakefit,
 
 ## ---- year:fixed:effects:plot ----
 #### PLOT fixed effects year
+
 p_load(gtools,dplyr,reshape2,ggplot2)
 
-earthquake.out <- as.data.frame(as.matrix(as.mcmc(earthquakefit)))
 
-earthquake.year <- earthquake.out[, grep("b.year[", colnames(earthquake.out), fixed=T)]
+# Tax
+earthquake.out.tax <- as.data.frame(as.matrix(as.mcmc(earthquakefit.tax)))
 
-earthquake.year <- earthquake.year[, c(mixedsort(names(earthquake.year)))]
-colnames(earthquake.year) <- paste("Y",unique(sort(datsc$year)), sep = "")
+earthquake.year.tax <- earthquake.out.tax[, grep("b.year[", colnames(earthquake.out.tax), fixed=T)]
+
+earthquake.year.tax <- earthquake.year.tax[, c(mixedsort(names(earthquake.year.tax)))]
+colnames(earthquake.year.tax) <- paste("Y",unique(sort(datsc$year)), sep = "")
 
 
-earthquake.year <- summarise(group_by(melt(earthquake.year), variable), mean = mean(value), lo = quantile(value, probs = c(0.20)), hi = quantile(value, probs = c(0.80)))
-earthquake.year$variable <- as.numeric(gsub(pattern = "Y", replacement = "", x = earthquake.year$variable))
+earthquake.year.tax <- summarise(group_by(melt(earthquake.year.tax), variable), mean = mean(value), lo = quantile(value, probs = c(0.20)), hi = quantile(value, probs = c(0.80)))
 
-ggplot(data = earthquake.year, aes(x = variable, y = mean)) + 
-  geom_hline(yintercept = 0, col = "blue") +
-  geom_pointrange(aes(ymin = lo, ymax = hi)) + 
-  xlab("Year") + 
-  ylab("Fixed Effects: Year") + 
-  theme_bw() + 
-  stat_smooth(method="loess", level=0.80)
+earthquake.year.tax$variable <- as.numeric(gsub(pattern = "Y", replacement = "", x = earthquake.year.tax$variable))
+earthquake.year.tax$Model <- "Income Tax Adoption"
+
+# Sectoral Conflict
+earthquake.out.sectoral <- as.data.frame(as.matrix(as.mcmc(earthquakefit.sectoral)))
+
+earthquake.year.sectoral <- earthquake.out.sectoral[, grep("b.year[", colnames(earthquake.out.sectoral), fixed=T)]
+
+earthquake.year.sectoral <- earthquake.year.sectoral[, c(mixedsort(names(earthquake.year.sectoral)))]
+colnames(earthquake.year.sectoral) <- paste("Y",unique(sort(datsc$year)), sep = "")
+
+
+earthquake.year.sectoral <- summarise(group_by(melt(earthquake.year.sectoral), variable), mean = mean(value), lo = quantile(value, probs = c(0.20)), hi = quantile(value, probs = c(0.80)))
+
+earthquake.year.sectoral$variable <- as.numeric(gsub(pattern = "Y", replacement = "", x = earthquake.year.sectoral$variable))
+earthquake.year.sectoral$Model <- "Sectoral Competition"
+
+# Combine Two DF's
+year.fixed.effects.plot.df = rbind(earthquake.year.sectoral, earthquake.year.tax)
+
+# plot
+ggplot(data = year.fixed.effects.plot.df, aes(x = variable, y = mean, fill = Model, colour = Model)) + 
+        geom_hline(yintercept = 0, col = "blue") +
+        geom_pointrange(aes(ymin = lo, ymax = hi, fill = Model, colour = Model)) + 
+        xlab("Year") + 
+        ylab("Death-Toll") + 
+        theme_bw() + 
+        stat_smooth(method="loess", level=0.80)
 ## ----
+
+
 
 
 
