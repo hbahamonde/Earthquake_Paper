@@ -491,7 +491,7 @@ options(scipen=10000)
 set.seed(602)
 
 # specify the model
-model.jags <- function() {
+model.jags.sectoral <- function() {
         for (i in 1:N){ # number of earthquakes
                 Deaths[i] ~ dpois(lambda[i])
                 
@@ -511,7 +511,7 @@ model.jags <- function() {
         mu  ~ dnorm(0, 0.01) ## intercept
         b.p.Population ~ dnorm(0, 0.01)
         b.Urban ~ dnorm(0, 0.01)
-
+        
         
         for (t in 1:yearN){ # fixed effects
                 b.year[t] ~ dnorm(m.b.year[t], tau.b.year[t])
@@ -575,22 +575,22 @@ N.sim = length(seq(
 
 
 
-jags.data <- list(Deaths = Deaths,
-                  propagrmanu = propagrmanu, # constagricult/constmanufact
-                  Magnitude = Magnitude^2,
-                  Sector = Sector,
-                  NSector = NSector,
-                  p.Population = p.Population,
-                  Urban = Urban,
-                  r.long = r.long,
-                  r.lat = r.lat,
-                  yearID = yearID,
-                  yearN = yearN,
-                  N = N)
+jags.data.sectoral <- list(Deaths = Deaths,
+                           propagrmanu = propagrmanu, # constagricult/constmanufact
+                           Magnitude = Magnitude^2,
+                           Sector = Sector,
+                           NSector = NSector,
+                           p.Population = p.Population,
+                           Urban = Urban,
+                           r.long = r.long,
+                           r.lat = r.lat,
+                           yearID = yearID,
+                           yearN = yearN,
+                           N = N)
 
 
 # Define and name the parameters so JAGS monitors them.
-eq.params <- c("b.propagrmanu", "b.Magnitude", "b.p.Population", "b.year", "b.r.long", "b.r.lat", "b.Urban", "lambda")
+eq.params.sectoral <- c("b.propagrmanu", "b.Magnitude", "b.p.Population", "b.year", "b.r.long", "b.r.lat", "b.Urban", "lambda")
 ## ----
 
 
@@ -599,27 +599,27 @@ eq.params <- c("b.propagrmanu", "b.Magnitude", "b.p.Population", "b.year", "b.r.
 
 ## ---- sectoral:model:and:data:does:run ----
 # run the model
-n.iter = 200000  # n.iter = 200000 // this is for working model
-n.burnin = 5000 # n.burnin = 5000 // this is for working model
-n.chains = 4 # n.chains = 4 for the working model
+n.iter.sectoral = 200000  # n.iter.sectoral = 200000 // this is for working model
+n.burnin.sectoral = 5000 # n.burnin.sectoral = 5000 // this is for working model
+n.chains.sectoral = 4 # n.chains.sectoral = 4 for the working model
 
-earthquakefit <- jags(
-        data=jags.data,
+earthquakefit.sectoral <- jags(
+        data=jags.data.sectoral,
         inits=NULL,
-        parameters.to.save = eq.params,
-        n.chains=n.chains,
-        n.iter=n.iter,
-        n.burnin=n.burnin, 
-        model.file=model.jags,
+        parameters.to.save = eq.params.sectoral,
+        n.chains=n.chains.sectoral,
+        n.iter=n.iter.sectoral,
+        n.burnin=n.burnin.sectoral, 
+        model.file=model.jags.sectoral,
         progress.bar = "none")
 
 #### Generates Diagnostic Plots - this links to a link in the Output Table.
 if (!require("pacman")) install.packages("pacman"); library(pacman) 
 p_load(ggmcmc)
 
-fit.mcmc <- as.mcmc(earthquakefit)
-bayes.mod.fit.gg <- ggs(fit.mcmc)
-ggmcmc(bayes.mod.fit.gg, file = "/Users/hectorbahamonde/RU/Dissertation/Papers/Earthquake_Paper/Bahamonde_Earthquake_Paper_Diagnostic_Plots_Sectoral_Competition.pdf")
+fit.mcmc.sectoral <- as.mcmc(earthquakefit.sectoral)
+bayes.mod.fit.gg.sectoral <- ggs(fit.mcmc.sectoral)
+ggmcmc(bayes.mod.fit.gg.sectoral, file = "/Users/hectorbahamonde/RU/Dissertation/Papers/Earthquake_Paper/Bahamonde_Earthquake_Paper_Diagnostic_Plots_Sectoral_Competition.pdf")
 graphics.off()
 ## ----
 
@@ -633,7 +633,7 @@ graphics.off()
 
 ## ---- sectoral:model:plot ----
 ## passing fitted model as mcmc object
-sect.contest.mcmc <- as.mcmc(earthquakefit)
+sect.contest.mcmc <- as.mcmc(earthquakefit.sectoral)
 sect.contest.mcmc.mat <- as.matrix(sect.contest.mcmc)
 sect.contest.mcmc.dat <- as.data.frame(sect.contest.mcmc.mat)
 
@@ -731,11 +731,11 @@ ggplot() +
 # digits: desired number of digits in the table, default: 2
 
 
-ci.number = .8 # modify this parameter to get desired credible intervals.
+ci.number.sectoral = .8 # modify this parameter to get desired credible intervals.
 
-mcmctab <- function(sims, ci = ci.number, digits = 2){
+mcmctab <- function(sims, ci = ci.number.sectoral, digits = 2){
         
-        require(coda)	
+        require(coda) 
         
         if(class(sims) == "jags" | class(sims) == "rjags"){
                 sims <- as.matrix(as.mcmc(sims))
@@ -776,34 +776,34 @@ mcmctab <- function(sims, ci = ci.number, digits = 2){
 
 
 
-reg.results.table = data.frame(mcmctab(earthquakefit)[1:10,]) # Posterior distributions // Year FE excluded
+reg.results.table.sectoral = data.frame(mcmctab(earthquakefit.sectoral)[1:10,]) # Posterior distributions // Year FE excluded
 
 
-reg.results.table = data.frame(rbind( # re order df by name of the rowname according to what I have and define in 'var.labels.'
-        reg.results.table[rownames(reg.results.table)==("b.propagrmanu[1]"),],
-        reg.results.table[rownames(reg.results.table)==("b.propagrmanu[2]"),],
-        reg.results.table[rownames(reg.results.table)==("b.propagrmanu[3]"),],
-        reg.results.table[rownames(reg.results.table)==("b.Magnitude[1]"),],
-        reg.results.table[rownames(reg.results.table)==("b.Magnitude[2]"),],
-        reg.results.table[rownames(reg.results.table)==("b.Magnitude[3]"),],
-        reg.results.table[rownames(reg.results.table)==("b.r.lat"),],
-        reg.results.table[rownames(reg.results.table)==("b.r.long"),],
-        reg.results.table[rownames(reg.results.table)==("b.p.Population"),],
-        reg.results.table[rownames(reg.results.table)==("b.Urban"),]
+reg.results.table.sectoral = data.frame(rbind( # re order df by name of the rowname according to what I have and define in 'var.labels.sectoral.'
+        reg.results.table.sectoral[rownames(reg.results.table.sectoral)==("b.propagrmanu[1]"),],
+        reg.results.table.sectoral[rownames(reg.results.table.sectoral)==("b.propagrmanu[2]"),],
+        reg.results.table.sectoral[rownames(reg.results.table.sectoral)==("b.propagrmanu[3]"),],
+        reg.results.table.sectoral[rownames(reg.results.table.sectoral)==("b.Magnitude[1]"),],
+        reg.results.table.sectoral[rownames(reg.results.table.sectoral)==("b.Magnitude[2]"),],
+        reg.results.table.sectoral[rownames(reg.results.table.sectoral)==("b.Magnitude[3]"),],
+        reg.results.table.sectoral[rownames(reg.results.table.sectoral)==("b.r.lat"),],
+        reg.results.table.sectoral[rownames(reg.results.table.sectoral)==("b.r.long"),],
+        reg.results.table.sectoral[rownames(reg.results.table.sectoral)==("b.p.Population"),],
+        reg.results.table.sectoral[rownames(reg.results.table.sectoral)==("b.Urban"),]
 ))
 
-var.labels = c("Agr/Ind [Agr]", 
-               "Agr/Ind [Ind]", 
-               "Agr/Ind [Mixed]", 
-               "Magnitude [Agr]", 
-               "Magnitude [Ind]", 
-               "Magnitude [Mixed]", 
-               "Latitude", 
-               "Longitude",
-               "Population", 
-               "Urban")
+var.labels.sectoral = c("Agr/Ind [Agr]", 
+                        "Agr/Ind [Ind]", 
+                        "Agr/Ind [Mixed]", 
+                        "Magnitude [Agr]", 
+                        "Magnitude [Ind]", 
+                        "Magnitude [Mixed]", 
+                        "Latitude", 
+                        "Longitude",
+                        "Population", 
+                        "Urban")
 
-rownames(reg.results.table) <- var.labels
+rownames(reg.results.table.sectoral) <- var.labels.sectoral
 
 
 
@@ -811,20 +811,20 @@ rownames(reg.results.table) <- var.labels
 if (!require("pacman")) install.packages("pacman"); library(pacman) 
 p_load(xtable)
 
-note <- paste0(
-        "\\hline \n \\multicolumn{6}{l}", "{ \\scriptsize {\\bf Note}: ", n.iter, " iterations with a burn-in period of n = ", n.burnin , " iterations discarded.}\\\\", "\n \\multicolumn{6}{l}", "{ \\scriptsize ", ci.number*100 ,"\\% credible intervals (upper/lower bounds). All R-Hat statistics below critical levels.}\\\\" ,"\n \\multicolumn{6}{l}", "{ \\scriptsize Standard convergence diagnostics suggest good mixing and convergence.}\\\\","\n \\multicolumn{6}{l}", "{ \\scriptsize Year fixed effects, latitude and longitude were omitted in the table.}\\\\", 
-        "\n \\multicolumn{6}{l}","{ \\scriptsize A total of ", n.chains, " chains were run. Detailed diagnostic plots available \\href{https://github.com/hbahamonde/Earthquake_Paper/raw/master/Bahamonde_Earthquake_Paper_Diagnostic_Plots_Sectoral_Competition.pdf}{\\texttt here}.} \\\\")
+note.sectoral <- paste0(
+        "\\hline \n \\multicolumn{6}{l}", "{ \\scriptsize {\\bf Note}: ", n.iter.sectoral, " iterations with a burn-in period of n = ", n.burnin.sectoral , " iterations discarded.}\\\\", "\n \\multicolumn{6}{l}", "{ \\scriptsize ", ci.number.sectoral*100 ,"\\% credible intervals (upper/lower bounds). All R-Hat statistics below critical levels.}\\\\" ,"\n \\multicolumn{6}{l}", "{ \\scriptsize Standard convergence diagnostics suggest good mixing and convergence.}\\\\","\n \\multicolumn{6}{l}", "{ \\scriptsize Year fixed effects, latitude and longitude were omitted in the table.}\\\\", 
+        "\n \\multicolumn{6}{l}","{ \\scriptsize A total of ", n.chains.sectoral, " chains were run. Detailed diagnostic plots available \\href{https://github.com/hbahamonde/Earthquake_Paper/raw/master/Bahamonde_Earthquake_Paper_Diagnostic_Plots_Sectoral_Competition.pdf}{\\texttt here}.} \\\\")
 ## ----
 
 
 ## ---- sectoral:model:regression:table:run ----
 print.xtable(xtable(
-        reg.results.table, 
+        reg.results.table.sectoral, 
         caption = "Sectoral Competition Model: Simulated Posterior Predictions (Poisson Regression)",
         label = "sectoral:model:regression:table"), 
         auto = TRUE,
         hline.after=c(-1, 0),
-        add.to.row = list(pos = list(length(var.labels)), command = note)
+        add.to.row = list(pos = list(length(var.labels.sectoral)), command = note.sectoral)
 )
 ## ----
 
@@ -861,7 +861,7 @@ options(scipen=10000)
 set.seed(602)
 
 # specify the model
-model.jags <- function() {
+model.jags.tax <- function() {
         for (i in 1:N){ # number of earthquakes
                 Deaths[i] ~ dpois(lambda[i])
                 
@@ -935,46 +935,46 @@ N.sim = length(seq(
 
 
 
-jags.data <- list(Deaths = Deaths,
-                  Magnitude = Magnitude^2,
-                  p.Population = p.Population,
-                  incometax.d = incometax.d,
-                  Urban = Urban,
-                  r.long = r.long,
-                  r.lat = r.lat,
-                  yearID = yearID,
-                  yearN = yearN,
-                  N = N)
+jags.data.tax <- list(Deaths = Deaths,
+                      Magnitude = Magnitude^2,
+                      p.Population = p.Population,
+                      incometax.d = incometax.d,
+                      Urban = Urban,
+                      r.long = r.long,
+                      r.lat = r.lat,
+                      yearID = yearID,
+                      yearN = yearN,
+                      N = N)
 
 
 # Define and name the parameters so JAGS monitors them.
-eq.params <- c("b.Magnitude", "b.p.Population", "b.year", "b.r.long", "b.r.lat", "b.incometax.d", "b.Urban", "lambda")
+eq.params.tax <- c("b.Magnitude", "b.p.Population", "b.year", "b.r.long", "b.r.lat", "b.incometax.d", "b.Urban", "lambda")
 ## ----
 
 
 ## ---- income:tax:model:and:data:run ----
 # run the model
-n.iter = 200000  # n.iter = 200000 // this is for working model
-n.burnin = 5000 # n.burnin = 5000 // this is for working model
-n.chains = 4 # n.chains = 4 for the working model
+n.iter.tax = 200000  # n.iter.tax = 200000 // this is for working model
+n.burnin.tax = 5000 # n.burnin.tax = 5000 // this is for working model
+n.chains.tax = 4 # n.chains.tax = 4 for the working model
 
-earthquakefit <- jags(
-        data=jags.data,
+earthquakefit.tax <- jags(
+        data=jags.data.tax,
         inits=NULL,
-        parameters.to.save = eq.params,
-        n.chains=n.chains,
-        n.iter=n.iter,
-        n.burnin=n.burnin, 
-        model.file=model.jags,
+        parameters.to.save = eq.params.tax,
+        n.chains = n.chains.tax,
+        n.iter = n.iter.tax,
+        n.burnin = n.burnin.tax, 
+        model.file=model.jags.tax,
         progress.bar = "none")
 
 #### Generates Diagnostic Plots - this links to a link in the Output Table.
 if (!require("pacman")) install.packages("pacman"); library(pacman) 
 p_load(ggmcmc)
 
-fit.mcmc <- as.mcmc(earthquakefit)
-bayes.mod.fit.gg <- ggs(fit.mcmc)
-ggmcmc(bayes.mod.fit.gg, file = "/Users/hectorbahamonde/RU/Dissertation/Papers/Earthquake_Paper/Bahamonde_Earthquake_Paper_Diagnostic_Plots_Income_Tax_Model.pdf")
+fit.mcmc.tax <- as.mcmc(earthquakefit.tax)
+bayes.mod.fit.gg.tax <- ggs(fit.mcmc.tax)
+ggmcmc(bayes.mod.fit.gg.tax, file = "/Users/hectorbahamonde/RU/Dissertation/Papers/Earthquake_Paper/Bahamonde_Earthquake_Paper_Diagnostic_Plots_Income_Tax_Model.pdf")
 graphics.off()
 ## ----
 
@@ -985,25 +985,25 @@ graphics.off()
 
 ## ---- income:tax:model:plot ----
 ## passing fitted model as mcmc object
-int.mcmc <- as.mcmc(earthquakefit)
-int.mcmc.mat <- as.matrix(int.mcmc)
-int.mcmc.dat <- as.data.frame(int.mcmc.mat)
+tax.mcmc <- as.mcmc(earthquakefit.tax)
+tax.mcmc.mat <- as.matrix(tax.mcmc)
+tax.mcmc.dat <- as.data.frame(tax.mcmc.mat)
 
 
 ### No Income Tax
 year.range = unique(datsc$year)
 
-sim.no.income.tax <- matrix(rep(NA, nrow(int.mcmc.dat)*length(year.range)), nrow = nrow(int.mcmc.dat))
+sim.no.income.tax <- matrix(rep(NA, nrow(tax.mcmc.dat)*length(year.range)), nrow = nrow(tax.mcmc.dat))
 for(i in 1:length(year.range)){
         sim.no.income.tax[, i] <- 
-                int.mcmc.dat$b.p.Population*p.Population[i] + 
-                int.mcmc.dat$b.r.lat*r.lat[i] + 
-                int.mcmc.dat$b.r.long*r.long[i] + 
-                int.mcmc.dat$b.Urban*Urban[i] +
-                int.mcmc.dat$b.Magnitude*Magnitude[i] +
+                tax.mcmc.dat$b.p.Population*p.Population[i] + 
+                tax.mcmc.dat$b.r.lat*r.lat[i] + 
+                tax.mcmc.dat$b.r.long*r.long[i] + 
+                tax.mcmc.dat$b.Urban*Urban[i] +
+                tax.mcmc.dat$b.Magnitude*Magnitude[i] +
                 incometax.d[i]*0
         
-
+        
 }
 
 
@@ -1022,16 +1022,16 @@ plot.dat.no.income.tax = plot.dat.no.income.tax[ which(plot.dat.no.income.tax$ye
 ### Income Tax
 year.range = unique(datsc$year)
 
-sim.income.tax <- matrix(rep(NA, nrow(int.mcmc.dat)*length(year.range)), nrow = nrow(int.mcmc.dat))
+sim.income.tax <- matrix(rep(NA, nrow(tax.mcmc.dat)*length(year.range)), nrow = nrow(tax.mcmc.dat))
 for(i in 1:length(year.range)){
         sim.income.tax[, i] <-
-                int.mcmc.dat$b.p.Population*p.Population[i] + 
-                int.mcmc.dat$b.r.lat*r.lat[i] + 
-                int.mcmc.dat$b.r.long*r.long[i] + 
-                int.mcmc.dat$b.Urban*Urban[i] +
-                int.mcmc.dat$b.Magnitude*Magnitude[i] +
-                int.mcmc.dat$b.incometax.d*incometax.d[i]
-                
+                tax.mcmc.dat$b.p.Population*p.Population[i] + 
+                tax.mcmc.dat$b.r.lat*r.lat[i] + 
+                tax.mcmc.dat$b.r.long*r.long[i] + 
+                tax.mcmc.dat$b.Urban*Urban[i] +
+                tax.mcmc.dat$b.Magnitude*Magnitude[i] +
+                tax.mcmc.dat$b.incometax.d*incometax.d[i]
+        
 }
 
 
@@ -1100,11 +1100,11 @@ ggplot() +
 # digits: desired number of digits in the table, default: 2
 
 
-ci.number = .8 # modify this parameter to get desired credible intervals.
+ci.number.tax = .8 # modify this parameter to get desired credible intervals.
 
-mcmctab <- function(sims, ci = ci.number, digits = 2){
+mcmctab <- function(sims, ci = ci.number.tax, digits = 2){
         
-        require(coda)	
+        require(coda) 
         
         if(class(sims) == "jags" | class(sims) == "rjags"){
                 sims <- as.matrix(as.mcmc(sims))
@@ -1145,26 +1145,26 @@ mcmctab <- function(sims, ci = ci.number, digits = 2){
 
 
 
-reg.results.table = data.frame(mcmctab(earthquakefit)[1:6,]) # Posterior distributions // Year FE excluded
+reg.results.table.tax = data.frame(mcmctab(earthquakefit.tax)[1:6,]) # Posterior distributions // Year FE excluded
 
 
-reg.results.table = data.frame(rbind( # re order df by name of the rowname according to what I have and define in 'var.labels.'
-        reg.results.table[rownames(reg.results.table)==("b.incometax.d"),],
-        reg.results.table[rownames(reg.results.table)==("b.Magnitude"),],
-        reg.results.table[rownames(reg.results.table)==("b.r.lat"),],
-        reg.results.table[rownames(reg.results.table)==("b.r.long"),],
-        reg.results.table[rownames(reg.results.table)==("b.p.Population"),],
-        reg.results.table[rownames(reg.results.table)==("b.Urban"),]
+reg.results.table.tax = data.frame(rbind( # re order df by name of the rowname according to what I have and define in 'var.labels.tax.'
+        reg.results.table.tax[rownames(reg.results.table.tax)==("b.incometax.d"),],
+        reg.results.table.tax[rownames(reg.results.table.tax)==("b.Magnitude"),],
+        reg.results.table.tax[rownames(reg.results.table.tax)==("b.r.lat"),],
+        reg.results.table.tax[rownames(reg.results.table.tax)==("b.r.long"),],
+        reg.results.table.tax[rownames(reg.results.table.tax)==("b.p.Population"),],
+        reg.results.table.tax[rownames(reg.results.table.tax)==("b.Urban"),]
 ))
 
-var.labels = c("Income Tax", 
-               "Magnitude", 
-               "Latitude", 
-               "Longitude",
-               "Population", 
-               "Urban")
+var.labels.tax = c("Income Tax", 
+                   "Magnitude", 
+                   "Latitude", 
+                   "Longitude",
+                   "Population", 
+                   "Urban")
 
-rownames(reg.results.table) <- var.labels
+rownames(reg.results.table.tax) <- var.labels.tax
 
 
 
@@ -1172,19 +1172,19 @@ rownames(reg.results.table) <- var.labels
 if (!require("pacman")) install.packages("pacman"); library(pacman) 
 p_load(xtable)
 
-note <- paste0(
-        "\\hline \n \\multicolumn{6}{l}", "{ \\scriptsize {\\bf Note}: ", n.iter, " iterations with a burn-in period of n = ", n.burnin , " iterations discarded.}\\\\", "\n \\multicolumn{6}{l}", "{ \\scriptsize ", ci.number*100 ,"\\% credible intervals (upper/lower bounds). All R-Hat statistics below critical levels.}\\\\" ,"\n \\multicolumn{6}{l}", "{ \\scriptsize Standard convergence diagnostics suggest good mixing and convergence.}\\\\","\n \\multicolumn{6}{l}", "{ \\scriptsize Year fixed effects, latitude and longitude were omitted in the table.}\\\\", 
-        "\n \\multicolumn{6}{l}","{ \\scriptsize A total of ", n.chains, " chains were run. Detailed diagnostic plots available \\href{https://github.com/hbahamonde/Earthquake_Paper/raw/master/Bahamonde_Earthquake_Paper_Diagnostic_Plots_Income_Tax_Model.pdf}{\\texttt here}.} \\\\")
+note.tax <- paste0(
+        "\\hline \n \\multicolumn{6}{l}", "{ \\scriptsize {\\bf Note}: ", n.iter.tax, " iterations with a burn-in period of n = ", n.burnin.tax , " iterations discarded.}\\\\", "\n \\multicolumn{6}{l}", "{ \\scriptsize ", ci.number.tax*100 ,"\\% credible intervals (upper/lower bounds). All R-Hat statistics below critical levels.}\\\\" ,"\n \\multicolumn{6}{l}", "{ \\scriptsize Standard convergence diagnostics suggest good mixing and convergence.}\\\\","\n \\multicolumn{6}{l}", "{ \\scriptsize Year fixed effects, latitude and longitude were omitted in the table.}\\\\", 
+        "\n \\multicolumn{6}{l}","{ \\scriptsize A total of ", n.chains.tax, " chains were run. Detailed diagnostic plots available \\href{https://github.com/hbahamonde/Earthquake_Paper/raw/master/Bahamonde_Earthquake_Paper_Diagnostic_Plots_Income_Tax_Model.pdf}{\\texttt here}.} \\\\")
 ## ----
 
 ## ---- income:tax:model:regression:table:run ----
 print.xtable(xtable(
-        reg.results.table, 
+        reg.results.table.tax, 
         caption = "Income Tax Adoption Model: Simulated Posterior Predictions (Poisson Regression)",
         label = "regression:table:income:tax:model"), 
         auto = TRUE,
         hline.after=c(-1, 0),
-        add.to.row = list(pos = list(length(var.labels)), command = note)
+        add.to.row = list(pos = list(length(var.labels.tax)), command = note.tax)
 )
 ## ----
 
