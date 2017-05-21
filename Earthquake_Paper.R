@@ -1439,7 +1439,7 @@ caterplot(earthquakefit,
 
 ## ---- year:fixed:effects:plot ----
 #### PLOT fixed effects year
-
+if (!require("pacman")) install.packages("pacman"); library(pacman)  
 p_load(gtools,dplyr,reshape2,ggplot2)
 
 
