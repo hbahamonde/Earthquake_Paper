@@ -632,6 +632,243 @@ graphics.off()
 ## ----
 
 
+###############################
+# Income Tax Adoption Plots
+###############################
+
+cat("\014")
+rm(list=ls())
+graphics.off()
+
+# load data 
+load("/Users/hectorbahamonde/RU/Dissertation/Papers/Earthquake_Paper/eq_output_d_Chile.RData") 
+
+# load libraries
+if (!require("pacman")) install.packages("pacman"); library(pacman) 
+p_load(R2jags, coda, R2WinBUGS, lattice, rjags, runjags)
+
+# lower tolerance
+options(scipen=10000)
+set.seed(602)
+
+# specify the model
+model.jags <- function() {
+        for (i in 1:N){ # number of earthquakes
+                Deaths[i] ~ dpois(lambda[i])
+                
+                log(lambda[i]) <- 
+                        b.Magnitude*Magnitude[i] + #  multi-level part: allow national output to vary at the local/sector level
+                        b.incometax.d*incometax.d[i] +
+                        b.p.Population*p.Population[i] +
+                        b.Urban*Urban[i] +
+                        b.year[yearID[i]] + # year fixed-effects
+                        b.r.long*r.long[i] +
+                        b.r.lat*r.lat[i] + 
+                        mu  + ## intercept
+                        b.interaction*incometax.d[i]*Magnitude[i]# interaction term
+        }
+        
+        b.r.lat ~ dnorm(0, 0.01)
+        b.r.long ~ dnorm(0, 0.01)
+        mu  ~ dnorm(0, 0.01) ## intercept
+        b.p.Population ~ dnorm(0, 0.01)
+        b.Urban ~ dnorm(0, 0.01)
+        b.incometax.d ~ dnorm(0, 0.01)
+        b.interaction ~ dnorm(0, 0.01)
+        b.Magnitude ~ dnorm(0, 0.01)
+        
+        for (t in 1:yearN){ # fixed effects
+                b.year[t] ~ dnorm(m.b.year[t], tau.b.year[t])
+                
+                m.b.year[t] ~ dnorm(0, 0.01)
+                tau.b.year[t] ~ dgamma(0.5, 0.001) # uninformative prior
+        }
+        
+}
+
+
+#
+
+# define the vectors of the data matrix for JAGS.
+w.Deaths <- as.vector(datsc$w.Deaths)
+Deaths <- as.vector(datsc$Deaths)
+constmanufact <- as.vector(datsc$constmanufact)
+constagricult <- as.vector(datsc$constagricult)
+Magnitude <- as.vector(datsc$Magnitude)
+p.Population <- as.vector(datsc$p.Population)
+country <- as.numeric(as.ordered(datsc$country))
+Ncountry <-  as.numeric(as.vector(length(unique(as.numeric(datsc$country)))))
+N <-  as.numeric(nrow(datsc))
+year = as.vector(datsc$year)
+# Nyear = nrow(datsc) # for year as counting variable
+yearID = as.numeric(as.ordered(datsc$year))
+yearN = length(unique(datsc$year))
+Sector = as.vector(as.numeric(factor(datsc$Sector)))
+NSector = as.numeric(as.vector(length(unique(as.numeric(datsc$Sector)))))
+NIncometax = as.vector(length(unique(as.numeric(datsc$incometax.d))))
+incometax.d = as.vector(as.numeric(datsc$incometax.d))
+NIncometax.y = as.vector(length(unique(as.numeric(datsc$incometax.y))))
+incometax.y = as.vector(as.numeric(datsc$incometax.y))
+Urban = as.vector(as.numeric(datsc$Urban))
+customtax = as.vector(as.numeric(datsc$customtax))/100
+propagrmanu = as.vector(as.numeric(datsc$propagrmanu))
+r.long = as.vector(as.numeric(datsc$r.long))
+r.lat = as.vector(as.numeric(datsc$r.lat))
+
+propagrmanu.seq = seq(
+        from = min(as.numeric(datsc$propagrmanu)),
+        to = max(as.numeric(datsc$propagrmanu)),
+        length.out = as.numeric(nrow(datsc)))
+
+N.sim = length(seq(
+        from = min(as.numeric(datsc$propagrmanu)),
+        to = max(as.numeric(datsc$propagrmanu)),
+        length.out = as.numeric(nrow(datsc))))
+
+
+
+
+jags.data <- list(Deaths = Deaths,
+                  #w.Deaths = w.Deaths,
+                  # constmanufact = constmanufact,
+                  # constagricult = constagricult,
+                  # propagrmanu = propagrmanu, # constagricult/constmanufact
+                  Magnitude = Magnitude^2,
+                  Sector = Sector,
+                  NSector = NSector,
+                  p.Population = p.Population,
+                  # NIncometax = NIncometax,
+                  incometax.d = incometax.d,
+                  # incometax.y = incometax.y,
+                  # customtax = customtax,
+                  # NIncometax.y = NIncometax.y,
+                  # country = country,
+                  # Ncountry = Ncountry,
+                  Urban = Urban,
+                  r.long = r.long,
+                  r.lat = r.lat,
+                  yearID = yearID,
+                  yearN = yearN,
+                  # N.sim = N.sim, # for predictions
+                  # propagrmanu.seq = propagrmanu.seq, # for predictions
+                  N = N)
+
+
+# Define and name the parameters so JAGS monitors them.
+eq.params <- c("b.interaction", "b.Magnitude", "b.p.Population", "b.year", "b.r.long", "b.r.lat", "b.incometax.d", "b.Urban", "lambda")
+
+
+# run the model
+
+n.iter = 200000  # n.iter = 200000 // this is for working model
+n.burnin = 5000 # n.burnin = 5000 // this is for working model
+n.chains = 4 # n.chains = 4 for the working model
+
+earthquakefit <- jags(
+        data=jags.data,
+        inits=NULL,
+        parameters.to.save = eq.params,
+        n.chains=n.chains,
+        n.iter=n.iter,
+        n.burnin=n.burnin, 
+        #n.thin=1,
+        model.file=model.jags,
+        progress.bar = "none")
+
+
+## passing fitted model as mcmc object
+int.mcmc <- as.mcmc(earthquakefit)
+int.mcmc.mat <- as.matrix(int.mcmc)
+int.mcmc.dat <- as.data.frame(int.mcmc.mat)
+
+
+### No Income Tax
+year.range = unique(datsc$year)
+
+sim.no.income.tax <- matrix(rep(NA, nrow(int.mcmc.dat)*length(year.range)), nrow = nrow(int.mcmc.dat))
+for(i in 1:length(year.range)){
+        sim.no.income.tax[, i] <- 
+                # first term
+                (int.mcmc.dat$b.p.Population + 
+                         int.mcmc.dat$b.r.lat + 
+                         int.mcmc.dat$b.r.long + 
+                         int.mcmc.dat$b.Urban) +
+                # second term
+                (int.mcmc.dat$b.Magnitude)*Magnitude[i]
+        
+
+}
+
+
+## credible intervals
+bayes.c.eff.mean.no.income.tax <- apply(sim.no.income.tax, 2, mean)
+bayes.c.eff.lower.no.income.tax <- apply(sim.no.income.tax, 2, function(x) quantile(x, probs = c(0.1)))
+bayes.c.eff.upper.no.income.tax <- apply(sim.no.income.tax, 2, function(x) quantile(x, probs = c(0.8)))
+
+# create DF
+plot.dat.no.income.tax <- data.frame(year.range, bayes.c.eff.mean.no.income.tax, bayes.c.eff.lower.no.income.tax, bayes.c.eff.upper.no.income.tax); colnames(plot.dat.no.income.tax) <- c("year.range", "mean", "lower", "upper")
+
+# plot.dat.no.income.tax = plot.dat.no.income.tax[ which(plot.dat.no.income.tax$year.range<= 1924), ]
+
+
+
+### Income Tax
+
+year.range = unique(datsc$year)
+
+sim.income.tax <- matrix(rep(NA, nrow(int.mcmc.dat)*length(year.range)), nrow = nrow(int.mcmc.dat))
+for(i in 1:length(year.range)){
+        sim.income.tax[, i] <-
+                (int.mcmc.dat$b.p.Population + # first term
+                int.mcmc.dat$b.r.lat + 
+                int.mcmc.dat$b.r.long + 
+                int.mcmc.dat$b.Urban +
+                int.mcmc.dat$b.incometax.d) +
+                # second term
+                (int.mcmc.dat$b.Magnitude + int.mcmc.dat$b.interaction)*Magnitude[i]
+                
+}
+
+
+## credible intervals
+bayes.c.eff.mean.income.tax <- apply(sim.income.tax, 2, mean)
+bayes.c.eff.lower.income.tax <- apply(sim.income.tax, 2, function(x) quantile(x, probs = c(0.1)))
+bayes.c.eff.upper.income.tax <- apply(sim.income.tax, 2, function(x) quantile(x, probs = c(0.8)))
+
+# create DF
+plot.dat.income.tax <- data.frame(year.range, bayes.c.eff.mean.income.tax, bayes.c.eff.lower.income.tax, bayes.c.eff.upper.income.tax); colnames(plot.dat.income.tax) <- c("year.range", "mean", "lower", "upper")
+
+
+#plot.dat.income.tax = plot.dat.income.tax[ which(plot.dat.income.tax$year.range>= 1924), ]
+
+
+
+# income tax adoption plot DF
+income.tax.adoption.plot = as.data.frame(rbind(
+        as.data.frame(cbind(plot.dat.no.income.tax, 'Tax'= rep("No", nrow(plot.dat.no.income.tax)))),
+        as.data.frame(cbind(plot.dat.income.tax, 'Tax'= rep("Yes", nrow(plot.dat.income.tax))))))
+
+p_load(ggplot2)
+ggplot() + 
+        geom_line(data = income.tax.adoption.plot, aes(x = year.range, y = mean, colour = Tax), alpha = 0.8, size = 0.5) + 
+        geom_ribbon(data = income.tax.adoption.plot, aes(x = year.range, ymin = lower, ymax = upper, fill = Tax), alpha = 0.2) + 
+        xlab("Year") + ylab("Casualties") + 
+        theme_bw() + 
+        theme(axis.text.y = element_text(size=7), 
+              axis.text.x = element_text(size=7), 
+              axis.title.y = element_text(size=7), 
+              axis.title.x = element_text(size=7), 
+              legend.text=element_text(size=7), 
+              legend.title=element_text(size=7),
+              plot.title = element_text(size=7)) +
+        scale_fill_manual(values=c("red", "green")) +
+        scale_color_manual(values=c("red", "green"))
+
+
+
+
+
+
 
 
 ###############################
@@ -660,7 +897,7 @@ bayes.c.eff.lower.prop.agr <- apply(int.sim.prop.agr, 2, function(x) quantile(x,
 bayes.c.eff.upper.prop.agr <- apply(int.sim.prop.agr, 2, function(x) quantile(x, probs = c(0.8)))
 
 # create DF
-plot.dat.prop.agr <- data.frame(prop.range, bayes.c.eff.mean.prop.agr, bayes.c.eff.lower.prop.agr, bayes.c.eff.upper.prop.agr); colnames(plot.dat.prop.agr) <- c("prop.range", "mean", "lower", "upper")
+plot.dat.no.income.tax <- data.frame(prop.range, bayes.c.eff.mean.no.income.tax, bayes.c.eff.lower.no.income.tax, bayes.c.eff.upper.no.income.tax); colnames(plot.dat.no.income.tax) <- c("prop.range", "mean", "lower", "upper")
 
 
 
@@ -679,14 +916,14 @@ bayes.c.eff.upper.prop.ind <- apply(int.sim.prop.ind, 2, function(x) quantile(x,
 plot.dat.prop.ind <- data.frame(prop.range, bayes.c.eff.mean.prop.ind, bayes.c.eff.lower.prop.ind, bayes.c.eff.upper.prop.ind); colnames(plot.dat.prop.ind) <- c("prop.range", "mean", "lower", "upper")
 
 
-# industrial subnational
-ind.plot = as.data.frame(rbind(
+# plot
+sectoral.competition.plot = as.data.frame(rbind(
         as.data.frame(cbind(plot.dat.prop.agr, 'Sector'= rep("Agr [Subnational]", nrow(plot.dat.prop.agr)))),
         as.data.frame(cbind(plot.dat.prop.ind, 'Sector'= rep("Ind [Subnational]", nrow(plot.dat.prop.ind))))))
 
 ggplot() + 
-        geom_line(data = ind.plot, aes(x = prop.range, y = mean, colour = Sector), alpha = 0.8, size = 0.5) + 
-        geom_ribbon(data = ind.plot, aes(x = prop.range, ymin = lower, ymax = upper, fill = Sector), alpha = 0.2) + 
+        geom_line(data = sectoral.competition.plot, aes(x = prop.range, y = mean, colour = Sector), alpha = 0.8, size = 0.5) + 
+        geom_ribbon(data = sectoral.competition.plot, aes(x = prop.range, ymin = lower, ymax = upper, fill = Sector), alpha = 0.2) + 
         xlab("Proportion Agr/Ind Output\nNational Contestation") + ylab("Casualties") + 
         theme_bw() + 
         labs(title = "Subnational Level: Industrial") + 
