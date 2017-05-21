@@ -1082,7 +1082,6 @@ ggplot() +
 
 
 ## ---- income:tax:model:regression:table:not:run ----
-
 # R function for summarizing MCMC output in a regression-style table
 # Johannes Karreth, thanks for the function!
 ## SOURCE: https://raw.githubusercontent.com/jkarreth/JKmisc/master/mcmctab.R
@@ -1176,9 +1175,9 @@ p_load(xtable)
 note <- paste0(
         "\\hline \n \\multicolumn{6}{l}", "{ \\scriptsize {\\bf Note}: ", n.iter, " iterations with a burn-in period of n = ", n.burnin , " iterations discarded.}\\\\", "\n \\multicolumn{6}{l}", "{ \\scriptsize ", ci.number*100 ,"\\% credible intervals (upper/lower bounds). All R-Hat statistics below critical levels.}\\\\" ,"\n \\multicolumn{6}{l}", "{ \\scriptsize Standard convergence diagnostics suggest good mixing and convergence.}\\\\","\n \\multicolumn{6}{l}", "{ \\scriptsize Year fixed effects, latitude and longitude were omitted in the table.}\\\\", 
         "\n \\multicolumn{6}{l}","{ \\scriptsize A total of ", n.chains, " chains were run. Detailed diagnostic plots available \\href{https://github.com/hbahamonde/Earthquake_Paper/raw/master/Bahamonde_Earthquake_Paper_Diagnostic_Plots_Income_Tax_Model.pdf}{\\texttt here}.} \\\\")
+## ----
 
-
-
+## ---- income:tax:model:regression:table:run ----
 print.xtable(xtable(
         reg.results.table, 
         caption = "Income Tax Adoption Model: Simulated Posterior Predictions (Poisson Regression)",
