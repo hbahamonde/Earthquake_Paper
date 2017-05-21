@@ -454,12 +454,28 @@ dispersiontest(o.Deaths,alternative = c("greater"), trafo=1) # overdispersion is
 
 
 ###################################################################### 
+
+
+
+
+
+
+
+
+
+
+###############################
+# Sectoral Contestation Model
+###############################
+
 cat("\014")
 rm(list=ls())
 graphics.off()
 
-## ---- model:and:data:not:run ----
 
+
+
+## ---- sectoral:model:and:data:not:run ----
 # load data 
 load("/Users/hectorbahamonde/RU/Dissertation/Papers/Earthquake_Paper/eq_output_d_Chile.RData") 
 
@@ -482,7 +498,6 @@ model.jags <- function() {
                 log(lambda[i]) <- 
                         b.propagrmanu[Sector[i]]*propagrmanu[i] + # multi-level part: allow national output to vary at the local/sector level
                         b.Magnitude[Sector[i]]*Magnitude[i] + #  multi-level part: allow national output to vary at the local/sector level
-                        # b.incometax.d*incometax.d[i] +
                         b.p.Population*p.Population[i] +
                         b.Urban*Urban[i] +
                         b.year[yearID[i]] + # year fixed-effects
@@ -496,7 +511,6 @@ model.jags <- function() {
         mu  ~ dnorm(0, 0.01) ## intercept
         b.p.Population ~ dnorm(0, 0.01)
         b.Urban ~ dnorm(0, 0.01)
-        # b.incometax.d ~ dnorm(0, 0.01)
 
         
         for (t in 1:yearN){ # fixed effects
@@ -517,13 +531,11 @@ model.jags <- function() {
                 b.propagrmanu[k] ~ dnorm(m.b.propagrmanu[k], tau.b.propagrmanu[k])
                 m.b.propagrmanu[k] ~ dnorm(0, 0.01)
                 tau.b.propagrmanu[k] ~ dgamma(0.5, 0.001) # uninformative prior
-                }
-        
-
         }
+        
+        
+}
 
-
-#
 
 # define the vectors of the data matrix for JAGS.
 w.Deaths <- as.vector(datsc$w.Deaths)
@@ -536,7 +548,6 @@ country <- as.numeric(as.ordered(datsc$country))
 Ncountry <-  as.numeric(as.vector(length(unique(as.numeric(datsc$country)))))
 N <-  as.numeric(nrow(datsc))
 year = as.vector(datsc$year)
-# Nyear = nrow(datsc) # for year as counting variable
 yearID = as.numeric(as.ordered(datsc$year))
 yearN = length(unique(datsc$year))
 Sector = as.vector(as.numeric(factor(datsc$Sector)))
@@ -565,46 +576,29 @@ N.sim = length(seq(
 
 
 jags.data <- list(Deaths = Deaths,
-                  #w.Deaths = w.Deaths,
-                  # constmanufact = constmanufact,
-                  # constagricult = constagricult,
                   propagrmanu = propagrmanu, # constagricult/constmanufact
                   Magnitude = Magnitude^2,
                   Sector = Sector,
                   NSector = NSector,
                   p.Population = p.Population,
-                  # NIncometax = NIncometax,
-                  # incometax.d = incometax.d,
-                  # incometax.y = incometax.y,
-                  # customtax = customtax,
-                  # NIncometax.y = NIncometax.y,
-                  # country = country,
-                  # Ncountry = Ncountry,
                   Urban = Urban,
                   r.long = r.long,
                   r.lat = r.lat,
                   yearID = yearID,
                   yearN = yearN,
-                  # N.sim = N.sim, # for predictions
-                  # propagrmanu.seq = propagrmanu.seq, # for predictions
                   N = N)
 
 
 # Define and name the parameters so JAGS monitors them.
-eq.params <- c("b.propagrmanu", "b.Magnitude", "b.p.Population", "b.year", "b.r.long", "b.r.lat", 
-               #"b.incometax.d", 
-               "b.Urban", "lambda")
+eq.params <- c("b.propagrmanu", "b.Magnitude", "b.p.Population", "b.year", "b.r.long", "b.r.lat", "b.Urban", "lambda")
 ## ----
 
 
 
 
 
-
-
-## ---- model:and:data:does:run ----
+## ---- sectoral:model:and:data:does:run ----
 # run the model
-
 n.iter = 200000  # n.iter = 200000 // this is for working model
 n.burnin = 5000 # n.burnin = 5000 // this is for working model
 n.chains = 4 # n.chains = 4 for the working model
@@ -616,7 +610,6 @@ earthquakefit <- jags(
         n.chains=n.chains,
         n.iter=n.iter,
         n.burnin=n.burnin, 
-        #n.thin=1,
         model.file=model.jags,
         progress.bar = "none")
 
@@ -626,307 +619,77 @@ p_load(ggmcmc)
 
 fit.mcmc <- as.mcmc(earthquakefit)
 bayes.mod.fit.gg <- ggs(fit.mcmc)
-ggmcmc(bayes.mod.fit.gg, file = "/Users/hectorbahamonde/RU/Dissertation/Papers/Earthquake_Paper/Bahamonde_Earthquake_Paper_Diagnostic_Plots.pdf")
+ggmcmc(bayes.mod.fit.gg, file = "/Users/hectorbahamonde/RU/Dissertation/Papers/Earthquake_Paper/Bahamonde_Earthquake_Paper_Diagnostic_Plots_Sectoral_Competition.pdf")
 graphics.off()
-
 ## ----
 
 
+
+
+
 ###############################
-# Income Tax Adoption Plots
+# Sectoral Contestation Plot
 ###############################
 
-cat("\014")
-rm(list=ls())
-graphics.off()
-
-# load data 
-load("/Users/hectorbahamonde/RU/Dissertation/Papers/Earthquake_Paper/eq_output_d_Chile.RData") 
-
-# load libraries
-if (!require("pacman")) install.packages("pacman"); library(pacman) 
-p_load(R2jags, coda, R2WinBUGS, lattice, rjags, runjags)
-
-# lower tolerance
-options(scipen=10000)
-set.seed(602)
-
-# specify the model
-model.jags <- function() {
-        for (i in 1:N){ # number of earthquakes
-                Deaths[i] ~ dpois(lambda[i])
-                
-                log(lambda[i]) <- 
-                        b.Magnitude*Magnitude[i] + #  multi-level part: allow national output to vary at the local/sector level
-                        b.incometax.d*incometax.d[i] +
-                        b.p.Population*p.Population[i] +
-                        b.Urban*Urban[i] +
-                        b.year[yearID[i]] + # year fixed-effects
-                        b.r.long*r.long[i] +
-                        b.r.lat*r.lat[i] + 
-                        mu  + ## intercept
-                        b.interaction*incometax.d[i]*Magnitude[i]# interaction term
-        }
-        
-        b.r.lat ~ dnorm(0, 0.01)
-        b.r.long ~ dnorm(0, 0.01)
-        mu  ~ dnorm(0, 0.01) ## intercept
-        b.p.Population ~ dnorm(0, 0.01)
-        b.Urban ~ dnorm(0, 0.01)
-        b.incometax.d ~ dnorm(0, 0.01)
-        b.interaction ~ dnorm(0, 0.01)
-        b.Magnitude ~ dnorm(0, 0.01)
-        
-        for (t in 1:yearN){ # fixed effects
-                b.year[t] ~ dnorm(m.b.year[t], tau.b.year[t])
-                
-                m.b.year[t] ~ dnorm(0, 0.01)
-                tau.b.year[t] ~ dgamma(0.5, 0.001) # uninformative prior
-        }
-        
-}
-
-
-#
-
-# define the vectors of the data matrix for JAGS.
-w.Deaths <- as.vector(datsc$w.Deaths)
-Deaths <- as.vector(datsc$Deaths)
-constmanufact <- as.vector(datsc$constmanufact)
-constagricult <- as.vector(datsc$constagricult)
-Magnitude <- as.vector(datsc$Magnitude)
-p.Population <- as.vector(datsc$p.Population)
-country <- as.numeric(as.ordered(datsc$country))
-Ncountry <-  as.numeric(as.vector(length(unique(as.numeric(datsc$country)))))
-N <-  as.numeric(nrow(datsc))
-year = as.vector(datsc$year)
-# Nyear = nrow(datsc) # for year as counting variable
-yearID = as.numeric(as.ordered(datsc$year))
-yearN = length(unique(datsc$year))
-Sector = as.vector(as.numeric(factor(datsc$Sector)))
-NSector = as.numeric(as.vector(length(unique(as.numeric(datsc$Sector)))))
-NIncometax = as.vector(length(unique(as.numeric(datsc$incometax.d))))
-incometax.d = as.vector(as.numeric(datsc$incometax.d))
-NIncometax.y = as.vector(length(unique(as.numeric(datsc$incometax.y))))
-incometax.y = as.vector(as.numeric(datsc$incometax.y))
-Urban = as.vector(as.numeric(datsc$Urban))
-customtax = as.vector(as.numeric(datsc$customtax))/100
-propagrmanu = as.vector(as.numeric(datsc$propagrmanu))
-r.long = as.vector(as.numeric(datsc$r.long))
-r.lat = as.vector(as.numeric(datsc$r.lat))
-
-propagrmanu.seq = seq(
-        from = min(as.numeric(datsc$propagrmanu)),
-        to = max(as.numeric(datsc$propagrmanu)),
-        length.out = as.numeric(nrow(datsc)))
-
-N.sim = length(seq(
-        from = min(as.numeric(datsc$propagrmanu)),
-        to = max(as.numeric(datsc$propagrmanu)),
-        length.out = as.numeric(nrow(datsc))))
-
-
-
-
-jags.data <- list(Deaths = Deaths,
-                  #w.Deaths = w.Deaths,
-                  # constmanufact = constmanufact,
-                  # constagricult = constagricult,
-                  # propagrmanu = propagrmanu, # constagricult/constmanufact
-                  Magnitude = Magnitude^2,
-                  Sector = Sector,
-                  NSector = NSector,
-                  p.Population = p.Population,
-                  # NIncometax = NIncometax,
-                  incometax.d = incometax.d,
-                  # incometax.y = incometax.y,
-                  # customtax = customtax,
-                  # NIncometax.y = NIncometax.y,
-                  # country = country,
-                  # Ncountry = Ncountry,
-                  Urban = Urban,
-                  r.long = r.long,
-                  r.lat = r.lat,
-                  yearID = yearID,
-                  yearN = yearN,
-                  # N.sim = N.sim, # for predictions
-                  # propagrmanu.seq = propagrmanu.seq, # for predictions
-                  N = N)
-
-
-# Define and name the parameters so JAGS monitors them.
-eq.params <- c("b.interaction", "b.Magnitude", "b.p.Population", "b.year", "b.r.long", "b.r.lat", "b.incometax.d", "b.Urban", "lambda")
-
-
-# run the model
-
-n.iter = 200000  # n.iter = 200000 // this is for working model
-n.burnin = 5000 # n.burnin = 5000 // this is for working model
-n.chains = 4 # n.chains = 4 for the working model
-
-earthquakefit <- jags(
-        data=jags.data,
-        inits=NULL,
-        parameters.to.save = eq.params,
-        n.chains=n.chains,
-        n.iter=n.iter,
-        n.burnin=n.burnin, 
-        #n.thin=1,
-        model.file=model.jags,
-        progress.bar = "none")
-
-
+## ---- sectoral:model:plot ----
 ## passing fitted model as mcmc object
-int.mcmc <- as.mcmc(earthquakefit)
-int.mcmc.mat <- as.matrix(int.mcmc)
-int.mcmc.dat <- as.data.frame(int.mcmc.mat)
-
-
-### No Income Tax
-year.range = unique(datsc$year)
-
-sim.no.income.tax <- matrix(rep(NA, nrow(int.mcmc.dat)*length(year.range)), nrow = nrow(int.mcmc.dat))
-for(i in 1:length(year.range)){
-        sim.no.income.tax[, i] <- 
-                # first term
-                (int.mcmc.dat$b.p.Population + 
-                         int.mcmc.dat$b.r.lat + 
-                         int.mcmc.dat$b.r.long + 
-                         int.mcmc.dat$b.Urban) +
-                # second term
-                (int.mcmc.dat$b.Magnitude)*Magnitude[i]
-        
-
-}
-
-
-## credible intervals
-bayes.c.eff.mean.no.income.tax <- apply(sim.no.income.tax, 2, mean)
-bayes.c.eff.lower.no.income.tax <- apply(sim.no.income.tax, 2, function(x) quantile(x, probs = c(0.1)))
-bayes.c.eff.upper.no.income.tax <- apply(sim.no.income.tax, 2, function(x) quantile(x, probs = c(0.8)))
-
-# create DF
-plot.dat.no.income.tax <- data.frame(year.range, bayes.c.eff.mean.no.income.tax, bayes.c.eff.lower.no.income.tax, bayes.c.eff.upper.no.income.tax); colnames(plot.dat.no.income.tax) <- c("year.range", "mean", "lower", "upper")
-
-# plot.dat.no.income.tax = plot.dat.no.income.tax[ which(plot.dat.no.income.tax$year.range<= 1924), ]
-
-
-
-### Income Tax
-
-year.range = unique(datsc$year)
-
-sim.income.tax <- matrix(rep(NA, nrow(int.mcmc.dat)*length(year.range)), nrow = nrow(int.mcmc.dat))
-for(i in 1:length(year.range)){
-        sim.income.tax[, i] <-
-                (int.mcmc.dat$b.p.Population + # first term
-                int.mcmc.dat$b.r.lat + 
-                int.mcmc.dat$b.r.long + 
-                int.mcmc.dat$b.Urban +
-                int.mcmc.dat$b.incometax.d) +
-                # second term
-                (int.mcmc.dat$b.Magnitude + int.mcmc.dat$b.interaction)*Magnitude[i]
-                
-}
-
-
-## credible intervals
-bayes.c.eff.mean.income.tax <- apply(sim.income.tax, 2, mean)
-bayes.c.eff.lower.income.tax <- apply(sim.income.tax, 2, function(x) quantile(x, probs = c(0.1)))
-bayes.c.eff.upper.income.tax <- apply(sim.income.tax, 2, function(x) quantile(x, probs = c(0.8)))
-
-# create DF
-plot.dat.income.tax <- data.frame(year.range, bayes.c.eff.mean.income.tax, bayes.c.eff.lower.income.tax, bayes.c.eff.upper.income.tax); colnames(plot.dat.income.tax) <- c("year.range", "mean", "lower", "upper")
-
-
-#plot.dat.income.tax = plot.dat.income.tax[ which(plot.dat.income.tax$year.range>= 1924), ]
-
-
-
-# income tax adoption plot DF
-income.tax.adoption.plot = as.data.frame(rbind(
-        as.data.frame(cbind(plot.dat.no.income.tax, 'Tax'= rep("No", nrow(plot.dat.no.income.tax)))),
-        as.data.frame(cbind(plot.dat.income.tax, 'Tax'= rep("Yes", nrow(plot.dat.income.tax))))))
-
-p_load(ggplot2)
-ggplot() + 
-        geom_line(data = income.tax.adoption.plot, aes(x = year.range, y = mean, colour = Tax), alpha = 0.8, size = 0.5) + 
-        geom_ribbon(data = income.tax.adoption.plot, aes(x = year.range, ymin = lower, ymax = upper, fill = Tax), alpha = 0.2) + 
-        xlab("Year") + ylab("Casualties") + 
-        theme_bw() + 
-        theme(axis.text.y = element_text(size=7), 
-              axis.text.x = element_text(size=7), 
-              axis.title.y = element_text(size=7), 
-              axis.title.x = element_text(size=7), 
-              legend.text=element_text(size=7), 
-              legend.title=element_text(size=7),
-              plot.title = element_text(size=7)) +
-        scale_fill_manual(values=c("red", "green")) +
-        scale_color_manual(values=c("red", "green"))
-
-
-
-
-
-
-
-
-###############################
-# Sectoral Contestation Plots
-###############################
-
-
-
-## passing fitted model as mcmc object
-int.mcmc <- as.mcmc(earthquakefit)
-int.mcmc.mat <- as.matrix(int.mcmc)
-int.mcmc.dat <- as.data.frame(int.mcmc.mat)
+sect.contest.mcmc <- as.mcmc(earthquakefit)
+sect.contest.mcmc.mat <- as.matrix(sect.contest.mcmc)
+sect.contest.mcmc.dat <- as.data.frame(sect.contest.mcmc.mat)
 
 ## range of interest
 prop.range <- seq(min(propagrmanu), max(propagrmanu), by = 0.01)
 
+
+#############################
 ### Agricultural Subnational
-int.sim.prop.agr <- matrix(rep(NA, nrow(int.mcmc.dat)*length(prop.range)), nrow = nrow(int.mcmc.dat))
+sect.contest.sim.prop.agr <- matrix(rep(NA, nrow(sect.contest.mcmc.dat)*length(prop.range)), nrow = nrow(sect.contest.mcmc.dat))
 for(i in 1:length(prop.range)){
-        int.sim.prop.agr[, i] <- int.mcmc.dat$'b.propagrmanu[1]'*prop.range[i]
+        sect.contest.sim.prop.agr[, i] <- sect.contest.mcmc.dat$'b.propagrmanu[1]'*prop.range[i]
 }
 
 ## credible intervals
-bayes.c.eff.mean.prop.agr <- apply(int.sim.prop.agr, 2, mean)
-bayes.c.eff.lower.prop.agr <- apply(int.sim.prop.agr, 2, function(x) quantile(x, probs = c(0.1)))
-bayes.c.eff.upper.prop.agr <- apply(int.sim.prop.agr, 2, function(x) quantile(x, probs = c(0.8)))
+bayes.c.eff.mean.prop.agr <- apply(sect.contest.sim.prop.agr, 2, mean)
+bayes.c.eff.lower.prop.agr <- apply(sect.contest.sim.prop.agr, 2, function(x) quantile(x, probs = c(0.1)))
+bayes.c.eff.upper.prop.agr <- apply(sect.contest.sim.prop.agr, 2, function(x) quantile(x, probs = c(0.8)))
 
 # create DF
-plot.dat.no.income.tax <- data.frame(prop.range, bayes.c.eff.mean.no.income.tax, bayes.c.eff.lower.no.income.tax, bayes.c.eff.upper.no.income.tax); colnames(plot.dat.no.income.tax) <- c("prop.range", "mean", "lower", "upper")
+plot.dat.prop.agr <- data.frame(prop.range, bayes.c.eff.mean.prop.agr, bayes.c.eff.lower.prop.agr, bayes.c.eff.upper.prop.agr)
+colnames(plot.dat.prop.agr) <- c("prop.range", "mean", "lower", "upper")
 
 
-
+#############################
 ### Industrial Subnational
-int.sim.prop.ind <- matrix(rep(NA, nrow(int.mcmc.dat)*length(prop.range)), nrow = nrow(int.mcmc.dat))
+plot.dat.prop.ind <- matrix(rep(NA, nrow(sect.contest.mcmc.dat)*length(prop.range)), nrow = nrow(sect.contest.mcmc.dat))
 for(i in 1:length(prop.range)){
-        int.sim.prop.ind[, i] <- int.mcmc.dat$'b.propagrmanu[2]'*prop.range[i]
+        plot.dat.prop.ind[, i] <- sect.contest.mcmc.dat$'b.propagrmanu[2]'*prop.range[i]
 }
 
 ## credible intervals
-bayes.c.eff.mean.prop.ind <- apply(int.sim.prop.ind, 2, mean)
-bayes.c.eff.lower.prop.ind <- apply(int.sim.prop.ind, 2, function(x) quantile(x, probs = c(0.1)))
-bayes.c.eff.upper.prop.ind <- apply(int.sim.prop.ind, 2, function(x) quantile(x, probs = c(0.8)))
+bayes.c.eff.mean.prop.ind <- apply(plot.dat.prop.ind, 2, mean)
+bayes.c.eff.lower.prop.ind <- apply(plot.dat.prop.ind, 2, function(x) quantile(x, probs = c(0.1)))
+bayes.c.eff.upper.prop.ind <- apply(plot.dat.prop.ind, 2, function(x) quantile(x, probs = c(0.8)))
 
 # create DF
-plot.dat.prop.ind <- data.frame(prop.range, bayes.c.eff.mean.prop.ind, bayes.c.eff.lower.prop.ind, bayes.c.eff.upper.prop.ind); colnames(plot.dat.prop.ind) <- c("prop.range", "mean", "lower", "upper")
+plot.dat.prop.ind <- data.frame(prop.range, bayes.c.eff.mean.prop.ind, bayes.c.eff.lower.prop.ind, bayes.c.eff.upper.prop.ind)
+colnames(plot.dat.prop.ind) <- c("prop.range", "mean", "lower", "upper")
 
+
+# create final DF
+sectoral.competition.plot = as.data.frame(rbind(
+        as.data.frame(cbind(plot.dat.prop.agr, `Subnational sector\nmostly:`= rep("Agricultural", nrow(plot.dat.prop.ind)))),
+        as.data.frame(cbind(plot.dat.prop.ind, `Subnational sector\nmostly:`= rep("Industrial", nrow(plot.dat.prop.agr))))))
+
+# load libraries
+if (!require("pacman")) install.packages("pacman"); library(pacman) 
+p_load(ggplot2)
 
 # plot
-sectoral.competition.plot = as.data.frame(rbind(
-        as.data.frame(cbind(plot.dat.prop.agr, 'Sector'= rep("Agr [Subnational]", nrow(plot.dat.prop.agr)))),
-        as.data.frame(cbind(plot.dat.prop.ind, 'Sector'= rep("Ind [Subnational]", nrow(plot.dat.prop.ind))))))
-
 ggplot() + 
-        geom_line(data = sectoral.competition.plot, aes(x = prop.range, y = mean, colour = Sector), alpha = 0.8, size = 0.5) + 
-        geom_ribbon(data = sectoral.competition.plot, aes(x = prop.range, ymin = lower, ymax = upper, fill = Sector), alpha = 0.2) + 
-        xlab("Proportion Agr/Ind Output\nNational Contestation") + ylab("Casualties") + 
+        geom_line(data = sectoral.competition.plot, aes(x = prop.range, y = mean, colour = `Subnational sector\nmostly:`), alpha = 0.8, size = 0.5) + 
+        geom_ribbon(data = sectoral.competition.plot, aes(x = prop.range, ymin = lower, ymax = upper, fill = `Subnational sector\nmostly:`), alpha = 0.2) + 
+        xlab("National Proportion Agriculture/Industry Output\n[National Contestation]") + ylab("Death-Toll\n(Posterior Predictions)") + 
         theme_bw() + 
-        labs(title = "Subnational Level: Industrial") + 
         theme(axis.text.y = element_text(size=7), 
               axis.text.x = element_text(size=7), 
               axis.title.y = element_text(size=7), 
@@ -936,6 +699,7 @@ ggplot() +
               plot.title = element_text(size=7)) +
         scale_fill_manual(values=c("red", "green")) +
         scale_color_manual(values=c("red", "green"))
+## ---- 
 
 
 
@@ -943,237 +707,11 @@ ggplot() +
 
 
 
+###############################
+# Sectoral Contestation Table
+###############################
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-## ---- interaction:plots:not:run ----
-
-##########################################
-# conditional effect of income tax
-##########################################
-
-# Interaction Term // Simulation
-
-## passing fitted model as mcmc object
-int.mcmc <- as.mcmc(earthquakefit)
-int.mcmc.mat <- as.matrix(int.mcmc)
-int.mcmc.dat <- as.data.frame(int.mcmc.mat)
-
-## range of interest
-prop.range <- seq(min(propagrmanu), max(propagrmanu), by = 0.01)
-
-##########################################
-## Bayes: b.incometax.d NO
-
-
-### Agricultural Subnational
-int.sim.prop.0.agr <- matrix(rep(NA, nrow(int.mcmc.dat)*length(prop.range)), nrow = nrow(int.mcmc.dat))
-for(i in 1:length(prop.range)){
-        int.sim.prop.0.agr[, i] <- int.mcmc.dat$'b.propagrmanu[1]'*prop.range[i]
-}
-## credible intervals
-### Note: the variance now comes from the posterior, not the vcov matrix
-bayes.c.eff.mean.prop.0.agr <- apply(int.sim.prop.0.agr, 2, mean)
-bayes.c.eff.lower.prop.0.agr <- apply(int.sim.prop.0.agr, 2, function(x) quantile(x, probs = c(0.1)))
-bayes.c.eff.upper.prop.0.agr <- apply(int.sim.prop.0.agr, 2, function(x) quantile(x, probs = c(0.8)))
-## create df
-plot.dat.prop.0.agr <- data.frame(prop.range, bayes.c.eff.mean.prop.0.agr, bayes.c.eff.lower.prop.0.agr, bayes.c.eff.upper.prop.0.agr); colnames(plot.dat.prop.0.agr) <- c("prop.range", "mean", "lower", "upper")
-
-
-
-### Industrial Subnational
-int.sim.prop.0.ind <- matrix(rep(NA, nrow(int.mcmc.dat)*length(prop.range)), nrow = nrow(int.mcmc.dat))
-for(i in 1:length(prop.range)){
-        int.sim.prop.0.ind[, i] <- int.mcmc.dat$'b.propagrmanu[2]'*prop.range[i]
-}
-## credible intervals
-### Note: the variance now comes from the posterior, not the vcov matrix
-bayes.c.eff.mean.prop.0.ind <- apply(int.sim.prop.0.ind, 2, mean)
-bayes.c.eff.lower.prop.0.ind <- apply(int.sim.prop.0.ind, 2, function(x) quantile(x, probs = c(0.1)))
-bayes.c.eff.upper.prop.0.ind <- apply(int.sim.prop.0.ind, 2, function(x) quantile(x, probs = c(0.8)))
-## create df
-plot.dat.prop.0.ind <- data.frame(prop.range, bayes.c.eff.mean.prop.0.ind, bayes.c.eff.lower.prop.0.ind, bayes.c.eff.upper.prop.0.ind); colnames(plot.dat.prop.0.ind) <- c("prop.range", "mean", "lower", "upper")
-
-
-
-##########################################
-## Bayes: b.incometax.d YES
-
-### Agricultural Subnational
-int.sim.prop.1.agr <- matrix(rep(NA, nrow(int.mcmc.dat)*length(prop.range)), nrow = nrow(int.mcmc.dat))
-for(i in 1:length(prop.range)){
-        int.sim.prop.1.agr[, i] <- int.mcmc.dat$b.incometax.d + (int.mcmc.dat$'b.propagrmanu[1]'+int.mcmc.dat$'b.interaction[1]')*prop.range[i]
-}
-
-
-## credible intervals
-### Note: the variance now comes from the posterior, not the vcov matrix
-bayes.c.eff.mean.prop.1.agr <- apply(int.sim.prop.1.agr, 2, mean)
-bayes.c.eff.lower.prop.1.agr <- apply(int.sim.prop.1.agr, 2, function(x) quantile(x, probs = c(0.1)))
-bayes.c.eff.upper.prop.1.agr <- apply(int.sim.prop.1.agr, 2, function(x) quantile(x, probs = c(0.8)))
-## create df
-plot.dat.prop.1.agr <- data.frame(prop.range, bayes.c.eff.mean.prop.1.agr, bayes.c.eff.lower.prop.1.agr, bayes.c.eff.upper.prop.1.agr); colnames(plot.dat.prop.1.agr) <- c("prop.range", "mean", "lower", "upper")
-
-
-### Industrial Subnational
-int.sim.prop.1.ind <- matrix(rep(NA, nrow(int.mcmc.dat)*length(prop.range)), nrow = nrow(int.mcmc.dat))
-for(i in 1:length(prop.range)){
-        int.sim.prop.1.ind[, i] <- int.mcmc.dat$b.incometax.d + (int.mcmc.dat$'b.propagrmanu[2]'+int.mcmc.dat$'b.interaction[2]')*prop.range[i]
-}
-## credible intervals
-### Note: the variance now comes from the posterior, not the vcov matrix
-bayes.c.eff.mean.prop.1.ind <- apply(int.sim.prop.1.ind, 2, mean)
-bayes.c.eff.lower.prop.1.ind <- apply(int.sim.prop.1.ind, 2, function(x) quantile(x, probs = c(0.1)))
-bayes.c.eff.upper.prop.1.ind <- apply(int.sim.prop.1.ind, 2, function(x) quantile(x, probs = c(0.8)))
-## create df
-plot.dat.prop.1.ind <- data.frame(prop.range, bayes.c.eff.mean.prop.1.ind, bayes.c.eff.lower.prop.1.ind, bayes.c.eff.upper.prop.1.ind); colnames(plot.dat.prop.1.ind) <- c("prop.range", "mean", "lower", "upper")
-
-
-##########################################
-## Use blue for Bayesian, red for frequentist estimates. Transparency to allow overlay; purple indicates complete overlay. Take a close look at the upper and lower limits of the CI for each estimate.
-## Foundation for the plot & line for the posterior mean of the Bayesian conditional effect
-
-## Plot
-if (!require("pacman")) install.packages("pacman"); library(pacman) 
-p_load(ggplot2)
-
-# industrial subnational
-ind.plot = as.data.frame(rbind(
-        as.data.frame(cbind(plot.dat.prop.1.ind, 'Tax'= rep("Yes", nrow(plot.dat.prop.1.ind)))),
-        as.data.frame(cbind(plot.dat.prop.0.ind, 'Tax'= rep("No", nrow(plot.dat.prop.0.ind))))))
-ind.ggplot = ggplot() + 
-        geom_line(data = ind.plot, aes(x = prop.range, y = mean, colour = Tax), alpha = 0.8, size = 0.5) + 
-        geom_ribbon(data = ind.plot, aes(x = prop.range, ymin = lower, ymax = upper, fill = Tax), alpha = 0.2) + 
-        xlab("Proportion Agr/Ind Output\nNational Contestation") + ylab("Casualties") + 
-        theme_bw() + 
-        labs(title = "Subnational Level: Industrial") +
-        theme(
-                axis.text.y = element_text(size=7), 
-                axis.text.x = element_text(size=7), 
-                axis.title.y = element_text(size=7), 
-                axis.title.x = element_text(size=7), 
-                legend.text=element_text(size=7), 
-                legend.title=element_text(size=7),
-                plot.title = element_text(size=7)) +
-        scale_fill_manual(values=c("green", "red")) +
-        scale_color_manual(values=c("green", "red"))
-
-
-# agricultural subnational
-agr.plot = as.data.frame(rbind(
-        as.data.frame(cbind(plot.dat.prop.1.agr, 'Tax'= rep("Yes", nrow(plot.dat.prop.1.agr)))),
-        as.data.frame(cbind(plot.dat.prop.0.agr, 'Tax'= rep("No", nrow(plot.dat.prop.0.agr))))))
-agr.ggplot = ggplot() + 
-        geom_line(data = agr.plot, aes(x = prop.range, y = mean, colour = Tax), alpha = 0.8, size = 0.5) + 
-        geom_ribbon(data = agr.plot, aes(x = prop.range, ymin = lower, ymax = upper, fill = Tax), alpha = 0.2) + 
-        xlab("Proportion Agr/Ind Output\nNational Contestation") + ylab("Casualties") + 
-        theme_bw() + 
-        labs(title = "Subnational Level: Agricultural") +
-        theme(
-                axis.text.y = element_text(size=7), 
-                axis.text.x = element_text(size=7), 
-                axis.title.y = element_text(size=7), 
-                axis.title.x = element_text(size=7), 
-                legend.text=element_text(size=7), 
-                legend.title=element_text(size=7),
-                plot.title = element_text(size=7)) +
-        scale_fill_manual(values=c("green", "red")) +
-        scale_color_manual(values=c("green", "red"))
-## ----
-
-
-
-
-## ---- interaction:plots:run ----
-# load libraries
-if (!require("pacman")) install.packages("pacman"); library(pacman)
-p_load(gridExtra,grid,ggplot2)
-
-
-# To force GGplots to share same legend.
-grid_arrange_shared_legend <- function(..., nrow = 1, ncol = length(list(...)), position = c("bottom", "right")) {
-        
-        plots <- list(...)
-        position <- match.arg(position)
-        g <- ggplotGrob(plots[[1]] + theme(legend.position = position))$grobs
-        legend <- g[[which(sapply(g, function(x) x$name) == "guide-box")]]
-        lheight <- sum(legend$height)
-        lwidth <- sum(legend$width)
-        gl <- lapply(plots, function(x) x + theme(legend.position = "none"))
-        gl <- c(gl, nrow = nrow, ncol = ncol)
-        
-        combined <- switch(position,
-                           "bottom" = arrangeGrob(do.call(arrangeGrob, gl),
-                                                  legend,
-                                                  ncol = 1,
-                                                  heights = unit.c(unit(1, "npc") - lheight, lheight)),
-                           "right" = arrangeGrob(do.call(arrangeGrob, gl),
-                                                 legend,
-                                                 ncol = 2,
-                                                 widths = unit.c(unit(1, "npc") - lwidth, lwidth)))
-        grid.newpage()
-        grid.draw(combined)
-        
-}
-grid_arrange_shared_legend(ind.ggplot,agr.ggplot, ncol = 2, nrow = 1)
-## ----
-
-
-
-
-
-# Agr Subnational
-# Income Tax: IMPLEMENTED
-## National Agr Level : LOW
-abs(round(max(agr.plot$mean[agr.plot$Tax=="Yes" & agr.plot$prop.range==min(agr.plot$prop.range)])))
-## National Agr Level : High
-abs(round(max(agr.plot$mean[agr.plot$Tax=="Yes" & agr.plot$prop.range==max(agr.plot$prop.range)])))
-
-
-# Agr Subnational
-# Income Tax: NOT IMPLEMENTED
-# National Agr Level : LOW
-abs(round(max(agr.plot$mean[agr.plot$Tax=="No" & agr.plot$prop.range==min(agr.plot$prop.range)])))
-## National Agr Level : High
-abs(round(max(agr.plot$mean[agr.plot$Tax=="No" & agr.plot$prop.range==max(agr.plot$prop.range)])))
-
-
-
-# Ind Subnational
-# Income Tax: IMPLEMENTED
-## National Agr Level : LOW
-abs(round(max(ind.plot$mean[ind.plot$Tax=="Yes" & ind.plot$prop.range==min(ind.plot$prop.range)])))
-## National Agr Level : High
-abs(round(max(ind.plot$mean[ind.plot$Tax=="Yes" & ind.plot$prop.range==max(ind.plot$prop.range)])))
-
-
-# Ind Subnational
-# Income Tax: NOT IMPLEMENTED
-# National Agr Level : LOW
-abs(round(max(ind.plot$mean[ind.plot$Tax=="No" & ind.plot$prop.range==min(ind.plot$prop.range)])))
-## National Agr Level : High
-abs(round(max(ind.plot$mean[ind.plot$Tax=="No" & ind.plot$prop.range==max(ind.plot$prop.range)])))
-
-
-
-
-
-
-
-## ---- regression:table:not:run ----
+## ---- sectoral:model:regression:table:not:run ----
 
 # R function for summarizing MCMC output in a regression-style table
 # Johannes Karreth, thanks for the function!
@@ -1216,7 +754,7 @@ mcmctab <- function(sims, ci = ci.number, digits = 2){
                 sims <- as.matrix(stan_sims)
         }      
         
-
+        
         dat <- t(sims)
         
         mcmctab <- apply(dat, 1,
@@ -1232,7 +770,7 @@ mcmctab <- function(sims, ci = ci.number, digits = 2){
                                                ifelse(mean(x) > 0, length(x[x > 0]) / length(x),
                                                       length(x[x < 0]) / length(x)), 
                                                digits = digits) # Probability of posterior >/< 0
-                                       ))
+                         ))
         return(t(mcmctab))
 }
 
@@ -1245,7 +783,6 @@ reg.results.table = data.frame(rbind( # re order df by name of the rowname accor
         reg.results.table[rownames(reg.results.table)==("b.propagrmanu[1]"),],
         reg.results.table[rownames(reg.results.table)==("b.propagrmanu[2]"),],
         reg.results.table[rownames(reg.results.table)==("b.propagrmanu[3]"),],
-        #reg.results.table[rownames(reg.results.table)==("b.incometax.d"),],
         reg.results.table[rownames(reg.results.table)==("b.Magnitude[1]"),],
         reg.results.table[rownames(reg.results.table)==("b.Magnitude[2]"),],
         reg.results.table[rownames(reg.results.table)==("b.Magnitude[3]"),],
@@ -1255,11 +792,16 @@ reg.results.table = data.frame(rbind( # re order df by name of the rowname accor
         reg.results.table[rownames(reg.results.table)==("b.Urban"),]
 ))
 
-var.labels = c("Agr/Ind [Agr]", "Agr/Ind [Ind]", "Agr/Ind [Mixed]", 
-               #"Income Tax", 
-               "Magnitude [Agr]", "Magnitude [Ind]", "Magnitude [Mixed]", 
-               "Latitude", "Longitude",
-               "Population", "Urban")
+var.labels = c("Agr/Ind [Agr]", 
+               "Agr/Ind [Ind]", 
+               "Agr/Ind [Mixed]", 
+               "Magnitude [Agr]", 
+               "Magnitude [Ind]", 
+               "Magnitude [Mixed]", 
+               "Latitude", 
+               "Longitude",
+               "Population", 
+               "Urban")
 
 rownames(reg.results.table) <- var.labels
 
@@ -1271,18 +813,18 @@ p_load(xtable)
 
 note <- paste0(
         "\\hline \n \\multicolumn{6}{l}", "{ \\scriptsize {\\bf Note}: ", n.iter, " iterations with a burn-in period of n = ", n.burnin , " iterations discarded.}\\\\", "\n \\multicolumn{6}{l}", "{ \\scriptsize ", ci.number*100 ,"\\% credible intervals (upper/lower bounds). All R-Hat statistics below critical levels.}\\\\" ,"\n \\multicolumn{6}{l}", "{ \\scriptsize Standard convergence diagnostics suggest good mixing and convergence.}\\\\","\n \\multicolumn{6}{l}", "{ \\scriptsize Year fixed effects, latitude and longitude were omitted in the table.}\\\\", 
-        "\n \\multicolumn{6}{l}","{ \\scriptsize A total of ", n.chains, " chains were run. Detailed diagnostic plots available \\href{https://github.com/hbahamonde/Earthquake_Paper/raw/master/Bahamonde_Earthquake_Paper_Diagnostic_Plots.pdf}{\\texttt here}.} \\\\")
+        "\n \\multicolumn{6}{l}","{ \\scriptsize A total of ", n.chains, " chains were run. Detailed diagnostic plots available \\href{https://github.com/hbahamonde/Earthquake_Paper/raw/master/Bahamonde_Earthquake_Paper_Diagnostic_Plots_Sectoral_Competition.pdf}{\\texttt here}.} \\\\")
 ## ----
 
 
-## ---- regression:table:run ----
+## ---- sectoral:model:regression:table:run ----
 print.xtable(xtable(
         reg.results.table, 
-        caption = "Poisson Regression: Simulated Posterior Predictions",
-        label = "regression:table"), 
+        caption = "Sectoral Competition Model: Simulated Posterior Predictions (Poisson Regression)",
+        label = "sectoral:model:regression:table"), 
         auto = TRUE,
         hline.after=c(-1, 0),
-        add.to.row = list(pos = list(12),command = note)
+        add.to.row = list(pos = list(length(var.labels)), command = note)
 )
 ## ----
 
@@ -1291,13 +833,386 @@ print.xtable(xtable(
 
 
 
-###
-plot(earthquakefit)
 
-# Sectors
-## 1 Agriculture 
-## 2 Industry 
-## 3 Mixed
+
+
+
+
+
+
+###############################
+# Income Tax Adoption Model
+###############################
+
+cat("\014")
+rm(list=ls())
+graphics.off()
+
+## ---- income:tax:model:and:data:not:run ----
+# load data 
+load("/Users/hectorbahamonde/RU/Dissertation/Papers/Earthquake_Paper/eq_output_d_Chile.RData") 
+
+# load libraries
+if (!require("pacman")) install.packages("pacman"); library(pacman) 
+p_load(R2jags, coda, R2WinBUGS, lattice, rjags, runjags)
+
+# lower tolerance
+options(scipen=10000)
+set.seed(602)
+
+# specify the model
+model.jags <- function() {
+        for (i in 1:N){ # number of earthquakes
+                Deaths[i] ~ dpois(lambda[i])
+                
+                log(lambda[i]) <- 
+                        b.Magnitude*Magnitude[i] + #  multi-level part: allow national output to vary at the local/sector level
+                        b.incometax.d*incometax.d[i] +
+                        b.p.Population*p.Population[i] +
+                        b.Urban*Urban[i] +
+                        b.year[yearID[i]] + # year fixed-effects
+                        b.r.long*r.long[i] +
+                        b.r.lat*r.lat[i] + 
+                        mu ## intercept
+        }
+        
+        b.r.lat ~ dnorm(0, 0.01)
+        b.r.long ~ dnorm(0, 0.01)
+        mu  ~ dnorm(0, 0.01) ## intercept
+        b.p.Population ~ dnorm(0, 0.01)
+        b.Urban ~ dnorm(0, 0.01)
+        b.incometax.d ~ dnorm(0, 0.01)
+        b.interaction ~ dnorm(0, 0.01)
+        b.Magnitude ~ dnorm(0, 0.01)
+        
+        for (t in 1:yearN){ # fixed effects
+                b.year[t] ~ dnorm(m.b.year[t], tau.b.year[t])
+                
+                m.b.year[t] ~ dnorm(0, 0.01)
+                tau.b.year[t] ~ dgamma(0.5, 0.001) # uninformative prior
+        }
+        
+}
+
+
+#
+
+# define the vectors of the data matrix for JAGS.
+w.Deaths <- as.vector(datsc$w.Deaths)
+Deaths <- as.vector(datsc$Deaths)
+constmanufact <- as.vector(datsc$constmanufact)
+constagricult <- as.vector(datsc$constagricult)
+Magnitude <- as.vector(datsc$Magnitude)
+p.Population <- as.vector(datsc$p.Population)
+country <- as.numeric(as.ordered(datsc$country))
+Ncountry <-  as.numeric(as.vector(length(unique(as.numeric(datsc$country)))))
+N <-  as.numeric(nrow(datsc))
+year = as.vector(datsc$year)
+yearID = as.numeric(as.ordered(datsc$year))
+yearN = length(unique(datsc$year))
+Sector = as.vector(as.numeric(factor(datsc$Sector)))
+NSector = as.numeric(as.vector(length(unique(as.numeric(datsc$Sector)))))
+NIncometax = as.vector(length(unique(as.numeric(datsc$incometax.d))))
+incometax.d = as.vector(as.numeric(datsc$incometax.d))
+NIncometax.y = as.vector(length(unique(as.numeric(datsc$incometax.y))))
+incometax.y = as.vector(as.numeric(datsc$incometax.y))
+Urban = as.vector(as.numeric(datsc$Urban))
+customtax = as.vector(as.numeric(datsc$customtax))/100
+propagrmanu = as.vector(as.numeric(datsc$propagrmanu))
+r.long = as.vector(as.numeric(datsc$r.long))
+r.lat = as.vector(as.numeric(datsc$r.lat))
+
+propagrmanu.seq = seq(
+        from = min(as.numeric(datsc$propagrmanu)),
+        to = max(as.numeric(datsc$propagrmanu)),
+        length.out = as.numeric(nrow(datsc)))
+
+N.sim = length(seq(
+        from = min(as.numeric(datsc$propagrmanu)),
+        to = max(as.numeric(datsc$propagrmanu)),
+        length.out = as.numeric(nrow(datsc))))
+
+
+
+
+jags.data <- list(Deaths = Deaths,
+                  Magnitude = Magnitude^2,
+                  p.Population = p.Population,
+                  incometax.d = incometax.d,
+                  Urban = Urban,
+                  r.long = r.long,
+                  r.lat = r.lat,
+                  yearID = yearID,
+                  yearN = yearN,
+                  N = N)
+
+
+# Define and name the parameters so JAGS monitors them.
+eq.params <- c("b.Magnitude", "b.p.Population", "b.year", "b.r.long", "b.r.lat", "b.incometax.d", "b.Urban", "lambda")
+## ----
+
+
+## ---- income:tax:model:and:data:run ----
+# run the model
+n.iter = 200000  # n.iter = 200000 // this is for working model
+n.burnin = 5000 # n.burnin = 5000 // this is for working model
+n.chains = 4 # n.chains = 4 for the working model
+
+earthquakefit <- jags(
+        data=jags.data,
+        inits=NULL,
+        parameters.to.save = eq.params,
+        n.chains=n.chains,
+        n.iter=n.iter,
+        n.burnin=n.burnin, 
+        model.file=model.jags,
+        progress.bar = "none")
+
+#### Generates Diagnostic Plots - this links to a link in the Output Table.
+if (!require("pacman")) install.packages("pacman"); library(pacman) 
+p_load(ggmcmc)
+
+fit.mcmc <- as.mcmc(earthquakefit)
+bayes.mod.fit.gg <- ggs(fit.mcmc)
+ggmcmc(bayes.mod.fit.gg, file = "/Users/hectorbahamonde/RU/Dissertation/Papers/Earthquake_Paper/Bahamonde_Earthquake_Paper_Diagnostic_Plots_Income_Tax_Model.pdf")
+graphics.off()
+## ----
+
+
+###############################
+# Income Tax Adoption Plot
+###############################
+
+## ---- income:tax:model:plot ----
+## passing fitted model as mcmc object
+int.mcmc <- as.mcmc(earthquakefit)
+int.mcmc.mat <- as.matrix(int.mcmc)
+int.mcmc.dat <- as.data.frame(int.mcmc.mat)
+
+
+### No Income Tax
+year.range = unique(datsc$year)
+
+sim.no.income.tax <- matrix(rep(NA, nrow(int.mcmc.dat)*length(year.range)), nrow = nrow(int.mcmc.dat))
+for(i in 1:length(year.range)){
+        sim.no.income.tax[, i] <- 
+                int.mcmc.dat$b.p.Population*p.Population[i] + 
+                int.mcmc.dat$b.r.lat*r.lat[i] + 
+                int.mcmc.dat$b.r.long*r.long[i] + 
+                int.mcmc.dat$b.Urban*Urban[i] +
+                int.mcmc.dat$b.Magnitude*Magnitude[i] +
+                incometax.d[i]*0
+        
+
+}
+
+
+## credible intervals
+bayes.c.eff.mean.no.income.tax <- apply(sim.no.income.tax, 2, mean)
+bayes.c.eff.lower.no.income.tax <- apply(sim.no.income.tax, 2, function(x) quantile(x, probs = c(0.1)))
+bayes.c.eff.upper.no.income.tax <- apply(sim.no.income.tax, 2, function(x) quantile(x, probs = c(0.8)))
+
+# create DF
+plot.dat.no.income.tax <- data.frame(year.range, bayes.c.eff.mean.no.income.tax, bayes.c.eff.lower.no.income.tax, bayes.c.eff.upper.no.income.tax); colnames(plot.dat.no.income.tax) <- c("year.range", "mean", "lower", "upper")
+
+plot.dat.no.income.tax = plot.dat.no.income.tax[ which(plot.dat.no.income.tax$year.range<= 1924), ]
+
+
+
+### Income Tax
+year.range = unique(datsc$year)
+
+sim.income.tax <- matrix(rep(NA, nrow(int.mcmc.dat)*length(year.range)), nrow = nrow(int.mcmc.dat))
+for(i in 1:length(year.range)){
+        sim.income.tax[, i] <-
+                int.mcmc.dat$b.p.Population*p.Population[i] + 
+                int.mcmc.dat$b.r.lat*r.lat[i] + 
+                int.mcmc.dat$b.r.long*r.long[i] + 
+                int.mcmc.dat$b.Urban*Urban[i] +
+                int.mcmc.dat$b.Magnitude*Magnitude[i] +
+                int.mcmc.dat$b.incometax.d*incometax.d[i]
+                
+}
+
+
+## credible intervals
+bayes.c.eff.mean.income.tax <- apply(sim.income.tax, 2, mean)
+bayes.c.eff.lower.income.tax <- apply(sim.income.tax, 2, function(x) quantile(x, probs = c(0.1)))
+bayes.c.eff.upper.income.tax <- apply(sim.income.tax, 2, function(x) quantile(x, probs = c(0.8)))
+
+# create DF
+plot.dat.income.tax <- data.frame(year.range, bayes.c.eff.mean.income.tax, bayes.c.eff.lower.income.tax, bayes.c.eff.upper.income.tax); colnames(plot.dat.income.tax) <- c("year.range", "mean", "lower", "upper")
+
+plot.dat.income.tax = plot.dat.income.tax[ which(plot.dat.income.tax$year.range>= 1924), ]
+
+
+
+# income tax adoption plot DF
+income.tax.adoption.plot = as.data.frame(rbind(
+        as.data.frame(cbind(plot.dat.no.income.tax, 'Tax'= rep("No", nrow(plot.dat.no.income.tax)))),
+        as.data.frame(cbind(plot.dat.income.tax, 'Tax'= rep("Yes", nrow(plot.dat.income.tax))))))
+
+# load libraries
+if (!require("pacman")) install.packages("pacman"); library(pacman) 
+p_load(ggplot2)
+
+# plot
+ggplot() + 
+        geom_smooth(data = income.tax.adoption.plot, aes(x = year.range, y = mean, colour = Tax), alpha = 0.8, size = 0.5, se = F, method = 'loess') +
+        geom_ribbon(data = income.tax.adoption.plot, aes(x = year.range, ymin = lower, ymax = upper, fill = Tax), alpha = 0.2) + 
+        geom_vline(xintercept = 1924, linetype=2, colour="blue") + 
+        xlab("Year") + ylab("Casualties") + 
+        theme_bw() + 
+        theme(axis.text.y = element_text(size=7), 
+              axis.text.x = element_text(size=7), 
+              axis.title.y = element_text(size=7), 
+              axis.title.x = element_text(size=7), 
+              legend.text=element_text(size=7), 
+              legend.title=element_text(size=7),
+              plot.title = element_text(size=7)) +
+        scale_fill_manual(values=c("red", "green")) +
+        scale_color_manual(values=c("red", "green"))
+## ----
+
+
+
+###############################
+# Income Tax Adoption Table
+###############################
+
+
+## ---- income:tax:model:regression:table:not:run ----
+
+# R function for summarizing MCMC output in a regression-style table
+# Johannes Karreth, thanks for the function!
+## SOURCE: https://raw.githubusercontent.com/jkarreth/JKmisc/master/mcmctab.R
+
+# I use this function mainly for teaching.
+
+# The function produces a table with means, SDs, credible intervals, and
+# the % of posterior draws below/above 0 from MCMC output from 
+# R2jags, rjags, R2WinBUGS, R2OpenBUGS, and MCMCpack
+
+# Depends on packages: coda, rstan (if working with rstan objects)
+
+# Arguments: 
+# sims: output from R2jags, rjags, R2WinBUGS, R2OpenBUGS, MCMCpack, rstan
+# ci: desired credible interval, default: 0.95
+# digits: desired number of digits in the table, default: 2
+
+
+ci.number = .8 # modify this parameter to get desired credible intervals.
+
+mcmctab <- function(sims, ci = ci.number, digits = 2){
+        
+        require(coda)	
+        
+        if(class(sims) == "jags" | class(sims) == "rjags"){
+                sims <- as.matrix(as.mcmc(sims))
+        }
+        if(class(sims) == "bugs"){
+                sims <- sims$sims.matrix
+        }  
+        if(class(sims) == "mcmc"){
+                sims <- as.matrix(sims)
+        }    
+        if(class(sims) == "mcmc.list"){
+                sims <- as.matrix(sims)
+        }      
+        if(class(sims) == "stanfit"){
+                stan_sims <- rstan::As.mcmc.list(sims)
+                sims <- as.matrix(stan_sims)
+        }      
+        
+        
+        dat <- t(sims)
+        
+        mcmctab <- apply(dat, 1,
+                         function(x) c(Mean = round(mean(x), digits = digits), # Posterior mean
+                                       SD = round(sd(x), digits = 3), # Posterior SD
+                                       Lower = as.numeric(
+                                               round(quantile(x, probs = c((1 - ci) / 2)), 
+                                                     digits = digits)), # Lower CI of posterior
+                                       Upper = as.numeric(
+                                               round(quantile(x, probs = c((1 + ci) / 2)), 
+                                                     digits = digits)), # Upper CI of posterior
+                                       Pr. = round(
+                                               ifelse(mean(x) > 0, length(x[x > 0]) / length(x),
+                                                      length(x[x < 0]) / length(x)), 
+                                               digits = digits) # Probability of posterior >/< 0
+                         ))
+        return(t(mcmctab))
+}
+
+
+
+reg.results.table = data.frame(mcmctab(earthquakefit)[1:6,]) # Posterior distributions // Year FE excluded
+
+
+reg.results.table = data.frame(rbind( # re order df by name of the rowname according to what I have and define in 'var.labels.'
+        reg.results.table[rownames(reg.results.table)==("b.incometax.d"),],
+        reg.results.table[rownames(reg.results.table)==("b.Magnitude"),],
+        reg.results.table[rownames(reg.results.table)==("b.r.lat"),],
+        reg.results.table[rownames(reg.results.table)==("b.r.long"),],
+        reg.results.table[rownames(reg.results.table)==("b.p.Population"),],
+        reg.results.table[rownames(reg.results.table)==("b.Urban"),]
+))
+
+var.labels = c("Income Tax", 
+               "Magnitude", 
+               "Latitude", 
+               "Longitude",
+               "Population", 
+               "Urban")
+
+rownames(reg.results.table) <- var.labels
+
+
+
+# load libraries
+if (!require("pacman")) install.packages("pacman"); library(pacman) 
+p_load(xtable)
+
+note <- paste0(
+        "\\hline \n \\multicolumn{6}{l}", "{ \\scriptsize {\\bf Note}: ", n.iter, " iterations with a burn-in period of n = ", n.burnin , " iterations discarded.}\\\\", "\n \\multicolumn{6}{l}", "{ \\scriptsize ", ci.number*100 ,"\\% credible intervals (upper/lower bounds). All R-Hat statistics below critical levels.}\\\\" ,"\n \\multicolumn{6}{l}", "{ \\scriptsize Standard convergence diagnostics suggest good mixing and convergence.}\\\\","\n \\multicolumn{6}{l}", "{ \\scriptsize Year fixed effects, latitude and longitude were omitted in the table.}\\\\", 
+        "\n \\multicolumn{6}{l}","{ \\scriptsize A total of ", n.chains, " chains were run. Detailed diagnostic plots available \\href{https://github.com/hbahamonde/Earthquake_Paper/raw/master/Bahamonde_Earthquake_Paper_Diagnostic_Plots_Income_Tax_Model.pdf}{\\texttt here}.} \\\\")
+
+
+
+print.xtable(xtable(
+        reg.results.table, 
+        caption = "Income Tax Adoption Model: Simulated Posterior Predictions (Poisson Regression)",
+        label = "regression:table:income:tax:model"), 
+        auto = TRUE,
+        hline.after=c(-1, 0),
+        add.to.row = list(pos = list(length(var.labels)), command = note)
+)
+## ----
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+# Agr Subnational
+# Income Tax: IMPLEMENTED
+## National Agr Level : LOW
+abs(round(max(agr.plot$mean[agr.plot$Tax=="Yes" & agr.plot$prop.range==min(agr.plot$prop.range)])))
+## National Agr Level : High
+abs(round(max(agr.plot$mean[agr.plot$Tax=="Yes" & agr.plot$prop.range==max(agr.plot$prop.range)])))
+
+
+
+
+
 
 
 ##########################
