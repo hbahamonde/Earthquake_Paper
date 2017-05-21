@@ -696,7 +696,8 @@ ggplot() +
               axis.title.x = element_text(size=7), 
               legend.text=element_text(size=7), 
               legend.title=element_text(size=7),
-              plot.title = element_text(size=7)) +
+              plot.title = element_text(size=7),
+              legend.position="bottom") +
         scale_fill_manual(values=c("red", "green")) +
         scale_color_manual(values=c("red", "green"))
 ## ---- 
@@ -812,7 +813,7 @@ if (!require("pacman")) install.packages("pacman"); library(pacman)
 p_load(xtable)
 
 note.sectoral <- paste0(
-        "\\hline \n \\multicolumn{6}{l}", "{ \\scriptsize {\\bf Note}: ", n.iter.sectoral, " iterations with a burn-in period of n = ", n.burnin.sectoral , " iterations discarded.}\\\\", "\n \\multicolumn{6}{l}", "{ \\scriptsize ", ci.number.sectoral*100 ,"\\% credible intervals (upper/lower bounds). All R-Hat statistics below critical levels.}\\\\" ,"\n \\multicolumn{6}{l}", "{ \\scriptsize Standard convergence diagnostics suggest good mixing and convergence.}\\\\","\n \\multicolumn{6}{l}", "{ \\scriptsize Year fixed effects, latitude and longitude were omitted in the table.}\\\\", 
+        "\\hline \n \\multicolumn{6}{l}", "{ \\scriptsize {\\bf Note}: ", n.iter.sectoral, " iterations with a burn-in period of n = ", n.burnin.sectoral , " iterations discarded.}\\\\", "\n \\multicolumn{6}{l}", "{ \\scriptsize ", ci.number.sectoral*100 ,"\\% credible intervals (upper/lower bounds). All R-Hat statistics below critical levels.}\\\\" ,"\n \\multicolumn{6}{l}", "{ \\scriptsize Standard convergence diagnostics suggest good mixing and convergence.}\\\\","\n \\multicolumn{6}{l}", "{ \\scriptsize Year fixed effects were omitted in the table.}\\\\", 
         "\n \\multicolumn{6}{l}","{ \\scriptsize A total of ", n.chains.sectoral, " chains were run. Detailed diagnostic plots available \\href{https://github.com/hbahamonde/Earthquake_Paper/raw/master/Bahamonde_Earthquake_Paper_Diagnostic_Plots_Sectoral_Competition.pdf}{\\texttt here}.} \\\\")
 ## ----
 
@@ -1061,7 +1062,7 @@ ggplot() +
         geom_smooth(data = income.tax.adoption.plot, aes(x = year.range, y = mean, colour = Tax), alpha = 0.8, size = 0.5, se = F, method = 'loess') +
         geom_ribbon(data = income.tax.adoption.plot, aes(x = year.range, ymin = lower, ymax = upper, fill = Tax), alpha = 0.2) + 
         geom_vline(xintercept = 1924, linetype=2, colour="blue") + 
-        xlab("Year") + ylab("Casualties") + 
+        xlab("Year") + ylab("Death-Toll\n(Posterior Predictions)") + 
         theme_bw() + 
         theme(axis.text.y = element_text(size=7), 
               axis.text.x = element_text(size=7), 
@@ -1069,7 +1070,8 @@ ggplot() +
               axis.title.x = element_text(size=7), 
               legend.text=element_text(size=7), 
               legend.title=element_text(size=7),
-              plot.title = element_text(size=7)) +
+              plot.title = element_text(size=7),
+              legend.position="bottom") +
         scale_fill_manual(values=c("red", "green")) +
         scale_color_manual(values=c("red", "green"))
 ## ----
@@ -1173,7 +1175,7 @@ if (!require("pacman")) install.packages("pacman"); library(pacman)
 p_load(xtable)
 
 note.tax <- paste0(
-        "\\hline \n \\multicolumn{6}{l}", "{ \\scriptsize {\\bf Note}: ", n.iter.tax, " iterations with a burn-in period of n = ", n.burnin.tax , " iterations discarded.}\\\\", "\n \\multicolumn{6}{l}", "{ \\scriptsize ", ci.number.tax*100 ,"\\% credible intervals (upper/lower bounds). All R-Hat statistics below critical levels.}\\\\" ,"\n \\multicolumn{6}{l}", "{ \\scriptsize Standard convergence diagnostics suggest good mixing and convergence.}\\\\","\n \\multicolumn{6}{l}", "{ \\scriptsize Year fixed effects, latitude and longitude were omitted in the table.}\\\\", 
+        "\\hline \n \\multicolumn{6}{l}", "{ \\scriptsize {\\bf Note}: ", n.iter.tax, " iterations with a burn-in period of n = ", n.burnin.tax , " iterations discarded.}\\\\", "\n \\multicolumn{6}{l}", "{ \\scriptsize ", ci.number.tax*100 ,"\\% credible intervals (upper/lower bounds). All R-Hat statistics below critical levels.}\\\\" ,"\n \\multicolumn{6}{l}", "{ \\scriptsize Standard convergence diagnostics suggest good mixing and convergence.}\\\\","\n \\multicolumn{6}{l}", "{ \\scriptsize Year fixed effects were omitted in the table.}\\\\", 
         "\n \\multicolumn{6}{l}","{ \\scriptsize A total of ", n.chains.tax, " chains were run. Detailed diagnostic plots available \\href{https://github.com/hbahamonde/Earthquake_Paper/raw/master/Bahamonde_Earthquake_Paper_Diagnostic_Plots_Income_Tax_Model.pdf}{\\texttt here}.} \\\\")
 ## ----
 
@@ -1292,8 +1294,20 @@ ggplot(data = model.checking.plot.df,
         geom_point(shape = 21, colour = "red") + 
         ylab("Observation") + xlab("Deaths") + 
         theme_bw() +
-        theme(axis.text.y = element_text(size=8))
+        theme(
+                axis.text.y = element_text(size=7), 
+                axis.text.x = element_text(size=7), 
+                axis.title.y = element_text(size=7), 
+                axis.title.x = element_text(size=7), 
+                legend.text=element_text(size=7), 
+                legend.title=element_text(size=7),
+                plot.title = element_text(size=7),
+                legend.position="bottom")
 ## ----
+
+
+
+
 
 ##########################
 ##########################
@@ -1481,7 +1495,16 @@ ggplot(data = year.fixed.effects.plot.df, aes(x = variable, y = mean, fill = Mod
         xlab("Year") + 
         ylab("Death-Toll") + 
         theme_bw() + 
-        stat_smooth(method="loess", level=0.80)
+        stat_smooth(method="loess", level=0.80) +
+        theme(
+                axis.text.y = element_text(size=7), 
+                axis.text.x = element_text(size=7), 
+                axis.title.y = element_text(size=7), 
+                axis.title.x = element_text(size=7), 
+                legend.text=element_text(size=7), 
+                legend.title=element_text(size=7),
+                plot.title = element_text(size=7),
+                legend.position="bottom")
 ## ----
 
 
