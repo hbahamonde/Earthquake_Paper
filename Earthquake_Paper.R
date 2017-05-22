@@ -631,7 +631,7 @@ graphics.off()
 # Sectoral Contestation Plot
 ###############################
 
-## ---- sectoral:model:plot ----
+## ---- sectoral:model:plot:not:run ----
 ## passing fitted model as mcmc object
 sect.contest.mcmc <- as.mcmc(earthquakefit.sectoral)
 sect.contest.mcmc.mat <- as.matrix(sect.contest.mcmc)
@@ -683,8 +683,12 @@ sectoral.competition.plot = as.data.frame(rbind(
 # load libraries
 if (!require("pacman")) install.packages("pacman"); library(pacman) 
 p_load(ggplot2)
+## ----
+
+
 
 # plot
+## ---- sectoral:model:plot:run ----
 ggplot() + 
         geom_line(data = sectoral.competition.plot, aes(x = prop.range, y = mean, colour = `Subnational sector\nmostly:`), alpha = 0.8, size = 0.5) + 
         geom_ribbon(data = sectoral.competition.plot, aes(x = prop.range, ymin = lower, ymax = upper, fill = `Subnational sector\nmostly:`), alpha = 0.2) + 
@@ -825,11 +829,13 @@ print.xtable(xtable(
         label = "sectoral:model:regression:table"), 
         auto = TRUE,
         hline.after=c(-1, 0),
-        add.to.row = list(pos = list(length(var.labels.sectoral)), command = note.sectoral)
+        add.to.row = list(pos = list(length(var.labels.sectoral)), 
+                          command = note.sectoral),
+        floating=TRUE,
+        type="latex",
+        table.placement = "H"
 )
 ## ----
-
-
 
 
 
@@ -984,7 +990,7 @@ graphics.off()
 # Income Tax Adoption Plot
 ###############################
 
-## ---- income:tax:model:plot ----
+## ---- income:tax:model:plot:not:run ----
 ## passing fitted model as mcmc object
 tax.mcmc <- as.mcmc(earthquakefit.tax)
 tax.mcmc.mat <- as.matrix(tax.mcmc)
@@ -1052,7 +1058,10 @@ plot.dat.income.tax = plot.dat.income.tax[ which(plot.dat.income.tax$year.range>
 income.tax.adoption.plot = as.data.frame(rbind(
         as.data.frame(cbind(plot.dat.no.income.tax, 'Tax'= rep("No", nrow(plot.dat.no.income.tax)))),
         as.data.frame(cbind(plot.dat.income.tax, 'Tax'= rep("Yes", nrow(plot.dat.income.tax))))))
+## ----
 
+
+## ---- income:tax:model:plot:run ----
 # load libraries
 if (!require("pacman")) install.packages("pacman"); library(pacman) 
 p_load(ggplot2)
@@ -1186,7 +1195,11 @@ print.xtable(xtable(
         label = "regression:table:income:tax:model"), 
         auto = TRUE,
         hline.after=c(-1, 0),
-        add.to.row = list(pos = list(length(var.labels.tax)), command = note.tax)
+        add.to.row = list(pos = list(length(var.labels.tax)), 
+                          command = note.tax),
+        floating=TRUE,
+        type="latex",
+        table.placement = "H"
 )
 ## ----
 
