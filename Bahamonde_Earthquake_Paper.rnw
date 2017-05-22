@@ -301,11 +301,33 @@ the $i$ subscript denotes the unit of analysis (i.e. earthquake),\footnote{\cite
 }
 
 
+
+
+\afterpage{
+% sectoral:model:plot:run
+<<sectoral:model:plot:run, echo = FALSE, fig.pos='H', warning = FALSE, message = FALSE,fig.cap='Death-Toll by National and Subnational Sources of Sectoral Contestation', fig.align='center', fig.width=5 ,fig.height=3,dpi=10000,cache = FALSE,eval=TRUE>>=
+
+@
+
+
+
+
+% income:tax:model:plot:run
+<<income:tax:model:plot:run, echo = FALSE, fig.pos='H', warning = FALSE, message = FALSE,fig.cap='Death-Tolls Over Time: Before and After the Implementation of the Income Tax', fig.align='center', fig.width=5 ,fig.height=3,dpi=10000,cache = FALSE,eval=TRUE>>=
+
+@
+\clearpage
+}
+
+
+
 % explain table 1
-\paragraph{Do higher levels of sectoral contestation translate into state development?} \autoref{sectoral:model:regression:table:run} shows the posterior predictive distributions of the multi-level Bayesian Poisson regression, particularly, the predicted death counts conditional on observed covariates. The main quantity of interest is $\beta_{1_j}$, the coefficient on $\frac{\text{Agriculture}}{\text{Industry}}$ with different slopes, one per subnational sectoral predominance. The table shows that as the relative size of agriculture increases (i.e. as national sectoral contestation \emph{decreases}), the death toll \emph{increases} by $\Sexpr{abs(round(reg.results.table.sectoral$Mean[rownames(reg.results.table.sectoral) == 'Agr/Ind [Agr]'],0))}$ as agriculture expands \emph{but} decreases by $\Sexpr{abs(round(reg.results.table.sectoral$Mean[rownames(reg.results.table.sectoral) == 'Agr/Ind [Ind]'],0))}$ when the average subnational locality is industrial. To ease meaningful interpretation of these results, \autoref{fig:sectoral:model:plot:run} shows in a simple way using the results from the model that as the proportion of the agricultural sector increases the death toll \emph{decreases} by a $\Sexpr{abs(round(sectoral.competition.plot$mean[sectoral.competition.plot$prop.range == min(sectoral.competition.plot$prop.range) & sectoral.competition.plot$'Subnational sector\nmostly' == "Industrial"],0))}$-$\Sexpr{abs(round(sectoral.competition.plot$mean[sectoral.competition.plot$prop.range == max(sectoral.competition.plot$prop.range) & sectoral.competition.plot$'Subnational sector\nmostly' == "Industrial"],0))}$ range when the average affected locality is industrial, but it \emph{increases} by a $\Sexpr{abs(round(sectoral.competition.plot$mean[sectoral.competition.plot$prop.range == min(sectoral.competition.plot$prop.range) & sectoral.competition.plot$'Subnational sector\nmostly' == "Agricultural"],0))}$-$\Sexpr{abs(round(sectoral.competition.plot$mean[sectoral.competition.plot$prop.range == max(sectoral.competition.plot$prop.range) & sectoral.competition.plot$'Subnational sector\nmostly' == "Agricultural"],0))}$ range when the average affected locality is \emph{also} agricultural.
+\paragraph{Do higher levels of sectoral contestation translate into state development?} \autoref{sectoral:model:regression:table:run} shows the posterior predictive distributions of the multi-level Bayesian Poisson regression, particularly, the predicted death counts conditional on observed covariates. The main quantity of interest is $\beta_{1_j}$, the coefficient on $\frac{\text{Agriculture}}{\text{Industry}}$ with different slopes, one per subnational sectoral predominance. The table shows that as the relative size of agriculture increases (i.e. as national sectoral contestation \emph{decreases}), the death toll \emph{increases} by $\Sexpr{abs(round(reg.results.table.sectoral$Mean[rownames(reg.results.table.sectoral) == 'Agr/Ind [Agr]'],0))}$ as agriculture expands \emph{but} decreases by $\Sexpr{abs(round(reg.results.table.sectoral$Mean[rownames(reg.results.table.sectoral) == 'Agr/Ind [Ind]'],0))}$ when the average subnational locality is industrial. To ease meaningful interpretation of these results, \autoref{fig:sectoral:model:plot:run} shows in a simple way using the results from the model that as the proportion of the agricultural sector increases the death toll \emph{decreases} by a $\Sexpr{abs(round(sectoral.competition.plot$mean[sectoral.competition.plot$prop.range == min(sectoral.competition.plot$prop.range) & sectoral.competition.plot$'Subnational sector\nmostly' == "Industrial"],0))}$-$\Sexpr{abs(round(sectoral.competition.plot$mean[sectoral.competition.plot$prop.range == max(sectoral.competition.plot$prop.range) & sectoral.competition.plot$'Subnational sector\nmostly' == "Industrial"],0))}$ range when the average affected locality is industrial, but it \emph{increases} by a $\Sexpr{abs(round(sectoral.competition.plot$mean[sectoral.competition.plot$prop.range == min(sectoral.competition.plot$prop.range) & sectoral.competition.plot$'Subnational sector\nmostly' == "Agricultural"],0))}$-$\Sexpr{abs(round(sectoral.competition.plot$mean[sectoral.competition.plot$prop.range == max(sectoral.competition.plot$prop.range) & sectoral.competition.plot$'Subnational sector\nmostly' == "Agricultural"],0))}$ range when the average affected locality is \emph{also} agricultural. Substantively, these results strongly suggest that sectoral contestation conceptualized in both a national and subnational levels had a positive effect on state-building overtime. In line with my theoretical expectations, I find that the emergence of local industrial clusters challenged agricultural incumbents, fostering inter-elite compromises and institutional investments. 
 
 
-Substantively, I find that \todo{COMPLETE HERE}. 
+
+\paragraph{Is taxation a state-making institution?} Next, I argued that lower levels of inter-elite inequality led to higher levels of sectoral contestation, fostering inter-elite compromises. In this paper I identified one such compromise, the implementation of the income tax law. The implementation of the income tax had positive externalities for state-building. Particularly, the endogenous capacities of efficiently monitoring individual incomes and deploying bureaucracies throughout the territory to collect these taxes were transfered to other state institutions via spillover effects. This has been a long-time claim of the fiscal sociology. Here I test whether the implementation of the tax increased the capacities of the Chilean state of monitoring and enforcing building codes. Following the same setup and using the same dataset, I fit a simpler Poisson model. The only complexity are the year fixed-effects. The main difference is the inclusion of an indicator variable which denotes whether by year $t$ the income tax had been implemented or not. More formally, I fitted \autoref{model:2}. Similarly, \autoref{income:tax:model:regression:table:run} shows posterior predictive distributions. The model shows that implementing the income tax in average \emph{decreases} death-tolls by $\Sexpr{abs(round(reg.results.table.tax$Mean[rownames(reg.results.table.tax) == 'Income Tax'],0))}$ overtime. The overtime-effect is small. However, \autoref{fig:income:tax:model:plot:run} shows the disaggregated effects overtime. The figure shows that death-tolls, i.e. state capacities, do vary overtime. Before the income tax law is implemented, death-tolls are relatively stable, averaging 28 casualties approximately. However, once the income tax law is implemented, the death-toll declines from 28 to 22, approximately. More than a strong prediction, these results speak in favor of the idea that the implementation of the income tax had positive externalities on other agencies. 
+
 
 
 \begin{equation} \label{model:2}
@@ -325,24 +347,11 @@ log(\lambda_{i})  =
 
 
 
-\todo{where should I put this paragraph?} Finally, it is important to rule out the possibility that both industrial \emph{and} agricultural localities are shocked by earthquakes in the same fashion. Otherwise, there might be an endogeneity problem: sectors would be self selecting themselves into more/less earthquake-prone zones. \autoref{sectoral:model:regression:table:run} shows the posterior means of magnitudes by agricultural, industrial and mixed localities. Overall, there does not seem to be substantive evidence to suggest that this is the case. In \autoref{appendix} I present a number of graphical evidence to suggest good fit and convergence of the model. Additional diagnostic plots are available \href{https://github.com/hbahamonde/Earthquake_Paper/raw/master/Bahamonde_Earthquake_Paper_Diagnostic_Plots_Sectoral_Competition.pdf}{\texttt{here}}. Overall, the model is robust and convergence is good.\todo{check hyperlink}
-
-
-% sectoral:model:plot:run
-<<sectoral:model:plot:run, echo = FALSE, fig.pos='H', warning = FALSE, message = FALSE,fig.cap='Death-Toll by National and Subnational Sources of Sectoral Contestation', fig.align='center', fig.width=5 ,fig.height=3,dpi=10000,cache = FALSE,eval=TRUE>>=
-
-@
-
-\paragraph{Is taxation a state-making institution?} Next, I argued that lower levels of inter-elite inequality led to higher levels of sectoral contestation, fostering inter-elite compromises. In this paper I identified one such compromise, the implementation of the income tax law. The implementation of the income tax had positive externalities for state-building. Particularly, the endogenous capacities of efficiently monitoring individual incomes and deploying bureaucracies throughout the territory to collect these taxes were transfered to other state institutions via spillover effects. This has been a long-time claim of the fiscal sociology. Here I test whether the implementation of the tax increased the capacities of the Chilean state of monitoring and enforcing building codes. Following the same setup and using the same dataset, I fit a simpler Poisson model. The only complexity are the year fixed-effects. The main difference is the inclusion of an indicator variable which denotes whether by year $t$ the income tax had been implemented or not. More formally, I fitted \autoref{model:2}. Similarly, \autoref{income:tax:model:regression:table:run} shows posterior predictive distributions. The model shows that implementing the income tax in average \emph{decreases} death-tolls by $\Sexpr{abs(round(reg.results.table.tax$Mean[rownames(reg.results.table.tax) == 'Income Tax'],0))}$ overtime. The overtime-effect is small. However, \autoref{fig:income:tax:model:plot:run} shows the disaggregated effects overtime. The figure shows that death-tolls, i.e. state capacities, do vary overtime. Before the income tax law is implemented, death-tolls are relatively stable, averaging 28 casualties approximately. However, once the income tax law is implemented, the death-toll declines from 28 to 22, approximately. More than a strong prediction, these results speak in favor of the idea that the implementation of the income tax had positive externalities on other agencies. 
+\todo{where should I put this} Additional diagnostic plots are available \href{https://github.com/hbahamonde/Earthquake_Paper/raw/master/Bahamonde_Earthquake_Paper_Diagnostic_Plots_Sectoral_Competition.pdf}{\texttt{here}}. Overall, the model is robust and convergence is good.\todo{check hyperlink}
 
 
 
 
-
-% income:tax:model:plot:run
-<<income:tax:model:plot:run, echo = FALSE, fig.pos='H', warning = FALSE, message = FALSE,fig.cap='Death-Tolls Over Time: Before and After the Implementation of the Income Tax', fig.align='center', fig.width=5 ,fig.height=3,dpi=10000,cache = FALSE,eval=TRUE>>=
-
-@
 
 
 
