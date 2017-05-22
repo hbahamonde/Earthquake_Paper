@@ -826,7 +826,7 @@ note.sectoral <- paste0(
 print.xtable(xtable(
         reg.results.table.sectoral, 
         caption = "Sectoral Competition Model: Simulated Posterior Predictions (Poisson Regression)",
-        label = "sectoral:model:regression:table"), 
+        label = "sectoral:model:regression:table:run"), 
         auto = TRUE,
         hline.after=c(-1, 0),
         add.to.row = list(pos = list(length(var.labels.sectoral)), 
@@ -1192,7 +1192,7 @@ note.tax <- paste0(
 print.xtable(xtable(
         reg.results.table.tax, 
         caption = "Income Tax Adoption Model: Simulated Posterior Predictions (Poisson Regression)",
-        label = "regression:table:income:tax:model"), 
+        label = "income:tax:model:regression:table:run"), 
         auto = TRUE,
         hline.after=c(-1, 0),
         add.to.row = list(pos = list(length(var.labels.tax)), 
@@ -1213,15 +1213,6 @@ print.xtable(xtable(
 
 
 
-
-
-
-# Agr Subnational
-# Income Tax: IMPLEMENTED
-## National Agr Level : LOW
-abs(round(max(agr.plot$mean[agr.plot$Tax=="Yes" & agr.plot$prop.range==min(agr.plot$prop.range)])))
-## National Agr Level : High
-abs(round(max(agr.plot$mean[agr.plot$Tax=="Yes" & agr.plot$prop.range==max(agr.plot$prop.range)])))
 
 
 
