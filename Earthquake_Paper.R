@@ -599,9 +599,9 @@ eq.params.sectoral <- c("b.propagrmanu", "b.Magnitude", "b.p.Population", "b.yea
 
 ## ---- sectoral:model:and:data:does:run ----
 # run the model
-n.iter.sectoral = 2  # n.iter.sectoral = 200000 // this is for working model
-n.burnin.sectoral = 0 # n.burnin.sectoral = 5000 // this is for working model
-n.chains.sectoral = 1 # n.chains.sectoral = 4 for the working model
+n.iter.sectoral = 200000  # n.iter.sectoral = 200000 // this is for working model
+n.burnin.sectoral = 5000 # n.burnin.sectoral = 5000 // this is for working model
+n.chains.sectoral = 4 # n.chains.sectoral = 4 for the working model
 
 earthquakefit.sectoral <- jags(
         data=jags.data.sectoral,
@@ -619,7 +619,7 @@ p_load(ggmcmc)
 
 fit.mcmc.sectoral <- as.mcmc(earthquakefit.sectoral)
 bayes.mod.fit.gg.sectoral <- ggs(fit.mcmc.sectoral)
-# ggmcmc(bayes.mod.fit.gg.sectoral, file = "/Users/hectorbahamonde/RU/Dissertation/Papers/Earthquake_Paper/Bahamonde_Earthquake_Paper_Diagnostic_Plots_Sectoral_Competition.pdf")
+ggmcmc(bayes.mod.fit.gg.sectoral, file = "/Users/hectorbahamonde/RU/Dissertation/Papers/Earthquake_Paper/Bahamonde_Earthquake_Paper_Diagnostic_Plots_Sectoral_Competition.pdf")
 graphics.off()
 ## ----
 
@@ -817,8 +817,8 @@ if (!require("pacman")) install.packages("pacman"); library(pacman)
 p_load(xtable)
 
 note.sectoral <- paste0(
-        "\\hline \n \\multicolumn{6}{l}", "{ \\scriptsize {\\bf Note}: ", n.iter.sectoral, " iterations with a burn-in period of n = ", n.burnin.sectoral , " iterations discarded.}\\\\", "\n \\multicolumn{6}{l}", "{ \\scriptsize ", ci.number.sectoral*100 ,"\\% credible intervals (upper/lower bounds). All R-Hat statistics below critical levels.}\\\\" ,"\n \\multicolumn{6}{l}", "{ \\scriptsize Standard convergence diagnostics suggest good mixing and convergence.}\\\\","\n \\multicolumn{6}{l}", "{ \\scriptsize Year fixed effects were omitted in the table.}\\\\", 
-        "\n \\multicolumn{6}{l}","{ \\scriptsize A total of ", n.chains.sectoral, " chains were run. Detailed diagnostic plots available \\href{https://github.com/hbahamonde/Earthquake_Paper/raw/master/Bahamonde_Earthquake_Paper_Diagnostic_Plots_Sectoral_Competition.pdf}{\\texttt here}.} \\\\")
+        "\\hline \n \\multicolumn{6}{c}", "{ \\scriptsize {\\bf Note}: ", n.iter.sectoral, " iterations with a burn-in period of n = ", n.burnin.sectoral , " iterations discarded.}\\\\", "\n \\multicolumn{6}{c}", "{ \\scriptsize ", ci.number.sectoral*100 ,"\\% credible intervals (upper/lower bounds). All R-Hat statistics below critical levels.}\\\\" ,"\n \\multicolumn{6}{c}", "{ \\scriptsize Standard convergence diagnostics suggest good mixing and convergence.}\\\\","\n \\multicolumn{6}{c}", "{ \\scriptsize Year fixed effects were omitted in the table.}\\\\", 
+        "\n \\multicolumn{6}{c}","{ \\scriptsize A total of ", n.chains.sectoral, " chains were run. Detailed diagnostic plots available \\href{https://github.com/hbahamonde/Earthquake_Paper/raw/master/Bahamonde_Earthquake_Paper_Diagnostic_Plots_Sectoral_Competition.pdf}{\\texttt here}.} \\\\")
 ## ----
 
 
@@ -961,9 +961,9 @@ eq.params.tax <- c("b.Magnitude", "b.p.Population", "b.year", "b.r.long", "b.r.l
 
 ## ---- income:tax:model:and:data:run ----
 # run the model
-n.iter.tax = 2  # n.iter.tax = 200000 // this is for working model
-n.burnin.tax = 0 # n.burnin.tax = 5000 // this is for working model
-n.chains.tax = 1 # n.chains.tax = 4 for the working model
+n.iter.tax = 200000  # n.iter.tax = 200000 // this is for working model
+n.burnin.tax = 5000 # n.burnin.tax = 5000 // this is for working model
+n.chains.tax = 4 # n.chains.tax = 4 for the working model
 
 earthquakefit.tax <- jags(
         data=jags.data.tax,
@@ -981,7 +981,7 @@ p_load(ggmcmc)
 
 fit.mcmc.tax <- as.mcmc(earthquakefit.tax)
 bayes.mod.fit.gg.tax <- ggs(fit.mcmc.tax)
-# ggmcmc(bayes.mod.fit.gg.tax, file = "/Users/hectorbahamonde/RU/Dissertation/Papers/Earthquake_Paper/Bahamonde_Earthquake_Paper_Diagnostic_Plots_Income_Tax_Model.pdf")
+ggmcmc(bayes.mod.fit.gg.tax, file = "/Users/hectorbahamonde/RU/Dissertation/Papers/Earthquake_Paper/Bahamonde_Earthquake_Paper_Diagnostic_Plots_Income_Tax_Model.pdf")
 graphics.off()
 ## ----
 
