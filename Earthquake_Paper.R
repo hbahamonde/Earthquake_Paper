@@ -125,14 +125,15 @@ ggplot(dat.chile, aes(x = year, y = Magnitude)) +
 
 ## bar plot
 Deaths = data.frame(dat.chile$Deaths); colnames(Deaths)[1] <- "Deaths"
-
 ggplot(na.omit(Deaths), aes(factor(Deaths))) + 
         geom_bar(width=.8) + 
         scale_x_discrete(name='Deaths') +
-        scale_y_discrete(name='Count') +
+        geom_hline(yintercept = c(1,10,20),  colour= "red", linetype = "dashed", size=1.4) +
+        scale_y_continuous(name='Count') +
         theme_bw() + 
         ggtitle("") + #Death Tolls Associated to Earthquakes: Chile 1500-2010
-        coord_flip()
+        coord_flip() +
+        ggsave("/Users/hectorbahamonde/RU/Dissertation/Presentation/Resources/count_plot.pdf", dpi = 1000, width = 128, height = 96, units = c("mm"))
 
 
 
