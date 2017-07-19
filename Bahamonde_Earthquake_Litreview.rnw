@@ -464,3 +464,18 @@ This approach departs greatly from the `fiscal contract' paradigm, however. As o
 	\citet{Kurtz2009}
 
 Hence, in years when the tax had been implemented, the state was better equipped with these state resources to confront earthquakes in a better way. And while public economists usually focus on tax revenues, I depart from this strategy. Higher revenues do not mean higher stateness levels. For example, since American institutions were deliberately designed to limit the exercise of state power, the U.S. taxes very little.\footnote{\citet[6]{Fukuyama:2004nr}.} However, it is not reasonable to say that the U.S. has a `weak state.' To summarize, sectoral contestation conceptualized as rapid national agricultural growth \emph{and} rapid subnational industrial growth, and the implementation of the income tax are positively associated with increasing levels of state capacities. 
+
+
+
+\footnote{In other words, other ``natural disasters can be foreseen (or predicted with some probability) and thus measures can be taken to limit their severity'' (\citet[1908]{Anbarci2005}).}
+
+
+Moreover, unlike other natural disasters, earthquakes do not allow actors to adapt their behavior while the quake is happening. For example, in the case of famines, the institutions of ``calamity relief in India [...] emphasize the need for local administrators to look for \emph{signs}, such as large drops in food production and increases in food prices, which \emph{signal} an impending crisis.''\footnote{\citet[1423]{Besley2002}. Emphases are mine. In fact, as \citet[273]{Kahn2005} points out to the very non-significant low correlation between predictable and unpredictable natural disasters.}
+
+
+\footnote{Thus, my measurement captures state outcomes. \citet{Fukuyama2013} is very critical of `outcome-oriented' measurements. However, this outcome is different. Unlike the proportion of tax over GDP which could end up being wasted (p. 353), or ``educational outcomes [which depend] much more strongly on factors like friends and family'' (p. 355), death tolls associated to earthquakes are \emph{not} `hard to measure' (p. 356) neither they are subject to `normative' concerns. I also disagree in that `econometric techniques' to control for these and other factors add `another layer of complexity.' Similarly, \citet[619]{Kurtz2012} explain that the ``problem [...] with output based measures is that they necessarily include information on policy choice.'' However, it would be hard to say that people's lives are subject to `ideological' or `policy preferences.'} 
+
+I agree with \citet[619]{Kurtz2012} in that  an ``output-linked approach [...] should only examine public sector outputs that are not particularly politicized, and generally perceived to be essential state functions across a very broad set of states.'' 
+
+
+Since death tolls are a function of how well (bad) building codes are enforced by the state throughout the territory, adopting a subnational approach seems more appropriate. For instance, there might be excluded local elites that might not be willing to comply with national policies at the subnational level. The proposed measurement and theoretical framework capture these tensions, offering a theory for the conditions that foster subnational cooperation.
