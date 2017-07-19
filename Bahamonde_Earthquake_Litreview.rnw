@@ -479,3 +479,5 @@ I agree with \citet[619]{Kurtz2012} in that  an ``output-linked approach [...] s
 
 
 Since death tolls are a function of how well (bad) building codes are enforced by the state throughout the territory, adopting a subnational approach seems more appropriate. For instance, there might be excluded local elites that might not be willing to comply with national policies at the subnational level. The proposed measurement and theoretical framework capture these tensions, offering a theory for the conditions that foster subnational cooperation.
+
+\footnote{\citet[237]{Gelman:2006bh}. I do not claim in any way this is a causal method.} 
