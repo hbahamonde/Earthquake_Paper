@@ -121,7 +121,7 @@ The theory also incorporates important subnational dynamics. The ability of the 
 
 
 % The rest of the paper proceeds as follows.
-The rest of the paper proceeds as follows. In \autoref{argument} I explain the argument, paying special attention to how the implementation of the income tax expanded state-capacities. Second, in \autoref{chile:section} I illustrate the causal mechanisms at work, presenting some historical context about the Chilean case. In \autoref{measurement} \todo{make sure this link worked} I introduce the proposed measurement and explain how it maps onto state capacities. Then, in \autoref{models}, I present a number of econometric tests. In \autoref{discussion} I provide final comments. In \autoref{appendix} (online appendix) I show some convergence diagnostics.
+The rest of the paper proceeds as follows. In \autoref{argument} I explain the argument, paying special attention to how the implementation of the income tax expanded state-capacities. Second, in \autoref{chile:section} I illustrate the causal mechanisms at work, presenting some historical context about the Chilean case. In \autoref{measurement} I introduce the proposed measurement and explain how it maps onto state capacities. Then, in \autoref{models}, I present a number of econometric tests. In \autoref{discussion} I provide final comments. In \autoref{appendix} (online appendix) I show some convergence diagnostics.
 
 
 \section{Sectoral Conflict, Cooperation, and the Case of the Income Tax \label{argument}}
