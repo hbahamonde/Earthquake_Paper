@@ -31,7 +31,7 @@ model.jags.sectoral.fe <- function() {
                         b.Magnitude[Sector[i]]*Magnitude[i] + #  multi-level part: allow national output to vary at the local/sector level
                         b.p.Population*p.Population[i] +
                         b.Urban*Urban[i] +
-                        # b.year[yearID[i]] + # year fixed-effects
+                        b.year[yearID[i]] + # year fixed-effects
                         b.observation.comp.model[i] + # observation fixed-effects
                         b.r.long*r.long[i] +
                         b.r.lat*r.lat[i] +
@@ -45,12 +45,12 @@ model.jags.sectoral.fe <- function() {
         b.Urban ~ dnorm(0, 0.01)
         
         
-        # for (t in 1:yearN){ # year fixed effects
-        #        b.year[t] ~ dnorm(m.b.year[t], tau.b.year[t])
-        #        
-        #        m.b.year[t] ~ dnorm(0, 0.01)
-        #        tau.b.year[t] ~ dgamma(0.5, 0.001) # uninformative prior
-        #}
+        for (t in 1:yearN){ # year fixed effects
+                b.year[t] ~ dnorm(m.b.year[t], tau.b.year[t])
+                
+                m.b.year[t] ~ dnorm(0, 0.01)
+                tau.b.year[t] ~ dgamma(0.5, 0.001) # uninformative prior
+        }
         
         for (i in 1:N){ # observation fixed effects
                 b.observation.comp.model[i] ~ dnorm(m.b.observation.comp.model[i], tau.b.observation.comp.model[i])
@@ -112,13 +112,13 @@ jags.data.sectoral.fe <- list(Deaths = Deaths,
                            Urban = Urban,
                            r.long = r.long,
                            r.lat = r.lat,
-                           #yearID = yearID,
-                           #yearN = yearN,
+                           yearID = yearID,
+                           yearN = yearN,
                            N = N)
 
 
 # Define and name the parameters so JAGS monitors them.
-eq.params.sectoral.fe <- c("b.propagrmanu.observation", "b.observation.comp.model")
+eq.params.sectoral.fe <- c("b.propagrmanu.observation", "b.observation.comp.model", "b.Magnitude", "b.p.Population", "b.year", "b.r.long", "b.r.lat", "b.Urban")
 
 
 
@@ -169,7 +169,7 @@ model.jags.tax.fe <- function() {
                         b.p.Population*p.Population[i] +
                         b.Urban*Urban[i] +
                         b.observation.tax.model[i] + # observation fixed-effects
-                        #b.year[yearID[i]] + # year fixed-effects
+                        b.year[yearID[i]] + # year fixed-effects
                         b.r.long*r.long[i] +
                         b.r.lat*r.lat[i] + 
                         mu ## intercept
@@ -184,12 +184,12 @@ model.jags.tax.fe <- function() {
         b.interaction ~ dnorm(0, 0.01)
         b.Magnitude ~ dnorm(0, 0.01)
         
-        #for (t in 1:yearN){ # fixed effects
-        #        b.year[t] ~ dnorm(m.b.year[t], tau.b.year[t])
-        #        
-        #        m.b.year[t] ~ dnorm(0, 0.01)
-        #        tau.b.year[t] ~ dgamma(0.5, 0.001) # uninformative prior
-        #}
+        for (t in 1:yearN){ # fixed effects
+                b.year[t] ~ dnorm(m.b.year[t], tau.b.year[t])
+                
+                m.b.year[t] ~ dnorm(0, 0.01)
+                tau.b.year[t] ~ dgamma(0.5, 0.001) # uninformative prior
+        }
 
 
         for (i in 1:N){ # observation fixed effects
@@ -238,13 +238,13 @@ jags.data.tax.fe <- list(Deaths = Deaths,
                       Urban = Urban,
                       r.long = r.long,
                       r.lat = r.lat,
-                      #yearID = yearID,
-                      #yearN = yearN,
+                      yearID = yearID,
+                      yearN = yearN,
                       N = N)
 
 
 # Define and name the parameters so JAGS monitors them.
-eq.params.tax.fe <- c("b.incometax.d.observation", "b.observation.tax.model")
+eq.params.tax.fe <- c("b.incometax.d.observation", "b.observation.tax.model", "b.Magnitude", "b.p.Population", "b.year", "b.r.long", "b.r.lat", "b.Urban")
 
 
 
@@ -373,7 +373,7 @@ jags.data.tax.normal <- list(Deaths = Deaths,
 
 
 # Define and name the parameters so JAGS monitors them.
-eq.params.tax.normal.tax <- c("b.incometax.d.normal")
+eq.params.tax.normal.tax <- c("b.incometax.d.normal", "b.Magnitude", "b.p.Population", "b.year", "b.r.long", "b.r.lat", "b.Urban")
 
 
 # run the model
@@ -500,7 +500,7 @@ jags.data.sectoral.normal <- list(Deaths = Deaths,
 
 
 # Define and name the parameters so JAGS monitors them.
-eq.params.sectoral.normal <- c("b.propagrmanu.normal")
+eq.params.sectoral.normal <- c("b.propagrmanu.normal", "b.Magnitude", "b.p.Population", "b.year", "b.r.long", "b.r.lat", "b.Urban")
 
 
 
@@ -690,4 +690,118 @@ ggplot(data = N.fixed.effects.plot.df, aes(x = variable, y = mean, colour = Mode
                 legend.position="bottom")
 
 
+## TABLES
 
+
+
+# R function for summarizing MCMC output in a regression-style table
+# Johannes Karreth, thanks for the function!
+## SOURCE: https://raw.githubusercontent.com/jkarreth/JKmisc/master/mcmctab.R
+
+# I use this function mainly for teaching.
+
+# The function produces a table with means, SDs, credible intervals, and
+# the % of posterior draws below/above 0 from MCMC output from 
+# R2jags, rjags, R2WinBUGS, R2OpenBUGS, and MCMCpack
+
+# Depends on packages: coda, rstan (if working with rstan objects)
+
+# Arguments: 
+# sims: output from R2jags, rjags, R2WinBUGS, R2OpenBUGS, MCMCpack, rstan
+# ci: desired credible interval, default: 0.95
+# digits: desired number of digits in the table, default: 2
+
+
+ci.number.sectoral = .8 # modify this parameter to get desired credible intervals.
+
+mcmctab <- function(sims, ci = ci.number.sectoral, digits = 2){
+        
+        require(coda) 
+        
+        if(class(sims) == "jags" | class(sims) == "rjags"){
+                sims <- as.matrix(as.mcmc(sims))
+        }
+        if(class(sims) == "bugs"){
+                sims <- sims$sims.matrix
+        }  
+        if(class(sims) == "mcmc"){
+                sims <- as.matrix(sims)
+        }    
+        if(class(sims) == "mcmc.list"){
+                sims <- as.matrix(sims)
+        }      
+        if(class(sims) == "stanfit"){
+                stan_sims <- rstan::As.mcmc.list(sims)
+                sims <- as.matrix(stan_sims)
+        }      
+        
+        
+        dat <- t(sims)
+        
+        mcmctab <- apply(dat, 1,
+                         function(x) c(Mean = round(mean(x), digits = digits), # Posterior mean
+                                       SD = round(sd(x), digits = 3), # Posterior SD
+                                       Lower = as.numeric(
+                                               round(quantile(x, probs = c((1 - ci) / 2)), 
+                                                     digits = digits)), # Lower CI of posterior
+                                       Upper = as.numeric(
+                                               round(quantile(x, probs = c((1 + ci) / 2)), 
+                                                     digits = digits)), # Upper CI of posterior
+                                       Pr. = round(
+                                               ifelse(mean(x) > 0, length(x[x > 0]) / length(x),
+                                                      length(x[x < 0]) / length(x)), 
+                                               digits = digits) # Probability of posterior >/< 0
+                         ))
+        return(t(mcmctab))
+}
+
+
+
+
+# Sectoral FE // OK
+earthquakefit.sectoral.fe.table = data.frame(
+    rbind(
+        mcmctab(earthquakefit.sectoral.fe)["b.propagrmanu.observation[1]",],
+        mcmctab(earthquakefit.sectoral.fe)["b.propagrmanu.observation[2]",],
+        mcmctab(earthquakefit.sectoral.fe)["b.propagrmanu.observation[3]",],
+        mcmctab(earthquakefit.sectoral.fe)["b.Magnitude[1]",],
+        mcmctab(earthquakefit.sectoral.fe)["b.Magnitude[2]",], 
+        mcmctab(earthquakefit.sectoral.fe)["b.Magnitude[1]",],
+        mcmctab(earthquakefit.sectoral.fe)["b.r.lat",],
+        mcmctab(earthquakefit.sectoral.fe)["b.r.long",],
+        mcmctab(earthquakefit.sectoral.fe)["b.p.Population",],
+        mcmctab(earthquakefit.sectoral.fe)["b.Urban",]
+   )
+    ) 
+
+
+var.labels.sectoral = c("Agr/Ind [Agr]", 
+                        "Agr/Ind [Ind]", 
+                        "Agr/Ind [Mixed]", 
+                        "Magnitude [Agr]", 
+                        "Magnitude [Ind]", 
+                        "Magnitude [Mixed]", 
+                        "Latitude", 
+                        "Longitude",
+                        "Population", 
+                        "Urban")
+
+rownames(earthquakefit.sectoral.fe.table) <- var.labels.sectoral
+
+
+
+# load libraries
+if (!require("pacman")) install.packages("pacman"); library(pacman) 
+p_load(xtable)
+
+
+print.xtable(xtable(
+        earthquakefit.sectoral.fe.table, 
+        caption = "Sectoral Competition Model with Individual Fixed Effects: Simulated Posterior Predictions (Poisson Regression)",
+        label = "sectoral:model:regression:table:run:with:fixed:effects"), 
+        auto = TRUE,
+        hline.after=c(-1, 0),
+        floating=TRUE,
+        type="latex",
+        table.placement = "H"
+)
