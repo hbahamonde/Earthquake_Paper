@@ -31,7 +31,7 @@ model.jags.sectoral.fe <- function() {
                         b.Magnitude[Sector[i]]*Magnitude[i] + #  multi-level part: allow national output to vary at the local/sector level
                         b.p.Population*p.Population[i] +
                         b.Urban*Urban[i] +
-                        b.year[yearID[i]] + # year fixed-effects
+                        # b.year[yearID[i]] + # year fixed-effects
                         b.observation.comp.model[i] + # observation fixed-effects
                         b.r.long*r.long[i] +
                         b.r.lat*r.lat[i] +
@@ -45,12 +45,12 @@ model.jags.sectoral.fe <- function() {
         b.Urban ~ dnorm(0, 0.01)
         
         
-        for (t in 1:yearN){ # year fixed effects
-                b.year[t] ~ dnorm(m.b.year[t], tau.b.year[t])
-                
-                m.b.year[t] ~ dnorm(0, 0.01)
-                tau.b.year[t] ~ dgamma(0.5, 0.001) # uninformative prior
-        }
+        # for (t in 1:yearN){ # year fixed effects
+        #        b.year[t] ~ dnorm(m.b.year[t], tau.b.year[t])
+        #        
+        #        m.b.year[t] ~ dnorm(0, 0.01)
+        #        tau.b.year[t] ~ dgamma(0.5, 0.001) # uninformative prior
+        #}
         
         for (i in 1:N){ # observation fixed effects
                 b.observation.comp.model[i] ~ dnorm(m.b.observation.comp.model[i], tau.b.observation.comp.model[i])
@@ -112,8 +112,8 @@ jags.data.sectoral.fe <- list(Deaths = Deaths,
                            Urban = Urban,
                            r.long = r.long,
                            r.lat = r.lat,
-                           yearID = yearID,
-                           yearN = yearN,
+                           #yearID = yearID,
+                           #yearN = yearN,
                            N = N)
 
 
@@ -169,7 +169,7 @@ model.jags.tax.fe <- function() {
                         b.p.Population*p.Population[i] +
                         b.Urban*Urban[i] +
                         b.observation.tax.model[i] + # observation fixed-effects
-                        b.year[yearID[i]] + # year fixed-effects
+                        #b.year[yearID[i]] + # year fixed-effects
                         b.r.long*r.long[i] +
                         b.r.lat*r.lat[i] + 
                         mu ## intercept
@@ -184,12 +184,12 @@ model.jags.tax.fe <- function() {
         b.interaction ~ dnorm(0, 0.01)
         b.Magnitude ~ dnorm(0, 0.01)
         
-        for (t in 1:yearN){ # fixed effects
-                b.year[t] ~ dnorm(m.b.year[t], tau.b.year[t])
-                
-                m.b.year[t] ~ dnorm(0, 0.01)
-                tau.b.year[t] ~ dgamma(0.5, 0.001) # uninformative prior
-        }
+        #for (t in 1:yearN){ # fixed effects
+        #        b.year[t] ~ dnorm(m.b.year[t], tau.b.year[t])
+        #        
+        #        m.b.year[t] ~ dnorm(0, 0.01)
+        #        tau.b.year[t] ~ dgamma(0.5, 0.001) # uninformative prior
+        #}
 
 
         for (i in 1:N){ # observation fixed effects
@@ -238,8 +238,8 @@ jags.data.tax.fe <- list(Deaths = Deaths,
                       Urban = Urban,
                       r.long = r.long,
                       r.lat = r.lat,
-                      yearID = yearID,
-                      yearN = yearN,
+                      #yearID = yearID,
+                      #yearN = yearN,
                       N = N)
 
 
