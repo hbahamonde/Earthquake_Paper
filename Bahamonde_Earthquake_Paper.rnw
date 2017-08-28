@@ -102,7 +102,7 @@ read_chunk('/Users/hectorbahamonde/RU/Dissertation/Papers/Earthquake_Paper/Earth
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 % Motivation
-Latin Americanists have several theories to explain the causes and consequences of state capacities. However, most explanations do not consider within-country variations in levels of state capacity.\footnote{For instance, \citet[2368]{Acemoglu2014} explain that there is only ``a small literature on within-country variation in state capacity.'' See for an exception \citet{Foa2016} and \citet{Soifer2008a}.} Since state authorities in less developed countries face higher difficulties achieving political control,\footnote{\citet{Migdal:1988nr}.} this is very unfortunate. Moreover, \emph{domestic} explanations of state-capacities centered on the role of economic-sectoral conflicts, the economic structural transformation and taxation, have been overlooked.\footnote{A few exceptions are \citet[7-8]{Gallo:1991kx}, \citet{Beramendi2016} and \citet[8]{Saylor:2014aa} who consider elite conflicts to study state-making and fiscal development in the developing world. \citet{Dargent2017} focus on a ```challenger-based' causal mechanism'' of state formation in Peru, however they concentrate their efforts on the role of exogenous economic shocks.} For instance, \citet[2]{Schneider:2012rr} explains that even when we have gained considerable knowledge of fiscal expansion in the European cases, the study of the public finances within a context of state-formation in the developing world is lacking, especially in the presence of ``new leading sectors.'' Since wars in Latin America have been rare,\footnote{\citet{Centeno:2002qf}.} it is difficult to extend models developed to understanding the medieval European case based on external threats.\footnote{\citet{Tilly:1992rr} and \citet{Dincecco2016}.} Critically, there exists in the literature a huge concept-measurement deficit. While most state formation theories (just to name a few) are situated during precolonial,\footnote{\citet{Mahoney:2010aa}.} early,\footnote{See \citet[]{Kurtz:2013aa} and \citet[]{Soifer2015a}.} or late\footnote{\citet{Bahamonde:2017ab}.} independent Latin America, we lack of a measurement that corresponds \emph{temporally} to the theories we have. In other words, most explanations of state-making are \emph{historical} in nature. Yet, in practice, available measurements capture \emph{contemporary} levels of \emph{stateness}. In this paper I try to bridge this gap by providing an additional explanation of state capacities in Latin America centered on domestic sectoral economic conflicts and fiscal expansion. Additionally, I provide a corresponding indicator able to capture levels of state capacities \emph{over time} using a novel dataset and approach. The paper then seeks to contribute to the state formation literature in general, both from theoretical and methodological perspectives. 
+Latin Americanists have several theories to explain the causes and consequences of state capacities. However, most explanations do not consider within-country variations in levels of state capacity.\footnote{For instance, \citet[2368]{Acemoglu2014} explain that there is only ``a small literature on within-country variation in state capacity.'' See for an exception \citet{Foa2016} and \citet{Soifer2008a}.} Since state authorities in less developed countries face higher difficulties achieving political control,\footnote{\citet{Migdal:1988nr}.} this is very unfortunate. Moreover, \emph{domestic} explanations of state-capacities centered on the role of economic-sectoral conflicts, the economic structural transformation and taxation, have been overlooked.\footnote{A few exceptions are \citet[7-8]{Gallo:1991kx}, \citet{Beramendi2016} and \citet[8]{Saylor:2014aa} who consider elite conflicts to study state-making and fiscal development in the developing world. \citet{Dargent2017} focus on a ```challenger-based' causal mechanism'' of state formation in Peru, however they concentrate their efforts on the role of exogenous economic shocks.} For instance, \citet[2]{Schneider:2012rr} explains that even when we have gained considerable knowledge of fiscal expansion in the European cases, the study of the public finances within a context of state-formation in the developing world is lacking, especially in the presence of ``new leading sectors.'' Since wars in Latin America have been rare,\footnote{\citet{Centeno:2002qf}.} it is difficult to extend models developed to understanding the medieval European case based on external threats.\footnote{Some examples are \citet{Tilly:1992rr} and \citet{Dincecco2016}. See however \citet{Thies2005a}.} Critically, there exists in the literature a huge concept-measurement deficit. While most state formation theories (just to name a few) are situated during precolonial,\footnote{\citet{Mahoney:2010aa}.} early,\footnote{See \citet[]{Kurtz:2013aa} and \citet[]{Soifer2015a}.} or late\footnote{\citet{Bahamonde:2017ab}.} independent Latin America, we lack of a measurement that corresponds \emph{temporally} to the theories we have. In other words, most explanations of state-making are \emph{historical} in nature. Yet, in practice, available measurements capture \emph{contemporary} levels of \emph{stateness}. In this paper I try to bridge this gap by providing an additional explanation of state capacities in Latin America centered on domestic sectoral economic conflicts and fiscal expansion. Additionally, I provide a corresponding indicator able to capture levels of state capacities \emph{over time} using a novel dataset and approach. The paper then seeks to contribute to the state formation literature in general, both from theoretical and methodological perspectives. 
 
 
 
@@ -171,7 +171,7 @@ Historians still debate whether agriculturalists and industrialists comprised tw
 
 % Industrial and Agricultural Outputs, and The Passage of the Income Tax Law in Chile
 \afterpage{
-<<incometax, echo = FALSE, fig.pos='h', warning = FALSE, message = F, fig.cap='Industrial and Agricultural Outputs, and The Passage of the Income Tax Law in Chile', fig.align='center', fig.width=3.5, fig.height=4.5,dpi=10000,cache = FALSE>>=
+<<incometax, echo = FALSE, fig.pos='h', warning = FALSE, message = F, fig.cap='Industrial and Agricultural Outputs, and The Passage of the Income Tax Law in Chile', fig.align='center', fig.width=3.5, fig.height=4.5,dpi=1000,cache = FALSE>>=
 
 @
 }
@@ -229,7 +229,7 @@ I constructed a hand-collected novel dataset using the \emph{Significant Earthqu
 
 
 % earthquake:ts:plot:chile
-<<earthquake:ts:plot:chile, echo = FALSE, fig.pos='h', warning = FALSE, message = F,fig.cap='Earthquakes in Chile: 1500-2010', fig.align='center', fig.width=6.5,fig.height=2.5,dpi=10000,cache = FALSE,eval=TRUE>>=
+<<earthquake:ts:plot:chile, echo = FALSE, fig.pos='h', warning = FALSE, message = F,fig.cap='Earthquakes in Chile: 1500-2010', fig.align='center', fig.width=6.5,fig.height=2.5,dpi=1000,cache = FALSE,eval=TRUE>>=
 
 @
 
@@ -242,7 +242,7 @@ I constructed a hand-collected novel dataset using the \emph{Significant Earthqu
 \afterpage{
 %\clearpage{
 
-<<earthquake:map:plot:chile, echo = FALSE, fig.pos='H', warning = FALSE, message = FALSE,fig.cap='Geographical Distribution of Earthquakes in Chile 1500-2015', fig.align='center', fig.width=4,fig.height=7,dpi=10000,cache = FALSE,eval=TRUE>>=
+<<earthquake:map:plot:chile, echo = FALSE, fig.pos='H', warning = FALSE, message = FALSE,fig.cap='Geographical Distribution of Earthquakes in Chile 1500-2015', fig.align='center', fig.width=4,fig.height=7,dpi=1000,cache = FALSE,eval=TRUE>>=
 
 @
 \clearpage
@@ -311,7 +311,7 @@ In sum, the overall results strongly suggest that the Chilean state was better a
 
 
 % sectoral:model:plot:run
-<<sectoral:model:plot:run, echo = FALSE, fig.pos='H', warning = FALSE, message = FALSE,fig.cap='Death-Toll by National and Subnational Sources of Sectoral Contestation', fig.align='center', fig.width=5 ,fig.height=3,dpi=10000,cache = FALSE,eval=TRUE>>=
+<<sectoral:model:plot:run, echo = FALSE, fig.pos='H', warning = FALSE, message = FALSE,fig.cap='Death-Toll by National and Subnational Sources of Sectoral Contestation', fig.align='center', fig.width=5 ,fig.height=3,dpi=1000,cache = FALSE,eval=TRUE>>=
 
 @
 
@@ -349,7 +349,7 @@ Fiscal sociologists have, for a long time, claimed that the capacity of taxing i
 
 	
 % income:tax:model:plot:run
-<<income:tax:model:plot:run, echo = FALSE, fig.pos='H', warning = FALSE, message = FALSE,fig.cap='Death-Tolls Over Time: Before and After the Implementation of the Income Tax', fig.align='center', fig.width=5 ,fig.height=3,dpi=10000,cache = FALSE,eval=TRUE>>=
+<<income:tax:model:plot:run, echo = FALSE, fig.pos='H', warning = FALSE, message = FALSE,fig.cap='Death-Tolls Over Time: Before and After the Implementation of the Income Tax', fig.align='center', fig.width=5 ,fig.height=3,dpi=1000,cache = FALSE,eval=TRUE>>=
 
 @
 
@@ -372,31 +372,31 @@ The causal mechanism focuses on how higher levels of sectoral contestation trans
 \setcounter{figure}{0}
 \renewcommand{\thefigure}{OA\arabic{figure}}
 
-<<year:fixed:effects:plot, echo = FALSE, fig.pos='h', warning = FALSE, message = F, fig.cap='Year Fixed Effects', fig.align='center', fig.width=7, fig.height=3,dpi=10000,cache = FALSE,eval=TRUE>>=
+<<year:fixed:effects:plot, echo = FALSE, fig.pos='h', warning = FALSE, message = F, fig.cap='Year Fixed Effects', fig.align='center', fig.width=7, fig.height=3,dpi=1000,cache = FALSE,eval=TRUE>>=
 
 @
 
 
 
-<<predicted:observed:plot, echo = FALSE, fig.pos='h', warning = FALSE, message = F, fig.cap='Assessing Model Fit', fig.align='center', fig.width=5, fig.height=9,dpi=10000,cache = FALSE,eval=TRUE>>=
+<<predicted:observed:plot, echo = FALSE, fig.pos='h', warning = FALSE, message = F, fig.cap='Assessing Model Fit', fig.align='center', fig.width=5, fig.height=9,dpi=1000,cache = FALSE,eval=TRUE>>=
 
 @
 
 
-<<traplot:plot:sectoral, echo = FALSE, fig.pos='h', warning = FALSE, message = F, fig.cap='Trace Plots: Sectoral Conflicts Model', fig.align='center', fig.width=9, fig.height=9,dpi=10000,cache = FALSE,eval=TRUE>>=
+<<traplot:plot:sectoral, echo = FALSE, fig.pos='h', warning = FALSE, message = F, fig.cap='Trace Plots: Sectoral Conflicts Model', fig.align='center', fig.width=9, fig.height=9,dpi=1000,cache = FALSE,eval=TRUE>>=
 
 @
 
-<<traplot:plot:tax, echo = FALSE, fig.pos='h', warning = FALSE, message = F, fig.cap='Trace Plots: Income Tax Adoption Model', fig.align='center', fig.width=9, fig.height=9,dpi=10000,cache = FALSE,eval=TRUE>>=
+<<traplot:plot:tax, echo = FALSE, fig.pos='h', warning = FALSE, message = F, fig.cap='Trace Plots: Income Tax Adoption Model', fig.align='center', fig.width=9, fig.height=9,dpi=1000,cache = FALSE,eval=TRUE>>=
 
 @
 
 
-<<denplot:plot:sectoral, echo = FALSE, fig.pos='h', warning = FALSE, message = F, fig.cap='Density Plots: Sectoral Conflicts Model', fig.align='center', fig.width=9, fig.height=9,dpi=10000,cache = FALSE,eval=TRUE>>=
+<<denplot:plot:sectoral, echo = FALSE, fig.pos='h', warning = FALSE, message = F, fig.cap='Density Plots: Sectoral Conflicts Model', fig.align='center', fig.width=9, fig.height=9,dpi=1000,cache = FALSE,eval=TRUE>>=
 
 @
 
-<<denplot:plot:tax, echo = FALSE, fig.pos='h', warning = FALSE, message = F, fig.cap='Density Plots: Income Tax Adoption Model', fig.align='center', fig.width=9, fig.height=9,dpi=10000,cache = FALSE,eval=TRUE>>=
+<<denplot:plot:tax, echo = FALSE, fig.pos='h', warning = FALSE, message = F, fig.cap='Density Plots: Income Tax Adoption Model', fig.align='center', fig.width=9, fig.height=9,dpi=1000,cache = FALSE,eval=TRUE>>=
 
 @
 
