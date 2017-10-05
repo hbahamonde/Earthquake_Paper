@@ -11,6 +11,11 @@ Critically, ``[e]arthquake-resistant features are costly to verify after constru
 
 This approach departs greatly from the `fiscal contract' paradigm, however. As one proponent explains, economic `agents pay their taxes [...] when they enjoy corresponding benefits themselves.'\footnote{\citet[5]{Mahon2015}.} Instead, this  paper considers state centralization and taxation in particular as sectoral conflictual outcomes. I agree with Martin et al. in that ``a tax is not a fee paid in direct exchange for a service, but rather an obligation to contribute,''\footnote{in \citet[3]{Martin2009a}.} and with \citet[71]{Best1976} in that ``taxes can be viewed as dependent upon the distribution of power rather than as an expression of the free choice of the majority of the people.'' 
 
+% spillovers 
+
+	% the need does NOT create the agency, nor the capacity.
+	\citet[29]{Schneider:2004aa}: ``policy makers may also seek basic information on economic activity in the private sector such as production, investment, employment, capacity utilization, technology, exports, and prices. Where possible, state actors presumably prefer to rely on their own bureaucracies to collect unbiased information, but in many instances the costs are just too high, especially in the short run. Therefore, policy makers often turn to association leaders for help in collecting information [...] fiscal crises also reduced state capacity and sometimes generated greater dependence of officials on [private] associations. In one extreme example, Marcio Fortes, the secretary  of industry of the state of Rio de Janeiro in the late 1900s, relied on the state's industry federation for information, meeting space, research and even plane tickets to go abroad to drum up investment, because the state government did not `have the means'.''
+
 
 % Argument
 	- The determinants of government responsiveness. % paraphrased from Besley2002: 1415
