@@ -17,7 +17,7 @@
 \author[1]{
 \large
 \textsc{H\'ector Bahamonde, PhD}\\ 
-\thanks{I thank Robert Kaufman, Hillel Soifer, Mark Dincecco, Daniel Kelemen, Douglas Blair, Paul Poast for all the useful comments. I also thank the School of Arts and Sciences at Rutgers for granting me funds to collect part of the data used in this project. All errors are my own.}
+\thanks{I thank Robert Kaufman, Hillel Soifer, Mark Dincecco, James Mahon, Daniel Kelemen, Douglas Blair, Paul Poast for all the useful comments. I also thank the School of Arts and Sciences at Rutgers for granting me funds to collect part of the data used in this project. All errors are my own.}
 \normalsize Postdoctoral Fellow $\bullet$ Center For Inter-American Policy \& Research $\bullet$ Tulane University\\
 \normalsize \texttt{e:}\href{mailto:\filetext}{\texttt{\filetext}}\\
 \normalsize \texttt{w:}\href{http://www.hectorbahamonde.com}{\texttt{www.HectorBahamonde.com}}
