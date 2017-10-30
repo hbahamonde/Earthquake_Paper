@@ -113,8 +113,8 @@ ggplot(dat.chile, aes(x = year, y = Magnitude)) +
         geom_point(shape = 21) +
         theme_bw() +
         xlab("Year") +
-        ggtitle(NULL) +
-        stat_smooth(show.legend = F,  method = 'loess')
+        ggtitle(NULL) #+
+        #stat_smooth(show.legend = F,  method = 'loess')
 ## ----
 
 
