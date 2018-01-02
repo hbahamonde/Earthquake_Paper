@@ -40,3 +40,9 @@ Data/PER_adm_shp/
 Bahamonde_Earthquake_Paper\.tex
 
 Sub/
+
+*.nav
+
+*.snm
+
+*.toc
