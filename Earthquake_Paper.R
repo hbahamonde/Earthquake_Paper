@@ -818,7 +818,7 @@ if (!require("pacman")) install.packages("pacman"); library(pacman)
 p_load(xtable)
 
 note.sectoral <- paste0(
-        "\\hline \n \\multicolumn{6}{c}", "{ \\scriptsize {\\bf Note}: ", n.iter.sectoral, " iterations with a burn-in period of n = ", n.burnin.sectoral , " iterations discarded.}\\\\", "\n \\multicolumn{6}{c}", "{ \\scriptsize ", ci.number.sectoral*100 ,"\\% credible intervals (upper/lower bounds). All R-Hat statistics below critical levels.}\\\\" ,"\n \\multicolumn{6}{c}", "{ \\scriptsize Standard convergence diagnostics suggest good mixing and convergence.}\\\\","\n \\multicolumn{6}{c}", "{ \\scriptsize Year fixed effects were omitted in the table.}\\\\", 
+        "\\hline \n \\multicolumn{6}{c}", "{ \\scriptsize {\\bf Note}: ", format(round(as.numeric(n.iter.sectoral), 0), nsmall=0, big.mark=","), " iterations with a burn-in period of n = ", format(round(as.numeric(n.burnin.sectoral), 0), nsmall=0, big.mark=","), " iterations discarded.}\\\\", "\n \\multicolumn{6}{c}", "{ \\scriptsize ", ci.number.sectoral*100 ,"\\% credible intervals (upper/lower bounds). All R-Hat statistics below critical levels.}\\\\" ,"\n \\multicolumn{6}{c}", "{ \\scriptsize Standard convergence diagnostics suggest good mixing and convergence.}\\\\","\n \\multicolumn{6}{c}", "{ \\scriptsize Year fixed effects were omitted in the table.}\\\\", 
         "\n \\multicolumn{6}{c}","{ \\scriptsize A total of ", n.chains.sectoral, " chains were run. Detailed diagnostic plots available \\href{https://github.com/hbahamonde/Earthquake_Paper/raw/master/Bahamonde_Earthquake_Paper_Diagnostic_Plots_Sectoral_Competition.pdf}{\\texttt here}.} \\\\")
 ## ----
 
@@ -1185,7 +1185,7 @@ if (!require("pacman")) install.packages("pacman"); library(pacman)
 p_load(xtable)
 
 note.tax <- paste0(
-        "\\hline \n \\multicolumn{6}{l}", "{ \\scriptsize {\\bf Note}: ", n.iter.tax, " iterations with a burn-in period of n = ", n.burnin.tax , " iterations discarded.}\\\\", "\n \\multicolumn{6}{l}", "{ \\scriptsize ", ci.number.tax*100 ,"\\% credible intervals (upper/lower bounds). All R-Hat statistics below critical levels.}\\\\" ,"\n \\multicolumn{6}{l}", "{ \\scriptsize Standard convergence diagnostics suggest good mixing and convergence.}\\\\","\n \\multicolumn{6}{l}", "{ \\scriptsize Year fixed effects were omitted in the table.}\\\\", 
+        "\\hline \n \\multicolumn{6}{l}", "{ \\scriptsize {\\bf Note}: ", format(round(as.numeric(n.iter.tax), 0), nsmall=0, big.mark=","), " iterations with a burn-in period of n = ", format(round(as.numeric(n.burnin.tax), 0), nsmall=0, big.mark=",") , " iterations discarded.}\\\\", "\n \\multicolumn{6}{l}", "{ \\scriptsize ", ci.number.tax*100 ,"\\% credible intervals (upper/lower bounds). All R-Hat statistics below critical levels.}\\\\" ,"\n \\multicolumn{6}{l}", "{ \\scriptsize Standard convergence diagnostics suggest good mixing and convergence.}\\\\","\n \\multicolumn{6}{l}", "{ \\scriptsize Year fixed effects were omitted in the table.}\\\\", 
         "\n \\multicolumn{6}{l}","{ \\scriptsize A total of ", n.chains.tax, " chains were run. Detailed diagnostic plots available \\href{https://github.com/hbahamonde/Earthquake_Paper/raw/master/Bahamonde_Earthquake_Paper_Diagnostic_Plots_Income_Tax_Model.pdf}{\\texttt here}.} \\\\")
 ## ----
 
@@ -1349,8 +1349,8 @@ traplot(earthquakefit.sectoral,
         style="plain", 
         auto.layout = T,
         main=labels.sectoral,
-        plot.title = paste(n.chains.sectoral, "chains,", n.iter.sectoral, "iterations and burn-in period of", n.burnin.sectoral)
-)
+        plot.title = paste(n.chains.sectoral, "chains,", format(round(as.numeric(n.iter.sectoral), 0), nsmall=0, big.mark=","), "iterations and burn-in period of", format(round(as.numeric(n.burnin.sectoral), 0), nsmall=0, big.mark=","))
+        )
 ## ----
 
 
@@ -1382,7 +1382,7 @@ traplot(earthquakefit.tax,
         style="plain", 
         auto.layout = T,
         main=labels.tax,
-        plot.title = paste(n.chains.tax, "chains,", n.iter.tax, "iterations and burn-in period of", n.burnin.tax)
+        plot.title = paste(n.chains.tax, "chains,", format(round(as.numeric(n.iter.tax), 0), nsmall=0, big.mark=","), "iterations and burn-in period of", format(round(as.numeric(n.burnin.tax), 0), nsmall=0, big.mark=","))
 )
 ## ----
 
@@ -1403,7 +1403,7 @@ denplot(earthquakefit.tax,
         #col=2, 
         lty=1, 
         main=c(labels.tax),
-        plot.title = paste(n.chains.tax, "chains,", n.iter.tax, "iterations, burn-in period of", n.burnin.tax, "and", ci.number.tax*100, "% credible intervals")
+        plot.title = paste(n.chains.tax, "chains,", format(round(as.numeric(n.iter.tax), 0), nsmall=0, big.mark=","), "iterations, burn-in period of", format(round(as.numeric(n.burnin.tax), 0), nsmall=0, big.mark=","), "and", ci.number.tax*100, "% credible intervals")
 )
 ## ----
 
@@ -1423,7 +1423,7 @@ denplot(earthquakefit.sectoral,
         #col=2, 
         lty=1, 
         main=c(labels.sectoral),
-        plot.title = paste(n.chains.sectoral, "chains,", n.iter.sectoral, "iterations, burn-in period of", n.burnin.sectoral, "and", ci.number.sectoral*100, "% credible intervals")
+        plot.title = paste(n.chains.sectoral, "chains,", format(round(as.numeric(n.iter.sectoral), 0), nsmall=0, big.mark=","), "iterations, burn-in period of", format(round(as.numeric(n.burnin.sectoral), 0), nsmall=0, big.mark=","), "and", ci.number.sectoral*100, "% credible intervals")
 )
 ## ----
 
