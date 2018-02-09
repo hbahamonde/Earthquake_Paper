@@ -62,47 +62,55 @@ library(knitr)
 
 @
 
-<<echo=FALSE, cache= F, warning = FALSE, message = F, eval=TRUE>>=
+<<echo=FALSE, cache= F, warning = FALSE, message = F, eval=FALSE>>=
 read_chunk('/Users/hectorbahamonde/RU/Dissertation/Papers/Earthquake_Paper/Earthquake_Paper.R')
 
 @
 
-<<sectoral:model:and:data:not:run, echo=FALSE, comment=NA, warning=FALSE, message=F, results='hide', cache=FALSE, eval=TRUE>>=
+<<sectoral:model:and:data:not:run, echo=FALSE, comment=NA, warning=FALSE, message=F, results='hide', cache=FALSE, eval=FALSE>>=
 
 @
 
-<<income:tax:model:and:data:not:run, echo=FALSE, comment=NA, warning=FALSE, message=F, results='hide', cache=FALSE, eval=TRUE>>=
+<<income:tax:model:and:data:not:run, echo=FALSE, comment=NA, warning=FALSE, message=F, results='hide', cache=FALSE, eval=FALSE>>=
 
 @
 
-<<sectoral:model:and:data:does:run, echo=FALSE, comment=NA, warning=FALSE, message=FALSE, include = FALSE, cache=FALSE, eval=TRUE>>=
+<<sectoral:model:and:data:does:run, echo=FALSE, comment=NA, warning=FALSE, message=FALSE, include = FALSE, cache=FALSE, eval=FALSE>>=
 
 @
 
-<<income:tax:model:and:data:run, echo=FALSE, comment=NA, warning=FALSE, message=FALSE, include = FALSE, cache=FALSE, eval=TRUE>>=
+<<income:tax:model:and:data:run, echo=FALSE, comment=NA, warning=FALSE, message=FALSE, include = FALSE, cache=FALSE, eval=FALSE>>=
 
 @
 
-<<income:tax:model:regression:table:not:run, echo=FALSE, comment=NA, warning=FALSE, message=F, results='hide', cache=FALSE, eval=TRUE>>=
+<<income:tax:model:regression:table:not:run, echo=FALSE, comment=NA, warning=FALSE, message=F, results='hide', cache=FALSE, eval=FALSE>>=
 
 @
 
-<<income:tax:model:plot:not:run, echo=FALSE, comment=NA, warning=FALSE, message=F, results='hide', cache=FALSE, eval=TRUE>>=
+<<income:tax:model:plot:not:run, echo=FALSE, comment=NA, warning=FALSE, message=F, results='hide', cache=FALSE, eval=FALSE>>=
 
 @
 
-<<sectoral:model:plot:not:run, echo=FALSE, comment=NA, warning=FALSE, message=F, results='hide', cache=FALSE, eval=TRUE>>=
+<<sectoral:model:plot:not:run, echo=FALSE, comment=NA, warning=FALSE, message=F, results='hide', cache=FALSE, eval=FALSE>>=
 
 @
 
-<<sectoral:model:regression:table:not:run, echo=FALSE, comment=NA, warning=FALSE, message=F, results='hide', cache=FALSE, eval=TRUE>>=
+<<sectoral:model:regression:table:not:run, echo=FALSE, comment=NA, warning=FALSE, message=F, results='hide', cache=FALSE, eval=FALSE>>=
 
 @
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-% Motivation
-Latin Americanists have several theories to explain the causes and consequences of state capacities. However, most explanations do not consider within-country variations in levels of state capacity.\footnote{For instance, \citet[2368]{Acemoglu2014} explain that there is only ``a small literature on within-country variation in state capacity.'' See for an exception \citet{Foa2016} and \citet{Soifer2008a}.} Since state authorities in less developed countries face higher difficulties achieving political control,\footnote{\citet{Migdal:1988nr}.} this is very unfortunate. Moreover, \emph{domestic} explanations of state-capacities centered on the role of economic-sectoral conflicts, the economic structural transformation and taxation, have been overlooked.\footnote{A few exceptions are \citet[7-8]{Gallo:1991kx}, \citet{Beramendi2016} and \citet[8]{Saylor:2014aa} who consider elite conflicts to study state-making and fiscal development in the developing world. \citet{Dargent2017} focus on a ```challenger-based' causal mechanism'' of state formation in Peru, however they concentrate their efforts on the role of exogenous economic shocks.} For instance, \citet[2]{Schneider:2012rr} explains that even when we have gained considerable knowledge of fiscal expansion in the European cases, the study of the public finances within a context of state consolidation in the developing world is lacking, especially in the presence of ``new leading sectors.'' Since wars in Latin America have been rare,\footnote{\citet{Centeno:2002qf}.} it is difficult to extend models developed to understanding the medieval European case based on external threats.\footnote{Some examples are \citet{Tilly:1992rr} and \citet{Dincecco2016}. See however \citet{Thies2005a,Thies2016} and \citet{Kurtz2006}.} Critically, there exists in the literature a huge concept-measurement deficit. While most state formation theories (just to name a few) are situated during precolonial,\footnote{\citet{Mahoney:2010aa}.} early,\footnote{See \citet[]{Kurtz:2013aa} and \citet[]{Soifer2015a}.} or late\footnote{\citet{Bahamonde:2017ab}.} independent Latin America, we lack of a measurement that corresponds \emph{temporally} to the theories we have. In other words, most explanations of state-making are \emph{historical} in nature. Yet, in practice, available measurements capture \emph{contemporary} levels of \emph{stateness}. In this paper I try to bridge this gap by providing an additional explanation of state consolidation in Latin America centered on domestic sectoral economic conflicts and fiscal expansion. Additionally, I provide a corresponding indicator able to capture levels of state consolidation \emph{over time} using a novel dataset and approach. The paper then seeks to contribute to the state consolidation literature in general, both from theoretical and methodological perspectives. 
+% Theoretical Motivation
+While there are a number of theories to explain the origins of state-capacities in Latin America, domestic explanations centered on the role of economic-sectoral conflicts, the economic structural transformation and taxation, have been overlooked.\footnote{A few exceptions are \citet[7-8]{Gallo:1991kx}, \citet{Beramendi2016} and \citet[8]{Saylor:2014aa} who consider elite conflicts to study state-making and fiscal development in the developing world. \citet{Dargent2017} focus on a ```challenger-based' causal mechanism'' of state formation in Peru, however they concentrate their efforts on the role of exogenous economic shocks.} For instance, \citet[2]{Schneider:2012rr} explains that even when we have gained considerable knowledge of fiscal expansion in the European cases, the study of the public finances within a context of state consolidation in the developing world is lacking, especially in the presence of ``new leading sectors.'' Since wars in Latin America have been rare and low-scaled,\footnote{\citet{Centeno:2002qf}.} it is difficult to extend models developed to understanding the medieval European case based on external threats.\footnote{Some examples are \citet{Tilly:1992rr} and \citet{Dincecco2016}. See however \citet{Thies2005a,Thies2016} and \citet{Kurtz2006}.} 
+% Empirical Motivation
+Critically, there exists in the literature a huge concept-measurement deficit. While most state formation theories are situated during precolonial,\footnote{\citet{Mahoney:2010aa}.} early,\footnote{See \citet[]{Kurtz:2013aa} and \citet[]{Soifer2015a}.} or late\footnote{\citet{Bahamonde:2017ab}.} independent Latin America, we lack of a measurement that corresponds \emph{temporally} to the theories we have. In other words, most explanations of state-making are \emph{historical} in nature. Yet, in practice, available measurements capture \emph{contemporary} levels of \emph{stateness}. 
+
+% summary
+The paper bridges these theoretical and empirical deficits by arguing that income taxation fostered, via spillover effects, state-consolidation overtime in Chile. The presence of tax assessors and collectors throughout the territory increased norms of enforcement of state regulations more generally, fostering overall state-capacities over time. In turn, the implementation of the income tax was product of sustained levels of sectoral contestation. Exploiting the exogeneity of earthquake shocks, I leverage a novel hand-collected dataset on Chilean earthquake death tolls between 1900 and 2010. Earthquakes are time-invariant and, importantly, orthogonal to economic development and regime type. Under reasonable assumptions, if the state's capacity for enforcing and monitoring building codes throughout the territory is a reflection of overall state capacity, then death-toll differentials should be mainly associated with state-capacities. The empirical section provides a qualitative case study, and several robustness checks that strongly suggest that death-tolls decreased (\emph{state capacities increased}) after the income tax law was implemented. Importantly, these overtime-changes are not correlated with economic growth or industrialization levels.
+
+
+
 
 
 
@@ -112,12 +120,9 @@ Latin Americanists have several theories to explain the causes and consequences 
 \caption{Causal Mechanism\label{causal:mechanism:fig}}\centering
 \end{figure}
 
-% argument and main findings
-The central argument of this paper is that higher levels of sectoral contestation, characterized by the emergence of a strong industrial sector, promoted state consolidation. In particular, the paper explains how higher levels of sectoral contestation promoted the implementation of the income tax, an institution that---according to the fiscal sociology approach---produced positive externalities for state consolidation. Exploiting the exogeneity of earthquake shocks, I leverage a novel hand-collected dataset on Chilean earthquake death tolls between 1900 and 2010. In conjunction with Bayesian multilevel Poisson models with year fixed-effects, I am able to estimate levels of state consolidation in Chile over time. I find that death-tolls decreased (\emph{state capacities increased}) when (1) levels of national/subnational sectoral contestation were high, and (2) after the income tax law was implemented.
 
 
-% the capacity the state has of enforcing and monitoring building codes throughout the territory is a \emph{reflection} of Chile's 
-Under reasonable assumptions, the state's capacity for enforcing and monitoring building codes throughout the territory is a \emph{reflection} of Chile's \emph{overall} state capacities. Earthquakes are time-invariant and, importantly, orthogonal to economic development and regime type. Consequently, death-toll differentials should be mainly associated with state-capacities. The proposed measurement goes in line with other attempts to capture state capacities over time. While most strategies have focused on the capacity to enforce private contracts,\footnote{See \citet[1]{Besley2010} for an example.} unfortunately, these measurements correlate strongly with property-rights protection, distorting the resemblance between concept and measurement. 
+
 
 % subnational
 The theory also incorporates important subnational dynamics. The ability of the central level to enforce these (and other) institutions depends on whether subnational elites are willing to cooperate with the central level. The paper contends that industrial elites challenged agricultural elites, moving forward investments in state-\emph{making} institutions---the income tax law.\footnote{\citet[208]{Besley2013a} also consider implementing the income tax a strong sign of fiscal capacities, including Chile.} The tax not only increased national revenues, but also helped to form bureaucratic structures at the subnational level. As the Chilean case illustrates, industrial elites were willing to impose a national income tax on themselves in exchange for public goods delivered at the subnational level, and incorporation into the national project. Compliance depended on sustained national--subnational coordination, boosting state centralization.
@@ -171,7 +176,7 @@ Historians still debate whether agriculturalists and industrialists comprised tw
 
 % Industrial and Agricultural Outputs, and The Passage of the Income Tax Law in Chile
 \afterpage{
-<<incometax, echo = FALSE, fig.pos='h', warning = FALSE, message = F, fig.cap='Industrial and Agricultural Outputs, and The Passage of the Income Tax Law in Chile', fig.align='center', fig.width=3.5, fig.height=4.5,dpi=1000,cache = FALSE>>=
+<<incometax, echo = FALSE, fig.pos='h', warning = FALSE, message = F, fig.cap='Industrial and Agricultural Outputs, and The Passage of the Income Tax Law in Chile', fig.align='center', fig.width=3.5, fig.height=4.5,dpi=1000,cache = FALSE, eval = FALSE>>=
 
 @
 }
@@ -227,9 +232,9 @@ However, the measurement has a number of drawbacks. Obviously, the country needs
 I constructed a novel hand-collected longitudinal dataset using the \emph{Significant Earthquake Database} compiled by the National Centers for Environmental Information (NOAA) as a starting point.\footnote{\citet[]{noaa2015}.} The dataset ``contains information on destructive earthquakes from 2150 B.C. to the present,'' and records the number of deaths,\footnote{Importantly, the NOAA distinguishes earthquake deaths from total deaths (which includes tsunami casualties). I use the former.} the magnitude, date, latitude, and longitude of every quake, among other variables. Using archival census data from 1907 to 2012,\footnote{Particularly, censuses of 1907, 1920, 1930, 1940, 1952, 1960, 1970, 1982, 1992, 2002 and 2012. Some of them were kept at the \emph{Biblioteca Nacional} and others at the \emph{National Statistic Institute} historical library.} I complemented the NOAA dataset with local population at the municipal level where the quake hit. I use local population to weight the death toll.\footnote{While in most occasions (around 90\%) I was able to recover the actual local population, in some instances that was not possible. In these cases, I recovered the population of the most concentrated area nearby. Consequently, I adopted a more general approach and used population as a control, not as a variable to construct a dependent variable in proportion-like form.} Using archival census data as well, I considered the main economic activity of the affected municipality,\footnote{This variable was constructed by coding press and official sources (mainly censuses) of the main economic sector at the local level. \text{$\Sexpr{levels(factor(datsc$Sector))[1]}$} (n=$\Sexpr{as.character(table(factor(datsc$Sector))[1])}$), \text{$\Sexpr{levels(factor(datsc$Sector))[2]}$} (n=$\Sexpr{as.character(table(factor(datsc$Sector))[2])}$), \text{$\Sexpr{levels(factor(datsc$Sector))[3]}$} (n=$\Sexpr{as.character(table(factor(datsc$Sector))[3])}$).} in addition to whether the municipality was urban or rural.\footnote{Urban=$\Sexpr{table(datsc$Urban[datsc$Urban==1])}$, rural=$\Sexpr{table(datsc$Urban[datsc$Urban==0])}$. If more than 50\% of the population lives in an urban setting, I assigned a 1 to that municipality, 0 otherwise. Urban concentrations are most likely to have vertical constructions rather than one-story buildings, increasing the potential number of casualties. Consequently, it is important to control for this source of variation. I thank Daniel Kelemen for this suggestion.} The death tolls and magnitudes proportionated by the NOAA dataset were contrasted case by case with historical press archival information.\footnote{\emph{El Mercurio} and \emph{La Naci\'on} newspapers, both kept at the \emph{Archivo} of the \emph{Biblioteca Nacional de Chile}.} Magnitudes, in particular, were also compared with the \href{http://www.isc.ac.uk/iscbulletin/search/bulletin/}{International Seismological Centre}. All these are subnational-level variables. Next, I included national-level indicators that aim to serve as proxies for levels of sectoral conflict. Following \citet{Bahamonde:2017ab,Bahamonde:2017aa}, I measured the degree to which the industrial elites challenged incumbent landowners by calculating the proportion of agricultural growth relative to industrial growth as presented in the  \href{http://moxlad-staging.herokuapp.com/home/en?}{MOxLAD} data (see \autoref{fig:incometax}, bottom panel).\footnote{``These data build on the studies and statistical abstracts of the Economic Commission for Latin America, but also rely on Mitchell's International Historical Statistics, International Monetary Fund's International Financial Statistics, the World Bank's World Development Indicators and a variety of national sources.'' I used the \emph{agriculture value-added} and \emph{manufacturing value-added} variables. The former measures ``the output of the sector net of intermediate inputs and includes the cultivation of crops, livestock production, hunting, forestry and fishing.'' The later  ``[r]eports the output of the sector net of intermediate inputs.'' Both of them are expressed in local currency at 1970 constant prices.} According to \citet[790]{Astorga2005}, these data provide extended comparable sectoral value-added series in constant purchasing power parity prices. Even when pre-1900 earthquakes are recorded in both the NOAA data and my own dataset (\autoref{fig:earthquake:ts:plot:chile}), the economic data provided by MOxLAD limits the scope of this paper to the period from $\Sexpr{min(datsc$year)}$ to $\Sexpr{max(datsc$year)}$ (\autoref{fig:incometax}).
 
 
-
+erer
 % earthquake:ts:plot:chile
-<<earthquake:ts:plot:chile, echo = FALSE, fig.pos='h', warning = FALSE, message = F,fig.cap='Earthquakes in Chile: 1500-2010', fig.align='center', fig.width=6.5,fig.height=2.5,dpi=1000,cache = FALSE,eval=TRUE>>=
+<<earthquake:ts:plot:chile, echo = FALSE, fig.pos='h', warning = FALSE, message = F,fig.cap='Earthquakes in Chile: 1500-2010', fig.align='center', fig.width=6.5,fig.height=2.5,dpi=1000,cache = FALSE,eval=FALSE>>=
 
 @
 
@@ -242,7 +247,7 @@ I constructed a novel hand-collected longitudinal dataset using the \emph{Signif
 \afterpage{
 %\clearpage{
 
-<<earthquake:map:plot:chile, echo = FALSE, fig.pos='H', warning = FALSE, message = FALSE,fig.cap='Geographical Distribution of Earthquakes in Chile 1500-2015', fig.align='center', fig.width=4,fig.height=7,dpi=1000,cache = FALSE,eval=TRUE>>=
+<<earthquake:map:plot:chile, echo = FALSE, fig.pos='H', warning = FALSE, message = FALSE,fig.cap='Geographical Distribution of Earthquakes in Chile 1500-2015', fig.align='center', fig.width=4,fig.height=7,dpi=1000,cache = FALSE,eval=FALSE>>=
 
 @
 \clearpage
@@ -300,7 +305,7 @@ More formally, I considered the following:
 
 % table 1
 % regression:table
-<<sectoral:model:regression:table:run, echo=FALSE, comment=NA, warning=FALSE, message=F, results='asis', cache=FALSE,eval=TRUE>>=
+<<sectoral:model:regression:table:run, echo=FALSE, comment=NA, warning=FALSE, message=F, results='asis', cache=FALSE,eval=FALSE>>=
 
 @
 
@@ -311,7 +316,7 @@ In sum, the overall results strongly suggest that the Chilean state was better a
 
 
 % sectoral:model:plot:run
-<<sectoral:model:plot:run, echo = FALSE, fig.pos='H', warning = FALSE, message = FALSE,fig.cap='Death-Toll by National and Subnational Sources of Sectoral Contestation', fig.align='center', fig.width=5 ,fig.height=3,dpi=1000,cache = FALSE,eval=TRUE>>=
+<<sectoral:model:plot:run, echo = FALSE, fig.pos='H', warning = FALSE, message = FALSE,fig.cap='Death-Toll by National and Subnational Sources of Sectoral Contestation', fig.align='center', fig.width=5 ,fig.height=3,dpi=1000,cache = FALSE,eval=FALSE>>=
 
 @
 
@@ -340,7 +345,7 @@ log(\lambda_{i})  =
 
 
 % income:tax:model:regression:table:run
-<<income:tax:model:regression:table:run, echo=FALSE, comment=NA, warning=FALSE, message=F, results='asis', cache=FALSE,eval=TRUE>>=
+<<income:tax:model:regression:table:run, echo=FALSE, comment=NA, warning=FALSE, message=F, results='asis', cache=FALSE,eval=FALSE>>=
 
 @
 
@@ -349,7 +354,7 @@ Fiscal sociologists have, for a long time, claimed that the capacity of taxing i
 
 	
 % income:tax:model:plot:run
-<<income:tax:model:plot:run, echo = FALSE, fig.pos='H', warning = FALSE, message = FALSE,fig.cap='Death-Tolls Over Time: Before and After the Implementation of the Income Tax', fig.align='center', fig.width=5 ,fig.height=3,dpi=1000,cache = FALSE,eval=TRUE>>=
+<<income:tax:model:plot:run, echo = FALSE, fig.pos='H', warning = FALSE, message = FALSE,fig.cap='Death-Tolls Over Time: Before and After the Implementation of the Income Tax', fig.align='center', fig.width=5 ,fig.height=3,dpi=1000,cache = FALSE,eval=FALSE>>=
 
 @
 
@@ -359,7 +364,8 @@ The crux of the argument is that higher levels of sectoral contestation increase
 
 The causal mechanism focuses on how higher levels of sectoral contestation translated into more credible threats, advancing sectoral alliances at the national level. I identified one such compromise, the implementation of the income tax, and how this crucial institution for state-making included the preferences of both elites. Importantly, I explain how the industrial sector was excluded from participating in politics before these big compromises, and how industrial expansion required the implementation of the income tax law (to pay for local public goods). Analytically, these conditions were met once the emergence of the industrial elites posed sufficiently credible threats to the incumbent landowning elites. The paper also introduced a novel framework that leveraged the exogeneity of earthquakes. Under reasonable assumptions, this approach is well-suited to capturing how the Chilean state has been able to enforce a number of regulations that sought to shape norms for the construction and infrastructure sectors. 
 
-
+% ADD
+% Latin Americanists have several theories to explain the causes and consequences of state capacities. However, most explanations do not consider within-country variations in levels of state capacity.\footnote{For instance, \citet[2368]{Acemoglu2014} explain that there is only ``a small literature on within-country variation in state capacity.'' See for an exception \citet{Foa2016} and \citet{Soifer2008a}.} Since state authorities in less developed countries face higher difficulties achieving political control,\footnote{\citet{Migdal:1988nr}.} this is very unfortunate.
 
 
 \newpage
@@ -372,31 +378,31 @@ The causal mechanism focuses on how higher levels of sectoral contestation trans
 \setcounter{figure}{0}
 \renewcommand{\thefigure}{OA\arabic{figure}}
 
-<<year:fixed:effects:plot, echo = FALSE, fig.pos='h', warning = FALSE, message = F, fig.cap='Year Fixed Effects', fig.align='center', fig.width=7, fig.height=3,dpi=1000,cache = FALSE,eval=TRUE>>=
+<<year:fixed:effects:plot, echo = FALSE, fig.pos='h', warning = FALSE, message = F, fig.cap='Year Fixed Effects', fig.align='center', fig.width=7, fig.height=3,dpi=1000,cache = FALSE,eval=FALSE>>=
 
 @
 
 
 
-<<predicted:observed:plot, echo = FALSE, fig.pos='h', warning = FALSE, message = F, fig.cap='Assessing Model Fit', fig.align='center', fig.width=5, fig.height=9,dpi=1000,cache = FALSE,eval=TRUE>>=
+<<predicted:observed:plot, echo = FALSE, fig.pos='h', warning = FALSE, message = F, fig.cap='Assessing Model Fit', fig.align='center', fig.width=5, fig.height=9,dpi=1000,cache = FALSE,eval=FALSE>>=
 
 @
 
 
-<<traplot:plot:sectoral, echo = FALSE, fig.pos='h', warning = FALSE, message = F, fig.cap='Trace Plots: Sectoral Conflicts Model', fig.align='center', fig.width=9, fig.height=9,dpi=1000,cache = FALSE,eval=TRUE>>=
+<<traplot:plot:sectoral, echo = FALSE, fig.pos='h', warning = FALSE, message = F, fig.cap='Trace Plots: Sectoral Conflicts Model', fig.align='center', fig.width=9, fig.height=9,dpi=1000,cache = FALSE,eval=FALSE>>=
 
 @
 
-<<traplot:plot:tax, echo = FALSE, fig.pos='h', warning = FALSE, message = F, fig.cap='Trace Plots: Income Tax Adoption Model', fig.align='center', fig.width=9, fig.height=9,dpi=1000,cache = FALSE,eval=TRUE>>=
+<<traplot:plot:tax, echo = FALSE, fig.pos='h', warning = FALSE, message = F, fig.cap='Trace Plots: Income Tax Adoption Model', fig.align='center', fig.width=9, fig.height=9,dpi=1000,cache = FALSE,eval=FALSE>>=
 
 @
 
 
-<<denplot:plot:sectoral, echo = FALSE, fig.pos='h', warning = FALSE, message = F, fig.cap='Density Plots: Sectoral Conflicts Model', fig.align='center', fig.width=9, fig.height=9,dpi=1000,cache = FALSE,eval=TRUE>>=
+<<denplot:plot:sectoral, echo = FALSE, fig.pos='h', warning = FALSE, message = F, fig.cap='Density Plots: Sectoral Conflicts Model', fig.align='center', fig.width=9, fig.height=9,dpi=1000,cache = FALSE,eval=FALSE>>=
 
 @
 
-<<denplot:plot:tax, echo = FALSE, fig.pos='h', warning = FALSE, message = F, fig.cap='Density Plots: Income Tax Adoption Model', fig.align='center', fig.width=9, fig.height=9,dpi=1000,cache = FALSE,eval=TRUE>>=
+<<denplot:plot:tax, echo = FALSE, fig.pos='h', warning = FALSE, message = F, fig.cap='Density Plots: Income Tax Adoption Model', fig.align='center', fig.width=9, fig.height=9,dpi=1000,cache = FALSE,eval=FALSE>>=
 
 @
 
