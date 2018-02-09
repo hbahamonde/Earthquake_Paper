@@ -1001,6 +1001,7 @@ tax.mcmc.dat <- as.data.frame(tax.mcmc.mat)
 ### No Income Tax
 year.range = unique(datsc$year)
 
+## populate
 sim.no.income.tax <- matrix(rep(NA, nrow(tax.mcmc.dat)*length(year.range)), nrow = nrow(tax.mcmc.dat))
 for(i in 1:length(year.range)){
         sim.no.income.tax[, i] <- 
