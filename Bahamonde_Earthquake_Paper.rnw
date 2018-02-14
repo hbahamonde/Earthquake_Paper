@@ -85,6 +85,7 @@ read_chunk('/Users/hectorbahamonde/RU/Dissertation/Papers/Earthquake_Paper/Earth
 @
 
 
+<<income:tax:model:and:data:not:run:rolling, echo=FALSE, comment=NA, warning=FALSE, message=F, results='hide', cache=FALSE, eval=FALSE>>=
 
 @
 
