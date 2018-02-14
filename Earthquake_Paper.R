@@ -874,7 +874,7 @@ model.jags.tax <- function() {
                 Deaths[i] ~ dpois(lambda[i])
                 
                 log(lambda[i]) <- 
-                        b.Magnitude*Magnitude[i] + #  multi-level part: allow national output to vary at the local/sector level
+                        b.Magnitude*Magnitude[i] +
                         b.incometax.d*incometax.d[i] +
                         b.p.Population*p.Population[i] +
                         b.Urban*Urban[i] +
