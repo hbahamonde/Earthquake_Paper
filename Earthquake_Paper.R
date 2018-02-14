@@ -1580,9 +1580,147 @@ grid.arrange(p1, p2, ncol = 1)
 # ----
 
 
+########################################
+# Robustness Checks: Rolling Regression
+########################################
+
+## ---- income:tax:model:and:data:not:run:rolling ----
+# load data 
+load("/Users/hectorbahamonde/RU/Dissertation/Papers/Earthquake_Paper/eq_output_d_Chile.RData") 
+
+# load libraries
+if (!require("pacman")) install.packages("pacman"); library(pacman) 
+p_load(R2jags, coda, R2WinBUGS, lattice, rjags, runjags)
+
+# lower tolerance
+options(scipen=10000)
+set.seed(602)
 
 
 
+
+# define the vectors of the data matrix for JAGS.
+Deaths <- as.vector(datsc$Deaths)
+Magnitude <- as.vector(datsc$Magnitude)
+incometax.d = as.vector(as.numeric(datsc$incometax.d))
+p.Population <- as.vector(datsc$p.Population)
+Urban = as.vector(as.numeric(datsc$Urban))
+r.long = as.vector(as.numeric(datsc$r.long))
+r.lat = as.vector(as.numeric(datsc$r.lat))
+N <-  as.numeric(nrow(datsc))
+
+
+
+
+####################################################################################################################################
+
+
+# specify the model
+model <- function() {
+        for (i in 1:N){ # number of earthquakes
+                Deaths[i] ~ dpois(lambda[i])
+                
+                log(lambda[i]) <- 
+                        b.Magnitude*Magnitude[i] +
+                        b.incometax.d*incometax.d[i] +
+                        b.p.Population*p.Population[i] +
+                        b.Urban*Urban[i] +
+                        b.r.long*r.long[i] +
+                        b.r.lat*r.lat[i] + 
+                        mu ## intercept
+        }
+        
+        b.r.lat ~ dnorm(0, 0.01)
+        b.r.long ~ dnorm(0, 0.01)
+        mu  ~ dnorm(0, 0.01) ## intercept
+        b.p.Population ~ dnorm(0, 0.01)
+        b.Urban ~ dnorm(0, 0.01)
+        b.incometax.d ~ dnorm(0, 0.01)
+        b.Magnitude ~ dnorm(0, 0.01)
+        
+        
+}
+
+
+# list elements
+data.list <- list() # create empty list to fill in next line
+
+
+# fill list with one data set for each step, with one row excluded per step
+for(i in 1:N){
+        data.list[[i]] <- list(
+                N = N-1, 
+                Deaths = Deaths[-i],
+                Magnitude = Magnitude[-i], 
+                incometax.d = incometax.d[-i],
+                p.Population = p.Population[-i],
+                Urban = Urban[-i],
+                r.long = r.long[-i],
+                r.lat = r.lat[-i]
+        )
+}
+
+
+
+# Starting value for reproducibility
+model.inits <- function(){
+        list("b.incometax.d" = 0)
+}
+
+# run model
+model.fit <- list() # again, create empty list first
+
+for(i in 1:N){  # use loop here to fit one model per data set
+        model.fit[[i]] <- jags(
+                data=data.list[[i]],
+                inits=NULL,
+                parameters.to.save = c("b.incometax.d"),
+                n.chains = n.chains.tax,
+                n.iter = n.iter.tax,
+                n.burnin = n.burnin.tax, 
+                model.file=model,
+                progress.bar = "none")
+}
+
+
+# helper function for output
+devtools::source_url("https://raw.githubusercontent.com/jkarreth/JKmisc/master/mcmctab.R")
+
+# create empty data frame to be filled with estimation results per data set
+tab <- data.frame(index = c(1:N), IncomeTax = rep(NA, N), lower = rep(NA, N), upper = rep(NA, N))
+
+
+# fill with estimates, using mcmctab to extract mean & lower & upper CIs
+for(i in 1:N){
+        tab[i, 2] <- mcmctab(model.fit[[i]])[1, 1]
+        tab[i, 3] <- mcmctab(model.fit[[i]])[1, 3]
+        tab[i, 4] <- mcmctab(model.fit[[i]])[1, 4]
+}
+## ----
+
+
+
+## ---- income:tax:model:and:data:run:rolling ----
+# plot results
+if (!require("pacman")) install.packages("pacman"); library(pacman) 
+p_load(ggplot2)
+
+
+ggplot(data = tab, aes(x = IncomeTax, y = index)) + 
+        geom_point() + 
+        geom_segment(aes(x = lower, xend = upper, yend = index)) + 
+        geom_vline(xintercept = 0, linetype=2, colour="red") + 
+        xlab("Estimated Coefficient of Implementing the Income Tax on Death Tolls") + ylab("Model") + 
+        theme_bw() + 
+        theme(axis.text.y = element_text(size=7), 
+              axis.text.x = element_text(size=7), 
+              axis.title.y = element_text(size=7), 
+              axis.title.x = element_text(size=7), 
+              legend.text=element_text(size=7), 
+              legend.title=element_text(size=7),
+              plot.title = element_text(size=7),
+              legend.position="bottom")
+## ----
 
 
 
