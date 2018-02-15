@@ -1684,6 +1684,7 @@ devtools::source_url("https://raw.githubusercontent.com/jkarreth/JKmisc/master/m
 # create empty data frame to be filled with estimation results per data set
 tab <- data.frame(index = c(1:N), IncomeTax = rep(NA, N), lower = rep(NA, N), upper = rep(NA, N))
 
+save(tab, file = "//Users/hectorbahamonde/RU/Dissertation/Papers/Earthquake_Paper/rolling_poison.RData")
 
 # fill with estimates, using mcmctab to extract mean & lower & upper CIs
 for(i in 1:N){
