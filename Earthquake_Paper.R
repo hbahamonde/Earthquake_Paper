@@ -114,7 +114,7 @@ ggplot(dat.chile, aes(x = year, y = Magnitude)) +
         theme_bw() +
         xlab("Year") +
         ggtitle(NULL) #+
-        #stat_smooth(show.legend = F,  method = 'loess')
+#stat_smooth(show.legend = F,  method = 'loess')
 ## ----
 
 
@@ -139,7 +139,7 @@ ggplot(na.omit(Deaths), aes(factor(Deaths))) +
 
 # another kind-of TS plot.
 # ggplot(na.omit(dat.chile), aes(x=year, y=Deaths)) + geom_line() + theme_bw()                    
-        
+
 ## PERU
 load("/Users/hectorbahamonde/RU/Dissertation/Papers/Earthquake_Paper/Peru_Data_Earthquake.RData")
 
@@ -358,14 +358,14 @@ p_load(lme4,texreg)
 
 # fit the model
 model = glmer(
-  Deaths ~ constmanufact + constagricult + Magnitude + p.Population + (1 | country), 
-  data = datsc, family=poisson, 
-  glmerControl(optimizer="bobyqa", optCtrl = list(maxfun = 100000)) # increases the number of possible iterations to avoid convergence problem 
+        Deaths ~ constmanufact + constagricult + Magnitude + p.Population + (1 | country), 
+        data = datsc, family=poisson, 
+        glmerControl(optimizer="bobyqa", optCtrl = list(maxfun = 100000)) # increases the number of possible iterations to avoid convergence problem 
 )
 
 # Comments:
-  # I am already weighting by population by including p.Population in the model.
-  # Only FE by country: If year is included, it is collinerar with growth, which increases year by year.
+# I am already weighting by population by including p.Population in the model.
+# Only FE by country: If year is included, it is collinerar with growth, which increases year by year.
 
 
 # table
@@ -1351,7 +1351,7 @@ traplot(earthquakefit.sectoral,
         auto.layout = T,
         main=labels.sectoral,
         plot.title = paste(n.chains.sectoral, "chains,", format(round(as.numeric(n.iter.sectoral), 0), nsmall=0, big.mark=","), "iterations and burn-in period of", format(round(as.numeric(n.burnin.sectoral), 0), nsmall=0, big.mark=","))
-        )
+)
 ## ----
 
 
@@ -1450,7 +1450,7 @@ caterplot(earthquakefit,
           labels = var.labels, # calls variables from above
           col = 2, 
           style=c("gray")
-          );abline(v = 0, col = "gray60")
+);abline(v = 0, col = "gray60")
 ## ----
 
 
@@ -1590,7 +1590,7 @@ load("/Users/hectorbahamonde/RU/Dissertation/Papers/Earthquake_Paper/eq_output_d
 
 # load libraries
 if (!require("pacman")) install.packages("pacman"); library(pacman) 
-p_load(R2jags, coda, R2WinBUGS, lattice, rjags, runjags)
+p_load(R2jags)
 
 # lower tolerance
 options(scipen=10000)
@@ -1608,11 +1608,6 @@ Urban = as.vector(as.numeric(datsc$Urban))
 r.long = as.vector(as.numeric(datsc$r.long))
 r.lat = as.vector(as.numeric(datsc$r.lat))
 N <-  as.numeric(nrow(datsc))
-
-
-
-
-####################################################################################################################################
 
 
 # specify the model
@@ -1675,9 +1670,9 @@ for(i in 1:N){  # use loop here to fit one model per data set
                 data=data.list[[i]],
                 inits=NULL,
                 parameters.to.save = c("b.incometax.d"),
-                n.chains = n.chains.tax,
-                n.iter = n.iter.tax,
-                n.burnin = n.burnin.tax, 
+                n.chains = 4,
+                n.iter = 200000,
+                n.burnin = 5000, 
                 model.file=model,
                 progress.bar = "none")
 }
@@ -1719,7 +1714,9 @@ ggplot(data = tab, aes(x = IncomeTax, y = index)) +
               legend.text=element_text(size=7), 
               legend.title=element_text(size=7),
               plot.title = element_text(size=7),
-              legend.position="bottom")
+              legend.position="bottom") +
+        ggsave("/Users/hectorbahamonde/RU/Dissertation/Papers/Earthquake_Paper/rolling_poison.pdf", dpi = 1000, width = 128, height = 96, units = c("mm"))
+
 ## ----
 
 
