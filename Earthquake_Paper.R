@@ -600,9 +600,9 @@ eq.params.sectoral <- c("b.propagrmanu", "b.Magnitude", "b.p.Population", "b.yea
 
 ## ---- sectoral:model:and:data:does:run ----
 # run the model
-n.iter.sectoral = 200000  # n.iter.sectoral = 200000 // this is for working model
-n.burnin.sectoral = 5000 # n.burnin.sectoral = 5000 // this is for working model
-n.chains.sectoral = 4 # n.chains.sectoral = 4 for the working model
+n.iter.sectoral = 20  # n.iter.sectoral = 200000 // this is for working model
+n.burnin.sectoral = 2 # n.burnin.sectoral = 5000 // this is for working model
+n.chains.sectoral = 1 # n.chains.sectoral = 4 for the working model
 
 earthquakefit.sectoral <- jags(
         data=jags.data.sectoral,
@@ -962,9 +962,9 @@ eq.params.tax <- c("b.Magnitude", "b.p.Population", "b.year", "b.r.long", "b.r.l
 
 ## ---- income:tax:model:and:data:run ----
 # run the model
-n.iter.tax = 200000  # n.iter.tax = 200000 // this is for working model
-n.burnin.tax = 5000 # n.burnin.tax = 5000 // this is for working model
-n.chains.tax = 4 # n.chains.tax = 4 for the working model
+n.iter.tax = 20  # n.iter.tax = 200000 // this is for working model
+n.burnin.tax = 2 # n.burnin.tax = 5000 // this is for working model
+n.chains.tax = 1 # n.chains.tax = 4 for the working model
 
 earthquakefit.tax <- jags(
         data=jags.data.tax,
@@ -1670,9 +1670,9 @@ for(i in 1:N){  # use loop here to fit one model per data set
                 data=data.list[[i]],
                 inits=NULL,
                 parameters.to.save = c("b.incometax.d"),
-                n.chains = 4,
-                n.iter = 200000,
-                n.burnin = 5000, 
+                n.chains = 1,  # 4
+                n.iter = 20, # 200000
+                n.burnin = 2, # 5000
                 model.file=model,
                 progress.bar = "none")
 }
@@ -1684,7 +1684,7 @@ devtools::source_url("https://raw.githubusercontent.com/jkarreth/JKmisc/master/m
 # create empty data frame to be filled with estimation results per data set
 tab <- data.frame(index = c(1:N), IncomeTax = rep(NA, N), lower = rep(NA, N), upper = rep(NA, N))
 
-save(tab, file = "//Users/hectorbahamonde/RU/Dissertation/Papers/Earthquake_Paper/rolling_poison.RData")
+# save(tab, file = "//Users/hectorbahamonde/RU/Dissertation/Papers/Earthquake_Paper/rolling_poison.RData")
 
 # fill with estimates, using mcmctab to extract mean & lower & upper CIs
 for(i in 1:N){
@@ -1715,8 +1715,8 @@ ggplot(data = tab, aes(x = IncomeTax, y = index)) +
               legend.text=element_text(size=7), 
               legend.title=element_text(size=7),
               plot.title = element_text(size=7),
-              legend.position="bottom") +
-        ggsave("/Users/hectorbahamonde/RU/Dissertation/Papers/Earthquake_Paper/rolling_poison.pdf", dpi = 1000, width = 128, height = 96, units = c("mm"))
+              legend.position="bottom") #+
+        #ggsave("/Users/hectorbahamonde/RU/Dissertation/Papers/Earthquake_Paper/rolling_poison.pdf", dpi = 1000, width = 128, height = 96, units = c("mm"))
 
 ## ----
 
@@ -1737,4 +1737,3 @@ ggplot(data = tab, aes(x = IncomeTax, y = index)) +
 
 #### Predicted Probabilities.
 #### FROM: https://github.com/jkarreth/Bayes/blob/master/logit.pp.plot.instructions.R // line:52
-
