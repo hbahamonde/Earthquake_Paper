@@ -113,7 +113,15 @@ ggplot(dat.chile, aes(x = year, y = Magnitude)) +
         geom_point(shape = 21) +
         theme_bw() +
         xlab("Year") +
-        ggtitle(NULL) #+
+        ggtitle(NULL) +
+        theme(axis.text.y = element_text(size=7), 
+              axis.text.x = element_text(size=7), 
+              axis.title.y = element_text(size=7), 
+              axis.title.x = element_text(size=7), 
+              legend.text=element_text(size=7), 
+              legend.title=element_text(size=7),
+              plot.title = element_text(size=7),
+              legend.position="bottom") #+
 #stat_smooth(show.legend = F,  method = 'loess')
 ## ----
 
@@ -204,7 +212,7 @@ grid_arrange_shared_legend(eq.chile.p, eq.peru.p, ncol = 1, nrow = 2)
 
 
 
-## ---- earthquake:map:plot:chile ----
+## ---- earthquake:map:data:chile ----
 ## packages
 if (!require("pacman")) install.packages("pacman"); library(pacman)
 p_load(rgdal, foreign, rgeos, ggplot2)
@@ -225,28 +233,59 @@ chile.provinces <- spTransform(chile.provinces, CRS("+proj=longlat +datum=WGS84"
 chile.provinces <- fortify(chile.provinces)
 chile.provinces <- chile.provinces[!(chile.provinces$long <= -76),]
 
+# recode Sector
+if (!require("pacman")) install.packages("pacman"); library(pacman)
+p_load(car)
+
+dat.chile$Sector2 <- recode(as.factor(dat.chile$Sector), "1 = 'Industry' ; 2 = 'Industry' ; 3 = 'Agriculture' ; '1 y 2' = 'Industry' ; '1 y 3' = 'Mixed' ; '2 y 3' = 'Mixed' ")
 
 
 chile.map.plot.d <- data.frame(
-        Longitude = na.omit(dat.chile$Longitude), # 184
-        Latitude = na.omit(dat.chile$Latitude), # 184
-        Magnitude = dat.chile$Magnitude) # 132 // I think I am going to exclude magnitudes, and just show frequency of earthquakes.
+        Longitude = na.omit(dat.chile$Longitude),
+        Latitude = na.omit(dat.chile$Latitude),
+        Magnitude = dat.chile$Magnitude,
+        Sector = dat.chile$Sector2,
+        Year = dat.chile$year) 
 
+
+
+chile.map.plot.d$Sector<- as.character(chile.map.plot.d$Sector)
+chile.map.plot.d$Sector[chile.map.plot.d$Sector==""] <- NA
+chile.map.plot.d$Sector <- as.factor(chile.map.plot.d$Sector)
+
+
+# prepare DF for plot
 chile.map.plot.d = data.frame(na.omit(chile.map.plot.d));rownames(chile.map.plot.d) <- NULL
 
-ggplot() +  
+# plot
+earthquake.map.plot.chile = ggplot() +  
         geom_polygon(aes(x=long, y=lat, group=group), fill='grey', size=.05, color='black', data=chile.provinces, alpha=1/2) +
         theme_bw() +
         ggtitle(NULL) + 
-        geom_point(data=chile.map.plot.d, aes(x=Longitude, y=Latitude, shape=as.factor(round(chile.map.plot.d$Magnitude,0))), color='red') +#shape=21, 
+        geom_point(data=chile.map.plot.d, aes(x=Longitude, y=Latitude,colour=Sector, shape=as.factor(round(chile.map.plot.d$Magnitude,0)))) +#shape=21, 
         scale_y_continuous(name='Latitude') +
         scale_x_continuous(name='Longitude') +
-        scale_shape_discrete(name="Rounded\nMagnitude")
+        scale_shape_discrete(name="Rounded\nMagnitude") +
+        theme(axis.text.y = element_text(size=7), 
+              axis.text.x = element_text(size=7), 
+              axis.title.y = element_text(size=7), 
+              axis.title.x = element_text(size=7), 
+              legend.text=element_text(size=7), 
+              legend.title=element_text(size=7),
+              plot.title = element_text(size=7))
 ## ----
 
 
+## ---- earthquake:map:plot:chile ----
+# plot
+earthquake.map.plot.chile
+earthquake.map.note.chile <- paste(
+        paste("Geographical Distribution of Earthquakes in Chile,", paste(min(chile.map.plot.d$Year), max(chile.map.plot.d$Year), sep="-"), sep=" "),
+        "\\\\\\hspace{\\textwidth}", 
+        paste("{\\bf Note}:", paste(paste(paste("Using a combination of archival information and external sources, the figure shows a total of", nrow(chile.map.plot.d), ""), "earthquakes.", sep = ""), "Each quake was colorized according to the predominant economic sector at the municipal level. In total, there were", as.numeric(table(chile.map.plot.d$Sector)["Agriculture"]), "earthquakes that took place in agricultural localities,", as.numeric(table(chile.map.plot.d$Sector)["Industry"]), "in industrial, and", as.numeric(table(chile.map.plot.d$Sector)["Mixed"]), "in mixed municipalities.",   sep = " "), sep=" "),
+        "\n")
 
-#geom_point(data=dat.chile, aes(x=Longitude, y=Latitude), shape=21, color='red') +
+## ----
 
 
 
@@ -956,7 +995,7 @@ jags.data.tax <- list(Deaths = Deaths,
 
 
 # Define and name the parameters so JAGS monitors them.
-eq.params.tax <- c("b.Magnitude", "b.p.Population", "b.year", "b.r.long", "b.r.lat", "b.incometax.d", "b.Urban", "lambda")
+eq.params.tax <- c("b.Magnitude", "b.p.Population", "b.year", "b.r.long", "b.r.lat", "b.incometax.d", "b.Urban")
 ## ----
 
 
@@ -1058,8 +1097,11 @@ plot.dat.income.tax = plot.dat.income.tax[ which(plot.dat.income.tax$year.range>
 
 # income tax adoption plot DF
 income.tax.adoption.plot = as.data.frame(rbind(
-        as.data.frame(cbind(plot.dat.no.income.tax, 'Tax'= rep("No", nrow(plot.dat.no.income.tax)))),
-        as.data.frame(cbind(plot.dat.income.tax, 'Tax'= rep("Yes", nrow(plot.dat.income.tax))))))
+        as.data.frame(cbind(plot.dat.no.income.tax, 'Income Tax'= rep("No", nrow(plot.dat.no.income.tax)))),
+        as.data.frame(cbind(plot.dat.income.tax, 'Income Tax'= rep("Yes", nrow(plot.dat.income.tax))))))
+
+death.toll.before.tax = round(mean(income.tax.adoption.plot$mean[income.tax.adoption.plot$year.range <= 1924]),0)
+death.toll.after.tax = round(mean(income.tax.adoption.plot$mean[income.tax.adoption.plot$year.range >= 1924]), 0)
 ## ----
 
 
@@ -1070,8 +1112,8 @@ p_load(ggplot2)
 
 # plot
 ggplot() + 
-        geom_smooth(data = income.tax.adoption.plot, aes(x = year.range, y = mean, colour = Tax), alpha = 0.8, size = 0.5, se = F, method = 'loess') +
-        geom_ribbon(data = income.tax.adoption.plot, aes(x = year.range, ymin = lower, ymax = upper, fill = Tax), alpha = 0.2) + 
+        geom_smooth(data = income.tax.adoption.plot, aes(x = year.range, y = mean, colour = `Income Tax`), alpha = 0.8, size = 0.5, se = F, method = 'loess') +
+        geom_ribbon(data = income.tax.adoption.plot, aes(x = year.range, ymin = lower, ymax = upper, fill = `Income Tax`), alpha = 0.2) + 
         geom_vline(xintercept = 1924, linetype=2, colour="blue") + 
         xlab("Year") + ylab("Death-Toll\n(Posterior Predictions)") + 
         theme_bw() + 
@@ -1228,30 +1270,6 @@ print.xtable(xtable(
 
 
 ## ---- predicted:observed:plot ----
-# Sectoral
-eq.out.sectoral <- as.data.frame(as.matrix(as.mcmc(earthquakefit.sectoral)))
-
-pred.eq.sectoral <- eq.out.sectoral[, grep("lambda[", colnames(eq.out.sectoral), fixed = T)]
-
-if (!require("pacman")) install.packages("pacman"); library(pacman) 
-p_load(gtools)
-
-pred.eq.sectoral <- pred.eq.sectoral[, c(mixedsort(names(pred.eq.sectoral)))]
-
-median <- apply(pred.eq.sectoral, 2, median) # median of the column
-lower <- apply(pred.eq.sectoral, 2, function(x) quantile(x, probs = c(0.05))) # quantile of the column
-upper <- apply(pred.eq.sectoral, 2, function(x) quantile(x, probs = c(0.95))) # quantile of the column
-
-eq.pred.sectoral <- data.frame(
-        Model = rep("Sectoral Competition", nrow(datsc)),
-        id = 1:nrow(datsc),
-        Deaths.observed = datsc$Deaths,
-        median = median,
-        lower = lower,
-        upper = upper)
-
-
-
 # Tax
 eq.out.tax <- as.data.frame(as.matrix(as.mcmc(earthquakefit.tax)))
 
@@ -1275,7 +1293,7 @@ eq.pred.tax <- data.frame(
         upper = upper)
 
 # Consolidating Both DF's
-model.checking.plot.df = as.data.frame(rbind(eq.pred.tax,eq.pred.sectoral))
+model.checking.plot.df = as.data.frame(eq.pred.tax)
 
 
 
@@ -1287,11 +1305,11 @@ p_load(ggplot2)
 ggplot(data = model.checking.plot.df, 
        aes(x = Deaths.observed, y = reorder(id, Deaths.observed))) + 
         geom_point(aes(
-                colour = Model,
+                #colour = Model,
                 x = median, 
                 y = reorder(id,Deaths.observed))) +
         geom_segment(aes(
-                colour = Model,
+               # colour = Model,
                 x = lower, 
                 xend = upper, 
                 y = reorder(id, Deaths.observed), 
@@ -1477,27 +1495,11 @@ earthquake.year.tax <- summarise(group_by(melt(earthquake.year.tax), variable), 
 earthquake.year.tax$variable <- as.numeric(gsub(pattern = "Y", replacement = "", x = earthquake.year.tax$variable))
 earthquake.year.tax$Model <- "Income Tax Adoption"
 
-# Sectoral Conflict
-earthquake.out.sectoral <- as.data.frame(as.matrix(as.mcmc(earthquakefit.sectoral)))
-
-earthquake.year.sectoral <- earthquake.out.sectoral[, grep("b.year[", colnames(earthquake.out.sectoral), fixed=T)]
-
-earthquake.year.sectoral <- earthquake.year.sectoral[, c(mixedsort(names(earthquake.year.sectoral)))]
-colnames(earthquake.year.sectoral) <- paste("Y",unique(sort(datsc$year)), sep = "")
-
-
-earthquake.year.sectoral <- summarise(group_by(melt(earthquake.year.sectoral), variable), mean = mean(value), lo = quantile(value, probs = c(0.20)), hi = quantile(value, probs = c(0.80)))
-
-earthquake.year.sectoral$variable <- as.numeric(gsub(pattern = "Y", replacement = "", x = earthquake.year.sectoral$variable))
-earthquake.year.sectoral$Model <- "Sectoral Competition"
-
-# Combine Two DF's
-year.fixed.effects.plot.df = rbind(earthquake.year.sectoral, earthquake.year.tax)
 
 # plot
-ggplot(data = year.fixed.effects.plot.df, aes(x = variable, y = mean, fill = Model, colour = Model)) + 
+ggplot(data = earthquake.year.tax, aes(x = variable, y = mean)) + 
         geom_hline(yintercept = 0, col = "blue") +
-        geom_pointrange(aes(ymin = lo, ymax = hi, fill = Model, colour = Model)) + 
+        geom_pointrange(aes(ymin = lo, ymax = hi)) + 
         xlab("Year") + 
         ylab("Death-Toll") + 
         theme_bw() + 
@@ -1518,7 +1520,7 @@ ggplot(data = year.fixed.effects.plot.df, aes(x = variable, y = mean, fill = Mod
 
 
 
-# ---- incometax ----
+# ---- incometax:chile ----
 # load libraries
 if (!require("pacman")) install.packages("pacman"); library(pacman)
 p_load(ggplot2,grid,gridExtra)
@@ -1715,12 +1717,534 @@ ggplot(data = tab, aes(x = IncomeTax, y = index)) +
               legend.text=element_text(size=7), 
               legend.title=element_text(size=7),
               plot.title = element_text(size=7),
-              legend.position="bottom") #+
-        #ggsave("/Users/hectorbahamonde/RU/Dissertation/Papers/Earthquake_Paper/rolling_poison.pdf", dpi = 1000, width = 128, height = 96, units = c("mm"))
-
+              legend.position="bottom")
 ## ----
 
 
+
+########################################
+# Cox Models
+########################################
+
+
+
+
+# ---- incometax:data ----
+# Load data
+load("/Users/hectorbahamonde/RU/Dissertation/Data/dissertation.Rdata") 
+
+# load libraries
+if (!require("pacman")) install.packages("pacman"); library(pacman)
+p_load(ggplot2,gridExtra)
+
+
+
+# To force GGplots to share same legend.
+grid_arrange_shared_legend <- function(...) {
+        require(ggplot2)
+        require(gridExtra)
+        plots <- list(...)
+        g <- ggplotGrob(plots[[1]] + theme(legend.position="bottom"))$grobs
+        legend <- g[[which(sapply(g, function(x) x$name) == "guide-box")]]
+        lheight <- sum(legend$height)
+        grid.arrange(
+                do.call(arrangeGrob, lapply(plots, function(x)
+                        x + theme(legend.position="none"))),
+                legend,
+                ncol = 1,
+                heights = grid::unit.c(unit(1, "npc") - lheight, lheight))
+}
+
+#### multiplot
+multiplot <- function(..., plotlist=NULL, file, cols=1, layout=NULL) {
+        library(grid)
+        
+        # Make a list from the ... arguments and plotlist
+        plots <- c(list(...), plotlist)
+        
+        numPlots = length(plots)
+        
+        # If layout is NULL, then use 'cols' to determine layout
+        if (is.null(layout)) {
+                # Make the panel
+                # ncol: Number of columns of plots
+                # nrow: Number of rows needed, calculated from # of cols
+                layout <- matrix(seq(1, cols * ceiling(numPlots/cols)),
+                                 ncol = cols, nrow = ceiling(numPlots/cols))
+        }
+        
+        if (numPlots==1) {
+                print(plots[[1]])
+                
+        } else {
+                # Set up the page
+                grid.newpage()
+                pushViewport(viewport(layout = grid.layout(nrow(layout), ncol(layout))))
+                
+                # Make each plot, in the correct location
+                for (i in 1:numPlots) {
+                        # Get the i,j matrix positions of the regions that contain this subplot
+                        matchidx <- as.data.frame(which(layout == i, arr.ind = TRUE))
+                        
+                        print(plots[[i]], vp = viewport(layout.pos.row = matchidx$row,
+                                                        layout.pos.col = matchidx$col))
+                }
+        }
+}
+
+#### plots
+
+##### Chile
+chile.p = ggplot() + 
+        geom_line(data=subset(dissertation, country=="Chile"), aes(x=year, y=log(constagricult), colour="Agricultural Output"), fill=NA, size=1) +
+        geom_line(data=subset(dissertation, country=="Chile"), aes(x=year, y=log(constmanufact), colour="Industrial Output"), fill=NA, size=1) + 
+        xlab("Year") +
+        ylab("GDP Output (ln)") +
+        labs(colour = "Legend") +
+        scale_x_continuous(limits=c(1890,2010)) + 
+        geom_vline(data=subset(dissertation, country=="Chile"), aes(xintercept = 1924, colour= "Income Tax Law"), linetype = "longdash") + # Income Tax Law  
+        theme_bw() + 
+        theme(axis.text.y = element_text(size=12), axis.text.x = element_text(size=12), axis.title.y = element_text(size=10), axis.title.x = element_text(size=10), legend.text=element_text(size=15), legend.title=element_text(size=0),  legend.position = "bottom")  + 
+        labs(title="Chile") +
+        ggsave("Chile_Income_Tax.pdf", width = 40, height = 20, units = "cm")
+
+
+##### Peru
+peru.p = ggplot() + 
+        geom_line(data=subset(dissertation, country=="Peru"), aes(x=year, y=log(constagricult), colour="Agricultural Output"), fill=NA, size=1) +
+        geom_line(data=subset(dissertation, country=="Peru"), aes(x=year, y=log(constmanufact), colour="Industrial Output"), fill=NA, size=1) + 
+        xlab("Year") +
+        ylab("GDP Output (ln)") +
+        labs(colour = "Legend") +
+        scale_x_continuous(limits=c(1890,2010)) + 
+        geom_vline(data=subset(dissertation, country=="Peru"), aes(xintercept = 1934, colour= "Income Tax Law"), linetype = "longdash") + # Income Tax Law
+        theme_bw() + 
+        theme(axis.text.y = element_text(size=12), axis.text.x = element_text(size=12), axis.title.y = element_text(size=10), axis.title.x = element_text(size=10), legend.text=element_text(size=15), legend.title=element_text(size=0),  legend.position = "bottom")  + 
+        labs(title="Peru") +
+        ggsave("Peru_Income_Tax.pdf", width = 40, height = 20, units = "cm")
+
+##### Colombia
+colombia.p = ggplot() + 
+        geom_line(data=subset(dissertation, country=="Colombia"), aes(x=year, y=log(constagricult), colour="Agricultural Output"), fill=NA, size=1) +
+        geom_line(data=subset(dissertation, country=="Colombia"), aes(x=year, y=log(constmanufact), colour="Industrial Output"), fill=NA, size=1) + 
+        xlab("Year") +
+        ylab("GDP Output (ln)") +
+        labs(colour = "Legend") +
+        scale_x_continuous(limits=c(1890,2010)) + 
+        geom_vline(data=subset(dissertation, country=="Colombia"), aes(xintercept = 1935, colour= "Income Tax Law"), linetype = "longdash") + # Income Tax Law
+        theme_bw() + 
+        theme(axis.text.y = element_text(size=12), axis.text.x = element_text(size=12), axis.title.y = element_text(size=10), axis.title.x = element_text(size=10), legend.text=element_text(size=15), legend.title=element_text(size=0),  legend.position = "bottom")  + 
+        labs(title="Colombia") +
+        ggsave("Colombia_Income_Tax.pdf", width = 40, height = 20, units = "cm")
+
+
+##### Ecuador
+ecuador.p= ggplot() + 
+        geom_line(data=subset(dissertation, country=="Ecuador"), aes(x=year, y=log(constagricult), colour="Agricultural Output"), fill=NA, size=1) +
+        geom_line(data=subset(dissertation, country=="Ecuador"), aes(x=year, y=log(constmanufact), colour="Industrial Output"), fill=NA, size=1) + 
+        xlab("Year") +
+        ylab("GDP Output (ln)") +
+        labs(colour = "Legend") +
+        scale_x_continuous(limits=c(1890,2010)) + 
+        geom_vline(data=subset(dissertation, country=="Ecuador"), aes(xintercept = 1945, colour= "Income Tax Law"), linetype = "longdash") + # Income Tax Law
+        theme_bw() + 
+        theme(axis.text.y = element_text(size=12), axis.text.x = element_text(size=12), axis.title.y = element_text(size=10), axis.title.x = element_text(size=10), legend.text=element_text(size=15), legend.title=element_text(size=0),  legend.position = "bottom")  + 
+        labs(title="Ecuador") +
+        ggsave("Ecuador_Income_Tax.pdf", width = 40, height = 20, units = "cm")
+
+
+##### Venezuela
+venezuela.p= ggplot() + 
+        geom_line(data=subset(dissertation, country=="Venezuela"), aes(x=year, y=log(constagricult), colour="Agricultural Output"), fill=NA, size=1) +
+        geom_line(data=subset(dissertation, country=="Venezuela"), aes(x=year, y=log(constmanufact), colour="Industrial Output"), fill=NA, size=1) + 
+        xlab("Year") +
+        ylab("GDP Output (ln)") +
+        labs(colour = "Legend") +
+        scale_x_continuous(limits=c(1890,2010)) + 
+        geom_vline(data=subset(dissertation, country=="Venezuela"), aes(xintercept = 1943, colour= "Income Tax Law"), linetype = "longdash") + # Income Tax Law
+        theme_bw() + 
+        theme(axis.text.y = element_text(size=12), axis.text.x = element_text(size=12), axis.title.y = element_text(size=10), axis.title.x = element_text(size=10), legend.text=element_text(size=15), legend.title=element_text(size=0),  legend.position = "bottom")  + 
+        labs(title="Venezuela") +
+        ggsave("Venezuela_Income_Tax.pdf", width = 40, height = 20, units = "cm")
+
+##### Nicaragua
+nicaragua.p= ggplot() + 
+        geom_line(data=subset(dissertation, country=="Nicaragua"), aes(x=year, y=log(constagricult), colour="Agricultural Output"), fill=NA, size=1) +
+        geom_line(data=subset(dissertation, country=="Nicaragua"), aes(x=year, y=log(constmanufact), colour="Industrial Output"), fill=NA, size=1) + 
+        xlab("Year") +
+        ylab("GDP Output (ln)") +
+        labs(colour = "Legend") +
+        scale_x_continuous(limits=c(1890,2010)) + 
+        geom_vline(data=subset(dissertation, country=="Nicaragua"), aes(xintercept = 1974, colour= "Income Tax Law"), linetype = "longdash") + # Income Tax Law
+        theme_bw() + 
+        theme(axis.text.y = element_text(size=12), axis.text.x = element_text(size=12), axis.title.y = element_text(size=10), axis.title.x = element_text(size=10), legend.text=element_text(size=15), legend.title=element_text(size=0),  legend.position = "bottom")  + 
+        labs(title="Nicaragua")  +
+        ggsave("Nicaragua_Income_Tax.pdf", width = 40, height = 20, units = "cm")
+
+##### Guatemala
+guatemala.p= ggplot() + 
+        geom_line(data=subset(dissertation, country=="Guatemala"), aes(x=year, y=log(constagricult), colour="Agricultural Output"), fill=NA, size=1) +
+        geom_line(data=subset(dissertation, country=="Guatemala"), aes(x=year, y=log(constmanufact), colour="Industrial Output"), fill=NA, size=1) + 
+        xlab("Year") +
+        ylab("GDP Output (ln)") +
+        labs(colour = "Income Tax (ln)") +
+        scale_x_continuous(limits=c(1890,2010)) + 
+        geom_vline(data=subset(dissertation, country=="Guatemala"), aes(xintercept = 1963, colour= "Income Tax Law"), linetype = "longdash") + # Income Tax Law
+        theme_bw() + 
+        theme(axis.text.y = element_text(size=12), axis.text.x = element_text(size=12), axis.title.y = element_text(size=10), axis.title.x = element_text(size=10), legend.text=element_text(size=15), legend.title=element_text(size=0),  legend.position = "bottom")  + 
+        labs(title="Guatemala")  +
+        ggsave("Guatemala_Income_Tax.pdf", width = 40, height = 20, units = "cm")
+
+##### Argentina
+argentina.p= ggplot() + 
+        geom_line(data=subset(dissertation, country=="Argentina"), aes(x=year, y=log(constagricult), colour="Agricultural Output"), fill=NA, size=1) +
+        geom_line(data=subset(dissertation, country=="Argentina"), aes(x=year, y=log(constmanufact), colour="Industrial Output"), fill=NA, size=1) + 
+        xlab("Year") +
+        ylab("GDP Output (ln)") +
+        labs(colour = "Income Tax (ln)") +
+        scale_x_continuous(limits=c(1890,2010)) + 
+        geom_vline(data=subset(dissertation, country=="Argentina"), aes(xintercept = 1933, colour= "Income Tax Law"), linetype = "longdash") + # Income Tax Law
+        theme_bw() + 
+        theme(axis.text.y = element_text(size=12), axis.text.x = element_text(size=12), axis.title.y = element_text(size=10), axis.title.x = element_text(size=10), legend.text=element_text(size=15), legend.title=element_text(size=0),  legend.position = "bottom")  + 
+        labs(title="Argentina") +
+        ggsave("Argentina_Income_Tax.pdf", width = 40, height = 20, units = "cm")
+
+
+##### Mexico
+mexico.p= ggplot() + 
+        geom_line(data=subset(dissertation, country=="Mexico"), aes(x=year, y=log(constagricult), colour="Agricultural Output"), fill=NA, size=1) +
+        geom_line(data=subset(dissertation, country=="Mexico"), aes(x=year, y=log(constmanufact), colour="Industrial Output"), fill=NA, size=1) + 
+        xlab("Year") +
+        ylab("GDP Output (ln)") +
+        labs(colour = "Income Tax (ln)") +
+        scale_x_continuous(limits=c(1890,2010)) + 
+        geom_vline(data=subset(dissertation, country=="Mexico"), aes(xintercept = 1925, colour= "Income Tax Law"), linetype = "longdash") + # Income Tax Law
+        theme_bw() + 
+        theme(axis.text.y = element_text(size=12), axis.text.x = element_text(size=12), axis.title.y = element_text(size=10), axis.title.x = element_text(size=10), legend.text=element_text(size=15), legend.title=element_text(size=0),  legend.position = "bottom")  + 
+        labs(title="Mexico") +
+        ggsave("Mexico_Income_Tax.pdf", width = 40, height = 20, units = "cm")
+# ----
+
+
+
+# ---- incometax:plot ----
+
+##### All
+grid_arrange_shared_legend(
+        chile.p, 
+        ecuador.p, 
+        nicaragua.p, 
+        venezuela.p, 
+        peru.p, 
+        colombia.p, 
+        guatemala.p, 
+        argentina.p, 
+        mexico.p,
+        ncol = 3, nrow = 3)
+
+outputstitle <- paste(
+        "Industrial and Agricultural Outputs, and The Passage of the Income Tax Law",
+        "\\\\\\hspace{\\textwidth}", 
+        "{\\bf Note}: Figure shows historical sectoral outputs, and year of the passage of the income tax law. Following convention, the figure shows logged values.",
+        "\\\\\\hspace{\\textwidth}", 
+        paste("{\\bf Source}: \\href{http://moxlad-staging.herokuapp.com/home/en?}{MOxLAD} and other souces compiled by the author (see \\autoref{sample:data:income:tax:tab})."),
+        "\n")
+# ----
+
+
+##################################################
+##              MODELS 1
+## [results:1]
+##################################################
+rm(list=ls())
+cat("\014")
+
+
+##################################################
+### THIS CHUNK GOES BEFORE THE MODELS
+
+
+
+
+
+## ---- texreg-extractor-geeglm ----
+
+if (!require("pacman")) install.packages("pacman"); library(pacman)
+p_load(texreg, methods)
+
+extract.geepack <- function(model) {
+        s <- summary(model)
+        names <- rownames(s$coef)
+        co <- s$coef[, 1]
+        se <- s$coef[, 2]
+        pval <- s$coef[, 4]
+        
+        n <- nrow(model.frame(model))
+        nclust <- length(s$geese$clusz)
+        
+        gof = c(n, nclust)
+        gof.names = c("Num. obs.", "Num. clust.")
+        
+        tr <- createTexreg(
+                coef.names = names,
+                coef = co,
+                se = se,
+                pvalues = pval,
+                gof.names = gof.names,
+                gof = gof,
+                gof.decimal = rep(FALSE, length(gof))
+        )
+        return(tr)
+}
+
+setMethod("extract", signature = className("geeglm", "geepack"),
+          definition = extract.geepack)
+## ---- 
+
+
+
+##################################################
+
+
+
+
+
+
+## ---- results:data ----
+# Load Datasets
+load("/Users/hectorbahamonde/RU/Dissertation/Papers/IncomeTaxAdoption/incometax_data.RData") # Load data
+load("/Users/hectorbahamonde/RU/Dissertation/Papers/IncomeTaxAdoption/cox.RData") # Cox
+load("/Users/hectorbahamonde/RU/Dissertation/Papers/IncomeTaxAdoption/logitgee.RData") # Logit GEE
+#load("/Users/hectorbahamonde/RU/Dissertation/Papers/IncomeTaxAdoption/l_clogit.RData") # Lagged CONSTANT AGR MANUFACT for clogit  (fixed effects)
+
+
+
+if (!require("pacman")) install.packages("pacman"); library(pacman)
+p_load(survival)
+
+
+# this is the model I use for simulation
+cox2 <- coxph(Surv(year, year2, incometax.s) ~ 
+                      L_constmanufact +
+                      L_constagricult +
+                      totpop +
+                      cluster(country),
+              data = cox)
+
+## logit GEE
+if (!require("pacman")) install.packages("pacman"); library(pacman)
+p_load(geepack)
+
+logitgee.1 = geeglm(incometax.d ~ log(constmanufact) + log(constagricult) + log(totpop), 
+                    family = binomial, 
+                    id = country, 
+                    corstr = "independence",
+                    std.err = "san.se",
+                    data = logitgee)
+logitgee.1 = extract(logitgee.1)
+
+
+# conditional logit
+if (!require("pacman")) install.packages("pacman"); library(pacman)
+p_load(survival)
+
+clogit.1 = clogit(
+        incometax.d ~  
+                log(constmanufact) + 
+                log(constagricult) + 
+                log(totpop) +
+                strata(country), 
+        method= "efron", data = data)
+## ----
+
+
+
+## ---- results:table:cox ----
+# screenreg / texreg
+texreg(
+        list(cox2, logitgee.1, clogit.1), # it needs to be texreg for knitr
+        caption = "Sectoral Origins of Income Taxation: Income Tax Law and Industrial Development",
+        custom.coef.names = c(
+                "Manufacture Output$_{t-1}$",
+                "Agricultural Output$_{t-1}$",
+                "Total Population",
+                #
+                "intercept",
+                #
+                "Manufacture Output (ln)",
+                "Agricultural Output (ln)",        
+                "Total Population (ln)"),
+        custom.model.names = c(
+                "(1) Cox (1 lag)",# Base Model
+                "(2) Logit GEE", # GEE
+                "(3) Conditional Logit (FE)" # Fixed Effects model
+        ),
+        label = "results:1",
+        custom.note = "%stars. Robust standard errors in all models",
+        fontsize = "small",
+        center = TRUE,
+        use.packages = FALSE,
+        dcolumn = TRUE,
+        booktabs = TRUE,
+        omit.coef = "intercept",
+        #longtable = TRUE,
+        digits = 3,
+        table = TRUE,
+        stars = c(0.001, 0.01, 0.05, 0.1),
+        #sideways = TRUE,
+        no.margin = TRUE, 
+        float.pos = "ph!"
+)
+## ---- 
+
+
+
+########################################################
+#### Simulation: Relative Hazard
+#### [simulation:1] [simulation:2]
+########################################################
+
+
+
+
+
+
+
+## ---- simulation ----
+########################  
+
+## industrial sector
+# simulate qi's
+
+if (!require("pacman")) install.packages("pacman"); library(pacman)
+p_load(simPH)
+
+# quantities
+nsim = 5000 # original: 1000
+qi = "Hazard Rate" # original: Hazard Rate
+ci = 0.95
+
+
+set.seed(602)
+sim.m.ind <- coxsimLinear(cox2, 
+                          b = "L_constmanufact", 
+                          qi = qi, 
+                          ci = ci,
+                          #spin = T,
+                          extremesDrop = T,
+                          nsim = nsim,
+                          Xj = c(min(cox$L_constmanufact), max(cox$L_constmanufact))
+)
+
+
+### agricultural sector
+# simulate qi's
+set.seed(602)
+sim.m.agr <- coxsimLinear(cox2, 
+                          b = "L_constagricult", 
+                          qi = qi, 
+                          ci = ci,
+                          #spin = T,
+                          extremesDrop = T,
+                          nsim = nsim,
+                          Xj = c(min(cox$L_constagricult), max(cox$L_constagricult))
+)
+
+## function to combine the two plots
+
+
+if (!require("pacman")) install.packages("pacman"); library(pacman)
+p_load(ggplot2,gridExtra,grid)
+
+grid_arrange_shared_legend <- function(..., ncol = length(list(...)), nrow = 1, position = c("bottom", "right")) {
+        
+        plots <- list(...)
+        position <- match.arg(position)
+        g <- ggplotGrob(plots[[1]] + theme(legend.position = position))$grobs
+        legend <- g[[which(sapply(g, function(x) x$name) == "guide-box")]]
+        lheight <- sum(legend$height)
+        lwidth <- sum(legend$width)
+        gl <- lapply(plots, function(x) x + theme(legend.position="none"))
+        gl <- c(gl, ncol = ncol, nrow = nrow)
+        
+        combined <- switch(position,
+                           "bottom" = arrangeGrob(do.call(arrangeGrob, gl),
+                                                  legend,
+                                                  ncol = 1,
+                                                  heights = unit.c(unit(1, "npc") - lheight, lheight)),
+                           "right" = arrangeGrob(do.call(arrangeGrob, gl),
+                                                 legend,
+                                                 ncol = 2,
+                                                 widths = unit.c(unit(1, "npc") - lwidth, lwidth)))
+        grid.newpage()
+        grid.draw(combined)
+        
+}
+## ----
+
+
+
+
+
+
+
+## ---- simulation:plots ----
+# install.packages("devtools")
+# library(devtools)
+# devtools::install_github('christophergandrud/simPH')
+# library(simPH)
+
+if (!require("pacman")) install.packages("pacman"); library(pacman)
+p_load(ggplot2,simPH)
+
+
+## IMPORTANT! A relative hazard for a unit at zero is always one, as it is a ratio of the hazards with itself. Gandrud2015 p. 10
+
+# Plot
+options(scipen=10000)
+sim.p.ind = simGG(sim.m.ind, type = 'lines',# type = 'points' // 'lines'
+                  xlab = "Year", 
+                  ylab = "Hazard Rate", 
+                  ribbons = F, alpha = 0.25, method = 'gam') + 
+        theme_bw() + 
+        theme(axis.text.y = element_text(size=8), 
+              axis.text.x = element_text(size=8), 
+              axis.title.y = element_text(size=8), 
+              axis.title.x = element_text(size=8),
+              title = element_text(size=9)
+        ) +
+        labs(title = "Industrial Output") +
+        scale_color_manual(labels = c("Slow", "Rapid"), values = c("red", "blue")) +
+        guides(color=guide_legend("Sectoral Output"))
+
+
+# Plot
+options(scipen=10000)
+sim.p.agr = simGG(sim.m.agr, type = 'lines',# type = 'points' // 'lines'
+                  xlab = "Year", 
+                  ylab = "Hazard Rate", 
+                  ribbons = F, alpha = 0.25, method = 'gam') + 
+        theme_bw() + 
+        theme(axis.text.y = element_text(size=8), 
+              axis.text.x = element_text(size=8), 
+              axis.title.y = element_text(size=8), 
+              axis.title.x = element_text(size=8),
+              title = element_text(size=9)
+        ) +
+        labs(title = "Agriculture Output") +
+        scale_color_manual(labels = c("Slow", "Rapid"), values = c("red", "blue")) +
+        guides(color=guide_legend("Sectoral Output"))
+
+grid_arrange_shared_legend(sim.p.ind, sim.p.agr, ncol = 2, nrow = 1)
+
+simtitle <- paste(
+        paste0(qi, " of Implementing the Income Tax Law."),
+        "\\\\\\hspace{\\textwidth}", 
+        paste("{\\bf Note}:", "Using estimations of Model 1 in \\autoref{results:table:cox}, figure shows", nsim, "simulations with different sectoral growth speeds. Slow is the minimum value, while rapid is the maximum value for each sectoral output."), 
+        paste("The figure also shows the", ci*100, "\\% confidence intervals."), 
+        "\n")
+
+## ----
 
 
 
