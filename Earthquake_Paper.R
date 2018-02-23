@@ -2176,6 +2176,12 @@ grid_arrange_shared_legend <- function(..., ncol = length(list(...)), nrow = 1, 
         grid.draw(combined)
         
 }
+simtitle <- paste(
+        paste0(qi, " of Implementing the Income Tax Law."),
+        "\\\\\\hspace{\\textwidth}", 
+        paste("{\\bf Note}:", "Using estimations of Model 1 in \\autoref{results:table:cox}, figure shows", nsim, "simulations with different sectoral growth speeds. Slow is the minimum value, while rapid is the maximum value for each sectoral output."), 
+        paste(paste("The figure also shows the ", paste(ci*100, "\\%", sep = ""), sep = ""), "confidence intervals."), 
+        "\n")
 ## ----
 
 
@@ -2232,15 +2238,8 @@ sim.p.agr = simGG(sim.m.agr, type = 'lines',# type = 'points' // 'lines'
         guides(color=guide_legend("Sectoral Output"))
 
 grid_arrange_shared_legend(sim.p.ind, sim.p.agr, ncol = 2, nrow = 1)
-
-
-simtitle <- paste(
-        paste0(qi, " of Implementing the Income Tax Law."),
-        "\\\\\\hspace{\\textwidth}", 
-        paste("{\\bf Note}:", "Using estimations of Model 1 in \\autoref{results:table:cox}, figure shows", nsim, "simulations with different sectoral growth speeds. Slow is the minimum value, while rapid is the maximum value for each sectoral output."), 
-        paste(paste("The figure also shows the ", paste(ci*100, "\\%", sep = ""), sep = ""), "confidence intervals."), 
-        "\n")
 ## ----
+
 
 
 

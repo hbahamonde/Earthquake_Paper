@@ -105,6 +105,8 @@ read_chunk('/Users/hectorbahamonde/RU/Dissertation/Papers/Earthquake_Paper/Earth
 
 @
 
+
+
 <<incometax:data, echo=FALSE, comment=NA, warning=FALSE, message=F,results='asis', cache=FALSE>>=
 
 @
@@ -304,11 +306,10 @@ In an effort to generalize the argument about the sectoral origins of the income
 % MODELS
 Econometrically, this section is concerned about the \emph{timing} of the implementation of the income tax law in nine Latin American polities, and particularly, about the individual contribution of both the agricultural and industrial sectors. \autoref{results:table:cox} shows 3 models.\footnote{Tables were produced using the  \texttt{texreg} package (\citet[]{Leifeld:2013qr}). All Cox models were computed using the \texttt{survival R}  package (\citet{Therneau:2015zr}). The GEE logistic regression was computed using the \texttt{geepack} package (\citet[]{Hojsgaard:2016}). The simulations were performed using the \texttt{simPH R} package (\citet{Gandrud2015}).} Following \citet{Aidt2009a}, Model 1 computes the lagged conditional hazard ratio of a country which has not yet adopted the income tax, adopts it in a given year, as a function of industrial and agricultural outputs.\footnote{Since the idea is to capture the sectoral \emph{contribution} of the implementation of the income tax law, these variables were not combined.} Countries drop out of the sample when they adopt the income tax. Model 2 shows the estimated coefficients of a generalized estimating equation (GEE). Generalized estimating equations were introduced by \citet{Liang1986} to fit clustered, repeated/correlated, and panel data (\citet[322]{Zorn2006}).\footnote{This method is especially well suited to analyze binary data (\citet{Hanley2003a}), something particularly useful given the nature of the dependent variable. GEE methods require analysts to parameterize the working correlation matrix. ``[T]he GEE is robust to misspecification of the correlation structure'' (\citet[139]{Hedeker2006}). In fact, \citet[338]{Zorn2006} explains that whereas the choice of estimator makes little or no difference, the unit on which the data are grouped makes a big difference. Hence, following the advice of \citet[166]{Hardin2013}, who point out that when ``the observations are clustered (not collected over time) [...] the exchangeable correlation structure'' should be used, the ``independence'' working covariance structure was assumed, which also corrects for small-sized panel designs.} From a substantive standpoint, GEE models provide an estimated marginal mean, or the \emph{weighted average} of all cluster-specific effects (or conditional means). Model 3 is a conditional logit. Since population has been associated with the probability elites expand the franchise,\footnote{\citet[892-893]{Engerman2005}.} and consequently the tax base, country-year population was included as a control variable. 
 
-\afterpage{
 <<simulation:plots, echo = FALSE, fig.pos='H', warning = FALSE, message = F, fig.cap=simtitle, fig.align='center', fig.width=7, fig.height=3,dpi=10000,cache = FALSE>>=
 
 @
-}
+
 
 \autoref{fig:simulation:plots} shows that it is not \emph{overall} growth what accelerates the implementation of the income tax, but \emph{industrial} growth. In fact, agricultural expansion \emph{delays} the implementation of the law. Given that the legacy of the colonial order gave unfair advantage to the landowning classes, industrial expansion entailed higher levels of sectoral contestation, e.g. an industrial sector able to challenge the post-colonial order. Since industrialists preferred the income tax, these analyses suggest that industrial expansion is systematically associated with the implementation of the income tax, not only in Chile, but in other Latin American polities too.
 
@@ -319,14 +320,15 @@ Econometrically, this section is concerned about the \emph{timing} of the implem
 
 
 % rolling regression
-Undoubtedly, some municipalities should be wealthier than others, and presumably, better able to \emph{privately} investment in earthquake proofing.\footnote{I thank Hillel Soifer and Mark Dincecco for this suggestion.} Inhabitants of such municipalities should be able to afford better construction materials and more advanced construction techniques, lowering death-tolls. If this possibility is not ruled out, then lower death-tolls have less to do with the capacity of the state to enforce building codes than with private wealth. To examine this possibility, a ``rolling'' version of \autoref{model:2} was performed. \autoref{fig:income:tax:model:and:data:run:rolling} plots $\Sexpr{nrow(tab)}$ models which resulted from iteratively excluding one observation at a time. The figure shows a steady decline in death-tolls. Overall results are not being driven by rich nor poor municipalities, but by the capacity of the state to enforce building codes throughout the territory.
+Undoubtedly, some municipalities should be wealthier than others, and presumably, better able to \emph{privately} investment in earthquake proofing.\footnote{I thank Hillel Soifer and Mark Dincecco for this suggestion.} Inhabitants of such municipalities could be able to afford better construction materials and more advanced construction techniques, lowering death-tolls. If this possibility is not ruled out, then lower death-tolls have less to do with the capacity of the state to enforce building codes than with private wealth. To examine this possibility, a ``rolling'' version of \autoref{model:2} was performed. \autoref{fig:income:tax:model:and:data:run:rolling} plots $\Sexpr{nrow(tab)}$ models which resulted from iteratively excluding one observation at a time. The figure shows that the substantive results are not being driven by the capacity of the rich (or incapacity of the poor) municipalities. There is a steady pattern of decline in death-tolls, regardless of which observation is included/excluded.
+
 
 <<income:tax:model:and:data:run:rolling, echo = FALSE, fig.pos='H', warning = FALSE, message = F, fig.cap=income.tax.model.rolling.note, fig.align='center', fig.width=7, fig.height=3,dpi=10000,cache = FALSE>>=
 
 @
 
 % geographical self-selection
-A second potential issue might be whether certain sectors self-select into less earthquake-prone geographical locations. For instance, it might be argued that agricultural areas, being mostly rural, might have lower constructions, while industrial areas, being more urban, might have both highly populated municipalities and higher constructions (edifices). To rule-out this possibility, a hierarchical variant of \autoref{model:2} was estimated. Using the same set of variables, \autoref{model:1} considers whether earthquake magnitudes affect agricultural, industrial or mixed municipalities have lower death-tolls.\footnote{
+A second potential issue might be whether certain sectors self-select into less earthquake-prone geographical locations. For instance, it might be argued that agricultural areas, being mostly rural, might have lower constructions, while industrial areas, being more urban, might have both highly populated municipalities and higher constructions (edifices). To rule-out this possibility, a hierarchical variant of \autoref{model:2} was estimated. Using the same set of control variables, \autoref{model:1} considers whether earthquake magnitudes affect agricultural, industrial or mixed municipalities in different ways.\footnote{
 
 \begin{equation} \label{model:1}
 \begin{split}
@@ -348,10 +350,10 @@ where,
 \begin{split}
 i_{1,...I} & \; \text{and} \; \text{I}=\Sexpr{N} \;  \text{observations}\\
 j_{1,...J} & \; \text{and} \; \text{J}=\Sexpr{NSector} \;  \text{sectors}\\
-t_{1,...T} & \; \text{and} \; \text{T}=\Sexpr{yearN} \;  \text{years};
+t_{1,...T} & \; \text{and} \; \text{T}=\Sexpr{yearN} \;  \text{years}.
 \end{split}
 \end{equation*}
-} \autoref{sectoral:model:regression:table:run} suggests that death-tolls are orthogonal to the economic sector. Belonging to an agricultural or industrial sector contributes with $\Sexpr{reg.results.table.sectoral[rownames(reg.results.table.sectoral) == "Magnitude [Agr]",1]}$ and $\Sexpr{reg.results.table.sectoral[rownames(reg.results.table.sectoral) == "Magnitude [Ind]",1]}$ additional deaths, respectively.
+} \autoref{sectoral:model:regression:table:run} suggests that death-tolls are orthogonal to the economic sector. Belonging to an agricultural or industrial sector contributes with $\Sexpr{reg.results.table.sectoral[rownames(reg.results.table.sectoral) == "Magnitude [Agr]",1]}$ or $\Sexpr{reg.results.table.sectoral[rownames(reg.results.table.sectoral) == "Magnitude [Ind]",1]}$ additional deaths, respectively.
 
 
 % table 1
@@ -365,43 +367,117 @@ t_{1,...T} & \; \text{and} \; \text{T}=\Sexpr{yearN} \;  \text{years};
 Finally, it could be argued that the distinction between two separate and opposite sectors is inaccurate. Some historians claim that this dualism is incorrect. They argue that, since landowners also invested in industry,\footnote{\citet[57, 95]{Kirsch:1977aa}, citing \citet[]{Bauer:2008kx}, who explains that ``[m]iners and merchants bought haciendas but landowners in turn invested in banks, insurance companies, commercial firms and the incipient industrial sector.'' \citet[23]{Coatsworth2002} argue that ``[t]he only landowners that mattered in 19th century Latin American politics were those for whom land represented but one asset in a much broader portfolio.''} there was a blurry class division between the mining, banking, and agricultural sectors.\footnote{\citet[30, 44, 94, 108]{Bauer:2008kx}.} Perhaps the most cited reference regarding this issue is \citet[231-247]{Veliz1963}. However, there are a number of stylized facts that strongly suggest that there was indeed a structural sectoral cleavage. First of all, there were certain practices that masked the existence of a  sectoral dualism. For example, it was common that industrialists invested in real estate. Yet, in many instances they did so \emph{just} to obtain credit. \citet[59]{Kirsch:1977aa} explains that ``in a \emph{rural society} land offered one of the best guarantees for loans [since] loans could not be secured by equipment, machinery, or inventory. Only real estate was acceptable collateral.''\footnote{Emphases are mine.} In fact, this practice shows how the credit system was oriented to give unfair advantage to the landed elites.\footnote{\citet[9]{UndaGutierrez2017} explains that in Mexico, industrial elites complied with the income tax in exchange of having a credit system more adequate for them.} Similarly, \citet[174]{Zeitlin:1984aa} finds ``the combined ownership of capital and landed property was a distinctive quality of \emph{certain} [elites] actors,''\footnote{Emphasis is mine.} not something that was generalizable to \emph{all} elites. There were also other instances where miners invested in banking. Yet, \citet{Segall1953} argues that Chilean bankers, after the crisis of the mining sector around the 1870s, had acquired a number of mineral deposits given as collateral years before. And finally, but for the Argentinean case, \citet[609]{Hora2002} explains that ``the image of an entrepreneurial elite with assets \emph{scattered throughout several spheres of investment} does not appear entirely correct.''\footnote{Emphasis is mine.}
 
 
-% one paragraph on the dual sector model here
-\todo{one paragraph on the dual sector model here}
-
-The ``dual sector'' or ``balanced growth model'' argues that the economy is divided into two sectors, loosely defined as ``advanced or modern sector'' or ``manufacturing sector,'' and ``backward or traditional sector,'' or ``agriculture.''\footnote{\citet[311]{Jorgenson1961}.} The basic intuition of this paradigm, is that in order for the industrial sector to develop, it needs \emph{first} an efficient and strong agricultural sector. 
-
-Economic development then depends on the emergence of the industrial sector, which in turn depends on the development of a productive agricultural sector.\footnote{\citet[567]{Johnston1961}.} As \citet[59]{Kuznets1961a} puts it, ``economic growth is \emph{impossible} unless there is a substantial rise in product per worker in the agricultural sector.''\footnote{Emphasis is mine. \citet[105]{Hayami1969} argue that industrialization is ``\emph{conditioned}'' by agricultural productivity.} 
+% dual sector model (theory)
+Additionally, there are structural reasons to believe that cross-sectoral investments were not efficient. The ``dual sector'' model argues that the economy is divided into agriculture and industry.\footnote{\citet[311]{Jorgenson1961}.} One intuition of this paradigm is that the ``natural'' structural role of the agricultural sector is to provide labor and cheap foodstuff to the industrial sector.\footnote{\citet[114]{Ranis:1964uq}.} For instance, \citet[326]{Dixit:1973aa} argues that the ``agricultural sector \emph{must} fulfill [...] its dual role of supplier of labour to industry and of food for the industrial labour force.''\footnote{Emphasis is mine.} The reason is that more efficient agricultural techniques make agricultural production less labor intensive, allowing landowners to free workers, which the industrial sector can rely on.\footnote{\citet[498]{Johnston1951}.} In turn, surplus of labor naturally leads to a reallocation of redundant workers into the industrial sector, which is the \emph{crux} of economic development.\footnote{\citet[7]{Ranis:1964uq} and \citet[51]{Leibenstein:1957aa}.} \citet[]{Nurkse:1953aa} in fact argues that development \emph{means} to employ the surplus labor.\footnote{Similarly, \citet[621-622]{Matsuyama1991} points out that  ``[i]ndustrialization [\emph{consists of}] a shift of resources from agriculture to manufacturing.''} % If the agricultural sector lacks economic efficiency, the industrial sector hardly develops, leading to a stagnant economy. As \citet[59]{Kuznets1961a} puts it, ``economic growth is \emph{impossible} unless there is a substantial rise in product per worker in the agricultural sector.''\footnote{Emphasis is mine. \citet[105]{Hayami1969} argue that industrialization is ``\emph{conditioned}'' by agricultural productivity.} 
 
 
 
-Agricultural development is a prerequisite of industrial development because it supplies the industrial sector with cheap foodstuff and cheap labor.\footnote{\citet[498]{Johnston1951}.}
+\begin{table}[ph!]
+\begin{center}
+\begin{scriptsize}
+\begin{tabular}{ c c c c c c } 
+\toprule
+{\bf Country} & {\bf Pre/Post Income Tax } & {\bf Period} & {\bf Directionality} & {\bf chi2}  & {\bf P-value} \\
+\midrule
+\\\multirow{4}{*}{Chile} & \multirow{2}{*}{Pre}  & \multirow{2}{*}{1905 - 1924} & Agriculture $\rightarrow$ Industry & 3.55 & 0.47\\
+\\                       &                       &                              & Industry $\rightarrow$ Agriculture & 12.13 & 0.02 \\ [.2em]\cline{2-6}
+\\                       & \multirow{2}{*}{Post} & \multirow{2}{*}{1928 - 2009} & Agriculture $\rightarrow$ Industry & 11.92 & 0.00 \\
+\\                       &                       &                              & Industry $\rightarrow$ Agriculture & 5.37 & 0.07 \\
+\hline
+\bottomrule
+\end{tabular}
+\end{scriptsize}
+\caption{Granger Causality Wald Tests}
+\label{granger:table}
+\end{center}
+\end{table}
 
- If the expansion of the agricultural sector is compromised, it will necessarily compromise the expansion of the industrial sector as well.\footnote{In fact \citet[2]{Landon-Lane2003} find that an important source of growth in developing economies is ``derived through the reallocation of resources [particularly] by drawing labour moving out of traditional sector employment into the modern sector.''} 
+
+% Granger
+To test this duality in the context of income taxation, the same \href{http://moxlad-staging.herokuapp.com/home/en?}{MOxLAD} sectoral data were used. Since the income tax (1) had positive spillover effects on overall state capacity and (2) its implementation was split across a sectoral base, we should see that (1) adopting the income tax fostered economic growth in the long-run, \todo{cite North/Weingast perhaps, or Besley.} and that (2) its implementation altered the sectoral mechanics of growth accumulation. In empirical terms, we should see that the implementation of the income tax law \emph{reversed} the flow of inputs, installing a mechanism of growth generation that went \emph{from} the agricultural sector \emph{to} the industrial sector. In econometric terms, we should see that the implementing the tax reversed the way in which one sector ``Granger-caused'' the other.\footnote{\citet[42]{Lutkepohl2006} explains that if some variable $X$ forecasts variable $Y$ (and not vise versa), $X$ is said to `Granger-cause' $Y$. According to \citet[349]{Granger1980}, this concept of `causation' is based on the idea ``that the future cannot cause the past.''} \autoref{granger:table} tests for Granger-causality both prior to and after the implementation of the income tax law.\footnote{The tests were computed after estimating \autoref{var:1}, which is a reduced form VAR in differences, both before and after implementing the tax:
+
+\begin{equation}\label{var:1}
+  \begin{split}
+    \bigtriangleup M_{t_{m}} = & \alpha_{m} + \beta_{m}  \bigtriangleup M_{t-l} + \beta_{m} \bigtriangleup A_{t-l} + \epsilon_{t_{m}} \\
+    \bigtriangleup A_{t_{a}} = & \alpha_{a} + \beta_{a}  \bigtriangleup M_{t-l} + \beta_{a} \bigtriangleup A_{t-l} + \epsilon_{t_{a}}
+  \end{split}
+\end{equation}
+} 
+The results strongly suggest that before the income tax law, industrial growth Granger-caused agricultural growth, but after the income tax law, the agricultural sector Granger-caused industrial development, indicating that the implementation of the income tax was associated with the reversal of economically backwards institutions, fostering longer-run economic development. However, it also needs to be examined whether these changes persisted in the long-term. Following \citet[]{Johansen1988}, the long-run sectoral relationship was estimated using a vector-autoregressive (VAR) approach. \autoref{irf:fig:1} suggests that implementing the tax is associated with long-term economic growth in the long-run. Particularly, the response of industry to agriculture after implementing the tax seems to persist for some time, not decaying at least after five periods.
+
+
+\begin{figure}[h]
+	\includegraphics[scale=.75, center]{/Users/hectorbahamonde/RU/Dissertation/Papers/NegativeLink/Chile_IRF_paper.pdf}
+	\caption{VAR Impulse Response Functions: Sectoral Responses to Each Other's Growths}\label{irf:fig:1}
+\end{figure}
+
+
+% dual sector model (implications of dual sector model, and econometric comments)
+These structural conditions mentioned should prevent cross-sectoral investments. Given the transference of inputs from one sector to another, and given that the agricultural sector is determined to lag behind the industrial sector,\footnote{The industrial sector uses capital and labor with increasing returns to scale, while agriculture uses land (which is fixed) as the main input (\citet[311]{Jorgenson1961}, \citet[59]{Ranis:1964uq}, \citet[291]{Jorgenson1967}, \citet[279-280]{Skott1998} and \citet[290]{Vollrath2009a}).} elites invested in both sectors should experiment important allocative inefficiencies and deadweight losses. The Granger tests also suggest that after the tax is implemented, the agricultural sector lagged behind the industrial sector, while the VAR equation suggests a long-term equilibrium between the two sectors.\footnote{To clarify, ``the agricultural sector declines relative to the overall economy but continues to expand absolutely'' (\citet[14]{Nerlove1994}). In other words, it is the ``the proportional contribution of agriculture to the growth'' that decays (\citet[45]{Kuznets1961a}), implying that in the long run the agricultural sector ``must also grow,'' (\citet[534]{Ranis1961}) especially given the continuing dependence on a constant supply of food (\citet[2]{Nicholls1963}).}
 
 
 
-It was \citet[151]{Lewis:1965nr} who popularized the idea that ``[t]he secret of most development problems is to maintain a proper balance between sectors.'' The dual nature of the economy has been widely accepted and forms part of ``a long tradition in development economics.''\footnote{\citet[8]{Kelley:1972zl}.}
 
-
-The literature coincides in that the ``natural'' role of the agricultural sector is to provide labor to the industrial sector.\footnote{\citet[114]{Ranis:1964uq} argue that ``labor reallocation [...] is the \emph{inevitable} and \emph{natural} consequence of the continuous expansion of agricultural labor productivity.'' Emphases are mine.} For example, \citet[326]{Dixit:1973aa} argues that the ``agricultural sector \emph{must} fulfill [...] its dual role of supplier of labour to industry and of food for the industrial labour force.''\footnote{Emphasis is mine.} 
-
-% econometrics here
 
 
 
 \section{Final Comments\label{discussion}}
 
-The crux of the argument is that higher levels of sectoral contestation increased state-capacities over time. Specifically, I explained how the emergence of industrial elites lowered levels of inter-sectoral inequality, pushing agricultural and industrial elites to reach agreements that materialized in investments in state-making institutions (income tax law), fostering higher levels of state-capacities over time. My empirical analyses show that death-tolls decrease (state capacities increase) after the income tax law is implemented, and that the emergence of the industrial sector, and not economic growth, accelerated the implementation of the income tax.
+The paper sketched an argument about how higher levels of sectoral contestation increased state-capacities over time. Particularly, it explained how the emergence of industrial elites lowered levels of inter-sectoral inequality, pushing agricultural and industrial elites to reach agreements that materialized in investments in state-making institutions, fostering higher levels of state-capacities over time. The empirical analyses showed that death-tolls decrease (state capacities increase) after the income tax law is implemented, and that the emergence of the industrial sector, and not economic growth, accelerated the implementation of the income tax. Additional analyses also suggest that there was more a structural sectoral cleavage rather than a blurred elite separation.
 
-A new measurement based on earthquake death-tolls was introduced. Earthquake damage poses a major threat to commercial, official, and residential buildings, potentially triggering higher levels of looting and social unrest. Consequently, enforcing quake-sensitive building codes also embodies the most basic form of social contract that exists between the state and its subjects. Any kind of political leader should be interested in preventing looting and social unrest. Leaders not only care about their own survival (\emph{electoral or not}) but also about the legitimacy of \emph{the state}. In the event of heavy social unrest, not only is the essential social Hobbesian-like contract broken but the expectations of social peace are also questioned.\footnote{\citet[419]{Carlin2014a} study how earthquakes damage interpersonal trust. They argue that ``state capacity plays a decisive role in determining natural disasters' consequences for social capital.''} The physical presence of the state literally \emph{crumbles} when institutions of social coercion and discipline, such as state schools, prisons, and police stations, collapse. For example, when the magnitude 7.0 earthquake hit Hati in 2010, the \emph{Prison Civile de Port-au-Prince} had a population of 4,500 inmates. During the quake, five inmates died. As a prison guard describes it, ``everyone escaped. Everyone. Except the dead.'' This natural disaster exacerbated the already existent chaos, freeing ``gang bosses, kidnappers, gunmen,'' among others,\footnote{\citet{Reed:2011}. See also \citet{Laursen2010}.} reducing the legitimacy of the state to zero.
+Enforcing quake-sensitive building codes embodies the most basic form of social contract that exists between the state and its subjects. Earthquake damage poses a major threat to commercial, official, and residential buildings, potentially triggering higher levels of looting and social unrest. Ans such, any kind of political leader should be interested in preventing looting and social unrest. Leaders not only care about their own survival (\emph{electoral or not}) but also about the legitimacy of \emph{the state}. In the event of heavy social unrest, not only is the essential social Hobbesian-like contract broken but the expectations of social peace are also questioned.\footnote{\citet[419]{Carlin2014a} study how earthquakes damage interpersonal trust. They argue that ``state capacity plays a decisive role in determining natural disasters' consequences for social capital.''} The physical presence of the state literally \emph{crumbles} when institutions of social coercion and discipline, such as state schools, prisons, and police stations, collapse. For example, when the magnitude 7.0 earthquake hit Hati in 2010, the \emph{Prison Civile de Port-au-Prince} had a population of 4,500 inmates. During the quake, five inmates died. As a prison guard describes it, ``everyone escaped. Everyone. Except the dead.'' This natural disaster exacerbated the already existent chaos, freeing ``gang bosses, kidnappers, gunmen,'' among others,\footnote{\citet{Reed:2011}. See also \citet{Laursen2010}.} reducing the legitimacy of the state to zero.
 
 
 Finally, income taxation did even more than just triggering other state capacities. Via a process of assimilation, it also helped in constructing the figure of the \emph{citizen} centered around the concept of the \emph{taxpayer}. Regardless of an individual's race, religion, culture, or any other kind of status, the state classifies its subjects according to their incomes and obliges them to pay, punishing whoever refuses to do so. From a sociological standpoint, this ``generality makes taxation a crucial element in the development of the `imagined community'\footnote{\citet[]{Anderson2006a}.} of the modern nation-state [...] Taxation enmeshes us in the web of generalized reciprocity that constitutes modern society.''\footnote{Martin et al. (in \citet[3]{Martin2009a}).}
 
 
 
-\newpage
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% WORD COUNT
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
+
+\clearpage
+<<wordcount, echo=FALSE, cache=FALSE>>=
+library(knitr)
+
+comma <- function (x, ...) {
+  format(x, ..., big.mark = ",", scientific = FALSE, trim = TRUE)
+} 
+
+# To dynamically extract name of the current file, use code below 
+nameoffile <- current_input() # get name of file
+nof2 <-  strsplit(nameoffile,"\\.")[[1]][1] # extract name, drop extension
+noftex <- paste(nof2, ".tex", sep="") # add .tex extension
+systemcall <- paste("system('texcount -inc -incbib -total -sum ", noftex, "', intern=TRUE)", sep="") # paste together texcount system command  
+texcount.out <- eval(parse(text=systemcall)) # run texcount on current last compiled .tex file
+
+sum.row <- grep("Sum count", texcount.out, value=TRUE) # extract row
+pattern <- "(\\d)+" # regex pattern for digits
+
+count <- regmatches(sum.row, regexpr(pattern, sum.row) ) 
+# extract digits
+
+count <- comma(as.numeric(count)) # add comma
+@
+
+
+\begin{center}
+\vspace*{\stretch{1}}
+\dotfill
+\dotfill {\huge {\bf Word count}: \Sexpr{count}} \dotfill
+\dotfill
+\vspace*{\stretch{1}}
+\end{center}
+
+\clearpage 
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% WORD COUNT
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+
+\newpage
 \section{Online Appendix\label{appendix}}
 
 %% reset tables and figures counter
@@ -410,8 +486,6 @@ Finally, income taxation did even more than just triggering other state capaciti
 \setcounter{figure}{0}
 \renewcommand{\thefigure}{OA\arabic{figure}}
 
-
-\afterpage{
 
 \begin{equation*} \label{indexes:2}
 \begin{split}
@@ -428,39 +502,53 @@ and,
 \tau_{p,...P} \;\sim\; & \mathcal{G}(0.5, 0.001) \; \text{where} \; \text{P}=\Sexpr{as.numeric(jags.data.tax$yearN)}.
 \end{split}
 \end{equation*}
-}
+\clearpage
+
 
 \newpage
 % earthquake:ts:plot:chile
 <<earthquake:ts:plot:chile, echo = FALSE, fig.pos='h', warning = FALSE, message = F,fig.cap='Earthquakes in Chile: 1500-2010', fig.align='center', fig.width=6.5,fig.height=2.5,dpi=1000,cache = FALSE,eval=TRUE>>=
 
 @
+\clearpage
+
 
 \newpage
 % income:tax:model:regression:table:run
 <<income:tax:model:regression:table:run, echo=FALSE, comment=NA, warning=FALSE, message=F, results='asis', cache=FALSE,eval=TRUE>>=
 
-@
+@\clearpage
+
+
 
 \newpage
 <<year:fixed:effects:plot, echo = FALSE, fig.pos='h', warning = FALSE, message = F, fig.cap='Year Fixed Effects', fig.align='center', fig.width=7, fig.height=3,dpi=1000,cache = FALSE,eval=TRUE>>=
 
 @
+\clearpage
+
 
 \newpage
 <<predicted:observed:plot, echo = FALSE, fig.pos='h', warning = FALSE, message = F, fig.cap='Assessing Model Fit', fig.align='center', fig.width=5, fig.height=9,dpi=1000,cache = FALSE,eval=TRUE>>=
 
 @
+\clearpage
+
 
 \newpage
 <<traplot:plot:tax, echo = FALSE, fig.pos='h', warning = FALSE, message = F, fig.cap='Trace Plots: Income Tax Adoption Model', fig.align='center', fig.width=9, fig.height=9,dpi=1000,cache = FALSE,eval=TRUE>>=
 
 @
+\clearpage
+
+
 
 \newpage
 <<denplot:plot:tax, echo = FALSE, fig.pos='h', warning = FALSE, message = F, fig.cap='Density Plots: Income Tax Adoption Model', fig.align='center', fig.width=9, fig.height=9,dpi=1000,cache = FALSE,eval=TRUE>>=
 
 @
+\clearpage
+
 
 \newpage
 %% define text warpping in table
@@ -507,6 +595,7 @@ and,
 \label{sample:data:income:tax:tab}
 \end{center}
 \end{table}
+\clearpage
 
 
 \newpage
@@ -514,51 +603,10 @@ and,
 <<results:table:cox, echo=FALSE, comment=NA, warning=FALSE, message=F, results='asis', cache=FALSE,eval=TRUE>>=
 
 @
-
-
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-% WORD COUNT
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
-
 \clearpage
-<<wordcount, echo=FALSE, cache=FALSE>>=
-library(knitr)
-
-comma <- function (x, ...) {
-  format(x, ..., big.mark = ",", scientific = FALSE, trim = TRUE)
-} 
-
-# To dynamically extract name of the current file, use code below 
-nameoffile <- current_input() # get name of file
-nof2 <-  strsplit(nameoffile,"\\.")[[1]][1] # extract name, drop extension
-noftex <- paste(nof2, ".tex", sep="") # add .tex extension
-systemcall <- paste("system('texcount -inc -incbib -total -sum ", noftex, "', intern=TRUE)", sep="") # paste together texcount system command  
-texcount.out <- eval(parse(text=systemcall)) # run texcount on current last compiled .tex file
-
-sum.row <- grep("Sum count", texcount.out, value=TRUE) # extract row
-pattern <- "(\\d)+" # regex pattern for digits
-
-count <- regmatches(sum.row, regexpr(pattern, sum.row) ) 
-# extract digits
-
-count <- comma(as.numeric(count)) # add comma
-@
 
 
-\begin{center}
-\vspace*{\stretch{1}}
-\dotfill
-\dotfill {\huge {\bf Word count}: \Sexpr{count}} \dotfill
-\dotfill
-\vspace*{\stretch{1}}
-\end{center}
 
-\clearpage 
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-% WORD COUNT
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 
 \bibliography{/Users/hectorbahamonde/RU/Bibliografia_PoliSci/library,/Users/hectorbahamonde/RU/Bibliografia_PoliSci/Bahamonde_BibTex2013}
