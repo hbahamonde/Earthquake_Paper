@@ -837,15 +837,15 @@ reg.results.table.sectoral = data.frame(rbind( # re order df by name of the rown
 ))
 
 var.labels.sectoral = c(#"Agr/Ind [Agr]", 
-                        #"Agr/Ind [Ind]", 
-                        #"Agr/Ind [Mixed]", 
-                        "Magnitude [Agr]", 
-                        "Magnitude [Ind]", 
-                        "Magnitude [Mixed]", 
-                        "Latitude", 
-                        "Longitude",
-                        "Population", 
-                        "Urban")
+        #"Agr/Ind [Ind]", 
+        #"Agr/Ind [Mixed]", 
+        "Magnitude [Agr]", 
+        "Magnitude [Ind]", 
+        "Magnitude [Mixed]", 
+        "Latitude", 
+        "Longitude",
+        "Population", 
+        "Urban")
 
 rownames(reg.results.table.sectoral) <- var.labels.sectoral
 
@@ -1000,9 +1000,9 @@ eq.params.tax <- c("b.Magnitude", "b.p.Population", "b.year", "b.r.long", "b.r.l
 
 ## ---- income:tax:model:and:data:run ----
 # run the model
-n.iter.tax = 20  # n.iter.tax = 200000 // this is for working model
-n.burnin.tax = 2 # n.burnin.tax = 5000 // this is for working model
-n.chains.tax = 1 # n.chains.tax = 4 for the working model
+n.iter.tax = 200000  # n.iter.tax = 200000 // this is for working model
+n.burnin.tax = 5000 # n.burnin.tax = 5000 // this is for working model
+n.chains.tax = 4 # n.chains.tax = 4 for the working model
 
 earthquakefit.tax <- jags(
         data=jags.data.tax,
@@ -1308,7 +1308,7 @@ ggplot(data = model.checking.plot.df,
                 x = median, 
                 y = reorder(id,Deaths.observed))) +
         geom_segment(aes(
-               # colour = Model,
+                # colour = Model,
                 x = lower, 
                 xend = upper, 
                 y = reorder(id, Deaths.observed), 
@@ -1671,9 +1671,9 @@ for(i in 1:N){  # use loop here to fit one model per data set
                 data=data.list[[i]],
                 inits=NULL,
                 parameters.to.save = c("b.incometax.d"),
-                n.chains = 1,  # 4
-                n.iter = 20, # 200000
-                n.burnin = 2, # 5000
+                n.chains = 4,  # 4
+                n.iter = 200000, # 200000
+                n.burnin = 5000, # 5000
                 model.file=model,
                 progress.bar = "none")
 }
