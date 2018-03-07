@@ -1154,7 +1154,7 @@ ggplot() +
 # digits: desired number of digits in the table, default: 2
 
 
-ci.number.tax = .8 # modify this parameter to get desired credible intervals.
+ci.number.tax = .95 # modify this parameter to get desired credible intervals.
 
 mcmctab <- function(sims, ci = ci.number.tax, digits = 2){
         
@@ -1680,7 +1680,48 @@ for(i in 1:N){  # use loop here to fit one model per data set
 
 
 # helper function for output
-devtools::source_url("https://raw.githubusercontent.com/jkarreth/JKmisc/master/mcmctab.R")
+ci.rolling = .95 # modify this parameter to get desired credible intervals.
+
+mcmctab <- function(sims, ci = ci.rolling, digits = 2){
+        
+        require(coda) 
+        
+        if(class(sims) == "jags" | class(sims) == "rjags"){
+                sims <- as.matrix(as.mcmc(sims))
+        }
+        if(class(sims) == "bugs"){
+                sims <- sims$sims.matrix
+        }  
+        if(class(sims) == "mcmc"){
+                sims <- as.matrix(sims)
+        }    
+        if(class(sims) == "mcmc.list"){
+                sims <- as.matrix(sims)
+        }      
+        if(class(sims) == "stanfit"){
+                stan_sims <- rstan::As.mcmc.list(sims)
+                sims <- as.matrix(stan_sims)
+        }      
+        
+        
+        dat <- t(sims)
+        
+        mcmctab <- apply(dat, 1,
+                         function(x) c(Mean = round(mean(x), digits = digits), # Posterior mean
+                                       SD = round(sd(x), digits = 3), # Posterior SD
+                                       Lower = as.numeric(
+                                               round(quantile(x, probs = c((1 - ci) / 2)), 
+                                                     digits = digits)), # Lower CI of posterior
+                                       Upper = as.numeric(
+                                               round(quantile(x, probs = c((1 + ci) / 2)), 
+                                                     digits = digits)), # Upper CI of posterior
+                                       Pr. = round(
+                                               ifelse(mean(x) > 0, length(x[x > 0]) / length(x),
+                                                      length(x[x < 0]) / length(x)), 
+                                               digits = digits) # Probability of posterior >/< 0
+                         ))
+        return(t(mcmctab))
+}
 
 # create empty data frame to be filled with estimation results per data set
 tab <- data.frame(index = c(1:N), IncomeTax = rep(NA, N), lower = rep(NA, N), upper = rep(NA, N))
@@ -1716,12 +1757,13 @@ income.tax.model.rolling.plot = ggplot(data = tab, aes(x = IncomeTax, y = index)
 
 
 
+
 ## ---- income:tax:model:and:data:run:rolling ----
 income.tax.model.rolling.plot
 income.tax.model.rolling.note <- paste(
         "Rolling Bayesian Poisson Regression",
         "\\\\\\hspace{\\textwidth}", 
-        paste(paste("{\\bf Note}: Figure shows the estimates of implementing the income tax on death-tolls of", nrow(tab), sep = " "), "models which correspond to fully estimating \\autoref{model:2}, but excluding one observation at a time. The figure  suggest that the negative results of income taxation and death-tolls are not driven by wealthy municipalities, but to the capacity of the state of enforcing building codes.", sep = " "),
+        paste(paste("{\\bf Note}: Figure shows the estimates of implementing the income tax on death-tolls of", nrow(tab), sep = " "), "models which correspond to fully estimating \\autoref{model:2}, but excluding one observation at a time.", paste(paste(ci.rolling*100, "%", sep=""), "credible intervals were included.", sep=" "), "The figure  suggest that the negative results of income taxation and death-tolls are not driven by wealthy municipalities, but to the capacity of the state of enforcing building codes.", sep = " "),
         "\n")
 ## ----
 
