@@ -775,7 +775,7 @@ ggplot() +
 # digits: desired number of digits in the table, default: 2
 
 
-ci.number.sectoral = .8 # modify this parameter to get desired credible intervals.
+ci.number.sectoral = .95 # modify this parameter to get desired credible intervals.
 
 mcmctab <- function(sims, ci = ci.number.sectoral, digits = 2){
         
