@@ -1035,11 +1035,14 @@ tax.mcmc <- as.mcmc(earthquakefit.tax)
 tax.mcmc.mat <- as.matrix(tax.mcmc)
 tax.mcmc.dat <- as.data.frame(tax.mcmc.mat)
 
+# define confidence interval
+CI.level.income.tax.ts.plot = 0.95
+
 
 ### No Income Tax
 year.range = unique(datsc$year)
 
-## populate
+# simulation
 sim.no.income.tax <- matrix(rep(NA, nrow(tax.mcmc.dat)*length(year.range)), nrow = nrow(tax.mcmc.dat))
 for(i in 1:length(year.range)){
         sim.no.income.tax[, i] <- 
@@ -1048,19 +1051,21 @@ for(i in 1:length(year.range)){
                 tax.mcmc.dat$b.r.long*r.long[i] + 
                 tax.mcmc.dat$b.Urban*Urban[i] +
                 tax.mcmc.dat$b.Magnitude*Magnitude[i] +
-                incometax.d[i]*0
+                incometax.d[i]*0 
         
         
 }
 
 
 ## credible intervals
-bayes.c.eff.mean.no.income.tax <- apply(sim.no.income.tax, 2, mean)
-bayes.c.eff.lower.no.income.tax <- apply(sim.no.income.tax, 2, function(x) quantile(x, probs = c(0.1)))
-bayes.c.eff.upper.no.income.tax <- apply(sim.no.income.tax, 2, function(x) quantile(x, probs = c(0.8)))
+sim.no.income.tax.d = data.frame(apply(sim.no.income.tax, 2, function(x) quantile(x, probs = seq(0.1, 0.9, by=0.1), CI.type = "two.sided",  CI.level = CI.level.income.tax.ts.plot)))[,1:9]  
+
+bayes.c.eff.mean.no.income.tax = as.numeric(sim.no.income.tax.d[5,])
+bayes.c.eff.lower.no.income.tax = as.numeric(sim.no.income.tax.d[1,])
+bayes.c.eff.upper.no.income.tax = as.numeric(sim.no.income.tax.d[9,])
 
 # create DF
-plot.dat.no.income.tax <- data.frame(year.range, bayes.c.eff.mean.no.income.tax, bayes.c.eff.lower.no.income.tax, bayes.c.eff.upper.no.income.tax); colnames(plot.dat.no.income.tax) <- c("year.range", "mean", "lower", "upper")
+plot.dat.no.income.tax <- data.frame(year.range[1:9], bayes.c.eff.mean.no.income.tax, bayes.c.eff.lower.no.income.tax, bayes.c.eff.upper.no.income.tax); colnames(plot.dat.no.income.tax) <- c("year.range", "mean", "lower", "upper")
 
 plot.dat.no.income.tax = plot.dat.no.income.tax[ which(plot.dat.no.income.tax$year.range<= 1924), ]
 
@@ -1069,6 +1074,7 @@ plot.dat.no.income.tax = plot.dat.no.income.tax[ which(plot.dat.no.income.tax$ye
 ### Income Tax
 year.range = unique(datsc$year)
 
+# simulation
 sim.income.tax <- matrix(rep(NA, nrow(tax.mcmc.dat)*length(year.range)), nrow = nrow(tax.mcmc.dat))
 for(i in 1:length(year.range)){
         sim.income.tax[, i] <-
@@ -1081,14 +1087,17 @@ for(i in 1:length(year.range)){
         
 }
 
-
 ## credible intervals
-bayes.c.eff.mean.income.tax <- apply(sim.income.tax, 2, mean)
-bayes.c.eff.lower.income.tax <- apply(sim.income.tax, 2, function(x) quantile(x, probs = c(0.1)))
-bayes.c.eff.upper.income.tax <- apply(sim.income.tax, 2, function(x) quantile(x, probs = c(0.8)))
+sim.income.tax.d = data.frame(apply(sim.income.tax, 2, function(x) quantile(x, probs = seq(0.1, 0.9, by=0.1), CI.type = "two.sided",  CI.level = CI.level.income.tax.ts.plot)))[,10:59]
+
+bayes.c.eff.mean.income.tax = as.numeric(sim.income.tax.d[5,])
+bayes.c.eff.lower.income.tax = as.numeric(sim.income.tax.d[1,])
+bayes.c.eff.upper.income.tax = as.numeric(sim.income.tax.d[9,])
+
+
 
 # create DF
-plot.dat.income.tax <- data.frame(year.range, bayes.c.eff.mean.income.tax, bayes.c.eff.lower.income.tax, bayes.c.eff.upper.income.tax); colnames(plot.dat.income.tax) <- c("year.range", "mean", "lower", "upper")
+plot.dat.income.tax <- data.frame(year.range[10:59], bayes.c.eff.mean.income.tax, bayes.c.eff.lower.income.tax, bayes.c.eff.upper.income.tax); colnames(plot.dat.income.tax) <- c("year.range", "mean", "lower", "upper")
 
 plot.dat.income.tax = plot.dat.income.tax[ which(plot.dat.income.tax$year.range>= 1924), ]
 
@@ -1101,16 +1110,14 @@ income.tax.adoption.plot = as.data.frame(rbind(
 
 death.toll.before.tax = round(mean(income.tax.adoption.plot$mean[income.tax.adoption.plot$year.range <= 1924]),0)
 death.toll.after.tax = round(mean(income.tax.adoption.plot$mean[income.tax.adoption.plot$year.range >= 1924]), 0)
-## ----
 
 
-## ---- income:tax:model:plot:run ----
 # load libraries
 if (!require("pacman")) install.packages("pacman"); library(pacman) 
 p_load(ggplot2)
 
 # plot
-ggplot() + 
+income.tax.model.plot = ggplot() + 
         geom_smooth(data = income.tax.adoption.plot, aes(x = year.range, y = mean, colour = `Income Tax`), alpha = 0.8, size = 0.5, se = F, method = 'loess') +
         geom_ribbon(data = income.tax.adoption.plot, aes(x = year.range, ymin = lower, ymax = upper, fill = `Income Tax`), alpha = 0.2) + 
         geom_vline(xintercept = 1924, linetype=2, colour="blue") + 
@@ -1126,6 +1133,27 @@ ggplot() +
               legend.position="bottom") +
         scale_fill_manual(values=c("red", "green")) +
         scale_color_manual(values=c("red", "green"))
+## ----
+
+## ---- income:tax:model:plot:run ----
+income.tax.model.plot
+income.tax.model.plot.note <- paste(
+        "Death-Tolls Over Time: Before and After the Implementation of the Income Tax",
+        "\\\\\\hspace{\\textwidth}", 
+        paste("{\\bf Note}: Using the estimations from \\autoref{income:tax:model:regression:table:run} (\\autoref{model:2}) figure shows predicted death-tolls, before and after the implementation of the income tax in 1924. In average, the death-toll decreases from "), 
+        "\n")
+
+
+paste(paste(paste(paste(paste("{\\bf Note}: Using the estimations from \\autoref{income:tax:model:regression:table:run} (\\autoref{model:2}) figure shows predicted death-tolls, before and after the implementation of the income tax in 1924. In average, the death-toll before implementing the tax decreases from"), death.toll.before.tax, "to", sep = " "), death.toll.after.tax, sep= " "), ".", sep=""), paste(paste(paste("From a frequentist perspective, these changes are statistically significant at the", ci.number.tax*100, sep = " "), "\\%", sep = ""), "level.", sep = " "), sep = " ")
+
+
+
+
+
+
+
+$\Sexpr{death.toll.before.tax}$
+        $\Sexpr{death.toll.after.tax}$
 ## ----
 
 
