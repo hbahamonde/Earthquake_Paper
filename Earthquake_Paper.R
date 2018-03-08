@@ -1142,10 +1142,7 @@ income.tax.model.plot = ggplot() +
 ## ---- income:tax:model:plot:run ----
 income.tax.model.plot
 income.tax.model.plot.note <- paste(paste(paste(paste(paste("{\\bf Note}: Using the estimations from \\autoref{income:tax:model:regression:table:run} (\\autoref{model:2}) figure shows predicted death-tolls, before and after the implementation of the income tax in 1924. In average, the death-toll decreases from"), death.toll.before.tax, "to", sep = " "), death.toll.after.tax, sep= " "), ".", sep=""), paste(paste(paste("The figure shows credible intervals at the", CI.level.income.tax.ts.plot[3]*100, sep = " "), "\\%", sep = ""), "level.", sep = " "), sep = " ")
-
 ## ----
-
-
 
 ###############################
 # Income Tax Adoption Table
