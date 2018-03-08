@@ -1029,6 +1029,8 @@ graphics.off()
 # Income Tax Adoption Plot
 ###############################
 
+
+
 ## ---- income:tax:model:plot:not:run ----
 ## passing fitted model as mcmc object
 tax.mcmc <- as.mcmc(earthquakefit.tax)
@@ -1036,7 +1038,9 @@ tax.mcmc.mat <- as.matrix(tax.mcmc)
 tax.mcmc.dat <- as.data.frame(tax.mcmc.mat)
 
 # define confidence interval
-CI.level.income.tax.ts.plot = 0.95
+# CI.level.income.tax.ts.plot = c(0.05, 0.5, 0.95) # 95%
+CI.level.income.tax.ts.plot = c(0.2, 0.5, 0.8) # 80%
+
 
 
 ### No Income Tax
@@ -1058,11 +1062,11 @@ for(i in 1:length(year.range)){
 
 
 ## credible intervals
-sim.no.income.tax.d = data.frame(apply(sim.no.income.tax, 2, function(x) quantile(x, probs = seq(0.1, 0.9, by=0.1), CI.type = "two.sided",  CI.level = CI.level.income.tax.ts.plot)))[,1:9]  
+sim.no.income.tax.d = data.frame(apply(sim.no.income.tax, 2, function(x) quantile(x, probs = CI.level.income.tax.ts.plot)))[,1:9]  
 
-bayes.c.eff.mean.no.income.tax = as.numeric(sim.no.income.tax.d[5,])
+bayes.c.eff.mean.no.income.tax = as.numeric(sim.no.income.tax.d[2,])
 bayes.c.eff.lower.no.income.tax = as.numeric(sim.no.income.tax.d[1,])
-bayes.c.eff.upper.no.income.tax = as.numeric(sim.no.income.tax.d[9,])
+bayes.c.eff.upper.no.income.tax = as.numeric(sim.no.income.tax.d[3,])
 
 # create DF
 plot.dat.no.income.tax <- data.frame(year.range[1:9], bayes.c.eff.mean.no.income.tax, bayes.c.eff.lower.no.income.tax, bayes.c.eff.upper.no.income.tax); colnames(plot.dat.no.income.tax) <- c("year.range", "mean", "lower", "upper")
@@ -1088,11 +1092,11 @@ for(i in 1:length(year.range)){
 }
 
 ## credible intervals
-sim.income.tax.d = data.frame(apply(sim.income.tax, 2, function(x) quantile(x, probs = seq(0.1, 0.9, by=0.1), CI.type = "two.sided",  CI.level = CI.level.income.tax.ts.plot)))[,10:59]
+sim.income.tax.d = data.frame(apply(sim.income.tax, 2, function(x) quantile(x, probs = CI.level.income.tax.ts.plot)))[,10:59]  
 
-bayes.c.eff.mean.income.tax = as.numeric(sim.income.tax.d[5,])
+bayes.c.eff.mean.income.tax = as.numeric(sim.income.tax.d[2,])
 bayes.c.eff.lower.income.tax = as.numeric(sim.income.tax.d[1,])
-bayes.c.eff.upper.income.tax = as.numeric(sim.income.tax.d[9,])
+bayes.c.eff.upper.income.tax = as.numeric(sim.income.tax.d[3,])
 
 
 
@@ -1137,23 +1141,8 @@ income.tax.model.plot = ggplot() +
 
 ## ---- income:tax:model:plot:run ----
 income.tax.model.plot
-income.tax.model.plot.note <- paste(
-        "Death-Tolls Over Time: Before and After the Implementation of the Income Tax",
-        "\\\\\\hspace{\\textwidth}", 
-        paste("{\\bf Note}: Using the estimations from \\autoref{income:tax:model:regression:table:run} (\\autoref{model:2}) figure shows predicted death-tolls, before and after the implementation of the income tax in 1924. In average, the death-toll decreases from "), 
-        "\n")
+income.tax.model.plot.note <- paste(paste(paste(paste(paste("{\\bf Note}: Using the estimations from \\autoref{income:tax:model:regression:table:run} (\\autoref{model:2}) figure shows predicted death-tolls, before and after the implementation of the income tax in 1924. In average, the death-toll decreases from"), death.toll.before.tax, "to", sep = " "), death.toll.after.tax, sep= " "), ".", sep=""), paste(paste(paste("The figure shows credible intervals at the", CI.level.income.tax.ts.plot[3]*100, sep = " "), "\\%", sep = ""), "level.", sep = " "), sep = " ")
 
-
-paste(paste(paste(paste(paste("{\\bf Note}: Using the estimations from \\autoref{income:tax:model:regression:table:run} (\\autoref{model:2}) figure shows predicted death-tolls, before and after the implementation of the income tax in 1924. In average, the death-toll before implementing the tax decreases from"), death.toll.before.tax, "to", sep = " "), death.toll.after.tax, sep= " "), ".", sep=""), paste(paste(paste("From a frequentist perspective, these changes are statistically significant at the", ci.number.tax*100, sep = " "), "\\%", sep = ""), "level.", sep = " "), sep = " ")
-
-
-
-
-
-
-
-$\Sexpr{death.toll.before.tax}$
-        $\Sexpr{death.toll.after.tax}$
 ## ----
 
 
