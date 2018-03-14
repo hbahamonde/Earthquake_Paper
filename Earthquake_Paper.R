@@ -1757,7 +1757,7 @@ income.tax.model.rolling.plot = ggplot(data = tab, aes(x = IncomeTax, y = index)
         geom_point() + 
         geom_segment(aes(x = lower, xend = upper, yend = index)) + 
         geom_vline(xintercept = 0, linetype=2, colour="red") + 
-        xlab("Estimated Coefficient of Implementing the Income Tax on Death Tolls") + ylab("Model") + 
+        xlab("Estimated Coefficient of Implementing the Income Tax on Death Tolls") + ylab("Observation being Excluded") + 
         theme_bw() + 
         theme(axis.text.y = element_text(size=7), 
               axis.text.x = element_text(size=7), 
