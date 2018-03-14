@@ -2232,6 +2232,8 @@ grid_arrange_shared_legend <- function(..., ncol = length(list(...)), nrow = 1, 
         grid.draw(combined)
         
 }
+
+
 simtitle <- paste(
         paste0(qi, " of Implementing the Income Tax Law."),
         "\\\\\\hspace{\\textwidth}", 
