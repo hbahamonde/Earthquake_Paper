@@ -6,46 +6,37 @@
 \begin{document}
 \begin{tikzpicture}[line width=1pt]
 
-
-%\draw[decoration={brace,raise=1pt},decorate]
- % (0,4) -- node[above=5pt] {National and Subnational Level} (6,4);
-
-%\draw[decoration={brace,raise=1pt},decorate]
-%  (6.5,3.2) -- node[above=5pt] {National Level} (14.5,3.2);
-
-
 % 1
-%\node[draw,align=center,fill=black,text=white] (ArgumentA1) at (1,0) {Strong\\industrial sector};
-%\node[draw,align=center,fill=black,text=white] (ArgumentB1) at (4.5,0) {Low\\sectoral inequality};
+\node[draw,align=center,fill=black,text=white] (B1) at (1,0) {{\scriptsize Post-Colonial}\\{\scriptsize Political Economy;}\\{\scriptsize Landowner-oriented}};
+\node[draw,align=center,fill=red,text=black] (B2) at (4,0) {{\scriptsize Emergence of}\\{\scriptsize Weak Industrial}\\ {\scriptsize Sector}};
+\node[draw,,align=center,fill=yellow,text=black] (B3) at (6.5,0) {{\scriptsize Industrialists}\\{\scriptsize too weak}\\{\scriptsize to demand}\\{\scriptsize income tax}};
 
-%\node[draw,align=center,fill=yellow,text=black] (ArgumentD1) at (9,0) {{\scriptsize {\bf Institutional Investments}}\\{\scriptsize Institutions reflected}\\ {\scriptsize preferences of both elites}};
+\node[draw,,align=center,fill=yellow,text=black] (B4) at (9,0) {{\bf {\scriptsize Lack of spillover}}\\{\bf {\scriptsize effects}}};
 
-% 1
-%\node[draw,fill=black!30!green,text=white,align=center] (ArgumentA3) at (13,0) {{\bf High}\\ state capacities};
-
-
-
-%\draw[->,draw=blue,thick] (ArgumentD1) to (ArgumentA3);
-%\draw[->,draw=blue,thick] (ArgumentA1) to (ArgumentB1);
-%\draw[->,draw=blue,thick] (ArgumentB1) to (ArgumentD1);
+\node[draw,fill=red,text=black,align=center] (B5) at (11.8,0) {{\bf {\scriptsize Low}}\\{\scriptsize State Capacity}};
 
 
-%\draw[dash dot] (ArgumentA1) -- ++(0,-1) -| (ArgumentB1) node[below, near start] {High sectoral conflict};
+\draw[->,draw=blue,thick] (B1) to (B2);
+\draw[->,draw=blue,thick] (B2) to (B3);
+\draw[->,draw=blue,thick] (B3) to (B4);
+\draw[->,draw=blue,thick] (B4) to (B5);
 
- 
 
-%\node at (6., -1.0) {};
+
+\draw[dash dot] (B1) -- ++(0,-1) -| (B2)
+node[below, near start] {{\scriptsize Low Sectoral Conflict}};
+
 
 
 
 % 2
 \node[draw,align=center,fill=black,text=white] (A1) at (1,2) {{\scriptsize Post-Colonial}\\{\scriptsize Political Economy;}\\{\scriptsize Landowner-oriented}};
-\node[draw,align=center,fill=black,text=white] (A2) at (4,2) {{\scriptsize Emergence of}\\{\scriptsize Strong Industrial}\\ {\scriptsize Sector}};
-\node[draw,,align=center,fill=yellow,text=black] (A3) at (7,2) {{\scriptsize {\bf Income Tax}}\\{\scriptsize was product of}\\{\scriptsize sectoral alliances}};
+\node[draw,align=center,fill=black!30!green,text=black] (A2) at (4,2) {{\scriptsize Emergence of}\\{\scriptsize Strong Industrial}\\ {\scriptsize Sector}};
+\node[draw,,align=center,fill=yellow,text=black] (A3) at (6.5,2) {{\scriptsize Industrialists}\\{\scriptsize demanded}\\{\scriptsize income tax}};
 
-\node[draw,,align=center,fill=yellow,text=black] (A4) at (9.5,2) {{\bf {\scriptsize Spillover}}\\{\bf {\scriptsize Effects}}};
+\node[draw,,align=center,fill=yellow,text=black] (A4) at (9,2) {{\bf {\scriptsize Spillover Effects}}\\{\bf {\scriptsize of Taxation}}};
 
-\node[draw,fill=black!30!green,text=black,align=center] (A5) at (12,2) {{\bf {\scriptsize High}}\\{\scriptsize State Capacity}};
+\node[draw,fill=black!30!green,text=black,align=center] (A5) at (11.8,2) {{\bf {\scriptsize High}}\\{\scriptsize State Capacity}};
 
 
 \draw[->,draw=blue,thick] (A1) to (A2);
