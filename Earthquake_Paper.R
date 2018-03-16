@@ -1999,7 +1999,7 @@ outputstitle <- paste(
         "\\\\\\hspace{\\textwidth}", 
         "{\\bf Note}: Figure shows historical sectoral outputs, and year of the passage of the income tax law. Following convention, the figure shows logged values.",
         "\\\\\\hspace{\\textwidth}", 
-        paste("{\\bf Source}: \\href{http://moxlad-staging.herokuapp.com/home/en?}{MOxLAD} and other souces compiled by the author (see \\autoref{sample:data:income:tax:tab})."),
+        paste("{\\bf Source}: \\href{http://moxlad-staging.herokuapp.com/home/en?}{MOxLAD} and other sources compiled by the author (see \\autoref{sample:data:income:tax:tab})."),
         "\n")
 # ----
 
