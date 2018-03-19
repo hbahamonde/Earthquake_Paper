@@ -2171,7 +2171,7 @@ if (!require("pacman")) install.packages("pacman"); library(pacman)
 p_load(simPH)
 
 # quantities
-nsim = 10000 # original: 1000
+nsim = 10000 # original: 10000
 qi = "Hazard Rate" # original: Hazard Rate
 ci = 0.95
 
