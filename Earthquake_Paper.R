@@ -2020,7 +2020,6 @@ cat("\014")
 
 
 ## ---- texreg-extractor-geeglm ----
-
 if (!require("pacman")) install.packages("pacman"); library(pacman)
 p_load(texreg, methods)
 
@@ -2172,7 +2171,7 @@ if (!require("pacman")) install.packages("pacman"); library(pacman)
 p_load(simPH)
 
 # quantities
-nsim = 5000 # original: 1000
+nsim = 10 # original: 1000
 qi = "Hazard Rate" # original: Hazard Rate
 ci = 0.95
 
@@ -2202,42 +2201,12 @@ sim.m.agr <- coxsimLinear(cox2,
                           Xj = c(min(cox$L_constagricult), max(cox$L_constagricult))
 )
 
-## function to combine the two plots
-
-
-if (!require("pacman")) install.packages("pacman"); library(pacman)
-p_load(ggplot2,gridExtra,grid)
-
-grid_arrange_shared_legend <- function(..., ncol = length(list(...)), nrow = 1, position = c("bottom", "right")) {
-        
-        plots <- list(...)
-        position <- match.arg(position)
-        g <- ggplotGrob(plots[[1]] + theme(legend.position = position))$grobs
-        legend <- g[[which(sapply(g, function(x) x$name) == "guide-box")]]
-        lheight <- sum(legend$height)
-        lwidth <- sum(legend$width)
-        gl <- lapply(plots, function(x) x + theme(legend.position="none"))
-        gl <- c(gl, ncol = ncol, nrow = nrow)
-        
-        combined <- switch(position,
-                           "bottom" = arrangeGrob(do.call(arrangeGrob, gl),
-                                                  legend,
-                                                  ncol = 1,
-                                                  heights = unit.c(unit(1, "npc") - lheight, lheight)),
-                           "right" = arrangeGrob(do.call(arrangeGrob, gl),
-                                                 legend,
-                                                 ncol = 2,
-                                                 widths = unit.c(unit(1, "npc") - lwidth, lwidth)))
-        grid.newpage()
-        grid.draw(combined)
-        
-}
 
 
 simtitle <- paste(
         paste0(qi, " of Implementing the Income Tax Law."),
         "\\\\\\hspace{\\textwidth}", 
-        paste("{\\bf Note}:", "Using estimations of Model 1 in \\autoref{results:table:cox}, figure shows", nsim, "simulations with different sectoral growth speeds. Slow is the minimum value, while rapid is the maximum value for each sectoral output."), 
+        paste("{\\bf Note}:", "Using estimations of Model 1 in \\autoref{results:table:cox}, figure shows", nsim, "simulations with different sectoral growth speeds. Slow is the minimum value, while rapid is the maximum value for each sectoral output."),
         paste(paste("The figure also shows the ", paste(ci*100, "\\%", sep = ""), sep = ""), "confidence intervals."), 
         "\n")
 ## ----
@@ -2260,7 +2229,7 @@ p_load(ggplot2,simPH)
 
 ## IMPORTANT! A relative hazard for a unit at zero is always one, as it is a ratio of the hazards with itself. Gandrud2015 p. 10
 
-# Plot
+# Plot 1
 options(scipen=10000)
 sim.p.ind = simGG(sim.m.ind, type = 'lines',# type = 'points' // 'lines'
                   xlab = "Year", 
@@ -2278,7 +2247,7 @@ sim.p.ind = simGG(sim.m.ind, type = 'lines',# type = 'points' // 'lines'
         guides(color=guide_legend("Sectoral Output"))
 
 
-# Plot
+# Plot 2
 options(scipen=10000)
 sim.p.agr = simGG(sim.m.agr, type = 'lines',# type = 'points' // 'lines'
                   xlab = "Year", 
@@ -2295,7 +2264,11 @@ sim.p.agr = simGG(sim.m.agr, type = 'lines',# type = 'points' // 'lines'
         scale_color_manual(labels = c("Slow", "Rapid"), values = c("red", "blue")) +
         guides(color=guide_legend("Sectoral Output"))
 
-grid_arrange_shared_legend(sim.p.ind, sim.p.agr, ncol = 2, nrow = 1)
+
+# combine both plots
+if (!require("pacman")) install.packages("pacman"); library(pacman)
+p_load(ggpubr)
+ggarrange(sim.p.ind, sim.p.agr, ncol=2, nrow=1, common.legend = TRUE, legend="bottom")
 ## ----
 
 
