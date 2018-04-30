@@ -1995,7 +1995,7 @@ grid_arrange_shared_legend(
         ncol = 3, nrow = 3)
 
 outputstitle <- paste(
-        "Industrial and Agricultural Outputs, and The Passage of the Income Tax Law",
+        "Industrial and Agricultural Outputs, and The Passage of the Income Tax Law.",
         "\\\\\\hspace{\\textwidth}", 
         "{\\bf Note}: Figure shows historical sectoral outputs, and year of the passage of the income tax law. Following convention, the figure shows logged values.",
         "\\\\\\hspace{\\textwidth}", 
@@ -2206,7 +2206,7 @@ sim.m.agr <- coxsimLinear(cox2,
 simtitle <- paste(
         paste0(qi, " of Implementing the Income Tax Law."),
         "\\\\\\hspace{\\textwidth}", 
-        paste("{\\bf Note}:", "Using estimations of Model 1 in \\autoref{results:table:cox}, figure shows", nsim, "simulations with different sectoral growth speeds. Slow is the minimum value, while rapid is the maximum value for each sectoral output."),
+        paste("{\\bf Note}:", "Using estimations of Model 1 in \\autoref{results:table:cox} (\\autoref{cox:eq}), figure shows", nsim, "simulations with different sectoral growth speeds. Slow is the minimum value, while rapid is the maximum value for each sectoral output."),
         paste(paste("The figure also shows the ", paste(ci*100, "\\%", sep = ""), sep = ""), "confidence intervals."), 
         "\n")
 ## ----

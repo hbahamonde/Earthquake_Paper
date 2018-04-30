@@ -143,7 +143,7 @@ read_chunk('/Users/hectorbahamonde/RU/Dissertation/Papers/Earthquake_Paper/Earth
 \end{figure}
 
 % summary
-By studying the Chilean case, this paper bridges these two shortfalls by arguing, and empirically testing, the positive relationship between income taxation and state-consolidation. The argument outlines how income taxation had positive spillover effects over state institutions, increasing levels of state consolidation over time. The evidence documents how the presence of tax assessors and collectors throughout the territory increased norms of enforcement of state regulations more generally, fostering overall state-capacities over time. Additionally, exploiting the exogeneity of earthquake shocks, I leverage a novel hand-collected dataset on Chilean earthquake death tolls between 1900 and 2010. Earthquakes are time-invariant, and importantly, orthogonal to economic development and regime type. Under reasonable assumptions, if the state's capacity for enforcing and monitoring building codes throughout the territory is a reflection of overall state capacity, then death-toll differentials should be mainly associated with state-capacities. Exploiting this variation via a Bayesian Poisson model with year fixed-effects, I find that death-tolls associated to earthquakes systematically decreased (that is, \emph{state capacities increased}) after the income tax law was implemented. Importantly, these changes over time are not correlated with economic growth nor industrialization levels. The empirical section also provides a qualitative case study, several robustness checks and different tests of alternative explanations. 
+The paper contributes to the literature from both a methodological/measurement and substantive perspectives by arguing, and empirically testing, the positive relationship between income taxation and state-consolidation. The argument outlines how income taxation had positive spillover effects over state institutions, increasing levels of state consolidation over time. The evidence documents how the presence of tax assessors and collectors throughout the territory increased norms of enforcement of state regulations more generally, fostering overall state-capacities over time. Additionally, exploiting the exogeneity of earthquake shocks, I leverage a novel hand-collected dataset on Chilean earthquake death tolls between 1900 and 2010. Earthquakes are time-invariant, and importantly, orthogonal to economic development and regime type. Under reasonable assumptions, if the state's capacity for enforcing and monitoring building codes throughout the territory is a reflection of overall state capacity, then death-toll differentials should be mainly associated with state-capacities. Exploiting this variation via a Bayesian Poisson model with year fixed-effects, I find that death-tolls associated to earthquakes systematically decreased (that is, \emph{state capacities increased}) after the income tax law was implemented. Importantly, these changes over time are not correlated with economic growth nor industrialization levels. The empirical section also provides a qualitative case study, several robustness checks and different tests of alternative explanations. 
 
 
 % add on: origins of income taxation // paper 2 extension
@@ -272,14 +272,12 @@ log(\lambda_{i})  =
 \beta_{4}\text{Longitude}_{i} + \\
 & \beta_{5}\text{Population}_{i} +
 \beta_{6}\text{Urban}_{i} + 
-\beta_{7_t}\text{Year}_{i}
+\beta_{7}\text{Year}_{i}
 \end{split}
 \end{equation}
 
 
-\href{https://data.noaa.gov/dataset/earthquake-damage-general}{According to the NOAA}, an ``increase of one in magnitude represents a tenfold increase in the recorded wave amplitude.'' To account for non-linear effects, \autoref{model:2} considers the square term of magnitude. Parameters $\beta_{k}$ have noninformative normally distributed priors. Precisions $\tau_{p}$ have noninformative Gamma priors. See \autoref{indexes:2} for technical details.
-
-\citet[729]{Brancati2007} also includes in his analyses ``year-fixed effects to control for trends over time.''} For instance, fiscal development is also a function of country-specific prior state-capacities. Additionally, technological changes (advances in construction, for example) should diminish death-tolls.\footnote{I thank Hillel Soifer for this suggestion.} Fixed-effects should be able to account for these and other unmeasured yearly factors. Latitude was included to control for the proximity to the Andean mountains, aiming to control for a built-in tectonic earthquake predisposition. Longitude seeks to control for climate and other unmeasured conditions that make agricultural development more difficult. In turn, both measurements serve as good proxies of terrain ruggedness and the difficulties the state faces in reaching these areas.\footnote{Undoubtedly, there are many more factors that might increase death tolls. \citet[154]{Ambraseys2011}, for example, explain that the ``number of fatalities depends on whether an earthquake happens at night or during the day, in the winter or in the summer, in a mountainous region or in a valley, after strong and protracted fore-shocks and with or without warning.'' While the model has some of these factors accounted for, complete hourly data is lacking. However, \citet[1309]{Lomnitz1970} explains that ``some of the larger Chilean earthquakes which have caused deaths'' between the 1900's and the 1960's have been afternoon quakes. Other factors such as ``the speed of tectonic movements [and] the degree to which the lower plate bends the upper plate'' and the focal depth (\citet[1534]{Keefer2011}) could not be included due to the lack of complete data over time.} 
+\href{https://data.noaa.gov/dataset/earthquake-damage-general}{According to the NOAA}, an ``increase of one in magnitude represents a tenfold increase in the recorded wave amplitude.'' To account for non-linear effects, \autoref{model:2} considers the square term of magnitude. Parameters $\beta_{k}$ have noninformative normally distributed priors. Precisions $\tau_{p}$ have noninformative Gamma priors. See \autoref{indexes:2} for technical details. \citet[729]{Brancati2007} also includes in his analyses ``year-fixed effects to control for trends over time.''} For instance, fiscal development is also a function of country-specific prior state-capacities. Additionally, technological changes (advances in construction, for example) should diminish death-tolls.\footnote{I thank Hillel Soifer for this suggestion.} Fixed-effects should be able to account for these and other unmeasured yearly factors. In addition, local population also serves as a rough proxy for local economic development,\footnote{\citet{Sokoloff:2000ug}.} which might impact negatively casualties. Latitude was included to control for the proximity to the Andean mountains, aiming to control for a built-in tectonic earthquake predisposition. Longitude seeks to control for climate and other unmeasured conditions that make agricultural development more difficult. In turn, both measurements serve as good proxies of terrain ruggedness and the difficulties the state faces in reaching these areas.\footnote{Undoubtedly, there are many more factors that might increase death tolls. \citet[154]{Ambraseys2011}, for example, explain that the ``number of fatalities depends on whether an earthquake happens at night or during the day, in the winter or in the summer, in a mountainous region or in a valley, after strong and protracted fore-shocks and with or without warning.'' While the model has some of these factors accounted for, complete hourly data is lacking. However, \citet[1309]{Lomnitz1970} explains that ``some of the larger Chilean earthquakes which have caused deaths'' between the 1900's and the 1960's have been afternoon quakes. Other factors such as ``the speed of tectonic movements [and] the degree to which the lower plate bends the upper plate'' and the focal depth (\citet[1534]{Keefer2011}) could not be included due to the lack of complete data over time.} 
 
 
 Fiscal sociologists, mostly focusing on the continental cases, have for a long time claimed that the capacity of taxing individuals' incomes fosters overall state-capacities. Unfortunately, there have not been attempts to study this relationship for the Latin American cases. The results presented in \autoref{income:tax:model:regression:table:run} find support for this claim. Particularly, implementing the income tax \emph{decreases} the death-toll by an estimated over time average of $\Sexpr{abs(round(reg.results.table.tax$Mean[rownames(reg.results.table.tax) == 'Income Tax'],0))}$. \autoref{fig:income:tax:model:plot:run} shows that death-tolls (state capacities) systematically \emph{decrease} (increase) over time once the income tax law is implemented. Before the income tax law was implemented, death-tolls were relatively stable, averaging approximately $\Sexpr{death.toll.before.tax}$  casualties per earthquake. However, once the income tax law was implemented, the death-toll decreased to $\Sexpr{death.toll.after.tax}$. Moreover, the figure shows that the trajectory of casualties goes from $\Sexpr{round(income.tax.adoption.plot$mean[income.tax.adoption.plot$year == min(income.tax.adoption.plot$year)], 0)}$ in $\Sexpr{min(income.tax.adoption.plot$year)}$ to $\Sexpr{round(income.tax.adoption.plot$mean[income.tax.adoption.plot$year == max(income.tax.adoption.plot$year)], 0)}$ in $\Sexpr{max(income.tax.adoption.plot$year)}$. The fixed-effects estimation makes these results robust to considerations of geography and economic development.
@@ -306,7 +304,20 @@ In an effort to generalize the argument about the sectoral origins of the income
 
 
 % MODELS
-Econometrically, this section is concerned about the \emph{timing} of implementing the income tax law in nine Latin American polities, and particularly, about the individual contribution of both the agricultural and industrial sectors. \autoref{results:table:cox} shows 3 models.\footnote{Tables were produced using the  \texttt{texreg} package (\citet[]{Leifeld:2013qr}). All Cox models were computed using the \texttt{survival R}  package (\citet{Therneau:2015zr}). The GEE logistic regression was computed using the \texttt{geepack} package (\citet[]{Hojsgaard:2016}). The simulations were performed using the \texttt{simPH R} package (\citet{Gandrud2015}).} Following \citet{Aidt2009a}, Model 1 computes the lagged conditional hazard ratio of a country which has not yet adopted the income tax adopts it in a given year, as a function of industrial and agricultural outputs.\footnote{Since the idea is to capture the \emph{sectoral contribution} of the implementation of the income tax law, these variables were not combined.} Countries drop out of the sample when they adopt the income tax. Model 2 shows the estimated coefficients of a generalized estimating equation (GEE). Generalized estimating equations were introduced by \citet{Liang1986} to fit clustered, repeated/correlated, and panel data.\footnote{\citet[322]{Zorn2006}. This method is especially well suited to analyze binary data (\citet{Hanley2003a}), something particularly useful given the nature of the dependent variable. GEE methods require analysts to parameterize the working correlation matrix. While GEE models are robust to misspecification of the correlation structure (\citet[139]{Hedeker2006}), following \citet[166]{Hardin2013}, the ``independence'' working covariance structure was used, since observations were collected over time.} From a substantive standpoint, GEE models provide an estimated marginal mean, or the \emph{weighted average} of all cluster-specific effects (or conditional means). Model 3 is a conditional logit. Since population has been associated with the probability elites expand the franchise,\footnote{\citet[892-893]{Engerman2005}.} and consequently the tax base, country-year population was included as a control variable. 
+Econometrically, this section is concerned about the \emph{timing} of implementing the income tax law in nine Latin American polities, and particularly, about the individual contribution of both the agricultural and industrial sectors. \autoref{results:table:cox} shows 3 models.\footnote{Tables were produced using the  \texttt{texreg} package (\citet[]{Leifeld:2013qr}). All Cox models were computed using the \texttt{survival R}  package (\citet{Therneau:2015zr}). The GEE logistic regression was computed using the \texttt{geepack} package (\citet[]{Hojsgaard:2016}). The simulations were performed using the \texttt{simPH R} package (\citet{Gandrud2015}).} Following \citet{Aidt2009a}, Model 1 computes the lagged conditional hazard ratio of a country which has not yet adopted the income tax adopts it in a given year, as a function of industrial and agricultural outputs.\footnote{Since the idea is to capture the \emph{sectoral contribution} of the implementation of the income tax law, these variables were not combined. Following \citet[49]{Box-Steffensmeier2004}, the next equation was fitted: 
+\begin{equation}\label{cox:eq}
+h_{i}(t) = exp(\beta_{1}\text{Industrial Growth}_{i,t} + \beta_{2}\text{Agricultural Growth}_{i,t} + \beta_{3}\text{Total Population}_{i,t})h_{0}(t)
+\end{equation}
+for all countries $i$ and years $t$.} Countries drop out of the sample when they adopt the income tax. Model 2 shows the estimated coefficients of a generalized estimating equation (GEE).\footnote{Following \citet[331]{Zorn2006}, the next equation was fitted:
+\begin{equation}\label{gee:eq}
+\pi_{i,t}=\Phi(\beta_{1}\text{log(Industrial Growth)}_{i,t}+\beta_{2}\text{log(Agricultural Growth)}_{i,t}+\beta_{3}\text{log(Total Population)}_{i,t})
+\end{equation}
+where $\pi$ is the logit link function, and $\Phi$ is as scale parameter (i.e. the cumulative distribution function), for all $i$ countries, and years $t$.} Generalized estimating equations were introduced by \citet{Liang1986} to fit clustered, repeated/correlated, and panel data.\footnote{\citet[322]{Zorn2006}. This method is especially well suited to analyze binary data (\citet{Hanley2003a}), something particularly useful given the nature of the dependent variable. GEE methods require analysts to parameterize the working correlation matrix. While GEE models are robust to misspecification of the correlation structure (\citet[139]{Hedeker2006}), following \citet[166]{Hardin2013}, the ``independence'' working covariance structure was used, since observations were collected over time.} From a substantive standpoint, GEE models provide an estimated marginal mean, or the \emph{weighted average} of all cluster-specific effects (or conditional means). Model 3 is a conditional logit.\footnote{More formally, the next equation was fitted:
+
+\begin{equation}\label{clogit:eq}
+\pi_{i,t}=\Phi(\beta_{0} + \beta_{1}\text{log(Industrial Growth)}_{i,t}+\beta_{2}\text{log(Agricultural Growth)}_{i,t}+\beta_{3}\text{log(Total Population)}_{i,t}+\alpha_{i})
+\end{equation}
+where $\alpha$ are the country fixed effects for all countries $i$.}. Since population has been associated with the probability elites expand the franchise,\footnote{\citet[892-893]{Engerman2005}.} and consequently the tax base, country-year population was included as a control variable. 
 
 
 <<simulation:plots, echo=FALSE, fig.pos='H', warning=FALSE, message=F, fig.cap=simtitle, fig.align='center', fig.width=7, fig.height=3,dpi=10000,cache=FALSE>>=
@@ -383,7 +394,7 @@ Additionally, there are structural reasons to believe that cross-sectoral invest
 \midrule
 \multirow{2}{*}{Pre}  & \multirow{2}{*}{1905 - 1924} 	& Agriculture $\rightarrow$ Industry & 3.55 & 0.47 \\
 \\                	  &                            		& Industry $\rightarrow$ Agriculture & 12.13 & 0.02 \\ 
-\\                       \multirow{2}{*}{Post} & \multirow{2}{*}{1928 - 2009} & Agriculture $\rightarrow$ Industry & 11.92 & 0.00 \\
+\\                       \multirow{2}{*}{Post} & \multirow{2}{*}{1925 - 2009} & Agriculture $\rightarrow$ Industry & 11.92 & 0.00 \\
 \\                                             &                              & Industry $\rightarrow$ Agriculture & 5.37 & 0.07 \\
 \hline
 \bottomrule
@@ -396,7 +407,7 @@ Additionally, there are structural reasons to believe that cross-sectoral invest
 
 
 % Granger
-The paper has argued about the effect of sectoral conflicts on state consolidation. Was there a sectoral conflict? Were there two separate elites? To empirically test the existence of a sectoral duality, particularly in the context of income taxation, the same \href{http://moxlad-staging.herokuapp.com/home/en?}{MOxLAD} sectoral data were used. Since the income tax (1) had positive spillover effects on overall state capacity and (2) its implementation was split across a sectoral base, we should see that (1) adopting the income tax fostered state institutions, causing long-term economic growth,\footnote{\citet{North:1990vl,Besley:2011aa}.} and that (2) its implementation altered the sectoral mechanics of growth accumulation. In empirical terms, we should see that by altering the post-colonial order, implementing the income tax \emph{reversed} the flow of inputs, installing a mechanism of growth generation that went \emph{from} the agricultural sector \emph{to} the industrial sector. In econometric terms, we should see that the implementing the tax reversed the way in which one sector ``Granger-caused'' the other.\footnote{\citet[42]{Lutkepohl2006} explains that if some variable $X$ forecasts variable $Y$ (and not vise versa), $X$ is said to ``Granger-cause'' $Y$. According to \citet[349]{Granger1980}, this concept of ``causation'' is based on the idea ``that the future cannot cause the past.''} \autoref{granger:table} tests for Granger-causality both prior to and after the implementation of the income tax law.\footnote{The tests were computed after estimating \autoref{var:1}, which is a reduced form VAR in differences, both before and after implementing the tax:
+The paper has argued about the effect of sectoral conflicts on state consolidation. Was there a sectoral conflict? Were there two separate elites? To empirically test the existence of a sectoral duality, particularly in the context of income taxation, the same \href{http://moxlad-staging.herokuapp.com/home/en?}{MOxLAD} sectoral data were used. Since the income tax (1) had positive spillover effects on overall state capacity and (2) its implementation was split across a sectoral base, we should see that (1) adopting the income tax fostered state institutions, causing long-term economic growth,\footnote{\citet{North:1990vl,Besley:2011aa}.} and that (2) its implementation altered the sectoral mechanics of growth accumulation. In empirical terms, we should see that by altering the post-colonial order, implementing the income tax \emph{reversed} the flow of inputs, installing a mechanism of growth generation that went \emph{from} the agricultural sector \emph{to} the industrial sector. In econometric terms, we should see that the implementing the tax reversed the way in which one sector ``Granger-caused'' the other.\footnote{\citet[42]{Lutkepohl2006} explains that if some variable $X$ forecasts variable $Y$ (and not vise versa), $X$ is said to ``Granger-cause'' $Y$. According to \citet[349]{Granger1980}, this concept of ``causation'' is based on the idea ``that the future cannot cause the past.''} \autoref{granger:table} tests for Granger-causality both prior to and after the implementation of the income tax law.\footnote{The tests were computed after estimating \autoref{var:1}, which is a reduced form VAR in differences, both before and after implementing the tax. For both periods, the VAR equation passes standard unit root tests (see \autoref{unit:root:tests}), and as per the lag length structure, it also passes standard normality and stability  tests (\autoref{post:estimation:lag:lenght:tests}). More formally, the next equation was fitted:
 
 \begin{equation}\label{var:1}
   \begin{split}
@@ -612,6 +623,62 @@ and,
 \clearpage
 
 
+
+\newpage
+%% Lag Length and Post-Estimation Results // post:estimation:lag:lenght:tests
+% defines a checkmark and x mark symbols
+\newcommand{\cmark}{\ding{51}}%
+\newcommand{\xmark}{\ding{55}}%
+
+%\afterpage{
+\begin{table}[ph!]
+\begin{center}
+\begin{tiny}
+\begin{tabular}{ c c c c c c c c } 
+\toprule
+{\bf Country} & {\bf Time Frame} & {\bf Number of Lags} & {\bf LM} & \multicolumn{3}{c}{{\bf Normally Tests}}  & {\bf Stability Condition}\\
+              &                  &                      &          & \emph{Jarque-Bera} &  \emph{Skewness} &  \emph{Kurtosis}    & \\
+\midrule
+\\\multirow{2}{*}{Chile}  & Pre   & 4 & \cmark & \cmark & \cmark & \cmark & \cmark \\
+\\                        & Post  & 2 & \cmark & \cmark$^{-}$ & \cmark$^{-}$ & \cmark$^{-}$ & \cmark \\[.2em]\cline{3-8} \\
+\bottomrule
+\end{tabular}
+\end{tiny}
+\caption{Lag Length and Post-Estimation Results}
+\label{post:estimation:lag:lenght:tests}
+\end{center}
+\end{table}
+%}
+\clearpage
+
+
+
+
+\newpage
+%% Unit Root Tests for Agricultural and Industrial Growth // unit:root:tests
+%\afterpage{
+\begin{table}[ph!]
+\begin{center}
+\begin{tiny}
+\begin{tabular}{ c c c c c c c } 
+\toprule
+{\bf Country} & Time Frame & {\bf Sector} & {\bf Augmented Dickey-Fuller}  & {\bf Phillips-Perron} & {\bf KPSS} & {\bf Conclusion} \\
+\midrule
+\\\multirow{6}{*}{Chile}& \multirow{2}{*}{Pre}  & Agriculture & -1.185 (0.68) & -1.241 (0.66)   & .107$^{\dagger}$ &  I(1)\\
+\\                        &                         & Industry    & 2.310 (0.99) & 2.556 (0.99) & .113$^{\dagger}$ &  I(1)\\[.2em]\cline{3-7}
+\\                        & \multirow{2}{*}{Post} & Agriculture & 4.557 (1.00) & 5.40 (1.00)    & .289 &  I(1)\\
+\\                        &                         & Industry    & 0.908 (0.99) & 1.458 (0.99) & .249 &  I(1)\\ [.2em]\cline{3-7}                     
+\\                        & \multirow{2}{*}{All}  & Agriculture & 5.521 (1.00) & 6.722 (1.00)   & .31  &  I(1)\\
+\\                        &                         & Industry    & 1.582 (0.99) & 2.305 (0.99) & .314 &  I(1)\\[.2em]
+\bottomrule
+\end{tabular}
+\end{tiny}
+\caption{Unit Root Tests for Agricultural and Industrial Growth}
+\label{unit:root:tests}
+\end{center}
+\end{table}
+%}
+\clearpage
 
 
 
