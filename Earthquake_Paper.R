@@ -646,9 +646,9 @@ eq.params.sectoral <- c("b.Magnitude", "b.p.Population", "b.year", "b.r.long", "
 
 ## ---- sectoral:model:and:data:does:run ----
 # run the model
-n.iter.sectoral = 5  # n.iter.sectoral = 200000 // this is for working model
-n.burnin.sectoral = 0 # n.burnin.sectoral = 5000 // this is for working model
-n.chains.sectoral = 1 # n.chains.sectoral = 4 for the working model
+n.iter.sectoral = 200000  # n.iter.sectoral = 200000 // this is for working model
+n.burnin.sectoral = 5000 # n.burnin.sectoral = 5000 // this is for working model
+n.chains.sectoral = 4 # n.chains.sectoral = 4 for the working model
 
 earthquakefit.sectoral <- jags(
         data=jags.data.sectoral,
@@ -1012,9 +1012,9 @@ eq.params.tax <- c("b.Magnitude", "b.p.Population", "b.year", "b.r.long", "b.r.l
 
 ## ---- income:tax:model:and:data:run ----
 # run the model
-n.iter.tax = 5  # n.iter.tax = 200000 // this is for working model
-n.burnin.tax = 0 # n.burnin.tax = 5000 // this is for working model
-n.chains.tax = 1 # n.chains.tax = 4 for the working model
+n.iter.tax = 200000  # n.iter.tax = 200000 // this is for working model
+n.burnin.tax = 5000 # n.burnin.tax = 5000 // this is for working model
+n.chains.tax = 4 # n.chains.tax = 4 for the working model
 
 earthquakefit.tax <- jags(
         data=jags.data.tax,
@@ -1697,9 +1697,9 @@ for(i in 1:N){  # use loop here to fit one model per data set
                 data=data.list[[i]],
                 inits=NULL,
                 parameters.to.save = c("b.incometax.d"),
-                n.chains = 1,  # 4
-                n.iter = 5, # 200000
-                n.burnin = 0, # 5000
+                n.chains = 4,  # 4
+                n.iter = 200000, # 200000
+                n.burnin = 5000, # 5000
                 model.file=model,
                 progress.bar = "none")
 }
@@ -2183,7 +2183,7 @@ if (!require("pacman")) install.packages("pacman"); library(pacman)
 p_load(simPH)
 
 # quantities
-nsim = 3 # original: 10000
+nsim = 10000 # original: 10000
 qi = "Hazard Rate" # original: Hazard Rate
 ci = 0.95
 
