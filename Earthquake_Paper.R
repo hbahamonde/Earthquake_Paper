@@ -17,6 +17,8 @@ dat.chile <- read.csv("/Users/hectorbahamonde/RU/Dissertation/Papers/Earthquake_
 dat.chile$ln.Magnitude = log(dat.chile$Magnitude)
 dat.chile$W.Deaths = (dat.chile$Deaths/dat.chile$Population)*100
 
+
+
 # save dataset
 save(dat.chile, file = "/Users/hectorbahamonde/RU/Dissertation/Papers/Earthquake_Paper/Chile_Data_Earthquake.RData")
 
@@ -83,6 +85,7 @@ eq.output.d <- data.frame(c(incometax.d,eq.output.d))
 colnames(eq.output.d)[1] = "incometax.d"
 
 
+
 # save dataset
 save(eq.output.d, file = "/Users/hectorbahamonde/RU/Dissertation/Papers/Earthquake_Paper/eq_output_d.RData")
 
@@ -100,17 +103,21 @@ save(eq.output.d, file = "/Users/hectorbahamonde/RU/Dissertation/Papers/Earthqua
 
 
 
-## ---- earthquake:ts:plot:chile ----
+## ---- earthquake:ts:plot:chile:data ----
 # Load the earthquake data
 if (!require("pacman")) install.packages("pacman"); library(pacman)
 p_load(ggplot2)
 
 load("/Users/hectorbahamonde/RU/Dissertation/Papers/Earthquake_Paper/Chile_Data_Earthquake.RData")
+load("/Users/hectorbahamonde/RU/Dissertation/Papers/Earthquake_Paper/eq_output_d_Chile.RData")
 
+
+dat.chile$Included = factor(as.numeric(dat.chile$year > min(datsc$year)),  levels = c(0,1),
+                                             labels = c("No", "Yes"))
 
 # time-series plot
-ggplot(dat.chile, aes(x = year, y = Magnitude)) +
-        geom_point(shape = 21) +
+time.series.plot =ggplot(dat.chile, aes(x = year, y = Magnitude)) +
+        geom_point(shape = 21, aes(fill = dat.chile$Included)) +
         theme_bw() +
         xlab("Year") +
         ggtitle(NULL) +
@@ -121,13 +128,19 @@ ggplot(dat.chile, aes(x = year, y = Magnitude)) +
               legend.text=element_text(size=7), 
               legend.title=element_text(size=7),
               plot.title = element_text(size=7),
-              legend.position="bottom") #+
+              legend.position="bottom") +
+                guides(fill=guide_legend(title="Included in Analyses"))#+
 #stat_smooth(show.legend = F,  method = 'loess')
 ## ----
 
-
-
-
+## ---- earthquake:ts:plot:chile:plot ----
+time.series.plot
+time.series.plot.note <- paste(
+        paste("Earthquakes in Chile: 1500-2010",
+        "\\\\\\hspace{\\textwidth}", 
+        paste("{\\bf Note}: Figure shows earthquakes available in the \\href{https://data.noaa.gov/dataset}{NOAA dataset}. Due to data availability at the local level (local population, for example), however, it was possible to include in the analyses the earthquakes that took place begining in", min(datsc$year)),
+        "\n"))
+## ----
 
 
 
@@ -280,11 +293,10 @@ earthquake.map.plot.chile = ggplot() +
 # plot
 earthquake.map.plot.chile
 earthquake.map.note.chile <- paste(
-        paste("Geographical Distribution of Earthquakes in Chile,", paste(min(chile.map.plot.d$Year), max(chile.map.plot.d$Year), sep="-"), sep=" "),
+        paste("Data Used in the Analyses: Geographical Distribution of Earthquakes in Chile,", paste(min(chile.map.plot.d$Year), max(chile.map.plot.d$Year), sep="-"), sep=" "),
         "\\\\\\hspace{\\textwidth}", 
         paste("{\\bf Note}:", paste(paste(paste("Using a combination of archival information and external sources, the figure shows a total of", nrow(chile.map.plot.d), ""), "earthquakes.", sep = ""), "Each quake was colorized according to the predominant economic sector at the municipal level. In total, there were", as.numeric(table(chile.map.plot.d$Sector)["Agriculture"]), "earthquakes that took place in agricultural localities,", as.numeric(table(chile.map.plot.d$Sector)["Industry"]), "in industrial, and", as.numeric(table(chile.map.plot.d$Sector)["Mixed"]), "in mixed municipalities.",   sep = " "), sep=" "),
         "\n")
-
 ## ----
 
 
@@ -634,9 +646,9 @@ eq.params.sectoral <- c("b.Magnitude", "b.p.Population", "b.year", "b.r.long", "
 
 ## ---- sectoral:model:and:data:does:run ----
 # run the model
-n.iter.sectoral = 200000  # n.iter.sectoral = 200000 // this is for working model
-n.burnin.sectoral = 5000 # n.burnin.sectoral = 5000 // this is for working model
-n.chains.sectoral = 4 # n.chains.sectoral = 4 for the working model
+n.iter.sectoral = 5  # n.iter.sectoral = 200000 // this is for working model
+n.burnin.sectoral = 0 # n.burnin.sectoral = 5000 // this is for working model
+n.chains.sectoral = 1 # n.chains.sectoral = 4 for the working model
 
 earthquakefit.sectoral <- jags(
         data=jags.data.sectoral,
@@ -864,7 +876,7 @@ note.sectoral <- paste0(
 ## ---- sectoral:model:regression:table:run ----
 print.xtable(xtable(
         reg.results.table.sectoral, 
-        caption = "Simulated Posterior Predictions (Hierarchical Poisson Regression)",
+        caption = "Simulated Posterior Predictions (Hierarchical Poisson Regression, \\autoref{model:1})",
         label = "sectoral:model:regression:table:run"), 
         auto = TRUE,
         hline.after=c(-1, 0),
@@ -1000,9 +1012,9 @@ eq.params.tax <- c("b.Magnitude", "b.p.Population", "b.year", "b.r.long", "b.r.l
 
 ## ---- income:tax:model:and:data:run ----
 # run the model
-n.iter.tax = 200000  # n.iter.tax = 200000 // this is for working model
-n.burnin.tax = 5000 # n.burnin.tax = 5000 // this is for working model
-n.chains.tax = 4 # n.chains.tax = 4 for the working model
+n.iter.tax = 5  # n.iter.tax = 200000 // this is for working model
+n.burnin.tax = 0 # n.burnin.tax = 5000 // this is for working model
+n.chains.tax = 1 # n.chains.tax = 4 for the working model
 
 earthquakefit.tax <- jags(
         data=jags.data.tax,
@@ -1248,7 +1260,7 @@ note.tax <- paste0(
 ## ---- income:tax:model:regression:table:run ----
 print.xtable(xtable(
         reg.results.table.tax, 
-        caption = "Income Tax Adoption Model: Simulated Posterior Predictions (Poisson Regression)",
+        caption = "Income Tax Adoption Model: Simulated Posterior Predictions (Poisson Regression, \\autoref{model:2})",
         label = "income:tax:model:regression:table:run"), 
         auto = TRUE,
         hline.after=c(-1, 0),
@@ -1685,9 +1697,9 @@ for(i in 1:N){  # use loop here to fit one model per data set
                 data=data.list[[i]],
                 inits=NULL,
                 parameters.to.save = c("b.incometax.d"),
-                n.chains = 4,  # 4
-                n.iter = 200000, # 200000
-                n.burnin = 5000, # 5000
+                n.chains = 1,  # 4
+                n.iter = 5, # 200000
+                n.burnin = 0, # 5000
                 model.file=model,
                 progress.bar = "none")
 }
@@ -1777,7 +1789,7 @@ income.tax.model.rolling.plot
 income.tax.model.rolling.note <- paste(
         "Rolling Bayesian Poisson Regression",
         "\\\\\\hspace{\\textwidth}", 
-        paste(paste("{\\bf Note}: Figure shows the estimates of implementing the income tax on death-tolls of", nrow(tab), sep = " "), "models which correspond to fully estimating \\autoref{model:2}, but excluding one observation at a time.", paste(paste(ci.rolling*100, "%", sep=""), "credible intervals were included.", sep=" "), "The figure  suggest that the negative results of income taxation and death-tolls are not driven by wealthy municipalities, but to the capacity of the state of enforcing building codes.", sep = " "),
+        paste(paste("{\\bf Note}: Figure shows the estimates of implementing the income tax on death-tolls of", nrow(tab), sep = " "), "models which correspond to fully estimating \\autoref{model:2}, but excluding one observation at a time.", paste(paste(ci.rolling*100, "\\%", sep=""), "credible intervals were included.", sep=" "), "The figure  suggest that the negative results of income taxation and death-tolls are not driven by wealthy municipalities, but to the capacity of the state of enforcing building codes.", sep = " "),
         "\n")
 ## ----
 
@@ -2171,7 +2183,7 @@ if (!require("pacman")) install.packages("pacman"); library(pacman)
 p_load(simPH)
 
 # quantities
-nsim = 10000 # original: 10000
+nsim = 3 # original: 10000
 qi = "Hazard Rate" # original: Hazard Rate
 ci = 0.95
 
