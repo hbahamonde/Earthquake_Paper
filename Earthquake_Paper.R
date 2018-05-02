@@ -1,6 +1,25 @@
 cat("\014")
 rm(list=ls())
 
+
+## ---- number:of:simulations ----
+# Hazard Rate simulations 
+nsim = 10000 # original: 10000
+qi = "Hazard Rate" # original: Hazard Rate
+ci = 0.95
+
+# Bayesian: Sectoral Model
+n.iter.sectoral = 200000  # n.iter.sectoral = 200000 // this is for working model
+n.burnin.sectoral = 5000 # n.burnin.sectoral = 5000 // this is for working model
+n.chains.sectoral = 4 # n.chains.sectoral = 4 for the working model
+
+# Bayesian: Tax Model
+n.iter.tax = 200000  # n.iter.tax = 200000 // this is for working model
+n.burnin.tax = 5000 # n.burnin.tax = 5000 // this is for working model
+n.chains.tax = 4 # n.chains.tax = 4 for the working model
+## ---- 
+
+
 ############################
 #### Loadings
 ############################
@@ -136,9 +155,9 @@ time.series.plot =ggplot(dat.chile, aes(x = year, y = Magnitude)) +
 ## ---- earthquake:ts:plot:chile:plot ----
 time.series.plot
 time.series.plot.note <- paste(
-        paste("Earthquakes in Chile: 1500-2010",
+        paste("{\\bf Earthquakes in Chile: 1500-2010}.",
         "\\\\\\hspace{\\textwidth}", 
-        paste("{\\bf Note}: Figure shows earthquakes available in the \\href{https://data.noaa.gov/dataset}{NOAA dataset}. Due to data availability at the local level (local population, for example), however, it was possible to include in the analyses the earthquakes that took place begining in", min(datsc$year)),
+        paste(paste(paste("{\\bf Note}: Figure shows earthquakes available in the \\href{https://data.noaa.gov/dataset}{NOAA dataset}. Due to data availability at the local level (local population, for example), however, it was possible to include in the analyses the earthquakes that took place begining in", paste(min(datsc$year), ".", sep="")), " \\autoref{fig:earthquake:map:plot:chile} shows the actual observations used in the analyses", sep = ""), paste("(",paste("N=",nrow(chile.map.plot.d), sep = ""),").", sep = "")),
         "\n"))
 ## ----
 
@@ -289,13 +308,17 @@ earthquake.map.plot.chile = ggplot() +
 ## ----
 
 
+
+
+
+
 ## ---- earthquake:map:plot:chile ----
 # plot
 earthquake.map.plot.chile
 earthquake.map.note.chile <- paste(
-        paste("Data Used in the Analyses: Geographical Distribution of Earthquakes in Chile,", paste(min(chile.map.plot.d$Year), max(chile.map.plot.d$Year), sep="-"), sep=" "),
+        paste("{\\bf Data Used in the Analyses: Geographical Distribution of Earthquakes in Chile,", paste(paste(min(chile.map.plot.d$Year), max(chile.map.plot.d$Year), sep="-"), "}.", sep = "" ), sep=" "),
         "\\\\\\hspace{\\textwidth}", 
-        paste("{\\bf Note}:", paste(paste(paste("Using a combination of archival information and external sources, the figure shows a total of", nrow(chile.map.plot.d), ""), "earthquakes.", sep = ""), "Each quake was colorized according to the predominant economic sector at the municipal level. In total, there were", as.numeric(table(chile.map.plot.d$Sector)["Agriculture"]), "earthquakes that took place in agricultural localities,", as.numeric(table(chile.map.plot.d$Sector)["Industry"]), "in industrial, and", as.numeric(table(chile.map.plot.d$Sector)["Mixed"]), "in mixed municipalities.",   sep = " "), sep=" "),
+        paste("{\\bf Note}:", paste(paste(paste("Using a combination of archival information and external sources, the figure shows a total of", nrow(chile.map.plot.d), ""), "earthquakes.", sep = ""), "Each quake was colorized according to the predominant economic sector at the municipal level. In total, there were", as.numeric(table(chile.map.plot.d$Sector)["Agriculture"]), "earthquakes that took place in agricultural localities,", as.numeric(table(chile.map.plot.d$Sector)["Industry"]), "in industrial, and", as.numeric(table(chile.map.plot.d$Sector)["Mixed"]), "in mixed municipalities. \\autoref{fig:earthquake:ts:plot:chile:plot} shows the overtime variation.",   sep = " "), sep=" "),
         "\n")
 ## ----
 
@@ -646,9 +669,9 @@ eq.params.sectoral <- c("b.Magnitude", "b.p.Population", "b.year", "b.r.long", "
 
 ## ---- sectoral:model:and:data:does:run ----
 # run the model
-n.iter.sectoral = 200000  # n.iter.sectoral = 200000 // this is for working model
-n.burnin.sectoral = 5000 # n.burnin.sectoral = 5000 // this is for working model
-n.chains.sectoral = 4 # n.chains.sectoral = 4 for the working model
+# n.iter.sectoral = 200000  # n.iter.sectoral = 200000 // this is for working model
+# n.burnin.sectoral = 5000 # n.burnin.sectoral = 5000 // this is for working model
+# n.chains.sectoral = 4 # n.chains.sectoral = 4 for the working model
 
 earthquakefit.sectoral <- jags(
         data=jags.data.sectoral,
@@ -695,9 +718,10 @@ prop.range <- seq(min(propagrmanu), max(propagrmanu), by = 0.01)
 #############################
 ### Agricultural Subnational
 sect.contest.sim.prop.agr <- matrix(rep(NA, nrow(sect.contest.mcmc.dat)*length(prop.range)), nrow = nrow(sect.contest.mcmc.dat))
+
 for(i in 1:length(prop.range)){
         sect.contest.sim.prop.agr[, i] <- sect.contest.mcmc.dat$'b.propagrmanu[1]'*prop.range[i]
-}
+        }
 
 ## credible intervals
 bayes.c.eff.mean.prop.agr <- apply(sect.contest.sim.prop.agr, 2, mean)
@@ -868,15 +892,15 @@ if (!require("pacman")) install.packages("pacman"); library(pacman)
 p_load(xtable)
 
 note.sectoral <- paste0(
-        "\\hline \n \\multicolumn{6}{c}", "{ \\scriptsize {\\bf Note}: ", format(round(as.numeric(n.iter.sectoral), 0), nsmall=0, big.mark=","), " iterations with a burn-in period of n = ", format(round(as.numeric(n.burnin.sectoral), 0), nsmall=0, big.mark=","), " iterations discarded.}\\\\", "\n \\multicolumn{6}{c}", "{ \\scriptsize ", ci.number.sectoral*100 ,"\\% credible intervals (upper/lower bounds). All R-Hat statistics below critical levels.}\\\\" ,"\n \\multicolumn{6}{c}", "{ \\scriptsize Standard convergence diagnostics suggest good mixing and convergence.}\\\\","\n \\multicolumn{6}{c}", "{ \\scriptsize Year fixed effects were omitted in the table.}\\\\", 
-        "\n \\multicolumn{6}{c}","{ \\scriptsize A total of ", n.chains.sectoral, " chains were run. Detailed diagnostic plots available  [link to personal website here] .} \\\\")
+        "\\hline \n \\multicolumn{6}{l}", "{ \\scriptsize {\\bf Note}: ", format(round(as.numeric(n.iter.sectoral), 0), nsmall=0, big.mark=","), " iterations with a burn-in period of n = ", format(round(as.numeric(n.burnin.sectoral), 0), nsmall=0, big.mark=","), " iterations discarded.}\\\\", "\n \\multicolumn{6}{l}", "{ \\scriptsize ", ci.number.sectoral*100 ,"\\% credible intervals (upper/lower bounds). All R-Hat statistics below critical levels.}\\\\" ,"\n \\multicolumn{6}{l}", "{ \\scriptsize Standard convergence diagnostics suggest good mixing and convergence.}\\\\","\n \\multicolumn{6}{l}", "{ \\scriptsize Year fixed effects were omitted in the table.}\\\\", 
+        "\n \\multicolumn{6}{l}","{ \\scriptsize A total of ", n.chains.sectoral, " chains were run. Detailed diagnostic plots available  \\href{https://github.com/hbahamonde/Earthquake_Paper/raw/master/Bahamonde_Earthquake_Paper_Diagnostic_Plots_Sectoral_Competition.pdf}{\\texttt here}.} \\\\")
 ## ----
 
 
 ## ---- sectoral:model:regression:table:run ----
 print.xtable(xtable(
         reg.results.table.sectoral, 
-        caption = "Simulated Posterior Predictions (Hierarchical Poisson Regression, \\autoref{model:1})",
+        caption = "{\\bf Simulated Posterior Predictions (Hierarchical Poisson Regression, \\autoref{model:1})}.",
         label = "sectoral:model:regression:table:run"), 
         auto = TRUE,
         hline.after=c(-1, 0),
@@ -1012,9 +1036,9 @@ eq.params.tax <- c("b.Magnitude", "b.p.Population", "b.year", "b.r.long", "b.r.l
 
 ## ---- income:tax:model:and:data:run ----
 # run the model
-n.iter.tax = 200000  # n.iter.tax = 200000 // this is for working model
-n.burnin.tax = 5000 # n.burnin.tax = 5000 // this is for working model
-n.chains.tax = 4 # n.chains.tax = 4 for the working model
+# n.iter.tax = 200000  # n.iter.tax = 200000 // this is for working model
+# n.burnin.tax = 5000 # n.burnin.tax = 5000 // this is for working model
+# n.chains.tax = 4 # n.chains.tax = 4 for the working model
 
 earthquakefit.tax <- jags(
         data=jags.data.tax,
@@ -1153,7 +1177,10 @@ income.tax.model.plot = ggplot() +
 
 ## ---- income:tax:model:plot:run ----
 income.tax.model.plot
-income.tax.model.plot.note <- paste(paste(paste(paste(paste("{\\bf Note}: Using the estimations from \\autoref{income:tax:model:regression:table:run} (\\autoref{model:2}) figure shows predicted death-tolls, before and after the implementation of the income tax in 1924. In average, the death-toll decreases from"), death.toll.before.tax, "to", sep = " "), death.toll.after.tax, sep= " "), ".", sep=""), paste(paste(paste("The figure shows credible intervals at the", CI.level.income.tax.ts.plot[3]*100, sep = " "), "\\%", sep = ""), "level.", sep = " "), sep = " ")
+income.tax.model.plot.note <- paste(
+        "{\\bf Income Taxation and State Capacity in Chile: An Overtime Approach}.",
+        "\\\\\\hspace{\\textwidth}",
+        paste(paste(paste(paste("{\\bf Note}: Using the estimations from \\autoref{income:tax:model:regression:table:run} (\\autoref{model:2}), the figure shows predicted death-tolls before and after the implementation of the income tax in 1924. In average, the death-toll decreases from"), death.toll.before.tax, "to", sep = " "), death.toll.after.tax, sep= " "), ".", sep=""), paste(paste(paste("The figure suggests that implementing the income tax law had positive effects on state-capacity overtime. The figure also shows credible intervals at the", CI.level.income.tax.ts.plot[3]*100, sep = " "), "\\%", sep = ""), "level.", sep = " "), sep = " ")
 ## ----
 
 ###############################
@@ -1254,13 +1281,13 @@ p_load(xtable)
 
 note.tax <- paste0(
         "\\hline \n \\multicolumn{6}{l}", "{ \\scriptsize {\\bf Note}: ", format(round(as.numeric(n.iter.tax), 0), nsmall=0, big.mark=","), " iterations with a burn-in period of n = ", format(round(as.numeric(n.burnin.tax), 0), nsmall=0, big.mark=",") , " iterations discarded.}\\\\", "\n \\multicolumn{6}{l}", "{ \\scriptsize ", ci.number.tax*100 ,"\\% credible intervals (upper/lower bounds). All R-Hat statistics below critical levels.}\\\\" ,"\n \\multicolumn{6}{l}", "{ \\scriptsize Standard convergence diagnostics suggest good mixing and convergence.}\\\\","\n \\multicolumn{6}{l}", "{ \\scriptsize Year fixed effects were omitted in the table.}\\\\", 
-        "\n \\multicolumn{6}{l}","{ \\scriptsize A total of ", n.chains.tax, " chains were run. Detailed diagnostic plots available [link to personal website here].} \\\\")
+        "\n \\multicolumn{6}{l}","{ \\scriptsize A total of ", n.chains.tax, " chains were run. Detailed diagnostic plots available \\href{https://github.com/hbahamonde/Earthquake_Paper/raw/master/Bahamonde_Earthquake_Paper_Diagnostic_Plots_Income_Tax_Model.pdf}{\\texttt here}.} \\\\")
 ## ----
 
 ## ---- income:tax:model:regression:table:run ----
 print.xtable(xtable(
         reg.results.table.tax, 
-        caption = "Income Tax Adoption Model: Simulated Posterior Predictions (Poisson Regression, \\autoref{model:2})",
+        caption = "{\\bf Income Tax Adoption Model: Simulated Posterior Predictions (Poisson Regression, \\autoref{model:2})}.",
         label = "income:tax:model:regression:table:run"), 
         auto = TRUE,
         hline.after=c(-1, 0),
@@ -1294,7 +1321,7 @@ print.xtable(xtable(
 ##########################
 
 
-## ---- predicted:observed:plot ----
+## ---- predicted:observed:plot:data ----
 # Tax
 eq.out.tax <- as.data.frame(as.matrix(as.mcmc(earthquakefit.tax)))
 
@@ -1327,14 +1354,12 @@ model.checking.plot.df = as.data.frame(eq.pred.tax)
 if (!require("pacman")) install.packages("pacman"); library(pacman) 
 p_load(ggplot2)
 
-ggplot(data = model.checking.plot.df, 
-       aes(x = Deaths.observed, y = reorder(id, Deaths.observed))) + 
+predicted.observed.plot = ggplot(data = model.checking.plot.df, 
+                                 aes(x = Deaths.observed, y = reorder(id, Deaths.observed))) + 
         geom_point(aes(
-                #colour = Model,
                 x = median, 
                 y = reorder(id,Deaths.observed))) +
         geom_segment(aes(
-                # colour = Model,
                 x = lower, 
                 xend = upper, 
                 y = reorder(id, Deaths.observed), 
@@ -1343,20 +1368,29 @@ ggplot(data = model.checking.plot.df,
         geom_point(shape = 21, colour = "red") + 
         ylab("Observation") + xlab("Deaths") + 
         theme_bw() +
+        coord_flip() +
         theme(
                 axis.text.y = element_text(size=7), 
-                axis.text.x = element_text(size=7), 
+                axis.text.x = element_text(size=5,angle = 90, hjust = 1), 
                 axis.title.y = element_text(size=7), 
                 axis.title.x = element_text(size=7), 
                 legend.text=element_text(size=7), 
                 legend.title=element_text(size=7),
-                plot.title = element_text(size=7),
-                legend.position="bottom")
+                plot.title = element_text(size=7)#,
+                #legend.position="bottom"
+                )
 ## ----
 
 
+## ---- predicted:observed:plot:plot ----
+predicted.observed.plot
+predicted.observed.plot.note <- paste(
+        "{\\bf Assessing Model Fit}.",
+        "\\\\\\hspace{\\textwidth}", 
+        paste("{\\bf Note}: The figure assesses the goodness of fit of \\autoref{model:1} (\\autoref{income:tax:model:regression:table:run}). Since the model deals with the \\underline{count} of casualties associated with earthquakes (Y-axis), a ``good'' model should minimize the distance between the predicted count (black dots, with confidence intervals) and the actual count (red dots). The figure shows that the model does a good job in predicting the actual death-toll."),
+        "\n")
 
-
+## ----
 
 ##########################
 ##########################
@@ -1500,7 +1534,7 @@ caterplot(earthquakefit,
 
 
 
-## ---- year:fixed:effects:plot ----
+## ---- year:fixed:effects:plot:data ----
 #### PLOT fixed effects year
 if (!require("pacman")) install.packages("pacman"); library(pacman)  
 p_load(gtools,dplyr,reshape2,ggplot2)
@@ -1522,7 +1556,7 @@ earthquake.year.tax$Model <- "Income Tax Adoption"
 
 
 # plot
-ggplot(data = earthquake.year.tax, aes(x = variable, y = mean)) + 
+year.fixed.effects.plot = ggplot(data = earthquake.year.tax, aes(x = variable, y = mean)) + 
         geom_hline(yintercept = 0, col = "blue") +
         geom_pointrange(aes(ymin = lo, ymax = hi)) + 
         xlab("Year") + 
@@ -1541,7 +1575,14 @@ ggplot(data = earthquake.year.tax, aes(x = variable, y = mean)) +
 ## ----
 
 
-
+## ---- year:fixed:effects:plot:plot ----
+year.fixed.effects.plot 
+year.fixed.effects.plot.note <- paste(
+        "{\\bf Year Fixed Effects}.",
+        "\\\\\\hspace{\\textwidth}", 
+        paste("{\\bf Note}: Figure shows the estimated posteriors of the year fixed effects (as per \\autoref{income:tax:model:regression:table:run}). Formally, it shows all $\\protect\\beta_{6}$'s in \\autoref{model:1}. Substantively, the figure suggests that, overall, there are no influential years driving the results."),
+        "\n")
+## ----
 
 
 
@@ -1697,9 +1738,9 @@ for(i in 1:N){  # use loop here to fit one model per data set
                 data=data.list[[i]],
                 inits=NULL,
                 parameters.to.save = c("b.incometax.d"),
-                n.chains = 4,  # 4
-                n.iter = 200000, # 200000
-                n.burnin = 5000, # 5000
+                n.chains = n.chains.tax,  # 4
+                n.iter = n.iter.tax, # 200000
+                n.burnin = n.burnin.tax, # 5000
                 model.file=model,
                 progress.bar = "none")
 }
@@ -1787,7 +1828,7 @@ income.tax.model.rolling.plot = ggplot(data = tab, aes(x = IncomeTax, y = index)
 ## ---- income:tax:model:and:data:run:rolling ----
 income.tax.model.rolling.plot
 income.tax.model.rolling.note <- paste(
-        "Rolling Bayesian Poisson Regression",
+        "{\\bf Rolling Bayesian Poisson Regression}.",
         "\\\\\\hspace{\\textwidth}", 
         paste(paste("{\\bf Note}: Figure shows the estimates of implementing the income tax on death-tolls of", nrow(tab), sep = " "), "models which correspond to fully estimating \\autoref{model:2}, but excluding one observation at a time.", paste(paste(ci.rolling*100, "\\%", sep=""), "credible intervals were included.", sep=" "), "The figure  suggest that the negative results of income taxation and death-tolls are not driven by wealthy municipalities, but to the capacity of the state of enforcing building codes.", sep = " "),
         "\n")
@@ -2007,11 +2048,11 @@ grid_arrange_shared_legend(
         ncol = 3, nrow = 3)
 
 outputstitle <- paste(
-        "Industrial and Agricultural Outputs, and The Passage of the Income Tax Law.",
+        "{\\bf Industrial and Agricultural Outputs, and The Passage of the Income Tax Law}.",
         "\\\\\\hspace{\\textwidth}", 
         "{\\bf Note}: Figure shows historical sectoral outputs, and year of the passage of the income tax law. Following convention, the figure shows logged values.",
         "\\\\\\hspace{\\textwidth}", 
-        paste("{\\bf Source}: \\href{http://moxlad-staging.herokuapp.com/home/en?}{MOxLAD} and other sources compiled by the author (see \\autoref{sample:data:income:tax:tab})."),
+        paste("{\\bf Source}: \\href{http://moxlad-staging.herokuapp.com/home/en?}{MOxLAD}, and other sources compiled by the author (see \\autoref{sample:data:income:tax:tab})."),
         "\n")
 # ----
 
@@ -2132,7 +2173,7 @@ texreg(
                 "Agricultural Output$_{t-1}$",
                 "Total Population",
                 #
-                "intercept",
+                # "intercept",
                 #
                 "Manufacture Output (ln)",
                 "Agricultural Output (ln)",        
@@ -2143,20 +2184,20 @@ texreg(
                 "(3) Conditional Logit (FE)" # Fixed Effects model
         ),
         label = "results:table:cox",
-        custom.note = "%stars. Robust standard errors in all models",
+        custom.note = "%stars. Robust standard errors in all models. Intercept omitted.",
         fontsize = "small",
         center = TRUE,
         use.packages = FALSE,
         dcolumn = TRUE,
         booktabs = TRUE,
-        omit.coef = "intercept",
+        omit.coef = "(Intercept)",
         #longtable = TRUE,
         digits = 3,
         table = TRUE,
         stars = c(0.001, 0.01, 0.05, 0.1),
         #sideways = TRUE,
         no.margin = TRUE, 
-        float.pos = "ph!"
+        float.pos = "!htbp"
 )
 ## ---- 
 
@@ -2183,9 +2224,9 @@ if (!require("pacman")) install.packages("pacman"); library(pacman)
 p_load(simPH)
 
 # quantities
-nsim = 10000 # original: 10000
-qi = "Hazard Rate" # original: Hazard Rate
-ci = 0.95
+# nsim = 10000 # original: 10000
+# qi = "Hazard Rate" # original: Hazard Rate
+# ci = 0.95
 
 
 set.seed(602)
@@ -2214,15 +2255,13 @@ sim.m.agr <- coxsimLinear(cox2,
 )
 
 
-
 simtitle <- paste(
-        paste0(qi, " of Implementing the Income Tax Law."),
+        paste0("{\\bf ",qi, " of Implementing the Income Tax Law}."),
         "\\\\\\hspace{\\textwidth}", 
-        paste("{\\bf Note}:", "Using estimations of Model 1 in \\autoref{results:table:cox} (\\autoref{cox:eq}), figure shows", nsim, "simulations with different sectoral growth speeds. Slow is the minimum value, while rapid is the maximum value for each sectoral output."),
+        paste("{\\bf Note}:", "Using estimations of Model 1 in \\autoref{results:table:cox} (\\autoref{cox:eq}), figure shows", formatC(nsim, format="d", big.mark=","), "simulations with different sectoral growth speeds. ``Slow'' is the minimum value, while ``rapid'' is the maximum value for each sectoral output."),
         paste(paste("The figure also shows the ", paste(ci*100, "\\%", sep = ""), sep = ""), "confidence intervals."), 
         "\n")
 ## ----
-
 
 
 
