@@ -646,7 +646,7 @@ and,
 \bottomrule
 \end{tabular}
 \end{tiny}
-\caption{Sample, Data Available and Year the Income Tax was Implemented}
+\caption{{\bf Sample, Data Availability, and Year the Income Tax Law was Implemented}.}
 \label{sample:data:income:tax:tab}
 \end{center}
 \end{table}
@@ -682,7 +682,7 @@ and,
 \bottomrule
 \end{tabular}
 \end{tiny}
-\caption{Lag Length and Post-Estimation Results}
+\caption{{\bf Lag Length and Post-Estimation Results}.}
 \label{post:estimation:lag:lenght:tests}
 \end{center}
 \end{table}
@@ -711,7 +711,7 @@ and,
 \bottomrule
 \end{tabular}
 \end{tiny}
-\caption{Unit Root Tests for Agricultural and Industrial Growth}
+\caption{{\bf Unit Root Tests for Agricultural and Industrial Growth}.}
 \label{unit:root:tests}
 \end{center}
 \end{table}

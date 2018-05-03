@@ -1387,7 +1387,7 @@ predicted.observed.plot
 predicted.observed.plot.note <- paste(
         "{\\bf Assessing Model Fit}.",
         "\\\\\\hspace{\\textwidth}", 
-        paste("{\\bf Note}: The figure assesses the goodness of fit of \\autoref{model:1} (\\autoref{income:tax:model:regression:table:run}). Since the model deals with the \\underline{count} of casualties associated with earthquakes (Y-axis), a ``good'' model should minimize the distance between the predicted count (black dots, with confidence intervals) and the actual count (red dots). The figure shows that the model does a good job in predicting the actual death-toll."),
+        paste("{\\bf Note}: The figure assesses the goodness of fit of \\autoref{model:1} (\\autoref{income:tax:model:regression:table:run}). Since the model deals with the \\underline{count} of casualties associated with earthquakes (Y-axis), a ``good'' model should minimize the distance between the predicted count (black dots, with credible intervals), and the actual count (red dots). The figure shows that the model does a good job in predicting the actual death-toll."),
         "\n")
 
 ## ----
@@ -1580,7 +1580,7 @@ year.fixed.effects.plot
 year.fixed.effects.plot.note <- paste(
         "{\\bf Year Fixed Effects}.",
         "\\\\\\hspace{\\textwidth}", 
-        paste("{\\bf Note}: Figure shows the estimated posteriors of the year fixed effects (as per \\autoref{income:tax:model:regression:table:run}). Formally, it shows all $\\protect\\beta_{6}$'s in \\autoref{model:1}. Substantively, the figure suggests that, overall, there are no influential years driving the results."),
+        paste("{\\bf Note}: Figure shows the estimated posteriors of the year fixed effects (as per \\autoref{income:tax:model:regression:table:run}). Formally, it shows all $\\protect\\beta_{6}$'s from \\autoref{model:1}. Substantively, the figure suggests that, overall, there are no influential years driving the results."),
         "\n")
 ## ----
 
@@ -2167,7 +2167,7 @@ clogit.1 = clogit(
 # screenreg / texreg
 texreg(
         list(cox2, logitgee.1, clogit.1), # it needs to be texreg for knitr
-        caption = "Sectoral Origins of Income Taxation: Income Tax Law and Industrial Development",
+        caption = "{\\bf Sectoral Origins of Income Taxation: Income Tax Law and Industrial Development}.",
         custom.coef.names = c(
                 "Manufacture Output$_{t-1}$",
                 "Agricultural Output$_{t-1}$",
