@@ -84,3 +84,7 @@ figure/traplot:plot:tax-1\.pdf
 figure/predicted:observed:plot-1\.pdf
 
 figure
+
+*.xml
+
+*.bcf
