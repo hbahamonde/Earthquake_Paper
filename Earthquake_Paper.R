@@ -152,13 +152,15 @@ time.series.plot =ggplot(dat.chile, aes(x = year, y = Magnitude)) +
 #stat_smooth(show.legend = F,  method = 'loess')
 ## ----
 
+
+
 ## ---- earthquake:ts:plot:chile:plot ----
 time.series.plot
 time.series.plot.note <- paste(
         paste("{\\bf Earthquakes in Chile: 1500-2010}.",
         "\\\\\\hspace{\\textwidth}", 
-        paste(paste(paste("{\\bf Note}: Figure shows earthquakes available in the \\href{https://data.noaa.gov/dataset}{NOAA dataset}. Due to data availability at the local level (local population, for example), however, it was possible to include in the analyses the earthquakes that took place begining in", paste(min(datsc$year), ".", sep="")), " \\autoref{fig:earthquake:map:plot:chile} shows the actual observations used in the analyses", sep = ""), paste("(",paste("N=",nrow(chile.map.plot.d), sep = ""),").", sep = "")),
-        "\n"))
+        paste(paste(paste("{\\bf Note}: Figure shows earthquakes available in the \\href{https://data.noaa.gov/dataset}{NOAA dataset} (N=", length(dat.chile$Included),").", sep = ""), "Due to data availability at the local level (local population, for example), however, it was only possible to include in the analyses the earthquakes that took place begining in", paste(min(datsc$year), ".", sep="")), " \\autoref{fig:earthquake:map:plot:chile} shows the geographical location of the actual observations used in the analyses", sep = ""), paste("(",paste("N=",nrow(chile.map.plot.d), sep = ""),").", sep = "")),
+        "\n")
 ## ----
 
 
