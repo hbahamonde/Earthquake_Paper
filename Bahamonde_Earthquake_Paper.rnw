@@ -4,8 +4,6 @@
 
 
 
-% DOCUMENT ID
-\fancyhead[C]{} % Custom header text
 
 
 
@@ -19,8 +17,8 @@
 \textsc{H\'ector Bahamonde}\\ 
 \thanks{I thank Robert Kaufman, Hillel Soifer, Mark Dincecco, James Mahon, Christopher Hale, Alexander Lee, Jack Paine, Daniel Kelemen, Douglas Blair, Paul Poast, Jorge Atria, and the attendees of the Annual Meeting of the Southern Political Science Association in New Orleans, LA for all the useful comments. I also thank the School of Arts and Sciences at Rutgers for granting me funds to collect part of the data used in this project. All errors are my own.}
 \normalsize Postdoctoral Fellow $\bullet$ Center For Inter-American Policy \& Research $\bullet$ Tulane University\\
-\normalsize \texttt{e:}\href{mailto:\filetext}{\texttt{\filetext}}\\
-\normalsize \texttt{w:}\href{http://www.hectorbahamonde.com}{\texttt{www.HectorBahamonde.com}}
+\normalsize \href{mailto:\filetext}{\texttt{\filetext}}\\
+\normalsize \href{http://www.hectorbahamonde.com}{\texttt{www.HectorBahamonde.com}}
 \vspace{-5mm}
 }
 \date{\today}
@@ -29,9 +27,11 @@
 
 \begin{document}
 
+\pagenumbering{gobble} 
+
+
 \maketitle % Insert title
 
-\thispagestyle{fancy} % All pages have headers and footers
 
 %----------------------------------------------------------------------------------------
 % ABSTRACT
@@ -50,7 +50,6 @@
 
 
 
-\clearpage
 
 
 
@@ -147,6 +146,10 @@ read_chunk('/Users/hectorbahamonde/RU/Dissertation/Papers/Earthquake_Paper/Earth
 @
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\clearpage
+\newpage
+\pagenumbering{arabic}
+\setcounter{page}{1}
 
 % Theoretical Motivation
 \textcite[1]{Levi:1989lq} has famously explained that ``the history of state revenue production is the history of the evolution of the state.'' However, even when we have gained considerable knowledge of fiscal expansion in the European cases, the study of the public finances within a context of state consolidation in the developing world is lacking, especially in the presence of ``new leading sectors.''\footnote{\textcite[2]{Schneider:2012rr}.} In fact, while there are a number of theories about state-capacity in Latin America, domestic explanations centered on the role of the economic structural transformation and taxation have been overlooked.\footnote{A few exceptions are \textcite[7-8]{Gallo:1991kx}, \textcite{Beramendi2016} and \textcite[8]{Saylor:2014aa} who consider elite conflicts to study state-making and fiscal development in the developing world. \textcite{Dargent2017} focus on a ```challenger-based' causal mechanism'' of state formation in Peru, however they concentrate their efforts on the role of exogenous economic shocks.} Besides this theoretical gap, there is also an empirical deficit. As \textcite[586]{Soifer2012} points out, most ``scholarship on state capacity [...] lack[s] a satisfying conceptualization and measurement scheme for this concept.'' Moreover, while most state formation theories are situated during precolonial,\footnote{\textcite{Mahoney:2010aa}.} early,\footnote{See \textcite[]{Kurtz:2013aa} and \textcite[]{Soifer2015a}.} or late\footnote{\textcite{Bahamonde:2017ab}.} independent Latin America, we lack a measurement that corresponds \emph{temporally} to the theories we have. In other words, most explanations of state-making are \emph{historical} in nature. Yet, in practice, available measurements capture \emph{contemporary} levels of \emph{stateness}. 
@@ -265,13 +268,11 @@ I constructed a novel hand-collected longitudinal dataset using the \emph{Signif
 
 
 % earthquake:map:plot:chile
-\afterpage{
-
 <<earthquake:map:plot:chile, echo = FALSE, fig.pos='H', warning = FALSE, message = FALSE,fig.cap=earthquake.map.note.chile, fig.align='center', fig.width=4,fig.height=7,dpi=1000,cache = FALSE,eval=TRUE>>=
 
 @
 \clearpage
-}
+
 
 
 
@@ -480,15 +481,21 @@ Finally, income taxation did even more than just triggering other state capaciti
 
 
 
-
+% bibliography
 \newpage
+\pagenumbering{Roman}
+\setcounter{page}{1}
 \printbibliography
+
 
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % WORD COUNT
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\clearpage
+\newpage
+\pagenumbering{gobble}
 
 
 \clearpage
@@ -531,8 +538,16 @@ count <- comma(as.numeric(count)) # add comma
 
 
 
+
+
+
+% Online Appendix
 \newpage
-\section{Online Appendix\label{appendix}}
+\section{Online Appendix}
+\pagenumbering{Roman}
+\setcounter{page}{1}
+
+
 
 %% reset tables and figures counter
 \setcounter{table}{0}
