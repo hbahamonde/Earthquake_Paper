@@ -118,8 +118,10 @@ save(eq.output.d, file = "/Users/hectorbahamonde/RU/Dissertation/Papers/Earthqua
 
 ## CHILE
 
+cat("\014")
+rm(list=ls())
 
-
+# HERE
 
 
 ## ---- earthquake:ts:plot:chile:data ----
@@ -131,11 +133,18 @@ load("/Users/hectorbahamonde/RU/Dissertation/Papers/Earthquake_Paper/Chile_Data_
 load("/Users/hectorbahamonde/RU/Dissertation/Papers/Earthquake_Paper/eq_output_d_Chile.RData")
 
 
+## stores all EQs (without concerns of data availability; i.e. population, etc.)
+cases.all = nrow(dat.chile)
+
+#dat.chile <- dat.chile[which(dat.chile$year >= 1900 & dat.chile$country == "Chile"), ] # drop early earthquakes 
+
 dat.chile$Included = factor(as.numeric(dat.chile$year > min(datsc$year)),  levels = c(0,1),
-                                             labels = c("No", "Yes"))
+                            labels = c("No", "Yes"))
+
+
 
 # time-series plot
-time.series.plot =ggplot(dat.chile, aes(x = year, y = Magnitude)) +
+time.series.plot <- ggplot(dat.chile, aes(x = year, y = Magnitude)) +
         geom_point(shape = 21, aes(fill = dat.chile$Included)) +
         theme_bw() +
         xlab("Year") +
@@ -155,11 +164,26 @@ time.series.plot =ggplot(dat.chile, aes(x = year, y = Magnitude)) +
 
 
 ## ---- earthquake:ts:plot:chile:plot ----
+# dropping NAs 
+dat.chile = dat.chile[!is.na(dat.chile$Magnitude),] 
+dat.chile = dat.chile[!is.na(dat.chile$Deaths),] 
+dat.chile = dat.chile[!is.na(dat.chile$Sector),] 
+dat.chile = dat.chile[!is.na(dat.chile$Population),] 
+
+dat.chile = dat.chile[!is.na(dat.chile$Latitude),] 
+dat.chile = dat.chile[!is.na(dat.chile$Longitude),] 
+dat.chile = dat.chile[!is.na(dat.chile$Urban),] 
+
+
+cases.complete = nrow(dat.chile)
+
+
 time.series.plot
+
 time.series.plot.note <- paste(
         paste("{\\bf Earthquakes in Chile: 1500-2010}.",
         "\\\\\\hspace{\\textwidth}", 
-        paste(paste(paste("{\\bf Note}: Figure shows earthquakes available in the \\href{https://data.noaa.gov/dataset}{NOAA dataset} (N=", length(dat.chile$Included),").", sep = ""), "Due to data availability at the local level (local population, for example), however, it was only possible to include in the analyses the earthquakes that took place begining in", paste(min(datsc$year), ".", sep="")), " \\autoref{fig:earthquake:map:plot:chile} shows the geographical location of the actual observations used in the analyses", sep = ""), paste("(",paste("N=",nrow(chile.map.plot.d), sep = ""),").", sep = "")),
+        paste(paste(paste("{\\bf Note}: Figure shows earthquakes available in the \\href{https://data.noaa.gov/dataset}{NOAA dataset} (N=", cases.all,").", sep = ""), "Due to data availability at the local level (local population, for example), however, it was only possible to include in the analyses the earthquakes that took place begining in", paste(min(datsc$year), ".", sep="")), " \\autoref{fig:earthquake:map:plot:chile} shows the geographical location of the actual observations used in the analyses", sep = ""), paste("(",paste("N=",cases.complete, sep = ""),").", sep = "")),
         "\n")
 ## ----
 
@@ -928,12 +952,16 @@ print.xtable(xtable(
 # Income Tax Adoption Model
 ###############################
 
+
+# HERE
+
 # cat("\014")
 # rm(list=ls())
 # graphics.off()
 
 ## ---- income:tax:model:and:data:not:run ----
 # load data 
+
 load("/Users/hectorbahamonde/RU/Dissertation/Papers/Earthquake_Paper/eq_output_d_Chile.RData") 
 
 # load libraries
@@ -980,6 +1008,19 @@ model.jags.tax <- function() {
 
 
 #
+
+
+
+dat.chile = dat.chile[!is.na(dat.chile$Magnitude),] 
+dat.chile = dat.chile[!is.na(dat.chile$Deaths),] 
+dat.chile = dat.chile[!is.na(dat.chile$Sector),] 
+dat.chile = dat.chile[!is.na(dat.chile$Population),] 
+
+dat.chile = dat.chile[!is.na(dat.chile$Latitude),] 
+dat.chile = dat.chile[!is.na(dat.chile$Longitude),] 
+dat.chile = dat.chile[!is.na(dat.chile$Urban),] 
+
+
 
 # define the vectors of the data matrix for JAGS.
 w.Deaths <- as.vector(datsc$w.Deaths)
