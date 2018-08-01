@@ -9,19 +9,19 @@ qi = "Hazard Rate" # original: Hazard Rate
 ci = 0.95
 
 # Bayesian: Sectoral Model
-n.iter.sectoral = 200000  # n.iter.sectoral = 200000 // this is for working model
-n.burnin.sectoral = 5000 # n.burnin.sectoral = 5000 // this is for working model
-n.chains.sectoral = 4 # n.chains.sectoral = 4 for the working model
+n.iter.sectoral = 10  # n.iter.sectoral = 200000 // this is for working model
+n.burnin.sectoral = 1 # n.burnin.sectoral = 5000 // this is for working model
+n.chains.sectoral = 1 # n.chains.sectoral = 4 for the working model
 
 # Bayesian: Tax Model
-n.iter.tax = 200000  # n.iter.tax = 200000 // this is for working model
-n.burnin.tax = 5000 # n.burnin.tax = 5000 // this is for working model
-n.chains.tax = 4 # n.chains.tax = 4 for the working model
+n.iter.tax = 10  # n.iter.tax = 200000 // this is for working model
+n.burnin.tax = 1 # n.burnin.tax = 5000 // this is for working model
+n.chains.tax = 1 # n.chains.tax = 4 for the working model
 ## ---- 
 
 
 ############################
-#### Loadings
+#### Loadings: Chile
 ############################
 
 # Load the earthquake data
@@ -42,7 +42,11 @@ dat.chile$W.Deaths = (dat.chile$Deaths/dat.chile$Population)*100
 save(dat.chile, file = "/Users/hectorbahamonde/RU/Dissertation/Papers/Earthquake_Paper/Chile_Data_Earthquake.RData")
 
 
-###### PERU ##############
+
+
+############################
+#### Loadings: Peru
+############################
 dat.peru <- read.csv("/Users/hectorbahamonde/RU/Dissertation/Papers/Earthquake_Paper/Data/Peru_Data_Earthquake.csv")
 
 
@@ -55,7 +59,11 @@ dat.peru$W.Deaths = (dat.peru$Deaths/dat.peru$Population)*100
 save(dat.peru, file = "/Users/hectorbahamonde/RU/Dissertation/Papers/Earthquake_Paper/Peru_Data_Earthquake.RData")
 
 
-###### MERGING ##############
+
+############################
+#### Loadings: Merging Chile and Peru
+############################
+
 
 ## subseting EQ datasets
 dat.chile <- dat.chile[c("country", "location", "year", "Magnitude", "Deaths", "Latitude", "Longitude", "Population", "Urban", "Sector")]
@@ -115,13 +123,10 @@ save(eq.output.d, file = "/Users/hectorbahamonde/RU/Dissertation/Papers/Earthqua
 #### EARTHQUAKES PLOTS
 ############################
 
-
-## CHILE
-
 cat("\014")
 rm(list=ls())
 
-# HERE
+## CHILE
 
 
 ## ---- earthquake:ts:plot:chile:data ----
@@ -130,34 +135,49 @@ if (!require("pacman")) install.packages("pacman"); library(pacman)
 p_load(ggplot2)
 
 load("/Users/hectorbahamonde/RU/Dissertation/Papers/Earthquake_Paper/Chile_Data_Earthquake.RData")
-load("/Users/hectorbahamonde/RU/Dissertation/Papers/Earthquake_Paper/eq_output_d_Chile.RData")
+
+
+# subsetting: 1500s-2010
+dat.chile.complete = dat.chile
+
+
+# subsetting: 1900-2010
+dat.chile.post1900 <- dat.chile[which(dat.chile$year >= 1900 & dat.chile$country == "Chile"), ] # drop early earthquakes 
+
+dat.chile.post1900 = dat.chile.post1900[!is.na(dat.chile.post1900$Magnitude),] 
+dat.chile.post1900 = dat.chile.post1900[!is.na(dat.chile.post1900$Deaths),] 
+dat.chile.post1900 = dat.chile.post1900[!is.na(dat.chile.post1900$Sector),] 
+dat.chile.post1900 = dat.chile.post1900[!is.na(dat.chile.post1900$Population),] 
+dat.chile.post1900 = dat.chile.post1900[!is.na(dat.chile.post1900$Latitude),] 
+dat.chile.post1900 = dat.chile.post1900[!is.na(dat.chile.post1900$Longitude),] 
+dat.chile.post1900 = dat.chile.post1900[!is.na(dat.chile.post1900$Urban),] 
 
 
 ## stores all EQs (without concerns of data availability; i.e. population, etc.)
-cases.all = nrow(dat.chile)
+cases.all = nrow(dat.chile.complete)
+cases.post1900 = nrow(dat.chile.post1900)
 
-#dat.chile <- dat.chile[which(dat.chile$year >= 1900 & dat.chile$country == "Chile"), ] # drop early earthquakes 
 
-dat.chile$Included = factor(as.numeric(dat.chile$year > min(datsc$year)),  levels = c(0,1),
-                            labels = c("No", "Yes"))
+dat.chile.complete$Included = factor(as.numeric(dat.chile.complete$year >= min(dat.chile.post1900$year)),  levels = c(0,1),
+                                     labels = c("No", "Yes"))
 
 
 
 # time-series plot
-time.series.plot <- ggplot(dat.chile, aes(x = year, y = Magnitude)) +
-        geom_point(shape = 21, aes(fill = dat.chile$Included)) +
-        theme_bw() +
-        xlab("Year") +
-        ggtitle(NULL) +
-        theme(axis.text.y = element_text(size=7), 
-              axis.text.x = element_text(size=7), 
-              axis.title.y = element_text(size=7), 
-              axis.title.x = element_text(size=7), 
-              legend.text=element_text(size=7), 
-              legend.title=element_text(size=7),
-              plot.title = element_text(size=7),
-              legend.position="bottom") +
-                guides(fill=guide_legend(title="Included in Analyses"))#+
+time.series.plot <- ggplot(dat.chile.complete, aes(x = year, y = Magnitude)) +
+  geom_point(shape = 21, aes(fill = dat.chile.complete$Included)) +
+  theme_bw() +
+  xlab("Year") +
+  ggtitle(NULL) +
+  theme(axis.text.y = element_text(size=7), 
+        axis.text.x = element_text(size=7), 
+        axis.title.y = element_text(size=7), 
+        axis.title.x = element_text(size=7), 
+        legend.text=element_text(size=7), 
+        legend.title=element_text(size=7),
+        plot.title = element_text(size=7),
+        legend.position="bottom") +
+  guides(fill=guide_legend(title="Included in Analyses"))#+
 #stat_smooth(show.legend = F,  method = 'loess')
 ## ----
 
@@ -165,26 +185,13 @@ time.series.plot <- ggplot(dat.chile, aes(x = year, y = Magnitude)) +
 
 ## ---- earthquake:ts:plot:chile:plot ----
 # dropping NAs 
-dat.chile = dat.chile[!is.na(dat.chile$Magnitude),] 
-dat.chile = dat.chile[!is.na(dat.chile$Deaths),] 
-dat.chile = dat.chile[!is.na(dat.chile$Sector),] 
-dat.chile = dat.chile[!is.na(dat.chile$Population),] 
-
-dat.chile = dat.chile[!is.na(dat.chile$Latitude),] 
-dat.chile = dat.chile[!is.na(dat.chile$Longitude),] 
-dat.chile = dat.chile[!is.na(dat.chile$Urban),] 
-
-
-cases.complete = nrow(dat.chile)
-
-
 time.series.plot
 
 time.series.plot.note <- paste(
-        paste("{\\bf Earthquakes in Chile: 1500-2010}.",
+  paste("{\\bf Earthquakes in Chile: 1500-2010}.",
         "\\\\\\hspace{\\textwidth}", 
-        paste(paste(paste("{\\bf Note}: Figure shows earthquakes available in the \\href{https://data.noaa.gov/dataset}{NOAA dataset} (N=", cases.all,").", sep = ""), "Due to data availability at the local level (local population, for example), however, it was only possible to include in the analyses the earthquakes that took place begining in", paste(min(datsc$year), ".", sep="")), " \\autoref{fig:earthquake:map:plot:chile} shows the geographical location of the actual observations used in the analyses", sep = ""), paste("(",paste("N=",cases.complete, sep = ""),").", sep = "")),
-        "\n")
+        paste(paste(paste("{\\bf Note}: Figure shows earthquakes available in the \\href{https://data.noaa.gov/dataset}{NOAA dataset} (N=", cases.all,").", sep = ""), "Due to data availability at the local level (local population, for example), however, it was only possible to include in the analyses the earthquakes that took place begining in", paste(min(dat.chile.post1900$year), ".", sep="")), " \\autoref{fig:earthquake:map:plot:chile} shows the geographical location of the actual observations used in the analyses", sep = ""), paste("(",paste("N=",cases.post1900, sep = ""),").", sep = "")),
+  "\n")
 ## ----
 
 
@@ -192,14 +199,14 @@ time.series.plot.note <- paste(
 ## bar plot
 Deaths = data.frame(dat.chile$Deaths); colnames(Deaths)[1] <- "Deaths"
 ggplot(na.omit(Deaths), aes(factor(Deaths))) + 
-        geom_bar(width=.8) + 
-        scale_x_discrete(name='Deaths') +
-        geom_hline(yintercept = c(1,10,20),  colour= "red", linetype = "dashed", size=1.4) +
-        scale_y_continuous(name='Count') +
-        theme_bw() + 
-        ggtitle("") + #Death Tolls Associated to Earthquakes: Chile 1500-2010
-        coord_flip() +
-        ggsave("/Users/hectorbahamonde/RU/Dissertation/Presentation/Resources/count_plot.pdf", dpi = 1000, width = 128, height = 96, units = c("mm"))
+  geom_bar(width=.8) + 
+  scale_x_discrete(name='Deaths') +
+  geom_hline(yintercept = c(1,10,20),  colour= "red", linetype = "dashed", size=1.4) +
+  scale_y_continuous(name='Count') +
+  theme_bw() + 
+  ggtitle("") + #Death Tolls Associated to Earthquakes: Chile 1500-2010
+  coord_flip() +
+  ggsave("/Users/hectorbahamonde/RU/Dissertation/Presentation/Resources/count_plot.pdf", dpi = 1000, width = 128, height = 96, units = c("mm"))
 
 
 
@@ -215,13 +222,13 @@ p_load(ggplot2)
 
 
 eq.peru.p =ggplot(dat.peru, aes(x = year, y = Magnitude, size = W.Deaths)) +
-        geom_point(shape = 21) +
-        scale_x_continuous(name='Years', limits=c(1900, 2010), breaks = seq(1900, 2010, 10)) +
-        scale_y_continuous(name='Magnitude', limits=c(3, 10), breaks = seq(3, 10, 1)) +
-        theme_bw() +
-        ggtitle("Peru") +
-        scale_size("Weighted Deaths") +
-        stat_smooth(show.legend = F)
+  geom_point(shape = 21) +
+  scale_x_continuous(name='Years', limits=c(1900, 2010), breaks = seq(1900, 2010, 10)) +
+  scale_y_continuous(name='Magnitude', limits=c(3, 10), breaks = seq(3, 10, 1)) +
+  theme_bw() +
+  ggtitle("Peru") +
+  scale_size("Weighted Deaths") +
+  stat_smooth(show.legend = F)
 
 ### plot sharing the same legend
 if (!require("pacman")) install.packages("pacman"); library(pacman)
@@ -231,28 +238,28 @@ p_load(ggplot2,gridExtra,grid)
 
 # grid_arrange_shared_legend function
 grid_arrange_shared_legend <- function(..., ncol = length(list(...)), nrow = 1, position = c("bottom", "right")) {
-        
-        plots <- list(...)
-        position <- match.arg(position)
-        g <- ggplotGrob(plots[[1]] + theme(legend.position = position))$grobs
-        legend <- g[[which(sapply(g, function(x) x$name) == "guide-box")]]
-        lheight <- sum(legend$height)
-        lwidth <- sum(legend$width)
-        gl <- lapply(plots, function(x) x + theme(legend.position="none"))
-        gl <- c(gl, ncol = ncol, nrow = nrow)
-        
-        combined <- switch(position,
-                           "bottom" = arrangeGrob(do.call(arrangeGrob, gl),
-                                                  legend,
-                                                  ncol = 1,
-                                                  heights = unit.c(unit(1, "npc") - lheight, lheight)),
-                           "right" = arrangeGrob(do.call(arrangeGrob, gl),
-                                                 legend,
-                                                 ncol = 2,
-                                                 widths = unit.c(unit(1, "npc") - lwidth, lwidth)))
-        grid.newpage()
-        grid.draw(combined)
-        
+  
+  plots <- list(...)
+  position <- match.arg(position)
+  g <- ggplotGrob(plots[[1]] + theme(legend.position = position))$grobs
+  legend <- g[[which(sapply(g, function(x) x$name) == "guide-box")]]
+  lheight <- sum(legend$height)
+  lwidth <- sum(legend$width)
+  gl <- lapply(plots, function(x) x + theme(legend.position="none"))
+  gl <- c(gl, ncol = ncol, nrow = nrow)
+  
+  combined <- switch(position,
+                     "bottom" = arrangeGrob(do.call(arrangeGrob, gl),
+                                            legend,
+                                            ncol = 1,
+                                            heights = unit.c(unit(1, "npc") - lheight, lheight)),
+                     "right" = arrangeGrob(do.call(arrangeGrob, gl),
+                                           legend,
+                                           ncol = 2,
+                                           widths = unit.c(unit(1, "npc") - lwidth, lwidth)))
+  grid.newpage()
+  grid.draw(combined)
+  
 }
 
 ### plot both countries
@@ -299,11 +306,11 @@ dat.chile$Sector2 <- recode(as.factor(dat.chile$Sector), "1 = 'Industry' ; 2 = '
 
 
 chile.map.plot.d <- data.frame(
-        Longitude = na.omit(dat.chile$Longitude),
-        Latitude = na.omit(dat.chile$Latitude),
-        Magnitude = dat.chile$Magnitude,
-        Sector = dat.chile$Sector2,
-        Year = dat.chile$year) 
+  Longitude = na.omit(dat.chile$Longitude),
+  Latitude = na.omit(dat.chile$Latitude),
+  Magnitude = dat.chile$Magnitude,
+  Sector = dat.chile$Sector2,
+  Year = dat.chile$year) 
 
 
 
@@ -317,20 +324,20 @@ chile.map.plot.d = data.frame(na.omit(chile.map.plot.d));rownames(chile.map.plot
 
 # plot
 earthquake.map.plot.chile = ggplot() +  
-        geom_polygon(aes(x=long, y=lat, group=group), fill='grey', size=.05, color='black', data=chile.provinces, alpha=1/2) +
-        theme_bw() +
-        ggtitle(NULL) + 
-        geom_point(data=chile.map.plot.d, aes(x=Longitude, y=Latitude,colour=Sector, shape=as.factor(round(chile.map.plot.d$Magnitude,0)))) +#shape=21, 
-        scale_y_continuous(name='Latitude') +
-        scale_x_continuous(name='Longitude') +
-        scale_shape_discrete(name="Rounded\nMagnitude") +
-        theme(axis.text.y = element_text(size=7), 
-              axis.text.x = element_text(size=7), 
-              axis.title.y = element_text(size=7), 
-              axis.title.x = element_text(size=7), 
-              legend.text=element_text(size=7), 
-              legend.title=element_text(size=7),
-              plot.title = element_text(size=7))
+  geom_polygon(aes(x=long, y=lat, group=group), fill='grey', size=.05, color='black', data=chile.provinces, alpha=1/2) +
+  theme_bw() +
+  ggtitle(NULL) + 
+  geom_point(data=chile.map.plot.d, aes(x=Longitude, y=Latitude,colour=Sector, shape=as.factor(round(chile.map.plot.d$Magnitude,0)))) +#shape=21, 
+  scale_y_continuous(name='Latitude') +
+  scale_x_continuous(name='Longitude') +
+  scale_shape_discrete(name="Rounded\nMagnitude") +
+  theme(axis.text.y = element_text(size=7), 
+        axis.text.x = element_text(size=7), 
+        axis.title.y = element_text(size=7), 
+        axis.title.x = element_text(size=7), 
+        legend.text=element_text(size=7), 
+        legend.title=element_text(size=7),
+        plot.title = element_text(size=7))
 ## ----
 
 
@@ -342,10 +349,10 @@ earthquake.map.plot.chile = ggplot() +
 # plot
 earthquake.map.plot.chile
 earthquake.map.note.chile <- paste(
-        paste("{\\bf Data Used in the Analyses: Geographical Distribution of Earthquakes in Chile,", paste(paste(min(chile.map.plot.d$Year), max(chile.map.plot.d$Year), sep="-"), "}.", sep = "" ), sep=" "),
-        "\\\\\\hspace{\\textwidth}", 
-        paste("{\\bf Note}:", paste(paste(paste("Using a combination of archival information and external sources, the figure shows a total of", nrow(chile.map.plot.d), ""), "earthquakes.", sep = ""), "Each quake was colorized according to the predominant economic sector at the municipal level. In total, there were", as.numeric(table(chile.map.plot.d$Sector)["Agriculture"]), "earthquakes that took place in agricultural localities,", as.numeric(table(chile.map.plot.d$Sector)["Industry"]), "in industrial, and", as.numeric(table(chile.map.plot.d$Sector)["Mixed"]), "in mixed municipalities. \\autoref{fig:earthquake:ts:plot:chile:plot} shows the overtime variation.",   sep = " "), sep=" "),
-        "\n")
+  paste("{\\bf Data Used in the Analyses: Geographical Distribution of Earthquakes in Chile,", paste(paste(min(chile.map.plot.d$Year), max(chile.map.plot.d$Year), sep="-"), "}.", sep = "" ), sep=" "),
+  "\\\\\\hspace{\\textwidth}", 
+  paste("{\\bf Note}:", paste(paste(paste("Using a combination of archival information and external sources, the figure shows a total of", nrow(chile.map.plot.d), ""), "earthquakes.", sep = ""), "Each quake was colorized according to the predominant economic sector at the municipal level. In total, there were", as.numeric(table(chile.map.plot.d$Sector)["Agriculture"]), "earthquakes that took place in agricultural localities,", as.numeric(table(chile.map.plot.d$Sector)["Industry"]), "in industrial, and", as.numeric(table(chile.map.plot.d$Sector)["Mixed"]), "in mixed municipalities. \\autoref{fig:earthquake:ts:plot:chile:plot} shows the overtime variation.",   sep = " "), sep=" "),
+  "\n")
 ## ----
 
 
@@ -370,36 +377,36 @@ peru.provinces <- fortify(peru.provinces)
 
 
 peru.map = ggplot() + 
-        geom_polygon(aes(x=long, y=lat, group=group), fill='grey', size=.05, color='black', data=peru.provinces, alpha=1/2) +
-        theme_bw() +
-        ggtitle("Peru") + 
-        geom_point(data=subset(dat.peru, year>=1900), aes(x=Longitude, y=Latitude, size=Magnitude), color="red", shape=21)
+  geom_polygon(aes(x=long, y=lat, group=group), fill='grey', size=.05, color='black', data=peru.provinces, alpha=1/2) +
+  theme_bw() +
+  ggtitle("Peru") + 
+  geom_point(data=subset(dat.peru, year>=1900), aes(x=Longitude, y=Latitude, size=Magnitude), color="red", shape=21)
 
 
 # grid_arrange_shared_legend function
 grid_arrange_shared_legend <- function(..., ncol = length(list(...)), nrow = 1, position = c("bottom", "right")) {
-        
-        plots <- list(...)
-        position <- match.arg(position)
-        g <- ggplotGrob(plots[[1]] + theme(legend.position = position))$grobs
-        legend <- g[[which(sapply(g, function(x) x$name) == "guide-box")]]
-        lheight <- sum(legend$height)
-        lwidth <- sum(legend$width)
-        gl <- lapply(plots, function(x) x + theme(legend.position="none"))
-        gl <- c(gl, ncol = ncol, nrow = nrow)
-        
-        combined <- switch(position,
-                           "bottom" = arrangeGrob(do.call(arrangeGrob, gl),
-                                                  legend,
-                                                  ncol = 1,
-                                                  heights = unit.c(unit(1, "npc") - lheight, lheight)),
-                           "right" = arrangeGrob(do.call(arrangeGrob, gl),
-                                                 legend,
-                                                 ncol = 2,
-                                                 widths = unit.c(unit(1, "npc") - lwidth, lwidth)))
-        grid.newpage()
-        grid.draw(combined)
-        
+  
+  plots <- list(...)
+  position <- match.arg(position)
+  g <- ggplotGrob(plots[[1]] + theme(legend.position = position))$grobs
+  legend <- g[[which(sapply(g, function(x) x$name) == "guide-box")]]
+  lheight <- sum(legend$height)
+  lwidth <- sum(legend$width)
+  gl <- lapply(plots, function(x) x + theme(legend.position="none"))
+  gl <- c(gl, ncol = ncol, nrow = nrow)
+  
+  combined <- switch(position,
+                     "bottom" = arrangeGrob(do.call(arrangeGrob, gl),
+                                            legend,
+                                            ncol = 1,
+                                            heights = unit.c(unit(1, "npc") - lheight, lheight)),
+                     "right" = arrangeGrob(do.call(arrangeGrob, gl),
+                                           legend,
+                                           ncol = 2,
+                                           widths = unit.c(unit(1, "npc") - lwidth, lwidth)))
+  grid.newpage()
+  grid.draw(combined)
+  
 }
 
 ### plot both countries
@@ -415,106 +422,28 @@ grid.draw(cbind(ggplotGrob(chile.map), ggplotGrob(peru.map), size="last"))
 ###################################################################### 
 # Models
 ###################################################################### 
-cat("\014") 
-rm(list=ls()) 
-
-# loading data 
-load("/Users/hectorbahamonde/RU/Dissertation/Papers/Earthquake_Paper/eq_output_d.RData") 
-dat = eq.output.d # rename dataset 
-dat <- dat[which(dat$year >= 1900), ] # drop early earthquakes 
-
-# dropping NAs 
-dat = dat[!is.na(dat$Magnitude),] 
-dat = dat[!is.na(dat$Deaths),] 
-dat = dat[!is.na(dat$Sector),] 
-dat = dat[!is.na(dat$Population),] 
-dat = dat[!is.na(dat$constmanufact),] 
-dat = dat[!is.na(dat$constagricult),] 
 
 
-# rounding lattitude/longitude 
-dat$r.lat = round(dat$Latitude) 
-dat$r.long = round(dat$Longitude) 
-
-# weight population 
-dat$w.Deaths = round((dat$Deaths/dat$Population),5)*100 
-
-# proportion of Population 
-dat$p.Population = dat$Population/1000 
-
-# scaling 
-pvars <- c("constagricult","constmanufact","Magnitude", "p.Population") 
-datsc <- dat 
-datsc[pvars] <- lapply(datsc[pvars],scale) 
-
-# formula 
-fm = as.formula(Deaths ~ constmanufact + constagricult + factor(country) + factor(year) + Magnitude) 
-# Frequentist model
-###################################################################### 
-
-# load libraries
-if (!require("pacman")) install.packages("pacman"); library(pacman) 
-p_load(lme4,texreg) 
-
-# fit the model
-model = glmer(
-        Deaths ~ constmanufact + constagricult + Magnitude + p.Population + (1 | country), 
-        data = datsc, family=poisson, 
-        glmerControl(optimizer="bobyqa", optCtrl = list(maxfun = 100000)) # increases the number of possible iterations to avoid convergence problem 
-)
-
-# Comments:
-# I am already weighting by population by including p.Population in the model.
-# Only FE by country: If year is included, it is collinerar with growth, which increases year by year.
-
-
-# table
-screenreg(model) 
-
-# predictions
-if (!require("pacman")) install.packages("pacman"); library(pacman) 
-p_load(effects) 
-
-# obtain a fit at different estimates of the predictor
-ef.1=effect(c("constmanufact"),model) ; df.ef=data.frame(ef.1)
-ef.2=effect(c("constagricult"),model) ; df.ef=data.frame(ef.2)
-
-dev.off();dev.off();dev.off()
-layout(matrix(c(1,1,2,3), 2, 2, byrow = TRUE))
-
-plot(effect(c("constmanufact"),model),grid=TRUE)
-plot(effect(c("constagricult"),model),grid=TRUE)
-
-
-## convergence test 
-# model = glmer(Deaths ~ constmanufact + constagricult + Magnitude + p.Population + (1 | country) + (1 | year), data = datsc, family=poisson) 
-# relgrad <- with(model@optinfo$derivs,solve(Hessian,gradient)) 
-# max(abs(relgrad)) 
-# http://stats.stackexchange.com/questions/97929/lmer-model-fails-to-converge // not less than .0001, but it is very small (0.02397465) 
-
-
-# Bayesian model
-###################################################################### 
+# ---- loading:datasets:models ----
 # Prepping Chilean data
-
 cat("\014") 
 rm(list=ls()) 
 
 # loading data 
-load("/Users/hectorbahamonde/RU/Dissertation/Papers/Earthquake_Paper/eq_output_d.RData") 
-dat = eq.output.d # rename dataset 
-dat <- dat[which(dat$year >= 1900 & dat$country == "Chile"), ] # drop early earthquakes 
+load("/Users/hectorbahamonde/RU/Dissertation/Papers/Earthquake_Paper/Chile_Data_Earthquake.RData")
 
+# subsetting: 1900-2010
+dat.chile.post1900 <- dat.chile[which(dat.chile$year >= 1900 & dat.chile$country == "Chile"), ] # drop early earthquakes 
 
-# dropping NAs 
-dat = dat[!is.na(dat$Magnitude),] 
-dat = dat[!is.na(dat$Deaths),] 
-dat = dat[!is.na(dat$Sector),] 
-dat = dat[!is.na(dat$Population),] 
-dat = dat[!is.na(dat$constmanufact),] 
-dat = dat[!is.na(dat$constagricult),] 
-#dat = dat[!is.na(dat$incometax.y),]  # switch this one off if I am using incometax.d
+dat.chile.post1900 = dat.chile.post1900[!is.na(dat.chile.post1900$Magnitude),] 
+dat.chile.post1900 = dat.chile.post1900[!is.na(dat.chile.post1900$Deaths),] 
+dat.chile.post1900 = dat.chile.post1900[!is.na(dat.chile.post1900$Sector),] 
+dat.chile.post1900 = dat.chile.post1900[!is.na(dat.chile.post1900$Population),] 
+dat.chile.post1900 = dat.chile.post1900[!is.na(dat.chile.post1900$Latitude),] 
+dat.chile.post1900 = dat.chile.post1900[!is.na(dat.chile.post1900$Longitude),] 
+dat.chile.post1900 = dat.chile.post1900[!is.na(dat.chile.post1900$Urban),] 
 
+dat = dat.chile.post1900
 
 # rounding lattitude/longitude 
 dat$r.lat = round(dat$Latitude,1) 
@@ -533,11 +462,13 @@ dat$w.Deaths = round((dat$Deaths/dat$Population),5)*10
 
 # proportion of Population 
 dat$p.Population = dat$Population/1000 
+save(dat, file = "/Users/hectorbahamonde/RU/Dissertation/Papers/Earthquake_Paper/eq_output_d_Chile.RData")
+# ----
 
-# scaling 
-pvars <- c("constagricult","constmanufact","Magnitude", "p.Population") 
-datsc <- dat 
-save(datsc, file = "/Users/hectorbahamonde/RU/Dissertation/Papers/Earthquake_Paper/eq_output_d_Chile.RData")
+
+
+
+
 
 
 ###################################################################### 
@@ -550,7 +481,7 @@ load("/Users/hectorbahamonde/RU/Dissertation/Papers/Earthquake_Paper/eq_output_d
 # overdispersion
 if (!require("pacman")) install.packages("pacman"); library(pacman)  
 p_load(AER)
-o.Deaths <- glm(Deaths ~ ., data = datsc, family = poisson)
+o.Deaths <- glm(Deaths ~ ., data = dat, family = poisson)
 dispersiontest(o.Deaths,alternative = c("greater"), trafo=1) # overdispersion is -0.5
 
 
@@ -575,11 +506,35 @@ dispersiontest(o.Deaths,alternative = c("greater"), trafo=1) # overdispersion is
 
 
 
+# How to set up JAGS and R on a Mac
+# Install the most recent version of R from the CRAN website.
+# Download and install RStudio™.
+# Install Clang (clang-6.0.0.pkg) and GNU Fortran (gfortran-6.1.pkg.dmg) from the CRAN tools directory.
+# Now install JAGS version 4.3.0 (JAGS-4.3.0.dmg) from Martyn Plummer's repository. Detailed instructions quoted from the JAGS readme file:
+# Download the disk image from the JAGS website.
+# Ensure that the 'Allow apps downloaded from anywhere' box is selected in the Security and Privacy (General) pane of System Preferences.
+# Double click on the disk image to mount (this may not be required).
+# Double click on the 'JAGS-4.3.0.mpkg' file within the mounted disk image.
+# Follow the instructions in the installer.
+# Authenticate as the administrative user. The first user you create when setting up Mac OS X has administrator privileges by default.
+# Start the Terminal and type jags to see if you receive the message: Welcome to JAGS 4.3.0.
+# from: http://www.jkarreth.net/bayes-icpsr.html
+
+
 
 ## ---- sectoral:model:and:data:not:run ----
-# load data 
-load("/Users/hectorbahamonde/RU/Dissertation/Papers/Earthquake_Paper/eq_output_d_Chile.RData") 
 
+# load data
+load("/Users/hectorbahamonde/RU/Dissertation/Papers/Earthquake_Paper/eq_output_d_Chile.RData")
+
+
+dat$Sector <- recode(as.factor(dat$Sector), 
+                             "1 = 'Industry' ; 
+                             2 = 'Industry' ; 
+                             3 = 'Agriculture' ; 
+                             '1 y 2' = 'Industry' ; 
+                             '1 y 3' = 'Mixed' ; 
+                             '2 y 3' = 'Mixed' ")
 
 
 
@@ -593,80 +548,70 @@ set.seed(602)
 
 # specify the model
 model.jags.sectoral <- function() {
-        for (i in 1:N){ # number of earthquakes
-                Deaths[i] ~ dpois(lambda[i])
-                
-                log(lambda[i]) <- 
-                        #b.propagrmanu[Sector[i]]*propagrmanu[i] + # multi-level part: allow national output to vary at the local/sector level
-                        b.Magnitude[Sector[i]]*Magnitude[i] + #  multi-level part: allow national output to vary at the local/sector level
-                        b.p.Population*p.Population[i] +
-                        b.Urban*Urban[i] +
-                        b.year[yearID[i]] + # year fixed-effects
-                        b.r.long*r.long[i] +
-                        b.r.lat*r.lat[i] +
-                        mu ## intercept
-        }
-        
-        b.r.lat ~ dnorm(0, 0.01)
-        b.r.long ~ dnorm(0, 0.01)
-        mu  ~ dnorm(0, 0.01) ## intercept
-        b.p.Population ~ dnorm(0, 0.01)
-        b.Urban ~ dnorm(0, 0.01)
-        
-        
-        for (t in 1:yearN){ # fixed effects
-                b.year[t] ~ dnorm(m.b.year[t], tau.b.year[t])
-                
-                m.b.year[t] ~ dnorm(0, 0.01)
-                tau.b.year[t] ~ dgamma(0.5, 0.001) # uninformative prior
-        }
-        
-        ## Varying Slopes for Sector (unmodeled)
-        for (k in 1:NSector){ # 
-                b.Magnitude[k] ~ dnorm(m.Magnitude[k], tau.Magnitude[k])
-                m.Magnitude[k] ~ dnorm(0, 0.01)
-                tau.Magnitude[k] ~ dgamma(0.5, 0.001) # uninformative prior
-        }
-        
-        
-        
+  for (i in 1:N){ # number of earthquakes
+    Deaths[i] ~ dpois(lambda[i])
+    
+    log(lambda[i]) <- 
+      #b.propagrmanu[Sector[i]]*propagrmanu[i] + # multi-level part: allow national output to vary at the local/sector level
+      b.Magnitude[Sector[i]]*Magnitude[i] + #  multi-level part: allow national output to vary at the local/sector level
+      b.p.Population*p.Population[i] +
+      b.Urban*Urban[i] +
+      b.year[yearID[i]] + # year fixed-effects
+      b.r.long*r.long[i] +
+      b.r.lat*r.lat[i] +
+      mu ## intercept
+  }
+  
+  b.r.lat ~ dnorm(0, 0.01)
+  b.r.long ~ dnorm(0, 0.01)
+  mu  ~ dnorm(0, 0.01) ## intercept
+  b.p.Population ~ dnorm(0, 0.01)
+  b.Urban ~ dnorm(0, 0.01)
+  
+  
+  for (t in 1:yearN){ # fixed effects
+    b.year[t] ~ dnorm(m.b.year[t], tau.b.year[t])
+    
+    m.b.year[t] ~ dnorm(0, 0.01)
+    tau.b.year[t] ~ dgamma(0.5, 0.001) # uninformative prior
+  }
+  
+  ## Varying Slopes for Sector (unmodeled)
+  for (k in 1:NSector){ # 
+    b.Magnitude[k] ~ dnorm(m.Magnitude[k], tau.Magnitude[k])
+    m.Magnitude[k] ~ dnorm(0, 0.01)
+    tau.Magnitude[k] ~ dgamma(0.5, 0.001) # uninformative prior
+  }
+  
+  
+  
 }
 
 
 # define the vectors of the data matrix for JAGS.
-w.Deaths <- as.vector(datsc$w.Deaths)
-Deaths <- as.vector(datsc$Deaths)
-constmanufact <- as.vector(datsc$constmanufact)
-constagricult <- as.vector(datsc$constagricult)
-Magnitude <- as.vector(datsc$Magnitude)
-p.Population <- as.vector(datsc$p.Population)
-country <- as.numeric(as.ordered(datsc$country))
-Ncountry <-  as.numeric(as.vector(length(unique(as.numeric(datsc$country)))))
-N <-  as.numeric(nrow(datsc))
-year = as.vector(datsc$year)
-yearID = as.factor(as.ordered(datsc$year))
-yearN = length(unique(datsc$year))
-Sector = as.vector(as.numeric(factor(datsc$Sector)))
-NSector = as.numeric(as.vector(length(unique(as.numeric(datsc$Sector)))))
-NIncometax = as.vector(length(unique(as.numeric(datsc$incometax.d))))
-incometax.d = as.vector(as.numeric(datsc$incometax.d))
-NIncometax.y = as.vector(length(unique(as.numeric(datsc$incometax.y))))
-incometax.y = as.vector(as.numeric(datsc$incometax.y))
-Urban = as.vector(as.numeric(datsc$Urban))
-customtax = as.vector(as.numeric(datsc$customtax))/100
-propagrmanu = as.vector(as.numeric(datsc$propagrmanu))
-r.long = as.vector(as.numeric(datsc$r.long))
-r.lat = as.vector(as.numeric(datsc$r.lat))
+w.Deaths <- as.vector(dat$w.Deaths)
+Deaths <- as.vector(dat$Deaths)
+constmanufact <- as.vector(dat$constmanufact)
+constagricult <- as.vector(dat$constagricult)
+Magnitude <- as.vector(dat$Magnitude)
+p.Population <- as.vector(dat$p.Population)
+country <- as.numeric(as.ordered(dat$country))
+Ncountry <-  as.numeric(as.vector(length(unique(as.numeric(dat$country)))))
+N <-  as.numeric(nrow(dat))
+year = as.vector(dat$year)
+yearID = as.factor(as.ordered(dat$year))
+yearN = length(unique(dat$year))
+Sector = as.vector(as.numeric(factor(dat$Sector)))
+NSector = as.numeric(as.vector(length(unique(as.numeric(dat$Sector)))))
+NIncometax = as.vector(length(unique(as.numeric(dat$incometax.d))))
+incometax.d = as.vector(as.numeric(dat$incometax.d))
+NIncometax.y = as.vector(length(unique(as.numeric(dat$incometax.y))))
+incometax.y = as.vector(as.numeric(dat$incometax.y))
+Urban = as.vector(as.numeric(dat$Urban))
+customtax = as.vector(as.numeric(dat$customtax))/100
+r.long = as.vector(as.numeric(dat$r.long))
+r.lat = as.vector(as.numeric(dat$r.lat))
 
-propagrmanu.seq = seq(
-        from = min(as.numeric(datsc$propagrmanu)),
-        to = max(as.numeric(datsc$propagrmanu)),
-        length.out = as.numeric(nrow(datsc)))
-
-N.sim = length(seq(
-        from = min(as.numeric(datsc$propagrmanu)),
-        to = max(as.numeric(datsc$propagrmanu)),
-        length.out = as.numeric(nrow(datsc))))
 
 
 
@@ -700,14 +645,14 @@ eq.params.sectoral <- c("b.Magnitude", "b.p.Population", "b.year", "b.r.long", "
 # n.chains.sectoral = 4 # n.chains.sectoral = 4 for the working model
 
 earthquakefit.sectoral <- jags(
-        data=jags.data.sectoral,
-        inits=NULL,
-        parameters.to.save = eq.params.sectoral,
-        n.chains=n.chains.sectoral,
-        n.iter=n.iter.sectoral,
-        n.burnin=n.burnin.sectoral, 
-        model.file=model.jags.sectoral,
-        progress.bar = "none")
+  data=jags.data.sectoral,
+  inits=NULL,
+  parameters.to.save = eq.params.sectoral,
+  n.chains=n.chains.sectoral,
+  n.iter=n.iter.sectoral,
+  n.burnin=n.burnin.sectoral, 
+  model.file=model.jags.sectoral,
+  progress.bar = "none")
 
 
 
@@ -746,8 +691,8 @@ prop.range <- seq(min(propagrmanu), max(propagrmanu), by = 0.01)
 sect.contest.sim.prop.agr <- matrix(rep(NA, nrow(sect.contest.mcmc.dat)*length(prop.range)), nrow = nrow(sect.contest.mcmc.dat))
 
 for(i in 1:length(prop.range)){
-        sect.contest.sim.prop.agr[, i] <- sect.contest.mcmc.dat$'b.propagrmanu[1]'*prop.range[i]
-        }
+  sect.contest.sim.prop.agr[, i] <- sect.contest.mcmc.dat$'b.propagrmanu[1]'*prop.range[i]
+}
 
 ## credible intervals
 bayes.c.eff.mean.prop.agr <- apply(sect.contest.sim.prop.agr, 2, mean)
@@ -763,7 +708,7 @@ colnames(plot.dat.prop.agr) <- c("prop.range", "mean", "lower", "upper")
 ### Industrial Subnational
 plot.dat.prop.ind <- matrix(rep(NA, nrow(sect.contest.mcmc.dat)*length(prop.range)), nrow = nrow(sect.contest.mcmc.dat))
 for(i in 1:length(prop.range)){
-        plot.dat.prop.ind[, i] <- sect.contest.mcmc.dat$'b.propagrmanu[2]'*prop.range[i]
+  plot.dat.prop.ind[, i] <- sect.contest.mcmc.dat$'b.propagrmanu[2]'*prop.range[i]
 }
 
 ## credible intervals
@@ -778,8 +723,8 @@ colnames(plot.dat.prop.ind) <- c("prop.range", "mean", "lower", "upper")
 
 # create final DF
 sectoral.competition.plot = as.data.frame(rbind(
-        as.data.frame(cbind(plot.dat.prop.agr, `Subnational sector\nmostly:`= rep("Agricultural", nrow(plot.dat.prop.ind)))),
-        as.data.frame(cbind(plot.dat.prop.ind, `Subnational sector\nmostly:`= rep("Industrial", nrow(plot.dat.prop.agr))))))
+  as.data.frame(cbind(plot.dat.prop.agr, `Subnational sector\nmostly:`= rep("Agricultural", nrow(plot.dat.prop.ind)))),
+  as.data.frame(cbind(plot.dat.prop.ind, `Subnational sector\nmostly:`= rep("Industrial", nrow(plot.dat.prop.agr))))))
 
 # load libraries
 if (!require("pacman")) install.packages("pacman"); library(pacman) 
@@ -791,20 +736,20 @@ p_load(ggplot2)
 # plot
 ## ---- sectoral:model:plot:run ----
 ggplot() + 
-        geom_line(data = sectoral.competition.plot, aes(x = prop.range, y = mean, colour = `Subnational sector\nmostly:`), alpha = 0.8, size = 0.5) + 
-        geom_ribbon(data = sectoral.competition.plot, aes(x = prop.range, ymin = lower, ymax = upper, fill = `Subnational sector\nmostly:`), alpha = 0.2) + 
-        xlab("National Proportion Agriculture/Industry Output\n[National Contestation]") + ylab("Death-Toll\n(Posterior Predictions)") + 
-        theme_bw() + 
-        theme(axis.text.y = element_text(size=7), 
-              axis.text.x = element_text(size=7), 
-              axis.title.y = element_text(size=7), 
-              axis.title.x = element_text(size=7), 
-              legend.text=element_text(size=7), 
-              legend.title=element_text(size=7),
-              plot.title = element_text(size=7),
-              legend.position="bottom") +
-        scale_fill_manual(values=c("red", "green")) +
-        scale_color_manual(values=c("red", "green"))
+  geom_line(data = sectoral.competition.plot, aes(x = prop.range, y = mean, colour = `Subnational sector\nmostly:`), alpha = 0.8, size = 0.5) + 
+  geom_ribbon(data = sectoral.competition.plot, aes(x = prop.range, ymin = lower, ymax = upper, fill = `Subnational sector\nmostly:`), alpha = 0.2) + 
+  xlab("National Proportion Agriculture/Industry Output\n[National Contestation]") + ylab("Death-Toll\n(Posterior Predictions)") + 
+  theme_bw() + 
+  theme(axis.text.y = element_text(size=7), 
+        axis.text.x = element_text(size=7), 
+        axis.title.y = element_text(size=7), 
+        axis.title.x = element_text(size=7), 
+        legend.text=element_text(size=7), 
+        legend.title=element_text(size=7),
+        plot.title = element_text(size=7),
+        legend.position="bottom") +
+  scale_fill_manual(values=c("red", "green")) +
+  scale_color_manual(values=c("red", "green"))
 ## ---- 
 
 
@@ -840,74 +785,74 @@ ggplot() +
 ci.number.sectoral = .95 # modify this parameter to get desired credible intervals.
 
 mcmctab <- function(sims, ci = ci.number.sectoral, digits = 2){
-        
-        require(coda) 
-        
-        if(class(sims) == "jags" | class(sims) == "rjags"){
-                sims <- as.matrix(as.mcmc(sims))
-        }
-        if(class(sims) == "bugs"){
-                sims <- sims$sims.matrix
-        }  
-        if(class(sims) == "mcmc"){
-                sims <- as.matrix(sims)
-        }    
-        if(class(sims) == "mcmc.list"){
-                sims <- as.matrix(sims)
-        }      
-        if(class(sims) == "stanfit"){
-                stan_sims <- rstan::As.mcmc.list(sims)
-                sims <- as.matrix(stan_sims)
-        }      
-        
-        
-        dat <- t(sims)
-        
-        mcmctab <- apply(dat, 1,
-                         function(x) c(Mean = round(mean(x), digits = digits), # Posterior mean
-                                       SD = round(sd(x), digits = 3), # Posterior SD
-                                       Lower = as.numeric(
-                                               round(quantile(x, probs = c((1 - ci) / 2)), 
-                                                     digits = digits)), # Lower CI of posterior
-                                       Upper = as.numeric(
-                                               round(quantile(x, probs = c((1 + ci) / 2)), 
-                                                     digits = digits)), # Upper CI of posterior
-                                       Pr. = round(
-                                               ifelse(mean(x) > 0, length(x[x > 0]) / length(x),
-                                                      length(x[x < 0]) / length(x)), 
-                                               digits = digits) # Probability of posterior >/< 0
-                         ))
-        return(t(mcmctab))
+  
+  require(coda) 
+  
+  if(class(sims) == "jags" | class(sims) == "rjags"){
+    sims <- as.matrix(as.mcmc(sims))
+  }
+  if(class(sims) == "bugs"){
+    sims <- sims$sims.matrix
+  }  
+  if(class(sims) == "mcmc"){
+    sims <- as.matrix(sims)
+  }    
+  if(class(sims) == "mcmc.list"){
+    sims <- as.matrix(sims)
+  }      
+  if(class(sims) == "stanfit"){
+    stan_sims <- rstan::As.mcmc.list(sims)
+    sims <- as.matrix(stan_sims)
+  }      
+  
+  
+  dat <- t(sims)
+  
+  mcmctab <- apply(dat, 1,
+                   function(x) c(Mean = round(mean(x), digits = digits), # Posterior mean
+                                 SD = round(sd(x), digits = 3), # Posterior SD
+                                 Lower = as.numeric(
+                                   round(quantile(x, probs = c((1 - ci) / 2)), 
+                                         digits = digits)), # Lower CI of posterior
+                                 Upper = as.numeric(
+                                   round(quantile(x, probs = c((1 + ci) / 2)), 
+                                         digits = digits)), # Upper CI of posterior
+                                 Pr. = round(
+                                   ifelse(mean(x) > 0, length(x[x > 0]) / length(x),
+                                          length(x[x < 0]) / length(x)), 
+                                   digits = digits) # Probability of posterior >/< 0
+                   ))
+  return(t(mcmctab))
 }
 
 
 
-reg.results.table.sectoral = data.frame(mcmctab(earthquakefit.sectoral)[1:7,]) # Posterior distributions // Year FE excluded
+reg.results.table.sectoral = data.frame(mcmctab(earthquakefit.sectoral)[1:10,]) # Posterior distributions // Year FE excluded
 
 
 reg.results.table.sectoral = data.frame(rbind( # re order df by name of the rowname according to what I have and define in 'var.labels.sectoral.'
-        #reg.results.table.sectoral[rownames(reg.results.table.sectoral)==("b.propagrmanu[1]"),],
-        #reg.results.table.sectoral[rownames(reg.results.table.sectoral)==("b.propagrmanu[2]"),],
-        #reg.results.table.sectoral[rownames(reg.results.table.sectoral)==("b.propagrmanu[3]"),],
-        reg.results.table.sectoral[rownames(reg.results.table.sectoral)==("b.Magnitude[1]"),],
-        reg.results.table.sectoral[rownames(reg.results.table.sectoral)==("b.Magnitude[2]"),],
-        reg.results.table.sectoral[rownames(reg.results.table.sectoral)==("b.Magnitude[3]"),],
-        reg.results.table.sectoral[rownames(reg.results.table.sectoral)==("b.r.lat"),],
-        reg.results.table.sectoral[rownames(reg.results.table.sectoral)==("b.r.long"),],
-        reg.results.table.sectoral[rownames(reg.results.table.sectoral)==("b.p.Population"),],
-        reg.results.table.sectoral[rownames(reg.results.table.sectoral)==("b.Urban"),]
+  #reg.results.table.sectoral[rownames(reg.results.table.sectoral)==("b.propagrmanu[1]"),],
+  #reg.results.table.sectoral[rownames(reg.results.table.sectoral)==("b.propagrmanu[2]"),],
+  #reg.results.table.sectoral[rownames(reg.results.table.sectoral)==("b.propagrmanu[3]"),],
+  reg.results.table.sectoral[rownames(reg.results.table.sectoral)==("b.Magnitude[1]"),],
+  reg.results.table.sectoral[rownames(reg.results.table.sectoral)==("b.Magnitude[2]"),],
+  reg.results.table.sectoral[rownames(reg.results.table.sectoral)==("b.Magnitude[3]"),],
+  reg.results.table.sectoral[rownames(reg.results.table.sectoral)==("b.r.lat"),],
+  reg.results.table.sectoral[rownames(reg.results.table.sectoral)==("b.r.long"),],
+  reg.results.table.sectoral[rownames(reg.results.table.sectoral)==("b.p.Population"),],
+  reg.results.table.sectoral[rownames(reg.results.table.sectoral)==("b.Urban"),]
 ))
 
 var.labels.sectoral = c(#"Agr/Ind [Agr]", 
-        #"Agr/Ind [Ind]", 
-        #"Agr/Ind [Mixed]", 
-        "Magnitude [Agr]", 
-        "Magnitude [Ind]", 
-        "Magnitude [Mixed]", 
-        "Latitude", 
-        "Longitude",
-        "Population", 
-        "Urban")
+  #"Agr/Ind [Ind]", 
+  #"Agr/Ind [Mixed]", 
+  "Magnitude [Agr]", 
+  "Magnitude [Ind]", 
+  "Magnitude [Mixed]", 
+  "Latitude", 
+  "Longitude",
+  "Population", 
+  "Urban")
 
 rownames(reg.results.table.sectoral) <- var.labels.sectoral
 
@@ -918,23 +863,23 @@ if (!require("pacman")) install.packages("pacman"); library(pacman)
 p_load(xtable)
 
 note.sectoral <- paste0(
-        "\\hline \n \\multicolumn{6}{l}", "{ \\scriptsize {\\bf Note}: ", format(round(as.numeric(n.iter.sectoral), 0), nsmall=0, big.mark=","), " iterations with a burn-in period of n = ", format(round(as.numeric(n.burnin.sectoral), 0), nsmall=0, big.mark=","), " iterations discarded.}\\\\", "\n \\multicolumn{6}{l}", "{ \\scriptsize ", ci.number.sectoral*100 ,"\\% credible intervals (upper/lower bounds). All R-Hat statistics below critical levels.}\\\\" ,"\n \\multicolumn{6}{l}", "{ \\scriptsize Standard convergence diagnostics suggest good mixing and convergence.}\\\\","\n \\multicolumn{6}{l}", "{ \\scriptsize Year fixed effects were omitted in the table.}\\\\", 
-        "\n \\multicolumn{6}{l}","{ \\scriptsize A total of ", n.chains.sectoral, " chains were run. Detailed diagnostic plots available  \\href{https://github.com/hbahamonde/Earthquake_Paper/raw/master/Bahamonde_Earthquake_Paper_Diagnostic_Plots_Sectoral_Competition.pdf}{\\texttt here}.} \\\\")
+  "\\hline \n \\multicolumn{6}{l}", "{ \\scriptsize {\\bf Note}: ", format(round(as.numeric(n.iter.sectoral), 0), nsmall=0, big.mark=","), " iterations with a burn-in period of n = ", format(round(as.numeric(n.burnin.sectoral), 0), nsmall=0, big.mark=","), " iterations discarded.}\\\\", "\n \\multicolumn{6}{l}", "{ \\scriptsize ", ci.number.sectoral*100 ,"\\% credible intervals (upper/lower bounds). All R-Hat statistics below critical levels.}\\\\" ,"\n \\multicolumn{6}{l}", "{ \\scriptsize Standard convergence diagnostics suggest good mixing and convergence.}\\\\","\n \\multicolumn{6}{l}", "{ \\scriptsize Year fixed effects were omitted in the table.}\\\\", 
+  "\n \\multicolumn{6}{l}","{ \\scriptsize A total of ", n.chains.sectoral, " chains were run. Detailed diagnostic plots available  \\href{https://github.com/hbahamonde/Earthquake_Paper/raw/master/Bahamonde_Earthquake_Paper_Diagnostic_Plots_Sectoral_Competition.pdf}{\\texttt here}.} \\\\")
 ## ----
 
 
 ## ---- sectoral:model:regression:table:run ----
 print.xtable(xtable(
-        reg.results.table.sectoral, 
-        caption = "{\\bf Simulated Posterior Predictions (Hierarchical Poisson Regression, \\autoref{model:1})}.",
-        label = "sectoral:model:regression:table:run"), 
-        auto = TRUE,
-        hline.after=c(-1, 0),
-        add.to.row = list(pos = list(length(var.labels.sectoral)), 
-                          command = note.sectoral),
-        floating=TRUE,
-        type="latex",
-        table.placement = "H"
+  reg.results.table.sectoral, 
+  caption = "{\\bf Simulated Posterior Predictions (Hierarchical Poisson Regression, \\autoref{model:1})}.",
+  label = "sectoral:model:regression:table:run"), 
+  auto = TRUE,
+  hline.after=c(-1, 0),
+  add.to.row = list(pos = list(length(var.labels.sectoral)), 
+                    command = note.sectoral),
+  floating=TRUE,
+  type="latex",
+  table.placement = "H"
 )
 ## ----
 
@@ -974,36 +919,36 @@ set.seed(602)
 
 # specify the model
 model.jags.tax <- function() {
-        for (i in 1:N){ # number of earthquakes
-                Deaths[i] ~ dpois(lambda[i])
-                
-                log(lambda[i]) <- 
-                        b.Magnitude*Magnitude[i] +
-                        b.incometax.d*incometax.d[i] +
-                        b.p.Population*p.Population[i] +
-                        b.Urban*Urban[i] +
-                        b.year[yearID[i]] + # year fixed-effects
-                        b.r.long*r.long[i] +
-                        b.r.lat*r.lat[i] + 
-                        mu ## intercept
-        }
-        
-        b.r.lat ~ dnorm(0, 0.01)
-        b.r.long ~ dnorm(0, 0.01)
-        mu  ~ dnorm(0, 0.01) ## intercept
-        b.p.Population ~ dnorm(0, 0.01)
-        b.Urban ~ dnorm(0, 0.01)
-        b.incometax.d ~ dnorm(0, 0.01)
-        b.interaction ~ dnorm(0, 0.01)
-        b.Magnitude ~ dnorm(0, 0.01)
-        
-        for (t in 1:yearN){ # fixed effects
-                b.year[t] ~ dnorm(m.b.year[t], tau.b.year[t])
-                
-                m.b.year[t] ~ dnorm(0, 0.01)
-                tau.b.year[t] ~ dgamma(0.5, 0.001) # uninformative prior
-        }
-        
+  for (i in 1:N){ # number of earthquakes
+    Deaths[i] ~ dpois(lambda[i])
+    
+    log(lambda[i]) <- 
+      b.Magnitude*Magnitude[i] +
+      b.incometax.d*incometax.d[i] +
+      b.p.Population*p.Population[i] +
+      b.Urban*Urban[i] +
+      b.year[yearID[i]] + # year fixed-effects
+      b.r.long*r.long[i] +
+      b.r.lat*r.lat[i] + 
+      mu ## intercept
+  }
+  
+  b.r.lat ~ dnorm(0, 0.01)
+  b.r.long ~ dnorm(0, 0.01)
+  mu  ~ dnorm(0, 0.01) ## intercept
+  b.p.Population ~ dnorm(0, 0.01)
+  b.Urban ~ dnorm(0, 0.01)
+  b.incometax.d ~ dnorm(0, 0.01)
+  b.interaction ~ dnorm(0, 0.01)
+  b.Magnitude ~ dnorm(0, 0.01)
+  
+  for (t in 1:yearN){ # fixed effects
+    b.year[t] ~ dnorm(m.b.year[t], tau.b.year[t])
+    
+    m.b.year[t] ~ dnorm(0, 0.01)
+    tau.b.year[t] ~ dgamma(0.5, 0.001) # uninformative prior
+  }
+  
 }
 
 
@@ -1011,51 +956,32 @@ model.jags.tax <- function() {
 
 
 
-dat.chile = dat.chile[!is.na(dat.chile$Magnitude),] 
-dat.chile = dat.chile[!is.na(dat.chile$Deaths),] 
-dat.chile = dat.chile[!is.na(dat.chile$Sector),] 
-dat.chile = dat.chile[!is.na(dat.chile$Population),] 
-
-dat.chile = dat.chile[!is.na(dat.chile$Latitude),] 
-dat.chile = dat.chile[!is.na(dat.chile$Longitude),] 
-dat.chile = dat.chile[!is.na(dat.chile$Urban),] 
-
 
 
 # define the vectors of the data matrix for JAGS.
-w.Deaths <- as.vector(datsc$w.Deaths)
-Deaths <- as.vector(datsc$Deaths)
-constmanufact <- as.vector(datsc$constmanufact)
-constagricult <- as.vector(datsc$constagricult)
-Magnitude <- as.vector(datsc$Magnitude)
-p.Population <- as.vector(datsc$p.Population)
-country <- as.numeric(as.ordered(datsc$country))
-Ncountry <-  as.numeric(as.vector(length(unique(as.numeric(datsc$country)))))
-N <-  as.numeric(nrow(datsc))
-year = as.vector(datsc$year)
-yearID = as.factor(as.ordered(datsc$year)) #as.numeric(as.ordered(datsc$year))
-yearN = length(unique(datsc$year))
-Sector = as.vector(as.numeric(factor(datsc$Sector)))
-NSector = as.numeric(as.vector(length(unique(as.numeric(datsc$Sector)))))
-NIncometax = as.vector(length(unique(as.numeric(datsc$incometax.d))))
-incometax.d = as.vector(as.numeric(datsc$incometax.d))
-NIncometax.y = as.vector(length(unique(as.numeric(datsc$incometax.y))))
-incometax.y = as.vector(as.numeric(datsc$incometax.y))
-Urban = as.vector(as.numeric(datsc$Urban))
-customtax = as.vector(as.numeric(datsc$customtax))/100
-propagrmanu = as.vector(as.numeric(datsc$propagrmanu))
-r.long = as.vector(as.numeric(datsc$r.long))
-r.lat = as.vector(as.numeric(datsc$r.lat))
+w.Deaths <- as.vector(dat$w.Deaths)
+Deaths <- as.vector(dat$Deaths)
+constmanufact <- as.vector(dat$constmanufact)
+constagricult <- as.vector(dat$constagricult)
+Magnitude <- as.vector(dat$Magnitude)
+p.Population <- as.vector(dat$p.Population)
+country <- as.numeric(as.ordered(dat$country))
+Ncountry <-  as.numeric(as.vector(length(unique(as.numeric(dat$country)))))
+N <-  as.numeric(nrow(dat))
+year = as.vector(dat$year)
+yearID = as.factor(as.ordered(dat$year)) #as.numeric(as.ordered(dat$year))
+yearN = length(unique(dat$year))
+Sector = as.vector(as.numeric(factor(dat$Sector)))
+NSector = as.numeric(as.vector(length(unique(as.numeric(dat$Sector)))))
+NIncometax = as.vector(length(unique(as.numeric(dat$incometax.d))))
+incometax.d = as.vector(as.numeric(ifelse(dat$year>=1924,1,0)))
+NIncometax.y = as.vector(length(unique(as.numeric(dat$incometax.y))))
+incometax.y = as.vector(as.numeric(dat$incometax.y))
+Urban = as.vector(as.numeric(dat$Urban))
+customtax = as.vector(as.numeric(dat$customtax))/100
+r.long = as.vector(as.numeric(dat$r.long))
+r.lat = as.vector(as.numeric(dat$r.lat))
 
-propagrmanu.seq = seq(
-        from = min(as.numeric(datsc$propagrmanu)),
-        to = max(as.numeric(datsc$propagrmanu)),
-        length.out = as.numeric(nrow(datsc)))
-
-N.sim = length(seq(
-        from = min(as.numeric(datsc$propagrmanu)),
-        to = max(as.numeric(datsc$propagrmanu)),
-        length.out = as.numeric(nrow(datsc))))
 
 
 
@@ -1084,14 +1010,14 @@ eq.params.tax <- c("b.Magnitude", "b.p.Population", "b.year", "b.r.long", "b.r.l
 # n.chains.tax = 4 # n.chains.tax = 4 for the working model
 
 earthquakefit.tax <- jags(
-        data=jags.data.tax,
-        inits=NULL,
-        parameters.to.save = eq.params.tax,
-        n.chains = n.chains.tax,
-        n.iter = n.iter.tax,
-        n.burnin = n.burnin.tax, 
-        model.file=model.jags.tax,
-        progress.bar = "none")
+  data=jags.data.tax,
+  inits=NULL,
+  parameters.to.save = eq.params.tax,
+  n.chains = n.chains.tax,
+  n.iter = n.iter.tax,
+  n.burnin = n.burnin.tax, 
+  model.file=model.jags.tax,
+  progress.bar = "none")
 
 #### Generates Diagnostic Plots - this links to a link in the Output Table.
 if (!require("pacman")) install.packages("pacman"); library(pacman) 
@@ -1123,20 +1049,20 @@ CI.level.income.tax.ts.plot = c(0.2, 0.5, 0.8) # 80%
 
 
 ### No Income Tax
-year.range = unique(datsc$year)
+year.range = unique(dat$year)
 
 # simulation
 sim.no.income.tax <- matrix(rep(NA, nrow(tax.mcmc.dat)*length(year.range)), nrow = nrow(tax.mcmc.dat))
 for(i in 1:length(year.range)){
-        sim.no.income.tax[, i] <- 
-                tax.mcmc.dat$b.p.Population*p.Population[i] + 
-                tax.mcmc.dat$b.r.lat*r.lat[i] + 
-                tax.mcmc.dat$b.r.long*r.long[i] + 
-                tax.mcmc.dat$b.Urban*Urban[i] +
-                tax.mcmc.dat$b.Magnitude*Magnitude[i] +
-                incometax.d[i]*0 
-        
-        
+  sim.no.income.tax[, i] <- 
+    tax.mcmc.dat$b.p.Population*p.Population[i] + 
+    tax.mcmc.dat$b.r.lat*r.lat[i] + 
+    tax.mcmc.dat$b.r.long*r.long[i] + 
+    tax.mcmc.dat$b.Urban*Urban[i] +
+    tax.mcmc.dat$b.Magnitude*Magnitude[i] +
+    incometax.d[i]*0 
+  
+  
 }
 
 
@@ -1155,19 +1081,19 @@ plot.dat.no.income.tax = plot.dat.no.income.tax[ which(plot.dat.no.income.tax$ye
 
 
 ### Income Tax
-year.range = unique(datsc$year)
+year.range = unique(dat$year)
 
 # simulation
 sim.income.tax <- matrix(rep(NA, nrow(tax.mcmc.dat)*length(year.range)), nrow = nrow(tax.mcmc.dat))
 for(i in 1:length(year.range)){
-        sim.income.tax[, i] <-
-                tax.mcmc.dat$b.p.Population*p.Population[i] + 
-                tax.mcmc.dat$b.r.lat*r.lat[i] + 
-                tax.mcmc.dat$b.r.long*r.long[i] + 
-                tax.mcmc.dat$b.Urban*Urban[i] +
-                tax.mcmc.dat$b.Magnitude*Magnitude[i] +
-                tax.mcmc.dat$b.incometax.d*incometax.d[i]
-        
+  sim.income.tax[, i] <-
+    tax.mcmc.dat$b.p.Population*p.Population[i] + 
+    tax.mcmc.dat$b.r.lat*r.lat[i] + 
+    tax.mcmc.dat$b.r.long*r.long[i] + 
+    tax.mcmc.dat$b.Urban*Urban[i] +
+    tax.mcmc.dat$b.Magnitude*Magnitude[i] +
+    tax.mcmc.dat$b.incometax.d*incometax.d[i]
+  
 }
 
 ## credible intervals
@@ -1188,8 +1114,8 @@ plot.dat.income.tax = plot.dat.income.tax[ which(plot.dat.income.tax$year.range>
 
 # income tax adoption plot DF
 income.tax.adoption.plot = as.data.frame(rbind(
-        as.data.frame(cbind(plot.dat.no.income.tax, 'Income Tax'= rep("No", nrow(plot.dat.no.income.tax)))),
-        as.data.frame(cbind(plot.dat.income.tax, 'Income Tax'= rep("Yes", nrow(plot.dat.income.tax))))))
+  as.data.frame(cbind(plot.dat.no.income.tax, 'Income Tax'= rep("No", nrow(plot.dat.no.income.tax)))),
+  as.data.frame(cbind(plot.dat.income.tax, 'Income Tax'= rep("Yes", nrow(plot.dat.income.tax))))))
 
 death.toll.before.tax = round(mean(income.tax.adoption.plot$mean[income.tax.adoption.plot$year.range <= 1924]),0)
 death.toll.after.tax = round(mean(income.tax.adoption.plot$mean[income.tax.adoption.plot$year.range >= 1924]), 0)
@@ -1201,29 +1127,29 @@ p_load(ggplot2)
 
 # plot
 income.tax.model.plot = ggplot() + 
-        geom_smooth(data = income.tax.adoption.plot, aes(x = year.range, y = mean, colour = `Income Tax`), alpha = 0.8, size = 0.5, se = F, method = 'loess') +
-        geom_ribbon(data = income.tax.adoption.plot, aes(x = year.range, ymin = lower, ymax = upper, fill = `Income Tax`), alpha = 0.2) + 
-        geom_vline(xintercept = 1924, linetype=2, colour="blue") + 
-        xlab("Year") + ylab("Death-Toll\n(Posterior Predictions)") + 
-        theme_bw() + 
-        theme(axis.text.y = element_text(size=7), 
-              axis.text.x = element_text(size=7), 
-              axis.title.y = element_text(size=7), 
-              axis.title.x = element_text(size=7), 
-              legend.text=element_text(size=7), 
-              legend.title=element_text(size=7),
-              plot.title = element_text(size=7),
-              legend.position="bottom") +
-        scale_fill_manual(values=c("red", "green")) +
-        scale_color_manual(values=c("red", "green"))
+  geom_smooth(data = income.tax.adoption.plot, aes(x = year.range, y = mean, colour = `Income Tax`), alpha = 0.8, size = 0.5, se = F, method = 'loess') +
+  geom_ribbon(data = income.tax.adoption.plot, aes(x = year.range, ymin = lower, ymax = upper, fill = `Income Tax`), alpha = 0.2) + 
+  geom_vline(xintercept = 1924, linetype=2, colour="blue") + 
+  xlab("Year") + ylab("Death-Toll\n(Posterior Predictions)") + 
+  theme_bw() + 
+  theme(axis.text.y = element_text(size=7), 
+        axis.text.x = element_text(size=7), 
+        axis.title.y = element_text(size=7), 
+        axis.title.x = element_text(size=7), 
+        legend.text=element_text(size=7), 
+        legend.title=element_text(size=7),
+        plot.title = element_text(size=7),
+        legend.position="bottom") +
+  scale_fill_manual(values=c("red", "green")) +
+  scale_color_manual(values=c("red", "green"))
 ## ----
 
 ## ---- income:tax:model:plot:run ----
 income.tax.model.plot
 income.tax.model.plot.note <- paste(
-        "{\\bf Income Taxation and State Capacity in Chile: An Overtime Approach}.",
-        "\\\\\\hspace{\\textwidth}",
-        paste(paste(paste(paste("{\\bf Note}: Using the estimations from \\autoref{income:tax:model:regression:table:run} (\\autoref{model:2}), the figure shows predicted death-tolls before and after the implementation of the income tax in 1924. In average, the death-toll decreases from"), death.toll.before.tax, "to", sep = " "), death.toll.after.tax, sep= " "), ".", sep=""), paste(paste(paste("The figure suggests that implementing the income tax law had positive effects on state-capacity overtime. The figure also shows credible intervals at the", CI.level.income.tax.ts.plot[3]*100, sep = " "), "\\%", sep = ""), "level.", sep = " "), sep = " ")
+  "{\\bf Income Taxation and State Capacity in Chile: An Overtime Approach}.",
+  "\\\\\\hspace{\\textwidth}",
+  paste(paste(paste(paste("{\\bf Note}: Using the estimations from \\autoref{income:tax:model:regression:table:run} (\\autoref{model:2}), the figure shows predicted death-tolls before and after the implementation of the income tax in 1924. In average, the death-toll decreases from"), death.toll.before.tax, "to", sep = " "), death.toll.after.tax, sep= " "), ".", sep=""), paste(paste(paste("The figure suggests that implementing the income tax law had positive effects on state-capacity overtime. The figure also shows credible intervals at the", CI.level.income.tax.ts.plot[3]*100, sep = " "), "\\%", sep = ""), "level.", sep = " "), sep = " ")
 ## ----
 
 ###############################
@@ -1253,44 +1179,44 @@ income.tax.model.plot.note <- paste(
 ci.number.tax = .95 # modify this parameter to get desired credible intervals.
 
 mcmctab <- function(sims, ci = ci.number.tax, digits = 2){
-        
-        require(coda) 
-        
-        if(class(sims) == "jags" | class(sims) == "rjags"){
-                sims <- as.matrix(as.mcmc(sims))
-        }
-        if(class(sims) == "bugs"){
-                sims <- sims$sims.matrix
-        }  
-        if(class(sims) == "mcmc"){
-                sims <- as.matrix(sims)
-        }    
-        if(class(sims) == "mcmc.list"){
-                sims <- as.matrix(sims)
-        }      
-        if(class(sims) == "stanfit"){
-                stan_sims <- rstan::As.mcmc.list(sims)
-                sims <- as.matrix(stan_sims)
-        }      
-        
-        
-        dat <- t(sims)
-        
-        mcmctab <- apply(dat, 1,
-                         function(x) c(Mean = round(mean(x), digits = digits), # Posterior mean
-                                       SD = round(sd(x), digits = 3), # Posterior SD
-                                       Lower = as.numeric(
-                                               round(quantile(x, probs = c((1 - ci) / 2)), 
-                                                     digits = digits)), # Lower CI of posterior
-                                       Upper = as.numeric(
-                                               round(quantile(x, probs = c((1 + ci) / 2)), 
-                                                     digits = digits)), # Upper CI of posterior
-                                       Pr. = round(
-                                               ifelse(mean(x) > 0, length(x[x > 0]) / length(x),
-                                                      length(x[x < 0]) / length(x)), 
-                                               digits = digits) # Probability of posterior >/< 0
-                         ))
-        return(t(mcmctab))
+  
+  require(coda) 
+  
+  if(class(sims) == "jags" | class(sims) == "rjags"){
+    sims <- as.matrix(as.mcmc(sims))
+  }
+  if(class(sims) == "bugs"){
+    sims <- sims$sims.matrix
+  }  
+  if(class(sims) == "mcmc"){
+    sims <- as.matrix(sims)
+  }    
+  if(class(sims) == "mcmc.list"){
+    sims <- as.matrix(sims)
+  }      
+  if(class(sims) == "stanfit"){
+    stan_sims <- rstan::As.mcmc.list(sims)
+    sims <- as.matrix(stan_sims)
+  }      
+  
+  
+  dat <- t(sims)
+  
+  mcmctab <- apply(dat, 1,
+                   function(x) c(Mean = round(mean(x), digits = digits), # Posterior mean
+                                 SD = round(sd(x), digits = 3), # Posterior SD
+                                 Lower = as.numeric(
+                                   round(quantile(x, probs = c((1 - ci) / 2)), 
+                                         digits = digits)), # Lower CI of posterior
+                                 Upper = as.numeric(
+                                   round(quantile(x, probs = c((1 + ci) / 2)), 
+                                         digits = digits)), # Upper CI of posterior
+                                 Pr. = round(
+                                   ifelse(mean(x) > 0, length(x[x > 0]) / length(x),
+                                          length(x[x < 0]) / length(x)), 
+                                   digits = digits) # Probability of posterior >/< 0
+                   ))
+  return(t(mcmctab))
 }
 
 
@@ -1299,12 +1225,12 @@ reg.results.table.tax = data.frame(mcmctab(earthquakefit.tax)[1:6,]) # Posterior
 
 
 reg.results.table.tax = data.frame(rbind( # re order df by name of the rowname according to what I have and define in 'var.labels.tax.'
-        reg.results.table.tax[rownames(reg.results.table.tax)==("b.incometax.d"),],
-        reg.results.table.tax[rownames(reg.results.table.tax)==("b.Magnitude"),],
-        reg.results.table.tax[rownames(reg.results.table.tax)==("b.r.lat"),],
-        reg.results.table.tax[rownames(reg.results.table.tax)==("b.r.long"),],
-        reg.results.table.tax[rownames(reg.results.table.tax)==("b.p.Population"),],
-        reg.results.table.tax[rownames(reg.results.table.tax)==("b.Urban"),]
+  reg.results.table.tax[rownames(reg.results.table.tax)==("b.incometax.d"),],
+  reg.results.table.tax[rownames(reg.results.table.tax)==("b.Magnitude"),],
+  reg.results.table.tax[rownames(reg.results.table.tax)==("b.r.lat"),],
+  reg.results.table.tax[rownames(reg.results.table.tax)==("b.r.long"),],
+  reg.results.table.tax[rownames(reg.results.table.tax)==("b.p.Population"),],
+  reg.results.table.tax[rownames(reg.results.table.tax)==("b.Urban"),]
 ))
 
 var.labels.tax = c("Income Tax", 
@@ -1323,22 +1249,22 @@ if (!require("pacman")) install.packages("pacman"); library(pacman)
 p_load(xtable)
 
 note.tax <- paste0(
-        "\\hline \n \\multicolumn{6}{l}", "{ \\scriptsize {\\bf Note}: ", format(round(as.numeric(n.iter.tax), 0), nsmall=0, big.mark=","), " iterations with a burn-in period of n = ", format(round(as.numeric(n.burnin.tax), 0), nsmall=0, big.mark=",") , " iterations discarded.}\\\\", "\n \\multicolumn{6}{l}", "{ \\scriptsize ", ci.number.tax*100 ,"\\% credible intervals (upper/lower bounds). All R-Hat statistics below critical levels.}\\\\" ,"\n \\multicolumn{6}{l}", "{ \\scriptsize Standard convergence diagnostics suggest good mixing and convergence.}\\\\","\n \\multicolumn{6}{l}", "{ \\scriptsize Year fixed effects were omitted in the table.}\\\\", 
-        "\n \\multicolumn{6}{l}","{ \\scriptsize A total of ", n.chains.tax, " chains were run. Detailed diagnostic plots available \\href{https://github.com/hbahamonde/Earthquake_Paper/raw/master/Bahamonde_Earthquake_Paper_Diagnostic_Plots_Income_Tax_Model.pdf}{\\texttt here}.} \\\\")
+  "\\hline \n \\multicolumn{6}{l}", "{ \\scriptsize {\\bf Note}: ", format(round(as.numeric(n.iter.tax), 0), nsmall=0, big.mark=","), " iterations with a burn-in period of n = ", format(round(as.numeric(n.burnin.tax), 0), nsmall=0, big.mark=",") , " iterations discarded.}\\\\", "\n \\multicolumn{6}{l}", "{ \\scriptsize ", ci.number.tax*100 ,"\\% credible intervals (upper/lower bounds). All R-Hat statistics below critical levels.}\\\\" ,"\n \\multicolumn{6}{l}", "{ \\scriptsize Standard convergence diagnostics suggest good mixing and convergence.}\\\\","\n \\multicolumn{6}{l}", "{ \\scriptsize Year fixed effects were omitted in the table.}\\\\", 
+  "\n \\multicolumn{6}{l}","{ \\scriptsize A total of ", n.chains.tax, " chains were run. Detailed diagnostic plots available \\href{https://github.com/hbahamonde/Earthquake_Paper/raw/master/Bahamonde_Earthquake_Paper_Diagnostic_Plots_Income_Tax_Model.pdf}{\\texttt here}.} \\\\")
 ## ----
 
 ## ---- income:tax:model:regression:table:run ----
 print.xtable(xtable(
-        reg.results.table.tax, 
-        caption = "{\\bf Income Tax Adoption Model: Simulated Posterior Predictions (Poisson Regression, \\autoref{model:2})}.",
-        label = "income:tax:model:regression:table:run"), 
-        auto = TRUE,
-        hline.after=c(-1, 0),
-        add.to.row = list(pos = list(length(var.labels.tax)), 
-                          command = note.tax),
-        floating=TRUE,
-        type="latex",
-        table.placement = "H"
+  reg.results.table.tax, 
+  caption = "{\\bf Income Tax Adoption Model: Simulated Posterior Predictions (Poisson Regression, \\autoref{model:2})}.",
+  label = "income:tax:model:regression:table:run"), 
+  auto = TRUE,
+  hline.after=c(-1, 0),
+  add.to.row = list(pos = list(length(var.labels.tax)), 
+                    command = note.tax),
+  floating=TRUE,
+  type="latex",
+  table.placement = "H"
 )
 ## ----
 
@@ -1380,12 +1306,12 @@ lower <- apply(pred.eq.tax, 2, function(x) quantile(x, probs = c(0.05))) # quant
 upper <- apply(pred.eq.tax, 2, function(x) quantile(x, probs = c(0.95))) # quantile of the column
 
 eq.pred.tax <- data.frame(
-        #Model = rep("Income Tax Adoption", nrow(datsc)),
-        id = 1:nrow(datsc),
-        Deaths.observed = datsc$Deaths,
-        median = median,
-        lower = lower,
-        upper = upper)
+  #Model = rep("Income Tax Adoption", nrow(dat)),
+  id = 1:nrow(dat),
+  Deaths.observed = dat$Deaths,
+  median = median,
+  lower = lower,
+  upper = upper)
 
 # Consolidating Both DF's
 model.checking.plot.df = as.data.frame(eq.pred.tax)
@@ -1399,39 +1325,39 @@ p_load(ggplot2)
 
 predicted.observed.plot = ggplot(data = model.checking.plot.df, 
                                  aes(x = Deaths.observed, y = reorder(id, Deaths.observed))) + 
-        geom_point(aes(
-                x = median, 
-                y = reorder(id,Deaths.observed))) +
-        geom_segment(aes(
-                x = lower, 
-                xend = upper, 
-                y = reorder(id, Deaths.observed), 
-                yend = reorder(id, Deaths.observed)), 
-                alpha = 0.5) + 
-        geom_point(shape = 21, colour = "red") + 
-        ylab("Observation") + xlab("Deaths") + 
-        theme_bw() +
-        coord_flip() +
-        theme(
-                axis.text.y = element_text(size=7), 
-                axis.text.x = element_text(size=5,angle = 90, hjust = 1), 
-                axis.title.y = element_text(size=7), 
-                axis.title.x = element_text(size=7), 
-                legend.text=element_text(size=7), 
-                legend.title=element_text(size=7),
-                plot.title = element_text(size=7)#,
-                #legend.position="bottom"
-                )
+  geom_point(aes(
+    x = median, 
+    y = reorder(id,Deaths.observed))) +
+  geom_segment(aes(
+    x = lower, 
+    xend = upper, 
+    y = reorder(id, Deaths.observed), 
+    yend = reorder(id, Deaths.observed)), 
+    alpha = 0.5) + 
+  geom_point(shape = 21, colour = "red") + 
+  ylab("Observation") + xlab("Deaths") + 
+  theme_bw() +
+  coord_flip() +
+  theme(
+    axis.text.y = element_text(size=7), 
+    axis.text.x = element_text(size=5,angle = 90, hjust = 1), 
+    axis.title.y = element_text(size=7), 
+    axis.title.x = element_text(size=7), 
+    legend.text=element_text(size=7), 
+    legend.title=element_text(size=7),
+    plot.title = element_text(size=7)#,
+    #legend.position="bottom"
+  )
 ## ----
 
 
 ## ---- predicted:observed:plot:plot ----
 predicted.observed.plot
 predicted.observed.plot.note <- paste(
-        "{\\bf Assessing Model Fit}.",
-        "\\\\\\hspace{\\textwidth}", 
-        paste("{\\bf Note}: The figure assesses the goodness of fit of \\autoref{model:1} (\\autoref{income:tax:model:regression:table:run}). Since the model deals with the \\underline{count} of casualties associated with earthquakes (Y-axis), a ``good'' model should minimize the distance between the predicted count (black dots, with credible intervals), and the actual count (red dots). The figure shows that the model does a good job in predicting the actual death-toll."),
-        "\n")
+  "{\\bf Assessing Model Fit}.",
+  "\\\\\\hspace{\\textwidth}", 
+  paste("{\\bf Note}: The figure assesses the goodness of fit of \\autoref{model:1} (\\autoref{income:tax:model:regression:table:run}). Since the model deals with the \\underline{count} of casualties associated with earthquakes (Y-axis), a ``good'' model should minimize the distance between the predicted count (black dots, with credible intervals), and the actual count (red dots). The figure shows that the model does a good job in predicting the actual death-toll."),
+  "\n")
 
 ## ----
 
@@ -1447,12 +1373,12 @@ p_load(mcmcplots)
 
 
 parms.sectoral = c(
-        "b.propagrmanu",
-        "b.Magnitude",
-        "b.p.Population",
-        "b.Urban",
-        "b.r.lat",
-        "b.r.long")
+  "b.propagrmanu",
+  "b.Magnitude",
+  "b.p.Population",
+  "b.Urban",
+  "b.r.lat",
+  "b.r.long")
 
 labels.sectoral = c("Agr/Ind [Agr]",
                     "Agr/Ind [Ind]",
@@ -1484,12 +1410,12 @@ p_load(mcmcplots)
 
 
 parms.tax = c(
-        "b.incometax.d",
-        "b.Magnitude",
-        "b.p.Population",
-        "b.Urban",
-        "b.r.lat",
-        "b.r.long")
+  "b.incometax.d",
+  "b.Magnitude",
+  "b.p.Population",
+  "b.Urban",
+  "b.r.lat",
+  "b.r.long")
 
 labels.tax = c("Income Tax",
                "Magnitude",
@@ -1589,7 +1515,7 @@ earthquake.out.tax <- as.data.frame(as.matrix(as.mcmc(earthquakefit.tax)))
 earthquake.year.tax <- earthquake.out.tax[, grep("b.year[", colnames(earthquake.out.tax), fixed=T)]
 
 earthquake.year.tax <- earthquake.year.tax[, c(mixedsort(names(earthquake.year.tax)))]
-colnames(earthquake.year.tax) <- paste("Y",unique(sort(datsc$year)), sep = "")
+colnames(earthquake.year.tax) <- paste("Y",unique(sort(dat$year)), sep = "")
 
 
 earthquake.year.tax <- summarise(group_by(melt(earthquake.year.tax), variable), mean = mean(value), lo = quantile(value, probs = c(0.20)), hi = quantile(value, probs = c(0.80)))
@@ -1600,31 +1526,31 @@ earthquake.year.tax$Model <- "Income Tax Adoption"
 
 # plot
 year.fixed.effects.plot = ggplot(data = earthquake.year.tax, aes(x = variable, y = mean)) + 
-        geom_hline(yintercept = 0, col = "blue") +
-        geom_pointrange(aes(ymin = lo, ymax = hi)) + 
-        xlab("Year") + 
-        ylab("Death-Toll") + 
-        theme_bw() + 
-        stat_smooth(method="loess", level=0.80) +
-        theme(
-                axis.text.y = element_text(size=7), 
-                axis.text.x = element_text(size=7), 
-                axis.title.y = element_text(size=7), 
-                axis.title.x = element_text(size=7), 
-                legend.text=element_text(size=7), 
-                legend.title=element_text(size=7),
-                plot.title = element_text(size=7),
-                legend.position="bottom")
+  geom_hline(yintercept = 0, col = "blue") +
+  geom_pointrange(aes(ymin = lo, ymax = hi)) + 
+  xlab("Year") + 
+  ylab("Death-Toll") + 
+  theme_bw() + 
+  stat_smooth(method="loess", level=0.80) +
+  theme(
+    axis.text.y = element_text(size=7), 
+    axis.text.x = element_text(size=7), 
+    axis.title.y = element_text(size=7), 
+    axis.title.x = element_text(size=7), 
+    legend.text=element_text(size=7), 
+    legend.title=element_text(size=7),
+    plot.title = element_text(size=7),
+    legend.position="bottom")
 ## ----
 
 
 ## ---- year:fixed:effects:plot:plot ----
 year.fixed.effects.plot 
 year.fixed.effects.plot.note <- paste(
-        "{\\bf Year Fixed Effects}.",
-        "\\\\\\hspace{\\textwidth}", 
-        paste("{\\bf Note}: Figure shows the estimated posteriors of the year fixed effects (as per \\autoref{income:tax:model:regression:table:run}). Formally, it shows all $\\protect\\beta_{6}$'s from \\autoref{model:1}. Substantively, the figure suggests that, overall, there are no influential years driving the results."),
-        "\n")
+  "{\\bf Year Fixed Effects}.",
+  "\\\\\\hspace{\\textwidth}", 
+  paste("{\\bf Note}: Figure shows the estimated posteriors of the year fixed effects (as per \\autoref{income:tax:model:regression:table:run}). Formally, it shows all $\\protect\\beta_{6}$'s from \\autoref{model:1}. Substantively, the figure suggests that, overall, there are no influential years driving the results."),
+  "\n")
 ## ----
 
 
@@ -1641,24 +1567,24 @@ load("/Users/hectorbahamonde/RU/Dissertation/Data/dissertation.Rdata")
 # par(mar=c(3,3,3,3)) # bottom, then left margin, upper and right margins
 
 p1 = ggplot() + 
-        geom_line(data=subset(dissertation, country=="Chile"), aes(x=year, y=log(constagricult), colour="Agricultural Output"), fill=NA, size=1) +
-        geom_line(data=subset(dissertation, country=="Chile"), aes(x=year, y=log(constmanufact), colour="Industrial Output"), fill=NA, size=1) + 
-        xlab("Year") +
-        ylab("GDP Output (ln)") +
-        labs(colour = "") +
-        scale_x_continuous(limits=c(1890,2010)) + 
-        geom_vline(data=subset(dissertation, country=="Chile"), aes(xintercept = 1924, colour= "Income Tax Law"), linetype = "dashed") + # Income Tax Law  
-        theme_bw() + 
-        labs(title="") +
-        theme(
-                axis.text.y = element_text(size=7), 
-                axis.text.x = element_text(size=7), 
-                axis.title.y = element_text(size=7), 
-                axis.title.x = element_text(size=7), 
-                legend.text=element_text(size=7), 
-                legend.title=element_text(size=7),
-                plot.title = element_text(size=7),
-                legend.position="bottom")
+  geom_line(data=subset(dissertation, country=="Chile"), aes(x=year, y=log(constagricult), colour="Agricultural Output"), fill=NA, size=1) +
+  geom_line(data=subset(dissertation, country=="Chile"), aes(x=year, y=log(constmanufact), colour="Industrial Output"), fill=NA, size=1) + 
+  xlab("Year") +
+  ylab("GDP Output (ln)") +
+  labs(colour = "") +
+  scale_x_continuous(limits=c(1890,2010)) + 
+  geom_vline(data=subset(dissertation, country=="Chile"), aes(xintercept = 1924, colour= "Income Tax Law"), linetype = "dashed") + # Income Tax Law  
+  theme_bw() + 
+  labs(title="") +
+  theme(
+    axis.text.y = element_text(size=7), 
+    axis.text.x = element_text(size=7), 
+    axis.title.y = element_text(size=7), 
+    axis.title.x = element_text(size=7), 
+    legend.text=element_text(size=7), 
+    legend.title=element_text(size=7),
+    plot.title = element_text(size=7),
+    legend.position="bottom")
 
 
 #### Proportion Plot
@@ -1668,24 +1594,24 @@ load("/Users/hectorbahamonde/RU/Dissertation/Papers/Earthquake_Paper/eq_output_d
 # par(mar=c(3,3,3,3)) # bottom, then left margin, upper and right margins
 
 p2 = ggplot() + 
-        geom_line(data=datsc, aes(x=year, y=propagrmanu, colour="Agr/Ind Proportion"), fill=NA, size=1) +
-        xlab("Year") +
-        ylab("Agr/Ind Proportion") +
-        labs(colour = "") +
-        scale_y_continuous(breaks= seq(0, 1, by = 0.2)) +
-        scale_x_continuous(limits=c(1890,2010)) + 
-        geom_vline(data=subset(dissertation, country=="Chile"), aes(xintercept = 1924, colour= "Income Tax Law"), linetype = "dashed") + # Income Tax Law  
-        theme_bw() +
-        labs(title="") +
-        theme(
-                axis.text.y = element_text(size=7), 
-                axis.text.x = element_text(size=7), 
-                axis.title.y = element_text(size=7), 
-                axis.title.x = element_text(size=7), 
-                legend.text=element_text(size=7), 
-                legend.title=element_text(size=7),
-                plot.title = element_text(size=7),
-                legend.position="bottom")
+  geom_line(data=dat, aes(x=year, y=propagrmanu, colour="Agr/Ind Proportion"), fill=NA, size=1) +
+  xlab("Year") +
+  ylab("Agr/Ind Proportion") +
+  labs(colour = "") +
+  scale_y_continuous(breaks= seq(0, 1, by = 0.2)) +
+  scale_x_continuous(limits=c(1890,2010)) + 
+  geom_vline(data=subset(dissertation, country=="Chile"), aes(xintercept = 1924, colour= "Income Tax Law"), linetype = "dashed") + # Income Tax Law  
+  theme_bw() +
+  labs(title="") +
+  theme(
+    axis.text.y = element_text(size=7), 
+    axis.text.x = element_text(size=7), 
+    axis.title.y = element_text(size=7), 
+    axis.title.x = element_text(size=7), 
+    legend.text=element_text(size=7), 
+    legend.title=element_text(size=7),
+    plot.title = element_text(size=7),
+    legend.position="bottom")
 
 grid.arrange(p1, p2, ncol = 1)
 # ----
@@ -1711,40 +1637,40 @@ set.seed(602)
 
 
 # define the vectors of the data matrix for JAGS.
-Deaths <- as.vector(datsc$Deaths)
-Magnitude <- as.vector(datsc$Magnitude)
-incometax.d = as.vector(as.numeric(datsc$incometax.d))
-p.Population <- as.vector(datsc$p.Population)
-Urban = as.vector(as.numeric(datsc$Urban))
-r.long = as.vector(as.numeric(datsc$r.long))
-r.lat = as.vector(as.numeric(datsc$r.lat))
-N <-  as.numeric(nrow(datsc))
+Deaths <- as.vector(dat$Deaths)
+Magnitude <- as.vector(dat$Magnitude)
+incometax.d = as.vector(as.numeric(dat$incometax.d))
+p.Population <- as.vector(dat$p.Population)
+Urban = as.vector(as.numeric(dat$Urban))
+r.long = as.vector(as.numeric(dat$r.long))
+r.lat = as.vector(as.numeric(dat$r.lat))
+N <-  as.numeric(nrow(dat))
 
 
 # specify the model
 model <- function() {
-        for (i in 1:N){ # number of earthquakes
-                Deaths[i] ~ dpois(lambda[i])
-                
-                log(lambda[i]) <- 
-                        b.Magnitude*Magnitude[i] +
-                        b.incometax.d*incometax.d[i] +
-                        b.p.Population*p.Population[i] +
-                        b.Urban*Urban[i] +
-                        b.r.long*r.long[i] +
-                        b.r.lat*r.lat[i] + 
-                        mu ## intercept
-        }
-        
-        b.r.lat ~ dnorm(0, 0.01)
-        b.r.long ~ dnorm(0, 0.01)
-        mu  ~ dnorm(0, 0.01) ## intercept
-        b.p.Population ~ dnorm(0, 0.01)
-        b.Urban ~ dnorm(0, 0.01)
-        b.incometax.d ~ dnorm(0, 0.01)
-        b.Magnitude ~ dnorm(0, 0.01)
-        
-        
+  for (i in 1:N){ # number of earthquakes
+    Deaths[i] ~ dpois(lambda[i])
+    
+    log(lambda[i]) <- 
+      b.Magnitude*Magnitude[i] +
+      b.incometax.d*incometax.d[i] +
+      b.p.Population*p.Population[i] +
+      b.Urban*Urban[i] +
+      b.r.long*r.long[i] +
+      b.r.lat*r.lat[i] + 
+      mu ## intercept
+  }
+  
+  b.r.lat ~ dnorm(0, 0.01)
+  b.r.long ~ dnorm(0, 0.01)
+  mu  ~ dnorm(0, 0.01) ## intercept
+  b.p.Population ~ dnorm(0, 0.01)
+  b.Urban ~ dnorm(0, 0.01)
+  b.incometax.d ~ dnorm(0, 0.01)
+  b.Magnitude ~ dnorm(0, 0.01)
+  
+  
 }
 
 
@@ -1754,38 +1680,38 @@ data.list <- list() # create empty list to fill in next line
 
 # fill list with one data set for each step, with one row excluded per step
 for(i in 1:N){
-        data.list[[i]] <- list(
-                N = N-1, 
-                Deaths = Deaths[-i],
-                Magnitude = Magnitude[-i], 
-                incometax.d = incometax.d[-i],
-                p.Population = p.Population[-i],
-                Urban = Urban[-i],
-                r.long = r.long[-i],
-                r.lat = r.lat[-i]
-        )
+  data.list[[i]] <- list(
+    N = N-1, 
+    Deaths = Deaths[-i],
+    Magnitude = Magnitude[-i], 
+    incometax.d = incometax.d[-i],
+    p.Population = p.Population[-i],
+    Urban = Urban[-i],
+    r.long = r.long[-i],
+    r.lat = r.lat[-i]
+  )
 }
 
 
 
 # Starting value for reproducibility
 model.inits <- function(){
-        list("b.incometax.d" = 0)
+  list("b.incometax.d" = 0)
 }
 
 # run model
 model.fit <- list() # again, create empty list first
 
 for(i in 1:N){  # use loop here to fit one model per data set
-        model.fit[[i]] <- jags(
-                data=data.list[[i]],
-                inits=NULL,
-                parameters.to.save = c("b.incometax.d"),
-                n.chains = n.chains.tax,  # 4
-                n.iter = n.iter.tax, # 200000
-                n.burnin = n.burnin.tax, # 5000
-                model.file=model,
-                progress.bar = "none")
+  model.fit[[i]] <- jags(
+    data=data.list[[i]],
+    inits=NULL,
+    parameters.to.save = c("b.incometax.d"),
+    n.chains = n.chains.tax,  # 4
+    n.iter = n.iter.tax, # 200000
+    n.burnin = n.burnin.tax, # 5000
+    model.file=model,
+    progress.bar = "none")
 }
 
 
@@ -1793,44 +1719,44 @@ for(i in 1:N){  # use loop here to fit one model per data set
 ci.rolling = .95 # modify this parameter to get desired credible intervals.
 
 mcmctab <- function(sims, ci = ci.rolling, digits = 2){
-        
-        require(coda) 
-        
-        if(class(sims) == "jags" | class(sims) == "rjags"){
-                sims <- as.matrix(as.mcmc(sims))
-        }
-        if(class(sims) == "bugs"){
-                sims <- sims$sims.matrix
-        }  
-        if(class(sims) == "mcmc"){
-                sims <- as.matrix(sims)
-        }    
-        if(class(sims) == "mcmc.list"){
-                sims <- as.matrix(sims)
-        }      
-        if(class(sims) == "stanfit"){
-                stan_sims <- rstan::As.mcmc.list(sims)
-                sims <- as.matrix(stan_sims)
-        }      
-        
-        
-        dat <- t(sims)
-        
-        mcmctab <- apply(dat, 1,
-                         function(x) c(Mean = round(mean(x), digits = digits), # Posterior mean
-                                       SD = round(sd(x), digits = 3), # Posterior SD
-                                       Lower = as.numeric(
-                                               round(quantile(x, probs = c((1 - ci) / 2)), 
-                                                     digits = digits)), # Lower CI of posterior
-                                       Upper = as.numeric(
-                                               round(quantile(x, probs = c((1 + ci) / 2)), 
-                                                     digits = digits)), # Upper CI of posterior
-                                       Pr. = round(
-                                               ifelse(mean(x) > 0, length(x[x > 0]) / length(x),
-                                                      length(x[x < 0]) / length(x)), 
-                                               digits = digits) # Probability of posterior >/< 0
-                         ))
-        return(t(mcmctab))
+  
+  require(coda) 
+  
+  if(class(sims) == "jags" | class(sims) == "rjags"){
+    sims <- as.matrix(as.mcmc(sims))
+  }
+  if(class(sims) == "bugs"){
+    sims <- sims$sims.matrix
+  }  
+  if(class(sims) == "mcmc"){
+    sims <- as.matrix(sims)
+  }    
+  if(class(sims) == "mcmc.list"){
+    sims <- as.matrix(sims)
+  }      
+  if(class(sims) == "stanfit"){
+    stan_sims <- rstan::As.mcmc.list(sims)
+    sims <- as.matrix(stan_sims)
+  }      
+  
+  
+  dat <- t(sims)
+  
+  mcmctab <- apply(dat, 1,
+                   function(x) c(Mean = round(mean(x), digits = digits), # Posterior mean
+                                 SD = round(sd(x), digits = 3), # Posterior SD
+                                 Lower = as.numeric(
+                                   round(quantile(x, probs = c((1 - ci) / 2)), 
+                                         digits = digits)), # Lower CI of posterior
+                                 Upper = as.numeric(
+                                   round(quantile(x, probs = c((1 + ci) / 2)), 
+                                         digits = digits)), # Upper CI of posterior
+                                 Pr. = round(
+                                   ifelse(mean(x) > 0, length(x[x > 0]) / length(x),
+                                          length(x[x < 0]) / length(x)), 
+                                   digits = digits) # Probability of posterior >/< 0
+                   ))
+  return(t(mcmctab))
 }
 
 # create empty data frame to be filled with estimation results per data set
@@ -1840,9 +1766,9 @@ tab <- data.frame(index = c(1:N), IncomeTax = rep(NA, N), lower = rep(NA, N), up
 
 # fill with estimates, using mcmctab to extract mean & lower & upper CIs
 for(i in 1:N){
-        tab[i, 2] <- mcmctab(model.fit[[i]])[1, 1]
-        tab[i, 3] <- mcmctab(model.fit[[i]])[1, 3]
-        tab[i, 4] <- mcmctab(model.fit[[i]])[1, 4]
+  tab[i, 2] <- mcmctab(model.fit[[i]])[1, 1]
+  tab[i, 3] <- mcmctab(model.fit[[i]])[1, 3]
+  tab[i, 4] <- mcmctab(model.fit[[i]])[1, 4]
 }
 # plot results
 if (!require("pacman")) install.packages("pacman"); library(pacman) 
@@ -1850,19 +1776,19 @@ p_load(ggplot2)
 
 
 income.tax.model.rolling.plot = ggplot(data = tab, aes(x = IncomeTax, y = index)) + 
-        geom_point() + 
-        geom_segment(aes(x = lower, xend = upper, yend = index)) + 
-        geom_vline(xintercept = 0, linetype=2, colour="red") + 
-        xlab("Estimated Coefficient of Implementing the Income Tax on Death Tolls") + ylab("Observation being Excluded") + 
-        theme_bw() + 
-        theme(axis.text.y = element_text(size=7), 
-              axis.text.x = element_text(size=7), 
-              axis.title.y = element_text(size=7), 
-              axis.title.x = element_text(size=7), 
-              legend.text=element_text(size=7), 
-              legend.title=element_text(size=7),
-              plot.title = element_text(size=7),
-              legend.position="bottom")
+  geom_point() + 
+  geom_segment(aes(x = lower, xend = upper, yend = index)) + 
+  geom_vline(xintercept = 0, linetype=2, colour="red") + 
+  xlab("Estimated Coefficient of Implementing the Income Tax on Death Tolls") + ylab("Observation being Excluded") + 
+  theme_bw() + 
+  theme(axis.text.y = element_text(size=7), 
+        axis.text.x = element_text(size=7), 
+        axis.title.y = element_text(size=7), 
+        axis.title.x = element_text(size=7), 
+        legend.text=element_text(size=7), 
+        legend.title=element_text(size=7),
+        plot.title = element_text(size=7),
+        legend.position="bottom")
 ## ----
 
 
@@ -1871,10 +1797,10 @@ income.tax.model.rolling.plot = ggplot(data = tab, aes(x = IncomeTax, y = index)
 ## ---- income:tax:model:and:data:run:rolling ----
 income.tax.model.rolling.plot
 income.tax.model.rolling.note <- paste(
-        "{\\bf Rolling Bayesian Poisson Regression}.",
-        "\\\\\\hspace{\\textwidth}", 
-        paste(paste("{\\bf Note}: Figure shows the estimates of implementing the income tax on death-tolls of", nrow(tab), sep = " "), "models which correspond to fully estimating \\autoref{model:2}, but excluding one observation at a time.", paste(paste(ci.rolling*100, "\\%", sep=""), "credible intervals were included.", sep=" "), "The figure  suggest that the negative results of income taxation and death-tolls are not driven by wealthy municipalities, but to the capacity of the state of enforcing building codes.", sep = " "),
-        "\n")
+  "{\\bf Rolling Bayesian Poisson Regression}.",
+  "\\\\\\hspace{\\textwidth}", 
+  paste(paste("{\\bf Note}: Figure shows the estimates of implementing the income tax on death-tolls of", nrow(tab), sep = " "), "models which correspond to fully estimating \\autoref{model:2}, but excluding one observation at a time.", paste(paste(ci.rolling*100, "\\%", sep=""), "credible intervals were included.", sep=" "), "The figure  suggest that the negative results of income taxation and death-tolls are not driven by wealthy municipalities, but to the capacity of the state of enforcing building codes.", sep = " "),
+  "\n")
 ## ----
 
 
@@ -1898,193 +1824,193 @@ p_load(ggplot2,gridExtra)
 
 # To force GGplots to share same legend.
 grid_arrange_shared_legend <- function(...) {
-        require(ggplot2)
-        require(gridExtra)
-        plots <- list(...)
-        g <- ggplotGrob(plots[[1]] + theme(legend.position="bottom"))$grobs
-        legend <- g[[which(sapply(g, function(x) x$name) == "guide-box")]]
-        lheight <- sum(legend$height)
-        grid.arrange(
-                do.call(arrangeGrob, lapply(plots, function(x)
-                        x + theme(legend.position="none"))),
-                legend,
-                ncol = 1,
-                heights = grid::unit.c(unit(1, "npc") - lheight, lheight))
+  require(ggplot2)
+  require(gridExtra)
+  plots <- list(...)
+  g <- ggplotGrob(plots[[1]] + theme(legend.position="bottom"))$grobs
+  legend <- g[[which(sapply(g, function(x) x$name) == "guide-box")]]
+  lheight <- sum(legend$height)
+  grid.arrange(
+    do.call(arrangeGrob, lapply(plots, function(x)
+      x + theme(legend.position="none"))),
+    legend,
+    ncol = 1,
+    heights = grid::unit.c(unit(1, "npc") - lheight, lheight))
 }
 
 #### multiplot
 multiplot <- function(..., plotlist=NULL, file, cols=1, layout=NULL) {
-        library(grid)
-        
-        # Make a list from the ... arguments and plotlist
-        plots <- c(list(...), plotlist)
-        
-        numPlots = length(plots)
-        
-        # If layout is NULL, then use 'cols' to determine layout
-        if (is.null(layout)) {
-                # Make the panel
-                # ncol: Number of columns of plots
-                # nrow: Number of rows needed, calculated from # of cols
-                layout <- matrix(seq(1, cols * ceiling(numPlots/cols)),
-                                 ncol = cols, nrow = ceiling(numPlots/cols))
-        }
-        
-        if (numPlots==1) {
-                print(plots[[1]])
-                
-        } else {
-                # Set up the page
-                grid.newpage()
-                pushViewport(viewport(layout = grid.layout(nrow(layout), ncol(layout))))
-                
-                # Make each plot, in the correct location
-                for (i in 1:numPlots) {
-                        # Get the i,j matrix positions of the regions that contain this subplot
-                        matchidx <- as.data.frame(which(layout == i, arr.ind = TRUE))
-                        
-                        print(plots[[i]], vp = viewport(layout.pos.row = matchidx$row,
-                                                        layout.pos.col = matchidx$col))
-                }
-        }
+  library(grid)
+  
+  # Make a list from the ... arguments and plotlist
+  plots <- c(list(...), plotlist)
+  
+  numPlots = length(plots)
+  
+  # If layout is NULL, then use 'cols' to determine layout
+  if (is.null(layout)) {
+    # Make the panel
+    # ncol: Number of columns of plots
+    # nrow: Number of rows needed, calculated from # of cols
+    layout <- matrix(seq(1, cols * ceiling(numPlots/cols)),
+                     ncol = cols, nrow = ceiling(numPlots/cols))
+  }
+  
+  if (numPlots==1) {
+    print(plots[[1]])
+    
+  } else {
+    # Set up the page
+    grid.newpage()
+    pushViewport(viewport(layout = grid.layout(nrow(layout), ncol(layout))))
+    
+    # Make each plot, in the correct location
+    for (i in 1:numPlots) {
+      # Get the i,j matrix positions of the regions that contain this subplot
+      matchidx <- as.data.frame(which(layout == i, arr.ind = TRUE))
+      
+      print(plots[[i]], vp = viewport(layout.pos.row = matchidx$row,
+                                      layout.pos.col = matchidx$col))
+    }
+  }
 }
 
 #### plots
 
 ##### Chile
 chile.p = ggplot() + 
-        geom_line(data=subset(dissertation, country=="Chile"), aes(x=year, y=log(constagricult), colour="Agricultural Output"), fill=NA, size=1) +
-        geom_line(data=subset(dissertation, country=="Chile"), aes(x=year, y=log(constmanufact), colour="Industrial Output"), fill=NA, size=1) + 
-        xlab("Year") +
-        ylab("GDP Output (ln)") +
-        labs(colour = "Legend") +
-        scale_x_continuous(limits=c(1890,2010)) + 
-        geom_vline(data=subset(dissertation, country=="Chile"), aes(xintercept = 1924, colour= "Income Tax Law"), linetype = "longdash") + # Income Tax Law  
-        theme_bw() + 
-        theme(axis.text.y = element_text(size=12), axis.text.x = element_text(size=12), axis.title.y = element_text(size=10), axis.title.x = element_text(size=10), legend.text=element_text(size=15), legend.title=element_text(size=0),  legend.position = "bottom")  + 
-        labs(title="Chile") +
-        ggsave("Chile_Income_Tax.pdf", width = 40, height = 20, units = "cm")
+  geom_line(data=subset(dissertation, country=="Chile"), aes(x=year, y=log(constagricult), colour="Agricultural Output"), fill=NA, size=1) +
+  geom_line(data=subset(dissertation, country=="Chile"), aes(x=year, y=log(constmanufact), colour="Industrial Output"), fill=NA, size=1) + 
+  xlab("Year") +
+  ylab("GDP Output (ln)") +
+  labs(colour = "Legend") +
+  scale_x_continuous(limits=c(1890,2010)) + 
+  geom_vline(data=subset(dissertation, country=="Chile"), aes(xintercept = 1924, colour= "Income Tax Law"), linetype = "longdash") + # Income Tax Law  
+  theme_bw() + 
+  theme(axis.text.y = element_text(size=12), axis.text.x = element_text(size=12), axis.title.y = element_text(size=10), axis.title.x = element_text(size=10), legend.text=element_text(size=15), legend.title=element_text(size=0),  legend.position = "bottom")  + 
+  labs(title="Chile") +
+  ggsave("Chile_Income_Tax.pdf", width = 40, height = 20, units = "cm")
 
 
 
 ##### Peru
 peru.p = ggplot() + 
-        geom_line(data=subset(dissertation, country=="Peru"), aes(x=year, y=log(constagricult), colour="Agricultural Output"), fill=NA, size=1) +
-        geom_line(data=subset(dissertation, country=="Peru"), aes(x=year, y=log(constmanufact), colour="Industrial Output"), fill=NA, size=1) + 
-        xlab("Year") +
-        ylab("GDP Output (ln)") +
-        labs(colour = "Legend") +
-        scale_x_continuous(limits=c(1890,2010)) + 
-        geom_vline(data=subset(dissertation, country=="Peru"), aes(xintercept = 1934, colour= "Income Tax Law"), linetype = "longdash") + # Income Tax Law
-        theme_bw() + 
-        theme(axis.text.y = element_text(size=12), axis.text.x = element_text(size=12), axis.title.y = element_text(size=10), axis.title.x = element_text(size=10), legend.text=element_text(size=15), legend.title=element_text(size=0),  legend.position = "bottom")  + 
-        labs(title="Peru") +
-        ggsave("Peru_Income_Tax.pdf", width = 40, height = 20, units = "cm")
+  geom_line(data=subset(dissertation, country=="Peru"), aes(x=year, y=log(constagricult), colour="Agricultural Output"), fill=NA, size=1) +
+  geom_line(data=subset(dissertation, country=="Peru"), aes(x=year, y=log(constmanufact), colour="Industrial Output"), fill=NA, size=1) + 
+  xlab("Year") +
+  ylab("GDP Output (ln)") +
+  labs(colour = "Legend") +
+  scale_x_continuous(limits=c(1890,2010)) + 
+  geom_vline(data=subset(dissertation, country=="Peru"), aes(xintercept = 1934, colour= "Income Tax Law"), linetype = "longdash") + # Income Tax Law
+  theme_bw() + 
+  theme(axis.text.y = element_text(size=12), axis.text.x = element_text(size=12), axis.title.y = element_text(size=10), axis.title.x = element_text(size=10), legend.text=element_text(size=15), legend.title=element_text(size=0),  legend.position = "bottom")  + 
+  labs(title="Peru") +
+  ggsave("Peru_Income_Tax.pdf", width = 40, height = 20, units = "cm")
 
 
 
 ##### Colombia
 colombia.p = ggplot() + 
-        geom_line(data=subset(dissertation, country=="Colombia"), aes(x=year, y=log(constagricult), colour="Agricultural Output"), fill=NA, size=1) +
-        geom_line(data=subset(dissertation, country=="Colombia"), aes(x=year, y=log(constmanufact), colour="Industrial Output"), fill=NA, size=1) + 
-        xlab("Year") +
-        ylab("GDP Output (ln)") +
-        labs(colour = "Legend") +
-        scale_x_continuous(limits=c(1890,2010)) + 
-        geom_vline(data=subset(dissertation, country=="Colombia"), aes(xintercept = 1935, colour= "Income Tax Law"), linetype = "longdash") + # Income Tax Law
-        theme_bw() + 
-        theme(axis.text.y = element_text(size=12), axis.text.x = element_text(size=12), axis.title.y = element_text(size=10), axis.title.x = element_text(size=10), legend.text=element_text(size=15), legend.title=element_text(size=0),  legend.position = "bottom")  + 
-        labs(title="Colombia") +
-        ggsave("Colombia_Income_Tax.pdf", width = 40, height = 20, units = "cm")
+  geom_line(data=subset(dissertation, country=="Colombia"), aes(x=year, y=log(constagricult), colour="Agricultural Output"), fill=NA, size=1) +
+  geom_line(data=subset(dissertation, country=="Colombia"), aes(x=year, y=log(constmanufact), colour="Industrial Output"), fill=NA, size=1) + 
+  xlab("Year") +
+  ylab("GDP Output (ln)") +
+  labs(colour = "Legend") +
+  scale_x_continuous(limits=c(1890,2010)) + 
+  geom_vline(data=subset(dissertation, country=="Colombia"), aes(xintercept = 1935, colour= "Income Tax Law"), linetype = "longdash") + # Income Tax Law
+  theme_bw() + 
+  theme(axis.text.y = element_text(size=12), axis.text.x = element_text(size=12), axis.title.y = element_text(size=10), axis.title.x = element_text(size=10), legend.text=element_text(size=15), legend.title=element_text(size=0),  legend.position = "bottom")  + 
+  labs(title="Colombia") +
+  ggsave("Colombia_Income_Tax.pdf", width = 40, height = 20, units = "cm")
 
 
 
 ##### Ecuador
 ecuador.p= ggplot() + 
-        geom_line(data=subset(dissertation, country=="Ecuador"), aes(x=year, y=log(constagricult), colour="Agricultural Output"), fill=NA, size=1) +
-        geom_line(data=subset(dissertation, country=="Ecuador"), aes(x=year, y=log(constmanufact), colour="Industrial Output"), fill=NA, size=1) + 
-        xlab("Year") +
-        ylab("GDP Output (ln)") +
-        labs(colour = "Legend") +
-        scale_x_continuous(limits=c(1890,2010)) + 
-        geom_vline(data=subset(dissertation, country=="Ecuador"), aes(xintercept = 1945, colour= "Income Tax Law"), linetype = "longdash") + # Income Tax Law
-        theme_bw() + 
-        theme(axis.text.y = element_text(size=12), axis.text.x = element_text(size=12), axis.title.y = element_text(size=10), axis.title.x = element_text(size=10), legend.text=element_text(size=15), legend.title=element_text(size=0),  legend.position = "bottom")  + 
-        labs(title="Ecuador") +
-        ggsave("Ecuador_Income_Tax.pdf", width = 40, height = 20, units = "cm")
+  geom_line(data=subset(dissertation, country=="Ecuador"), aes(x=year, y=log(constagricult), colour="Agricultural Output"), fill=NA, size=1) +
+  geom_line(data=subset(dissertation, country=="Ecuador"), aes(x=year, y=log(constmanufact), colour="Industrial Output"), fill=NA, size=1) + 
+  xlab("Year") +
+  ylab("GDP Output (ln)") +
+  labs(colour = "Legend") +
+  scale_x_continuous(limits=c(1890,2010)) + 
+  geom_vline(data=subset(dissertation, country=="Ecuador"), aes(xintercept = 1945, colour= "Income Tax Law"), linetype = "longdash") + # Income Tax Law
+  theme_bw() + 
+  theme(axis.text.y = element_text(size=12), axis.text.x = element_text(size=12), axis.title.y = element_text(size=10), axis.title.x = element_text(size=10), legend.text=element_text(size=15), legend.title=element_text(size=0),  legend.position = "bottom")  + 
+  labs(title="Ecuador") +
+  ggsave("Ecuador_Income_Tax.pdf", width = 40, height = 20, units = "cm")
 
 
 ##### Venezuela
 venezuela.p= ggplot() + 
-        geom_line(data=subset(dissertation, country=="Venezuela"), aes(x=year, y=log(constagricult), colour="Agricultural Output"), fill=NA, size=1) +
-        geom_line(data=subset(dissertation, country=="Venezuela"), aes(x=year, y=log(constmanufact), colour="Industrial Output"), fill=NA, size=1) + 
-        xlab("Year") +
-        ylab("GDP Output (ln)") +
-        labs(colour = "Legend") +
-        scale_x_continuous(limits=c(1890,2010)) + 
-        geom_vline(data=subset(dissertation, country=="Venezuela"), aes(xintercept = 1943, colour= "Income Tax Law"), linetype = "longdash") + # Income Tax Law
-        theme_bw() + 
-        theme(axis.text.y = element_text(size=12), axis.text.x = element_text(size=12), axis.title.y = element_text(size=10), axis.title.x = element_text(size=10), legend.text=element_text(size=15), legend.title=element_text(size=0),  legend.position = "bottom")  + 
-        labs(title="Venezuela") +
-        ggsave("Venezuela_Income_Tax.pdf", width = 40, height = 20, units = "cm")
+  geom_line(data=subset(dissertation, country=="Venezuela"), aes(x=year, y=log(constagricult), colour="Agricultural Output"), fill=NA, size=1) +
+  geom_line(data=subset(dissertation, country=="Venezuela"), aes(x=year, y=log(constmanufact), colour="Industrial Output"), fill=NA, size=1) + 
+  xlab("Year") +
+  ylab("GDP Output (ln)") +
+  labs(colour = "Legend") +
+  scale_x_continuous(limits=c(1890,2010)) + 
+  geom_vline(data=subset(dissertation, country=="Venezuela"), aes(xintercept = 1943, colour= "Income Tax Law"), linetype = "longdash") + # Income Tax Law
+  theme_bw() + 
+  theme(axis.text.y = element_text(size=12), axis.text.x = element_text(size=12), axis.title.y = element_text(size=10), axis.title.x = element_text(size=10), legend.text=element_text(size=15), legend.title=element_text(size=0),  legend.position = "bottom")  + 
+  labs(title="Venezuela") +
+  ggsave("Venezuela_Income_Tax.pdf", width = 40, height = 20, units = "cm")
 
 
 ##### Nicaragua
 nicaragua.p= ggplot() + 
-        geom_line(data=subset(dissertation, country=="Nicaragua"), aes(x=year, y=log(constagricult), colour="Agricultural Output"), fill=NA, size=1) +
-        geom_line(data=subset(dissertation, country=="Nicaragua"), aes(x=year, y=log(constmanufact), colour="Industrial Output"), fill=NA, size=1) + 
-        xlab("Year") +
-        ylab("GDP Output (ln)") +
-        labs(colour = "Legend") +
-        scale_x_continuous(limits=c(1890,2010)) + 
-        geom_vline(data=subset(dissertation, country=="Nicaragua"), aes(xintercept = 1974, colour= "Income Tax Law"), linetype = "longdash") + # Income Tax Law
-        theme_bw() + 
-        theme(axis.text.y = element_text(size=12), axis.text.x = element_text(size=12), axis.title.y = element_text(size=10), axis.title.x = element_text(size=10), legend.text=element_text(size=15), legend.title=element_text(size=0),  legend.position = "bottom")  + 
-        labs(title="Nicaragua") +
-        ggsave("Nicaragua_Income_Tax.pdf", width = 40, height = 20, units = "cm")
+  geom_line(data=subset(dissertation, country=="Nicaragua"), aes(x=year, y=log(constagricult), colour="Agricultural Output"), fill=NA, size=1) +
+  geom_line(data=subset(dissertation, country=="Nicaragua"), aes(x=year, y=log(constmanufact), colour="Industrial Output"), fill=NA, size=1) + 
+  xlab("Year") +
+  ylab("GDP Output (ln)") +
+  labs(colour = "Legend") +
+  scale_x_continuous(limits=c(1890,2010)) + 
+  geom_vline(data=subset(dissertation, country=="Nicaragua"), aes(xintercept = 1974, colour= "Income Tax Law"), linetype = "longdash") + # Income Tax Law
+  theme_bw() + 
+  theme(axis.text.y = element_text(size=12), axis.text.x = element_text(size=12), axis.title.y = element_text(size=10), axis.title.x = element_text(size=10), legend.text=element_text(size=15), legend.title=element_text(size=0),  legend.position = "bottom")  + 
+  labs(title="Nicaragua") +
+  ggsave("Nicaragua_Income_Tax.pdf", width = 40, height = 20, units = "cm")
 
 
 ##### Guatemala
 guatemala.p= ggplot() + 
-        geom_line(data=subset(dissertation, country=="Guatemala"), aes(x=year, y=log(constagricult), colour="Agricultural Output"), fill=NA, size=1) +
-        geom_line(data=subset(dissertation, country=="Guatemala"), aes(x=year, y=log(constmanufact), colour="Industrial Output"), fill=NA, size=1) + 
-        xlab("Year") +
-        ylab("GDP Output (ln)") +
-        labs(colour = "Income Tax (ln)") +
-        scale_x_continuous(limits=c(1890,2010)) + 
-        geom_vline(data=subset(dissertation, country=="Guatemala"), aes(xintercept = 1963, colour= "Income Tax Law"), linetype = "longdash") + # Income Tax Law
-        theme_bw() + 
-        theme(axis.text.y = element_text(size=12), axis.text.x = element_text(size=12), axis.title.y = element_text(size=10), axis.title.x = element_text(size=10), legend.text=element_text(size=15), legend.title=element_text(size=0),  legend.position = "bottom")  + 
-        labs(title="Guatemala")  +
-        ggsave("Guatemala_Income_Tax.pdf", width = 40, height = 20, units = "cm")
+  geom_line(data=subset(dissertation, country=="Guatemala"), aes(x=year, y=log(constagricult), colour="Agricultural Output"), fill=NA, size=1) +
+  geom_line(data=subset(dissertation, country=="Guatemala"), aes(x=year, y=log(constmanufact), colour="Industrial Output"), fill=NA, size=1) + 
+  xlab("Year") +
+  ylab("GDP Output (ln)") +
+  labs(colour = "Income Tax (ln)") +
+  scale_x_continuous(limits=c(1890,2010)) + 
+  geom_vline(data=subset(dissertation, country=="Guatemala"), aes(xintercept = 1963, colour= "Income Tax Law"), linetype = "longdash") + # Income Tax Law
+  theme_bw() + 
+  theme(axis.text.y = element_text(size=12), axis.text.x = element_text(size=12), axis.title.y = element_text(size=10), axis.title.x = element_text(size=10), legend.text=element_text(size=15), legend.title=element_text(size=0),  legend.position = "bottom")  + 
+  labs(title="Guatemala")  +
+  ggsave("Guatemala_Income_Tax.pdf", width = 40, height = 20, units = "cm")
 
 ##### Argentina
 argentina.p= ggplot() + 
-        geom_line(data=subset(dissertation, country=="Argentina"), aes(x=year, y=log(constagricult), colour="Agricultural Output"), fill=NA, size=1) +
-        geom_line(data=subset(dissertation, country=="Argentina"), aes(x=year, y=log(constmanufact), colour="Industrial Output"), fill=NA, size=1) + 
-        xlab("Year") +
-        ylab("GDP Output (ln)") +
-        labs(colour = "Income Tax (ln)") +
-        scale_x_continuous(limits=c(1890,2010)) + 
-        geom_vline(data=subset(dissertation, country=="Argentina"), aes(xintercept = 1933, colour= "Income Tax Law"), linetype = "longdash") + # Income Tax Law
-        theme_bw() + 
-        theme(axis.text.y = element_text(size=12), axis.text.x = element_text(size=12), axis.title.y = element_text(size=10), axis.title.x = element_text(size=10), legend.text=element_text(size=15), legend.title=element_text(size=0),  legend.position = "bottom")  + 
-        labs(title="Argentina") +
-        ggsave("Argentina_Income_Tax.pdf", width = 40, height = 20, units = "cm")
+  geom_line(data=subset(dissertation, country=="Argentina"), aes(x=year, y=log(constagricult), colour="Agricultural Output"), fill=NA, size=1) +
+  geom_line(data=subset(dissertation, country=="Argentina"), aes(x=year, y=log(constmanufact), colour="Industrial Output"), fill=NA, size=1) + 
+  xlab("Year") +
+  ylab("GDP Output (ln)") +
+  labs(colour = "Income Tax (ln)") +
+  scale_x_continuous(limits=c(1890,2010)) + 
+  geom_vline(data=subset(dissertation, country=="Argentina"), aes(xintercept = 1933, colour= "Income Tax Law"), linetype = "longdash") + # Income Tax Law
+  theme_bw() + 
+  theme(axis.text.y = element_text(size=12), axis.text.x = element_text(size=12), axis.title.y = element_text(size=10), axis.title.x = element_text(size=10), legend.text=element_text(size=15), legend.title=element_text(size=0),  legend.position = "bottom")  + 
+  labs(title="Argentina") +
+  ggsave("Argentina_Income_Tax.pdf", width = 40, height = 20, units = "cm")
 
 ##### Mexico
 mexico.p= ggplot() + 
-        geom_line(data=subset(dissertation, country=="Mexico"), aes(x=year, y=log(constagricult), colour="Agricultural Output"), fill=NA, size=1) +
-        geom_line(data=subset(dissertation, country=="Mexico"), aes(x=year, y=log(constmanufact), colour="Industrial Output"), fill=NA, size=1) + 
-        xlab("Year") +
-        ylab("GDP Output (ln)") +
-        labs(colour = "Income Tax (ln)") +
-        scale_x_continuous(limits=c(1890,2010)) + 
-        geom_vline(data=subset(dissertation, country=="Mexico"), aes(xintercept = 1925, colour= "Income Tax Law"), linetype = "longdash") + # Income Tax Law
-        theme_bw() + 
-        theme(axis.text.y = element_text(size=12), axis.text.x = element_text(size=12), axis.title.y = element_text(size=10), axis.title.x = element_text(size=10), legend.text=element_text(size=15), legend.title=element_text(size=0),  legend.position = "bottom")  + 
-        labs(title="Mexico")  +
-        ggsave("Mexico_Income_Tax.pdf", width = 40, height = 20, units = "cm")
+  geom_line(data=subset(dissertation, country=="Mexico"), aes(x=year, y=log(constagricult), colour="Agricultural Output"), fill=NA, size=1) +
+  geom_line(data=subset(dissertation, country=="Mexico"), aes(x=year, y=log(constmanufact), colour="Industrial Output"), fill=NA, size=1) + 
+  xlab("Year") +
+  ylab("GDP Output (ln)") +
+  labs(colour = "Income Tax (ln)") +
+  scale_x_continuous(limits=c(1890,2010)) + 
+  geom_vline(data=subset(dissertation, country=="Mexico"), aes(xintercept = 1925, colour= "Income Tax Law"), linetype = "longdash") + # Income Tax Law
+  theme_bw() + 
+  theme(axis.text.y = element_text(size=12), axis.text.x = element_text(size=12), axis.title.y = element_text(size=10), axis.title.x = element_text(size=10), legend.text=element_text(size=15), legend.title=element_text(size=0),  legend.position = "bottom")  + 
+  labs(title="Mexico")  +
+  ggsave("Mexico_Income_Tax.pdf", width = 40, height = 20, units = "cm")
 # ----
 
 
@@ -2093,24 +2019,24 @@ mexico.p= ggplot() +
 
 ##### All
 grid_arrange_shared_legend(
-        chile.p, 
-        ecuador.p, 
-        nicaragua.p, 
-        venezuela.p, 
-        peru.p, 
-        colombia.p, 
-        guatemala.p, 
-        argentina.p, 
-        mexico.p,
-        ncol = 3, nrow = 3)
+  chile.p, 
+  ecuador.p, 
+  nicaragua.p, 
+  venezuela.p, 
+  peru.p, 
+  colombia.p, 
+  guatemala.p, 
+  argentina.p, 
+  mexico.p,
+  ncol = 3, nrow = 3)
 
 outputstitle <- paste(
-        "{\\bf Industrial and Agricultural Outputs, and The Passage of the Income Tax Law}.",
-        "\\\\\\hspace{\\textwidth}", 
-        "{\\bf Note}: Figure shows historical sectoral outputs, and year of the passage of the income tax law. Following convention, the figure shows logged values.",
-        "\\\\\\hspace{\\textwidth}", 
-        paste("{\\bf Source}: \\href{http://moxlad-staging.herokuapp.com/home/en?}{MOxLAD}, and other sources compiled by the author (see \\autoref{sample:data:income:tax:tab})."),
-        "\n")
+  "{\\bf Industrial and Agricultural Outputs, and The Passage of the Income Tax Law}.",
+  "\\\\\\hspace{\\textwidth}", 
+  "{\\bf Note}: Figure shows historical sectoral outputs, and year of the passage of the income tax law. Following convention, the figure shows logged values.",
+  "\\\\\\hspace{\\textwidth}", 
+  paste("{\\bf Source}: \\href{http://moxlad-staging.herokuapp.com/home/en?}{MOxLAD}, and other sources compiled by the author (see \\autoref{sample:data:income:tax:tab})."),
+  "\n")
 # ----
 
 
@@ -2134,28 +2060,28 @@ if (!require("pacman")) install.packages("pacman"); library(pacman)
 p_load(texreg, methods)
 
 extract.geepack <- function(model) {
-        s <- summary(model)
-        names <- rownames(s$coef)
-        co <- s$coef[, 1]
-        se <- s$coef[, 2]
-        pval <- s$coef[, 4]
-        
-        n <- nrow(model.frame(model))
-        nclust <- length(s$geese$clusz)
-        
-        gof = c(n, nclust)
-        gof.names = c("Num. obs.", "Num. clust.")
-        
-        tr <- createTexreg(
-                coef.names = names,
-                coef = co,
-                se = se,
-                pvalues = pval,
-                gof.names = gof.names,
-                gof = gof,
-                gof.decimal = rep(FALSE, length(gof))
-        )
-        return(tr)
+  s <- summary(model)
+  names <- rownames(s$coef)
+  co <- s$coef[, 1]
+  se <- s$coef[, 2]
+  pval <- s$coef[, 4]
+  
+  n <- nrow(model.frame(model))
+  nclust <- length(s$geese$clusz)
+  
+  gof = c(n, nclust)
+  gof.names = c("Num. obs.", "Num. clust.")
+  
+  tr <- createTexreg(
+    coef.names = names,
+    coef = co,
+    se = se,
+    pvalues = pval,
+    gof.names = gof.names,
+    gof = gof,
+    gof.decimal = rep(FALSE, length(gof))
+  )
+  return(tr)
 }
 
 setMethod("extract", signature = className("geeglm", "geepack"),
@@ -2186,10 +2112,10 @@ p_load(survival)
 
 # this is the model I use for simulation
 cox2 <- coxph(Surv(year, year2, incometax.s) ~ 
-                      L_constmanufact +
-                      L_constagricult +
-                      totpop +
-                      cluster(country),
+                L_constmanufact +
+                L_constagricult +
+                totpop +
+                cluster(country),
               data = cox)
 
 ## logit GEE
@@ -2210,12 +2136,12 @@ if (!require("pacman")) install.packages("pacman"); library(pacman)
 p_load(survival)
 
 clogit.1 = clogit(
-        incometax.d ~  
-                log(constmanufact) + 
-                log(constagricult) + 
-                log(totpop) +
-                strata(country), 
-        method= "efron", data = data)
+  incometax.d ~  
+    log(constmanufact) + 
+    log(constagricult) + 
+    log(totpop) +
+    strata(country), 
+  method= "efron", data = data)
 ## ----
 
 
@@ -2223,38 +2149,38 @@ clogit.1 = clogit(
 ## ---- results:table:cox ----
 # screenreg / texreg
 texreg(
-        list(cox2, logitgee.1, clogit.1), # it needs to be texreg for knitr
-        caption = "{\\bf Sectoral Origins of Income Taxation: Income Tax Law and Industrial Development}.",
-        custom.coef.names = c(
-                "Manufacture Output$_{t-1}$",
-                "Agricultural Output$_{t-1}$",
-                "Total Population",
-                #
-                # "intercept",
-                #
-                "Manufacture Output (ln)",
-                "Agricultural Output (ln)",        
-                "Total Population (ln)"),
-        custom.model.names = c(
-                "(1) Cox (1 lag)",# Base Model
-                "(2) Logit GEE", # GEE
-                "(3) Conditional Logit (FE)" # Fixed Effects model
-        ),
-        label = "results:table:cox",
-        custom.note = "%stars. Robust standard errors in all models. Intercept omitted.",
-        fontsize = "small",
-        center = TRUE,
-        use.packages = FALSE,
-        dcolumn = TRUE,
-        booktabs = TRUE,
-        omit.coef = "(Intercept)",
-        #longtable = TRUE,
-        digits = 3,
-        table = TRUE,
-        stars = c(0.001, 0.01, 0.05, 0.1),
-        #sideways = TRUE,
-        no.margin = TRUE, 
-        float.pos = "!htbp"
+  list(cox2, logitgee.1, clogit.1), # it needs to be texreg for knitr
+  caption = "{\\bf Sectoral Origins of Income Taxation: Income Tax Law and Industrial Development}.",
+  custom.coef.names = c(
+    "Manufacture Output$_{t-1}$",
+    "Agricultural Output$_{t-1}$",
+    "Total Population",
+    #
+    # "intercept",
+    #
+    "Manufacture Output (ln)",
+    "Agricultural Output (ln)",        
+    "Total Population (ln)"),
+  custom.model.names = c(
+    "(1) Cox (1 lag)",# Base Model
+    "(2) Logit GEE", # GEE
+    "(3) Conditional Logit (FE)" # Fixed Effects model
+  ),
+  label = "results:table:cox",
+  custom.note = "%stars. Robust standard errors in all models. Intercept omitted.",
+  fontsize = "small",
+  center = TRUE,
+  use.packages = FALSE,
+  dcolumn = TRUE,
+  booktabs = TRUE,
+  omit.coef = "(Intercept)",
+  #longtable = TRUE,
+  digits = 3,
+  table = TRUE,
+  stars = c(0.001, 0.01, 0.05, 0.1),
+  #sideways = TRUE,
+  no.margin = TRUE, 
+  float.pos = "!htbp"
 )
 ## ---- 
 
@@ -2313,11 +2239,11 @@ sim.m.agr <- coxsimLinear(cox2,
 
 
 simtitle <- paste(
-        paste0("{\\bf ",qi, " of Implementing the Income Tax Law}."),
-        "\\\\\\hspace{\\textwidth}", 
-        paste("{\\bf Note}:", "Using estimations of Model 1 in \\autoref{results:table:cox} (\\autoref{cox:eq}), figure shows", formatC(nsim, format="d", big.mark=","), "simulations with different sectoral growth speeds. ``Slow'' is the minimum value, while ``rapid'' is the maximum value for each sectoral output."),
-        paste(paste("The figure also shows the ", paste(ci*100, "\\%", sep = ""), sep = ""), "confidence intervals."), 
-        "\n")
+  paste0("{\\bf ",qi, " of Implementing the Income Tax Law}."),
+  "\\\\\\hspace{\\textwidth}", 
+  paste("{\\bf Note}:", "Using estimations of Model 1 in \\autoref{results:table:cox} (\\autoref{cox:eq}), figure shows", formatC(nsim, format="d", big.mark=","), "simulations with different sectoral growth speeds. ``Slow'' is the minimum value, while ``rapid'' is the maximum value for each sectoral output."),
+  paste(paste("The figure also shows the ", paste(ci*100, "\\%", sep = ""), sep = ""), "confidence intervals."), 
+  "\n")
 ## ----
 
 
@@ -2343,16 +2269,16 @@ sim.p.ind = simGG(sim.m.ind, type = 'lines',# type = 'points' // 'lines'
                   xlab = "Year", 
                   ylab = "Hazard Rate", 
                   ribbons = F, alpha = 0.25) + 
-        theme_bw() + 
-        theme(axis.text.y = element_text(size=8), 
-              axis.text.x = element_text(size=8), 
-              axis.title.y = element_text(size=8), 
-              axis.title.x = element_text(size=8),
-              title = element_text(size=9)
-        ) +
-        labs(title = "Industrial Output") +
-        scale_color_manual(labels = c("Slow", "Rapid"), values = c("red", "blue")) +
-        guides(color=guide_legend("Sectoral Output"))
+  theme_bw() + 
+  theme(axis.text.y = element_text(size=8), 
+        axis.text.x = element_text(size=8), 
+        axis.title.y = element_text(size=8), 
+        axis.title.x = element_text(size=8),
+        title = element_text(size=9)
+  ) +
+  labs(title = "Industrial Output") +
+  scale_color_manual(labels = c("Slow", "Rapid"), values = c("red", "blue")) +
+  guides(color=guide_legend("Sectoral Output"))
 
 
 # Plot 2
@@ -2361,16 +2287,16 @@ sim.p.agr = simGG(sim.m.agr, type = 'lines',# type = 'points' // 'lines'
                   xlab = "Year", 
                   ylab = "Hazard Rate", 
                   ribbons = F, alpha = 0.25) + 
-        theme_bw() + 
-        theme(axis.text.y = element_text(size=8), 
-              axis.text.x = element_text(size=8), 
-              axis.title.y = element_text(size=8), 
-              axis.title.x = element_text(size=8),
-              title = element_text(size=9)
-        ) +
-        labs(title = "Agriculture Output") +
-        scale_color_manual(labels = c("Slow", "Rapid"), values = c("red", "blue")) +
-        guides(color=guide_legend("Sectoral Output"))
+  theme_bw() + 
+  theme(axis.text.y = element_text(size=8), 
+        axis.text.x = element_text(size=8), 
+        axis.title.y = element_text(size=8), 
+        axis.title.x = element_text(size=8),
+        title = element_text(size=9)
+  ) +
+  labs(title = "Agriculture Output") +
+  scale_color_manual(labels = c("Slow", "Rapid"), values = c("red", "blue")) +
+  guides(color=guide_legend("Sectoral Output"))
 
 
 # combine both plots
