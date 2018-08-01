@@ -528,6 +528,10 @@ dispersiontest(o.Deaths,alternative = c("greater"), trafo=1) # overdispersion is
 load("/Users/hectorbahamonde/RU/Dissertation/Papers/Earthquake_Paper/eq_output_d_Chile.RData")
 
 
+if (!require("pacman")) install.packages("pacman"); library(pacman) 
+p_load(car)
+
+
 dat$Sector <- recode(as.factor(dat$Sector), 
                              "1 = 'Industry' ; 
                              2 = 'Industry' ; 
@@ -909,6 +913,18 @@ print.xtable(xtable(
 
 load("/Users/hectorbahamonde/RU/Dissertation/Papers/Earthquake_Paper/eq_output_d_Chile.RData") 
 
+
+
+dat$Sector <- recode(as.factor(dat$Sector), 
+                             "1 = 'Industry' ; 
+                             2 = 'Industry' ; 
+                             3 = 'Agriculture' ; 
+                             '1 y 2' = 'Industry' ; 
+                             '1 y 3' = 'Mixed' ; 
+                             '2 y 3' = 'Mixed' ")
+
+
+
 # load libraries
 if (!require("pacman")) install.packages("pacman"); library(pacman) 
 p_load(R2jags, coda, R2WinBUGS, lattice, rjags, runjags)
@@ -952,7 +968,7 @@ model.jags.tax <- function() {
 }
 
 
-#
+
 
 
 
