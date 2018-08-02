@@ -10,13 +10,13 @@ ci = 0.95
 
 # Bayesian: Sectoral Model
 n.iter.sectoral = 200000  # n.iter.sectoral = 200000 // this is for working model
-n.burnin.sectoral = 5000 # n.burnin.sectoral = 5000 // this is for working model
-n.chains.sectoral = 4 # n.chains.sectoral = 4 for the working model
+n.burnin.sectoral = 100000 # n.burnin.sectoral = 5000 // this is for working model
+n.chains.sectoral = 1 # n.chains.sectoral = 4 for the working model
 
 # Bayesian: Tax Model
 n.iter.tax = 200000  # n.iter.tax = 200000 // this is for working model
-n.burnin.tax = 5000 # n.burnin.tax = 5000 // this is for working model
-n.chains.tax = 4 # n.chains.tax = 4 for the working model
+n.burnin.tax = 100000 # n.burnin.tax = 5000 // this is for working model
+n.chains.tax = 1 # n.chains.tax = 4 for the working model
 ## ---- 
 
 
@@ -94,13 +94,19 @@ p_load(car)
 eq.output.d$Sector2 <- recode(as.factor(eq.output.d$Sector), "1 = 'Industry' ; 2 = 'Mining' ; 3 = 'Agriculture' ; '1 y 2' = 'Ind and Min' ; '1 y 3' = 'Ind and Agr' ; '2 y 3' = 'Min and Agr' ")
 
 
-eq.output.d$Sector <- recode(as.factor(eq.output.d$Sector), 
-                             "1 = 'Industry' ; 
-                             2 = 'Industry' ; 
-                             3 = 'Agriculture' ; 
-                             '1 y 2' = 'Industry' ; 
-                             '1 y 3' = 'Mixed' ; 
-                             '2 y 3' = 'Mixed' ")
+## packages
+if (!require("pacman")) install.packages("pacman"); library(pacman)
+p_load(dplyr)
+
+
+dat$Sector <- as.factor(recode(as.character(dat$Sector), 
+                               "1" = "Industry", 
+                               "2" = "Industry",
+                               "3" = "Agriculture",
+                               "1 y 2" = "Industry",
+                               "1 y 3" = "Mixed",
+                               "2 y 3" = "Mixed"))
+
 
 # income tax variables
 incometax.d.chile = data.frame(ifelse(eq.output.d$year>=1924 & eq.output.d$country == "Chile",1,0)) # Chile,  1924 (Mamalakis [1976, p. 20]
@@ -528,17 +534,19 @@ dispersiontest(o.Deaths,alternative = c("greater"), trafo=1) # overdispersion is
 load("/Users/hectorbahamonde/RU/Dissertation/Papers/Earthquake_Paper/eq_output_d_Chile.RData")
 
 
-if (!require("pacman")) install.packages("pacman"); library(pacman) 
-p_load(car)
+## packages
+if (!require("pacman")) install.packages("pacman"); library(pacman)
+p_load(dplyr)
 
 
-dat$Sector <- recode(as.factor(dat$Sector), 
-                             "1 = 'Industry' ; 
-                             2 = 'Industry' ; 
-                             3 = 'Agriculture' ; 
-                             '1 y 2' = 'Industry' ; 
-                             '1 y 3' = 'Mixed' ; 
-                             '2 y 3' = 'Mixed' ")
+dat$Sector <- as.factor(recode(as.character(dat$Sector), 
+                               "1" = "Industry", 
+                               "2" = "Industry",
+                               "3" = "Agriculture",
+                               "1 y 2" = "Industry",
+                               "1 y 3" = "Mixed",
+                               "2 y 3" = "Mixed"))
+
 
 
 
@@ -902,9 +910,9 @@ print.xtable(xtable(
 ###############################
 
 
-# cat("\014")
-# rm(list=ls())
-# graphics.off()
+#cat("\014")
+#rm(list=ls())
+#graphics.off()
 
 ## ---- income:tax:model:and:data:not:run ----
 # load data 
@@ -912,14 +920,19 @@ print.xtable(xtable(
 load("/Users/hectorbahamonde/RU/Dissertation/Papers/Earthquake_Paper/eq_output_d_Chile.RData") 
 
 
+## packages
+if (!require("pacman")) install.packages("pacman"); library(pacman)
+p_load(dplyr)
 
-dat$Sector <- recode(as.factor(dat$Sector), 
-                             "1 = 'Industry' ; 
-                             2 = 'Industry' ; 
-                             3 = 'Agriculture' ; 
-                             '1 y 2' = 'Industry' ; 
-                             '1 y 3' = 'Mixed' ; 
-                             '2 y 3' = 'Mixed' ")
+
+dat$Sector <- as.factor(recode(as.character(dat$Sector), 
+                               "1" = "Industry", 
+                               "2" = "Industry",
+                               "3" = "Agriculture",
+                               "1 y 2" = "Industry",
+                               "1 y 3" = "Mixed",
+                               "2 y 3" = "Mixed"))
+
 
 
 
@@ -940,8 +953,8 @@ model.jags.tax <- function() {
       b.Magnitude*Magnitude[i] +
       b.incometax.d*incometax.d[i] +
       b.p.Population*p.Population[i] +
-      b.Urban*Urban[i] +
-      b.year[yearID[i]] + # year fixed-effects
+      # b.Urban*Urban[i] +
+      #b.year[yearID[i]] + # year fixed-effects
       b.r.long*r.long[i] +
       b.r.lat*r.lat[i] + 
       mu ## intercept
@@ -951,17 +964,17 @@ model.jags.tax <- function() {
   b.r.long ~ dnorm(0, 0.01)
   mu  ~ dnorm(0, 0.01) ## intercept
   b.p.Population ~ dnorm(0, 0.01)
-  b.Urban ~ dnorm(0, 0.01)
+  # b.Urban ~ dnorm(0, 0.01)
   b.incometax.d ~ dnorm(0, 0.01)
-  b.interaction ~ dnorm(0, 0.01)
+  # b.interaction ~ dnorm(0, 0.01)
   b.Magnitude ~ dnorm(0, 0.01)
   
-  for (t in 1:yearN){ # fixed effects
-    b.year[t] ~ dnorm(m.b.year[t], tau.b.year[t])
-    
-    m.b.year[t] ~ dnorm(0, 0.01)
-    tau.b.year[t] ~ dgamma(0.5, 0.001) # uninformative prior
-  }
+ # for (t in 1:yearN){ # fixed effects
+  #  b.year[t] ~ dnorm(m.b.year[t], tau.b.year[t])
+   # 
+    #m.b.year[t] ~ dnorm(0, 0.01)
+    #tau.b.year[t] ~ dgamma(0.5, 0.001) # uninformative prior
+  #}
   
 }
 
@@ -1004,16 +1017,24 @@ jags.data.tax <- list(Deaths = Deaths,
                       Magnitude = Magnitude^2,
                       p.Population = p.Population,
                       incometax.d = incometax.d,
-                      Urban = Urban,
+                      # Urban = Urban,
                       r.long = r.long,
                       r.lat = r.lat,
-                      yearID = yearID,
-                      yearN = yearN,
+                      #yearID = yearID,
+                      #yearN = yearN,
                       N = N)
 
 
 # Define and name the parameters so JAGS monitors them.
-eq.params.tax <- c("b.Magnitude", "b.p.Population", "b.year", "b.r.long", "b.r.lat", "b.incometax.d", "b.Urban", "lambda")
+eq.params.tax <- c(
+  "b.Magnitude", 
+  "b.p.Population", 
+  #"b.year", 
+  "b.r.long", 
+  "b.r.lat", 
+  "b.incometax.d", 
+  #"b.Urban", 
+  "lambda")
 ## ----
 
 
