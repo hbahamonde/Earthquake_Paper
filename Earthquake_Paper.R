@@ -953,7 +953,7 @@ model.jags.tax <- function() {
     log(lambda[i]) <- 
       b.Magnitude*Magnitude[i] +
       b.incometax.d*incometax.d[i] +
-      b.p.Population*p.Population[i] +
+      b.Population*Population[i] +
       #b.Urban*Urban[i] +
       b.year[yearID[i]] + # year fixed-effects
       b.r.long*r.long[i] +
@@ -963,7 +963,7 @@ model.jags.tax <- function() {
   
   b.Magnitude ~ dnorm(0, 0.1)
   b.incometax.d ~ dnorm(0, 0.1)
-  b.p.Population ~ dnorm(0, 0.1)
+  b.Population ~ dnorm(0, 0.1)
   b.r.lat ~ dnorm(0, 0.1)
   b.r.long ~ dnorm(0, 0.1)
  
@@ -995,6 +995,7 @@ constmanufact <- as.vector(dat$constmanufact)
 constagricult <- as.vector(dat$constagricult)
 Magnitude <- as.vector(dat$Magnitude)
 p.Population <- as.vector(dat$p.Population)
+Population <- as.vector(dat$Population)
 country <- as.numeric(as.ordered(dat$country))
 Ncountry <-  as.numeric(as.vector(length(unique(as.numeric(dat$country)))))
 N <-  as.numeric(nrow(dat))
@@ -1018,7 +1019,7 @@ r.lat = as.vector(as.numeric(dat$r.lat))
 
 jags.data.tax <- list(Deaths = Deaths,
                       Magnitude = Magnitude^2,
-                      p.Population = p.Population,
+                      Population = Population,
                       incometax.d = incometax.d,
                       #Urban = Urban,
                       r.long = r.long,
@@ -1031,7 +1032,7 @@ jags.data.tax <- list(Deaths = Deaths,
 # Define and name the parameters so JAGS monitors them.
 eq.params.tax <- c(
   "b.Magnitude", 
-  "b.p.Population", 
+  "b.Population", 
   "b.year", 
   "b.r.long", 
   "b.r.lat", 
@@ -1451,7 +1452,7 @@ p_load(mcmcplots)
 parms.tax = c(
   "b.incometax.d",
   "b.Magnitude",
-  "b.p.Population",
+  "b.Population",
   "b.Urban",
   "b.r.lat",
   "b.r.long")
