@@ -9,14 +9,14 @@ qi = "Hazard Rate" # original: Hazard Rate
 ci = 0.95
 
 # Bayesian: Sectoral Model
-n.iter.sectoral = 10  # n.iter.sectoral = 200000 // this is for working model
-n.burnin.sectoral = 1 # n.burnin.sectoral = 5000 // this is for working model
-n.chains.sectoral = 1 # n.chains.sectoral = 4 for the working model
+n.iter.sectoral = 200000  # n.iter.sectoral = 200000 // this is for working model
+n.burnin.sectoral = 5000 # n.burnin.sectoral = 5000 // this is for working model
+n.chains.sectoral = 4 # n.chains.sectoral = 4 for the working model
 
 # Bayesian: Tax Model
-n.iter.tax = 10  # n.iter.tax = 200000 // this is for working model
-n.burnin.tax = 1 # n.burnin.tax = 5000 // this is for working model
-n.chains.tax = 1 # n.chains.tax = 4 for the working model
+n.iter.tax = 200000  # n.iter.tax = 200000 // this is for working model
+n.burnin.tax = 5000 # n.burnin.tax = 5000 // this is for working model
+n.chains.tax = 4 # n.chains.tax = 4 for the working model
 ## ---- 
 
 
@@ -901,8 +901,6 @@ print.xtable(xtable(
 # Income Tax Adoption Model
 ###############################
 
-
-# HERE
 
 # cat("\014")
 # rm(list=ls())
