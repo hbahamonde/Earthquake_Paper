@@ -1055,6 +1055,7 @@ earthquakefit.tax <- jags(
   n.chains = n.chains.tax,
   n.iter = n.iter.tax,
   n.burnin = n.burnin.tax, 
+  n.thin = 10,
   model.file=model.jags.tax#,
   #progress.bar = "none"
   )
