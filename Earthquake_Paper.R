@@ -1,5 +1,6 @@
 cat("\014")
 rm(list=ls())
+graphics.off()
 
 
 ## ---- number:of:simulations ----
@@ -9,13 +10,13 @@ qi = "Hazard Rate" # original: Hazard Rate
 ci = 0.95
 
 # Bayesian: Sectoral Model
-n.iter.sectoral = 200000  # n.iter.sectoral = 200000 // this is for working model
-n.burnin.sectoral = 100000 # n.burnin.sectoral = 5000 // this is for working model
+n.iter.sectoral = 100000  # n.iter.sectoral = 200000 // this is for working model
+n.burnin.sectoral = 50000 # n.burnin.sectoral = 5000 // this is for working model
 n.chains.sectoral = 1 # n.chains.sectoral = 4 for the working model
 
 # Bayesian: Tax Model
-n.iter.tax = 200000  # n.iter.tax = 200000 // this is for working model
-n.burnin.tax = 100000 # n.burnin.tax = 5000 // this is for working model
+n.iter.tax = 100000  # n.iter.tax = 200000 // this is for working model
+n.burnin.tax = 50000 # n.burnin.tax = 5000 // this is for working model
 n.chains.tax = 1 # n.chains.tax = 4 for the working model
 ## ---- 
 
@@ -954,27 +955,29 @@ model.jags.tax <- function() {
       b.incometax.d*incometax.d[i] +
       b.p.Population*p.Population[i] +
       # b.Urban*Urban[i] +
-      #b.year[yearID[i]] + # year fixed-effects
+      b.year[yearID[i]] + # year fixed-effects
       b.r.long*r.long[i] +
       b.r.lat*r.lat[i] + 
       mu ## intercept
   }
   
-  b.r.lat ~ dnorm(0, 0.01)
-  b.r.long ~ dnorm(0, 0.01)
-  mu  ~ dnorm(0, 0.01) ## intercept
-  b.p.Population ~ dnorm(0, 0.01)
-  # b.Urban ~ dnorm(0, 0.01)
-  b.incometax.d ~ dnorm(0, 0.01)
+  b.Magnitude ~ dnorm(0, 0.1)
+  b.incometax.d ~ dnorm(0, 0.1)
+  b.p.Population ~ dnorm(0, 0.1)
+  b.r.lat ~ dnorm(0, 0.1)
+  b.r.long ~ dnorm(0, 0.1)
+ 
+  mu  ~ dnorm(0, 0.1) ## intercept
+ 
+   # b.Urban ~ dnorm(0, 0.01)
   # b.interaction ~ dnorm(0, 0.01)
-  b.Magnitude ~ dnorm(0, 0.01)
-  
- # for (t in 1:yearN){ # fixed effects
-  #  b.year[t] ~ dnorm(m.b.year[t], tau.b.year[t])
-   # 
-    #m.b.year[t] ~ dnorm(0, 0.01)
-    #tau.b.year[t] ~ dgamma(0.5, 0.001) # uninformative prior
-  #}
+
+  for (t in 1:yearN){ # fixed effects 
+    b.year[t] ~ dnorm(m.b.year[t], tau.b.year[t]) 
+    
+    m.b.year[t] ~ dnorm(0, 0.01) 
+    tau.b.year[t] ~ dgamma(0.5, 0.001) # uninformative prior 
+  } 
   
 }
 
@@ -1020,8 +1023,8 @@ jags.data.tax <- list(Deaths = Deaths,
                       # Urban = Urban,
                       r.long = r.long,
                       r.lat = r.lat,
-                      #yearID = yearID,
-                      #yearN = yearN,
+                      yearID = yearID,
+                      yearN = yearN,
                       N = N)
 
 
@@ -1029,7 +1032,7 @@ jags.data.tax <- list(Deaths = Deaths,
 eq.params.tax <- c(
   "b.Magnitude", 
   "b.p.Population", 
-  #"b.year", 
+  "b.year", 
   "b.r.long", 
   "b.r.lat", 
   "b.incometax.d", 
@@ -1052,7 +1055,8 @@ earthquakefit.tax <- jags(
   n.iter = n.iter.tax,
   n.burnin = n.burnin.tax, 
   model.file=model.jags.tax,
-  progress.bar = "none")
+  progress.bar = "none"
+  )
 
 #### Generates Diagnostic Plots - this links to a link in the Output Table.
 if (!require("pacman")) install.packages("pacman"); library(pacman) 
@@ -1093,7 +1097,7 @@ for(i in 1:length(year.range)){
     tax.mcmc.dat$b.p.Population*p.Population[i] + 
     tax.mcmc.dat$b.r.lat*r.lat[i] + 
     tax.mcmc.dat$b.r.long*r.long[i] + 
-    tax.mcmc.dat$b.Urban*Urban[i] +
+    #tax.mcmc.dat$b.Urban*Urban[i] +
     tax.mcmc.dat$b.Magnitude*Magnitude[i] +
     incometax.d[i]*0 
   
@@ -1125,7 +1129,7 @@ for(i in 1:length(year.range)){
     tax.mcmc.dat$b.p.Population*p.Population[i] + 
     tax.mcmc.dat$b.r.lat*r.lat[i] + 
     tax.mcmc.dat$b.r.long*r.long[i] + 
-    tax.mcmc.dat$b.Urban*Urban[i] +
+    #tax.mcmc.dat$b.Urban*Urban[i] +
     tax.mcmc.dat$b.Magnitude*Magnitude[i] +
     tax.mcmc.dat$b.incometax.d*incometax.d[i]
   
