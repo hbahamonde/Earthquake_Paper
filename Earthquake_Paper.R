@@ -911,8 +911,8 @@ print.xtable(xtable(
 ###############################
 
 
-#cat("\014")
-#rm(list=ls())
+# cat("\014")
+# rm(list=ls())
 #graphics.off()
 
 ## ---- income:tax:model:and:data:not:run ----
@@ -954,7 +954,7 @@ model.jags.tax <- function() {
       b.Magnitude*Magnitude[i] +
       b.incometax.d*incometax.d[i] +
       b.p.Population*p.Population[i] +
-      # b.Urban*Urban[i] +
+      #b.Urban*Urban[i] +
       b.year[yearID[i]] + # year fixed-effects
       b.r.long*r.long[i] +
       b.r.lat*r.lat[i] + 
@@ -969,13 +969,13 @@ model.jags.tax <- function() {
  
   mu  ~ dnorm(0, 0.1) ## intercept
  
-   # b.Urban ~ dnorm(0, 0.01)
+  # b.Urban ~ dnorm(0, 0.1)
   # b.interaction ~ dnorm(0, 0.01)
 
   for (t in 1:yearN){ # fixed effects 
     b.year[t] ~ dnorm(m.b.year[t], tau.b.year[t]) 
     
-    m.b.year[t] ~ dnorm(0, 0.01) 
+    m.b.year[t] ~ dnorm(0, 0.001) 
     tau.b.year[t] ~ dgamma(0.5, 0.001) # uninformative prior 
   } 
   
@@ -1020,7 +1020,7 @@ jags.data.tax <- list(Deaths = Deaths,
                       Magnitude = Magnitude^2,
                       p.Population = p.Population,
                       incometax.d = incometax.d,
-                      # Urban = Urban,
+                      #Urban = Urban,
                       r.long = r.long,
                       r.lat = r.lat,
                       yearID = yearID,
@@ -1036,7 +1036,7 @@ eq.params.tax <- c(
   "b.r.long", 
   "b.r.lat", 
   "b.incometax.d", 
-  #"b.Urban", 
+  # "b.Urban", 
   "lambda")
 ## ----
 
@@ -1054,8 +1054,8 @@ earthquakefit.tax <- jags(
   n.chains = n.chains.tax,
   n.iter = n.iter.tax,
   n.burnin = n.burnin.tax, 
-  model.file=model.jags.tax,
-  progress.bar = "none"
+  model.file=model.jags.tax#,
+  #progress.bar = "none"
   )
 
 #### Generates Diagnostic Plots - this links to a link in the Output Table.
@@ -1097,7 +1097,7 @@ for(i in 1:length(year.range)){
     tax.mcmc.dat$b.p.Population*p.Population[i] + 
     tax.mcmc.dat$b.r.lat*r.lat[i] + 
     tax.mcmc.dat$b.r.long*r.long[i] + 
-    #tax.mcmc.dat$b.Urban*Urban[i] +
+    # tax.mcmc.dat$b.Urban*Urban[i] +
     tax.mcmc.dat$b.Magnitude*Magnitude[i] +
     incometax.d[i]*0 
   
