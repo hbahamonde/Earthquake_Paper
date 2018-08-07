@@ -910,10 +910,18 @@ print.xtable(xtable(
 # Income Tax Adoption Model
 ###############################
 
+# https://github.com/stan-dev/stan/wiki/Prior-Choice-Recommendations
+
+
+# Bayesian: Tax Model
+n.iter.tax = 100000  # n.iter.tax = 200000 // this is for working model
+n.burnin.tax = 50000 # n.burnin.tax = 5000 // this is for working model
+n.chains.tax = 1 # n.chains.tax = 4 for the working model
+
 
 # cat("\014")
 # rm(list=ls())
-#graphics.off()
+# graphics.off()
 
 ## ---- income:tax:model:and:data:not:run ----
 # load data 
@@ -953,24 +961,22 @@ model.jags.tax <- function() {
     log(lambda[i]) <- 
       b.Magnitude*Magnitude[i] +
       b.incometax.d*incometax.d[i] +
-      b.Population*Population[i] +
-      #b.Urban*Urban[i] +
+      b.p.Population*p.Population[i] +
+      # b.Urban*Urban[i] +
       b.year[yearID[i]] + # year fixed-effects
       b.r.long*r.long[i] +
       b.r.lat*r.lat[i] + 
       mu ## intercept
   }
   
-  b.Magnitude ~ dnorm(0, 0.1)
-  b.incometax.d ~ dnorm(0, 0.1)
-  b.Population ~ dnorm(0, 0.1)
-  b.r.lat ~ dnorm(0, 0.1)
-  b.r.long ~ dnorm(0, 0.1)
- 
-  mu  ~ dnorm(0, 0.1) ## intercept
- 
-  # b.Urban ~ dnorm(0, 0.1)
-  # b.interaction ~ dnorm(0, 0.01)
+  b.Magnitude ~ dnorm(0, 1)
+  b.incometax.d ~ dnorm(0, 1)
+  b.p.Population ~ dnorm(0, 1)
+  b.r.lat ~ dnorm(0, 1)
+  b.r.long ~ dnorm(0, 1)
+  # b.Urban ~ dnorm(0, 1)
+  
+  mu  ~ dnorm(0, 1) ## intercept
 
   for (t in 1:yearN){ # fixed effects 
     b.year[t] ~ dnorm(m.b.year[t], tau.b.year[t]) 
@@ -1019,9 +1025,9 @@ r.lat = as.vector(as.numeric(dat$r.lat))
 
 jags.data.tax <- list(Deaths = Deaths,
                       Magnitude = Magnitude^2,
-                      Population = Population,
+                      p.Population = p.Population,
                       incometax.d = incometax.d,
-                      #Urban = Urban,
+                      # Urban = Urban,
                       r.long = r.long,
                       r.lat = r.lat,
                       yearID = yearID,
@@ -1032,7 +1038,7 @@ jags.data.tax <- list(Deaths = Deaths,
 # Define and name the parameters so JAGS monitors them.
 eq.params.tax <- c(
   "b.Magnitude", 
-  "b.Population", 
+  "b.p.Population", 
   "b.year", 
   "b.r.long", 
   "b.r.lat", 
@@ -1055,7 +1061,7 @@ earthquakefit.tax <- jags(
   n.chains = n.chains.tax,
   n.iter = n.iter.tax,
   n.burnin = n.burnin.tax, 
-  n.thin = 10,
+  #n.thin = 10,
   model.file=model.jags.tax#,
   #progress.bar = "none"
   )
@@ -1093,18 +1099,18 @@ CI.level.income.tax.ts.plot = c(0.2, 0.5, 0.8) # 80%
 year.range = unique(dat$year)
 
 # simulation
-sim.no.income.tax <- matrix(rep(NA, nrow(tax.mcmc.dat)*length(year.range)), nrow = nrow(tax.mcmc.dat))
+sim.no.income.tax <- matrix(rep(NA, nrow(tax.mcmc.dat)*length(year.range)), nrow = nrow(tax.mcmc.dat)) 
+
+
+
 for(i in 1:length(year.range)){
-  sim.no.income.tax[, i] <- 
-    tax.mcmc.dat$b.p.Population*p.Population[i] + 
+  sim.no.income.tax[, i] <- tax.mcmc.dat$b.p.Population*p.Population[i] + 
     tax.mcmc.dat$b.r.lat*r.lat[i] + 
     tax.mcmc.dat$b.r.long*r.long[i] + 
     # tax.mcmc.dat$b.Urban*Urban[i] +
     tax.mcmc.dat$b.Magnitude*Magnitude[i] +
     incometax.d[i]*0 
-  
-  
-}
+  }
 
 
 ## credible intervals
@@ -1131,7 +1137,7 @@ for(i in 1:length(year.range)){
     tax.mcmc.dat$b.p.Population*p.Population[i] + 
     tax.mcmc.dat$b.r.lat*r.lat[i] + 
     tax.mcmc.dat$b.r.long*r.long[i] + 
-    #tax.mcmc.dat$b.Urban*Urban[i] +
+    # tax.mcmc.dat$b.Urban*Urban[i] +
     tax.mcmc.dat$b.Magnitude*Magnitude[i] +
     tax.mcmc.dat$b.incometax.d*incometax.d[i]
   
