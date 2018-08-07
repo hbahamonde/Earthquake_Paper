@@ -981,7 +981,7 @@ model.jags.tax <- function() {
   for (t in 1:yearN){ # fixed effects 
     b.year[t] ~ dnorm(m.b.year[t], tau.b.year[t]) 
     
-    m.b.year[t] ~ dnorm(0, 0.001) 
+    m.b.year[t] ~ dnorm(0, 1) 
     tau.b.year[t] ~ dgamma(0.5, 0.001) # uninformative prior 
   } 
   
