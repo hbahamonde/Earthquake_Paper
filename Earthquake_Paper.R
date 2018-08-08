@@ -10,14 +10,14 @@ qi = "Hazard Rate" # original: Hazard Rate
 ci = 0.95
 
 # Bayesian: Sectoral Model
-n.iter.sectoral = 100000  # n.iter.sectoral = 200000 // this is for working model
-n.burnin.sectoral = 50000 # n.burnin.sectoral = 5000 // this is for working model
-n.chains.sectoral = 1 # n.chains.sectoral = 4 for the working model
+n.iter.sectoral = 1000  # n.iter.sectoral = 200000 // this is for working model
+n.burnin.sectoral = 500 # n.burnin.sectoral = 5000 // this is for working model
+n.chains.sectoral = 4 # n.chains.sectoral = 4 for the working model
 
 # Bayesian: Tax Model
-n.iter.tax = 100000  # n.iter.tax = 200000 // this is for working model
-n.burnin.tax = 50000 # n.burnin.tax = 5000 // this is for working model
-n.chains.tax = 1 # n.chains.tax = 4 for the working model
+n.iter.tax = 200000  # n.iter.tax = 200000 // this is for working model
+n.burnin.tax = 5000 # n.burnin.tax = 5000 // this is for working model
+n.chains.tax = 4 # n.chains.tax = 4 for the working model
 ## ---- 
 
 
@@ -651,9 +651,9 @@ eq.params.sectoral <- c("b.Magnitude", "b.p.Population", "b.year", "b.r.long", "
 
 ## ---- sectoral:model:and:data:does:run ----
 # run the model
- n.iter.sectoral = 200000  # n.iter.sectoral = 200000 // this is for working model
- n.burnin.sectoral = 5000 # n.burnin.sectoral = 5000 // this is for working model
- n.chains.sectoral = 4 # n.chains.sectoral = 4 for the working model
+# n.iter.sectoral = 10000  # n.iter.sectoral = 200000 // this is for working model
+# n.burnin.sectoral = 500 # n.burnin.sectoral = 5000 // this is for working model
+# n.chains.sectoral = 2 # n.chains.sectoral = 4 for the working model
 
 earthquakefit.sectoral <- jags(
   data=jags.data.sectoral,
@@ -662,8 +662,9 @@ earthquakefit.sectoral <- jags(
   n.chains=n.chains.sectoral,
   n.iter=n.iter.sectoral,
   n.burnin=n.burnin.sectoral, 
-  model.file=model.jags.sectoral,
-  progress.bar = "none")
+  model.file=model.jags.sectoral#,
+  #progress.bar = "none"
+  )
 
 
 
