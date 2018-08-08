@@ -575,30 +575,28 @@ model.jags.sectoral <- function() {
       mu ## intercept
   }
   
-  b.r.lat ~ dnorm(0, 0.01)
-  b.r.long ~ dnorm(0, 0.01)
-  mu  ~ dnorm(0, 0.01) ## intercept
-  b.p.Population ~ dnorm(0, 0.01)
-  b.Urban ~ dnorm(0, 0.01)
+  b.r.lat ~ dunif(-1000,1000)
+  b.r.long ~ dunif(-1000,1000)
+  mu  ~ dunif(-1000,1000) ## intercept
+  b.p.Population ~ dunif(-1000,1000)
+  b.Urban ~ dunif(-1000,1000)
   
   
   for (t in 1:yearN){ # fixed effects
     b.year[t] ~ dnorm(m.b.year[t], tau.b.year[t])
     
-    m.b.year[t] ~ dnorm(0, 0.01)
+    m.b.year[t] ~ dunif(-1000,1000)
     tau.b.year[t] ~ dgamma(0.5, 0.001) # uninformative prior
   }
   
   ## Varying Slopes for Sector (unmodeled)
   for (k in 1:NSector){ # 
     b.Magnitude[k] ~ dnorm(m.Magnitude[k], tau.Magnitude[k])
-    m.Magnitude[k] ~ dnorm(0, 0.01)
+    m.Magnitude[k] ~ dnorm(0,1)
     tau.Magnitude[k] ~ dgamma(0.5, 0.001) # uninformative prior
+    }
   }
-  
-  
-  
-}
+
 
 
 # define the vectors of the data matrix for JAGS.
@@ -653,9 +651,9 @@ eq.params.sectoral <- c("b.Magnitude", "b.p.Population", "b.year", "b.r.long", "
 
 ## ---- sectoral:model:and:data:does:run ----
 # run the model
-# n.iter.sectoral = 200000  # n.iter.sectoral = 200000 // this is for working model
-# n.burnin.sectoral = 5000 # n.burnin.sectoral = 5000 // this is for working model
-# n.chains.sectoral = 4 # n.chains.sectoral = 4 for the working model
+ n.iter.sectoral = 200000  # n.iter.sectoral = 200000 // this is for working model
+ n.burnin.sectoral = 5000 # n.burnin.sectoral = 5000 // this is for working model
+ n.chains.sectoral = 4 # n.chains.sectoral = 4 for the working model
 
 earthquakefit.sectoral <- jags(
   data=jags.data.sectoral,
@@ -914,9 +912,9 @@ print.xtable(xtable(
 
 
 # Bayesian: Tax Model
-n.iter.tax = 100000  # n.iter.tax = 200000 // this is for working model
-n.burnin.tax = 50000 # n.burnin.tax = 5000 // this is for working model
-n.chains.tax = 1 # n.chains.tax = 4 for the working model
+n.iter.tax = 200000  # n.iter.tax = 200000 // this is for working model
+n.burnin.tax = 100000 # n.burnin.tax = 5000 // this is for working model
+n.chains.tax = 4 # n.chains.tax = 4 for the working model
 
 
 # cat("\014")
@@ -962,26 +960,26 @@ model.jags.tax <- function() {
       b.Magnitude*Magnitude[i] +
       b.incometax.d*incometax.d[i] +
       b.p.Population*p.Population[i] +
-      # b.Urban*Urban[i] +
+      b.Urban*Urban[i] +
       b.year[yearID[i]] + # year fixed-effects
       b.r.long*r.long[i] +
       b.r.lat*r.lat[i] + 
       mu ## intercept
   }
   
-  b.Magnitude ~ dnorm(0, 1)
-  b.incometax.d ~ dnorm(0, 1)
-  b.p.Population ~ dnorm(0, 1)
-  b.r.lat ~ dnorm(0, 1)
-  b.r.long ~ dnorm(0, 1)
-  # b.Urban ~ dnorm(0, 1)
+  b.Magnitude ~ dunif(-1000,1000)
+  b.incometax.d ~ dunif(-1000,1000)
+  b.p.Population ~ dunif(-1000,1000)
+  b.r.lat ~ dunif(-1000,1000)
+  b.r.long ~ dunif(-1000,1000)
+  b.Urban ~ dunif(-1000,1000)
   
-  mu  ~ dnorm(0, 1) ## intercept
+  mu  ~ dunif(-1000,1000) ## intercept
 
   for (t in 1:yearN){ # fixed effects 
     b.year[t] ~ dnorm(m.b.year[t], tau.b.year[t]) 
     
-    m.b.year[t] ~ dnorm(0, 1) 
+    m.b.year[t] ~ dunif(-1000,1000)
     tau.b.year[t] ~ dgamma(0.5, 0.001) # uninformative prior 
   } 
   
@@ -1027,7 +1025,7 @@ jags.data.tax <- list(Deaths = Deaths,
                       Magnitude = Magnitude^2,
                       p.Population = p.Population,
                       incometax.d = incometax.d,
-                      # Urban = Urban,
+                      Urban = Urban,
                       r.long = r.long,
                       r.lat = r.lat,
                       yearID = yearID,
@@ -1043,7 +1041,7 @@ eq.params.tax <- c(
   "b.r.long", 
   "b.r.lat", 
   "b.incometax.d", 
-  # "b.Urban", 
+  "b.Urban", 
   "lambda")
 ## ----
 
