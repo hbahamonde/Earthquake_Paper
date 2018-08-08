@@ -15,8 +15,8 @@
 \author[1]{
 \large
 \textsc{H\'ector Bahamonde}\\ 
-\thanks{I thank Robert Kaufman, Hillel Soifer, Ana de la O, Mark Dincecco, James Mahon, Christopher Hale, Alexander Lee, Jack Paine, Daniel Kelemen, Douglas Blair, Paul Poast, Jorge Atria, Christine Hunefeldt, the attendees of the Annual Meeting of the Southern Political Science Association in New Orleans 2018, and the attendees of the  International Congress of the Latin American Studies Association in Barcelona 2018 for all the useful comments. I also thank the School of Arts and Sciences at Rutgers for granting me funds to collect part of the data used in this project. All errors are my own.}
-\normalsize Postdoctoral Fellow $\bullet$ Center For Inter-American Policy \& Research $\bullet$ Tulane University\\
+\thanks{I thank Robert Kaufman, Hillel Soifer, Ana de la O, Mark Dincecco, James Mahon, Christopher Hale, Alexander Lee, Jack Paine, Daniel Kelemen, Douglas Blair, Paul Poast, Jorge Atria, Christine Hunefeldt, the attendees of the Annual Meeting of the Southern Political Science Association in New Orleans 2018, the  International Congress of the Latin American Studies Association in Barcelona 2018, and of the Social Sciences Institute Seminar, at Universidad de O$'$Higgins, for all the useful comments. I also thank the School of Arts and Sciences at Rutgers University for granting me funds to collect part of the data used in this project. All errors are my own. Usual caveats apply.}
+\normalsize Assistant Professor $\bullet$ University O$'$Higgins\\
 \normalsize \href{mailto:\filetext}{\texttt{\filetext}}\\
 \normalsize \href{http://www.hectorbahamonde.com}{\texttt{www.HectorBahamonde.com}}
 \vspace{-5mm}
@@ -296,7 +296,7 @@ I constructed a novel hand-collected longitudinal dataset using the \emph{Signif
 
 
 % Poisson model // main IVs
-The unit of analysis is the earthquake.\footnote{\textcite[273]{Kahn2005} also considers that ``the unit of analysis is [the] disaster.''} As an event, each earthquake has associated to it a death toll, a location, a magnitude, a local population, and an urban/rural setting. Specifically, following the statistical convention, a Bayesian Poisson regression was employed to test the effect of implementing the income tax law on death-tolls over time.\footnote{\textcite[1907]{Anbarci2005} use ``a Negative Binomial estimation strategy with both random and fixed estimators'' to estimate death-tolls, \textcite[276]{Kahn2005} estimates a Zero Inflated Negative Binomial model, \textcite[729]{Brancati2007} uses ``a negative binomial model with robust standard errors clustered by country,'' and \textcite{Escaleras2007} use ``a Negative Binomial.'' Yet, no study tests for over dispersion. No evidence of over dispersion is found in the analyzed dataset.} The main quantity of interest is a binary variable (i.e. \emph{Income Tax}) that denotes whether the income tax is implemented or not. The model considers year fixed-effects to account for time-varying confounding factors and for unmeasured sources of variation. More formally,\footnote{\href{https://data.noaa.gov/dataset/earthquake-damage-general}{According to the NOAA}, an ``increase of one in magnitude represents a tenfold increase in the recorded wave amplitude.'' To account for non-linear effects, \autoref{model:2} considers the square term of magnitude. Parameters $\beta_{k}$ have noninformative normally distributed priors. Precisions $\tau_{p}$ have noninformative Gamma priors. See \autoref{indexes:2} for technical details. \textcite[729]{Brancati2007} also includes in his analyses ``year-fixed effects to control for trends over time.''} \autoref{model:2} was fitted:
+The unit of analysis is the earthquake.\footnote{\textcite[273]{Kahn2005} also considers that ``the unit of analysis is [the] disaster.''} As an event, each earthquake has associated to it a death toll, a location, a magnitude, a local population, and an urban/rural setting. Specifically, following the statistical convention, a Bayesian Poisson regression was employed to test the effect of implementing the income tax law on death-tolls over time.\footnote{\textcite[1907]{Anbarci2005} use ``a Negative Binomial estimation strategy with both random and fixed estimators'' to estimate death-tolls, \textcite[276]{Kahn2005} estimates a Zero Inflated Negative Binomial model, \textcite[729]{Brancati2007} uses ``a negative binomial model with robust standard errors clustered by country,'' and \textcite{Escaleras2007} use ``a Negative Binomial.'' Yet, no study tests for over dispersion. No evidence of over dispersion is found in the analyzed dataset.} The main quantity of interest is a binary variable (i.e. \emph{Income Tax}) that denotes whether the income tax is implemented or not. The model considers year fixed-effects to account for time-varying confounding factors and for unmeasured sources of variation. More formally,\footnote{\href{https://data.noaa.gov/dataset/earthquake-damage-general}{According to the NOAA}, an ``increase of one in magnitude represents a tenfold increase in the recorded wave amplitude.'' To account for non-linear effects, \autoref{model:2} considers the square term of magnitude. Parameters $\beta_{k}$ have uniform noninformative priors. Precisions $\tau_{p}$ have noninformative Gamma priors. See \autoref{indexes:2} for technical details. \textcite[729]{Brancati2007} also includes in his analyses ``year-fixed effects to control for trends over time.''} \autoref{model:2} was fitted:
 \begin{equation} \label{model:2}
 \begin{split}
 \text{Deaths} \;\sim\; & \text{Poisson}(\lambda_{i})\\
@@ -340,20 +340,27 @@ In an effort to generalize the argument about the sectoral origins of the income
 
 
 % MODELS
-Econometrically, this section is concerned about the \emph{timing} of implementing the income tax law in nine Latin American polities, and particularly, about the individual contribution of both the agricultural and industrial sectors. \autoref{results:table:cox} shows 3 models.\footnote{Tables were produced using the  \texttt{texreg} package \parencite[]{Leifeld:2013qr}. All Cox models were computed using the \texttt{survival R}  package (\textcite{Therneau:2015zr}). The GEE logistic regression was computed using the \texttt{geepack} package \parencite[]{Hojsgaard:2016}. The simulations were performed using the \texttt{simPH R} package \parencite{Gandrud2015}.} Following \textcite{Aidt2009a}, Model 1 computes the lagged conditional hazard ratio of a country which has not yet adopted the income tax adopts it in a given year, as a function of industrial and agricultural outputs.\footnote{Since the idea is to capture the \emph{sectoral contribution} of the implementation of the income tax law, these variables were not combined. Following \textcite[49]{Box-Steffensmeier2004}, the next equation was fitted: 
+Econometrically, this section is concerned about the \emph{timing} of implementing the income tax law in nine Latin American polities, and particularly, about the individual contribution of both the agricultural and industrial sectors. \autoref{results:table:cox} shows 3 models.\footnote{Tables were produced using the  \texttt{texreg} package \parencite[]{Leifeld:2013qr}. All Cox models were computed using the \texttt{survival R}  package (\textcite{Therneau:2015zr}). The GEE logistic regression was computed using the \texttt{geepack} package \parencite[]{Hojsgaard:2016}. The simulations were performed using the \texttt{simPH R} package \parencite{Gandrud2015}.} Following \textcite{Aidt2009a}, Model 1 computes the lagged conditional hazard ratio of a country which has not yet adopted the income tax adopts it in a given year, as a function of industrial and agricultural outputs. Since the idea is to capture the \emph{sectoral contribution} of the implementation of the income tax law, these variables were not combined. Following \textcite[49]{Box-Steffensmeier2004}, the next equation was fitted: 
 \begin{equation}\label{cox:eq}
 h_{i}(t) = exp(\beta_{1}\text{Industrial Growth}_{i,t} + \beta_{2}\text{Agricultural Growth}_{i,t} + \beta_{3}\text{Total Population}_{i,t})h_{0}(t)
-\end{equation}
-for all countries $i$ and years $t$.} Countries drop out of the sample when they adopt the income tax. Model 2 shows the estimated coefficients of a generalized estimating equation (GEE).\footnote{Following \textcite[331]{Zorn2006}, the next equation was fitted:
+\end{equation},
+
+for all countries $i$ and years $t$.
+
+Countries drop out of the sample when they adopt the income tax. Model 2 shows the estimated coefficients of a generalized estimating equation (GEE). Following \textcite[331]{Zorn2006}, the next equation was fitted:
 \begin{equation}\label{gee:eq}
 \pi_{i,t}=\Phi(\beta_{1}\text{log(Industrial Growth$_{i,t}$)}+\beta_{2}\text{log(Agricultural Growth$_{i,t}$)}+\beta_{3}\text{log(Total Population$_{i,t}$)})
-\end{equation}
-where $\pi$ is the logit link function, and $\Phi$ is as scale parameter (i.e. the cumulative distribution function), for all $i$ countries, and years $t$.} Generalized estimating equations were introduced by \textcite{Liang1986} to fit clustered, repeated/correlated, and panel data.\footnote{\textcite[322]{Zorn2006}. This method is especially well suited to analyze binary data \parencite{Hanley2003a}, something particularly useful given the nature of the dependent variable. GEE methods require analysts to parameterize the working correlation matrix. While GEE models are robust to misspecification of the correlation structure \parencite[139]{Hedeker2006}, following \textcite[166]{Hardin2013}, the ``independence'' working covariance structure was used, since observations were collected over time.} From a substantive standpoint, GEE models provide an estimated marginal mean, or the \emph{weighted average} of all cluster-specific effects (or conditional means). Model 3 is a conditional logit.\footnote{More formally, the next equation was fitted:
+\end{equation},
+
+where $\pi$ is the logit link function, and $\Phi$ is as scale parameter (i.e. the cumulative distribution function), for all $i$ countries, and years $t$.
+
+Generalized estimating equations were introduced by \textcite{Liang1986} to fit clustered, repeated/correlated, and panel data.\footnote{\textcite[322]{Zorn2006}. This method is especially well suited to analyze binary data \parencite{Hanley2003a}, something particularly useful given the nature of the dependent variable. GEE methods require analysts to parameterize the working correlation matrix. While GEE models are robust to misspecification of the correlation structure \parencite[139]{Hedeker2006}, following \textcite[166]{Hardin2013}, the ``independence'' working covariance structure was used, since observations were collected over time.} From a substantive standpoint, GEE models provide an estimated marginal mean, or the \emph{weighted average} of all cluster-specific effects (or conditional means). Model 3 is a conditional logit. More formally, the next equation was fitted:
 
 \begin{equation}\label{clogit:eq}
 \pi_{i,t}=\Phi(\beta_{0} + \beta_{1}\text{log(Industrial Growth$_{i,t}$)}+\beta_{2}\text{log(Agricultural Growth$_{i,t}$)}+\beta_{3}\text{log(Total Population$_{i,t}$)}+\alpha_{i})
-\end{equation}
-where $\alpha$ are the country fixed effects for all countries $i$.}. Since population has been associated with the probability elites expand the franchise,\footnote{\textcite[892-893]{Engerman2005}.} and consequently the tax base, country-year population was included as a control variable. 
+\end{equation},
+
+where $\alpha$ are the country fixed effects for all countries $i$. Since population has been associated with the probability elites expand the franchise,\footnote{\textcite[892-893]{Engerman2005}.} and consequently the tax base, country-year population was included as a control variable. 
 
 
 <<simulation:plots, echo=FALSE, fig.pos='H', warning=FALSE, message=F, fig.cap=simtitle, fig.align='center', fig.width=7, fig.height=3,dpi=10000,cache=FALSE, eval=TRUE>>=
@@ -379,7 +386,7 @@ Undoubtedly, some municipalities should be wealthier than others, and presumably
 
 
 % geographical self-selection
-A second potential issue might be whether certain sectors self-select into less earthquake-prone geographical locations. For instance, it might be argued that agricultural areas, being mostly rural, might have lower constructions, while industrial areas, being more urban, might have both highly populated municipalities and higher constructions (edifices), potentially showing higher default death-tolls. To rule-out this possibility, a hierarchical variant of \autoref{model:2} was estimated. Using the same set of control variables, \autoref{model:1} considers whether earthquake magnitudes affect the death-toll of agricultural, industrial or mixed municipalities in different ways.\footnote{More formally, \autoref{model:1} was fitted: 
+A second potential issue might be whether certain sectors self-select into less earthquake-prone geographical locations. For instance, it might be argued that agricultural areas, being mostly rural, might have lower constructions, while industrial areas, being more urban, might have both highly populated municipalities and higher constructions (edifices), potentially showing higher default death-tolls. To rule-out this possibility, a hierarchical variant of \autoref{model:2} was estimated. Using the same set of control variables, \autoref{model:1} considers whether earthquake magnitudes affect the death-toll of agricultural, industrial or mixed municipalities in different ways. More formally, \autoref{model:1} was fitted: 
 
 \begin{equation} \label{model:1}
 \begin{split}
@@ -404,7 +411,8 @@ j_{1,...J} & \; \text{and} \; \text{J}=\Sexpr{NSector} \;  \text{sectors},\\
 t_{1,...T} & \; \text{and} \; \text{T}=\Sexpr{yearN} \;  \text{years}.
 \end{split}
 \end{equation*}
-} \autoref{sectoral:model:regression:table:run} suggests that death-tolls are orthogonal to the economic sector. Belonging to an agricultural or industrial sector contributes with $\Sexpr{reg.results.table.sectoral[rownames(reg.results.table.sectoral) == "Magnitude [Agr]",1]}$ or $\Sexpr{reg.results.table.sectoral[rownames(reg.results.table.sectoral) == "Magnitude [Ind]",1]}$ additional deaths, respectively.
+
+\autoref{sectoral:model:regression:table:run} suggests that death-tolls are orthogonal to the economic sector. Belonging to an agricultural or industrial sector contributes with $\Sexpr{reg.results.table.sectoral[rownames(reg.results.table.sectoral) == "Magnitude [Agr]",1]}$ or $\Sexpr{reg.results.table.sectoral[rownames(reg.results.table.sectoral) == "Magnitude [Ind]",1]}$ additional deaths, respectively.
 
 
 % table 1
@@ -448,7 +456,7 @@ Additionally, there are structural reasons to believe that cross-sectoral invest
 
 
 % Granger
-The paper has argued about the effect of sectoral conflicts on state consolidation. Was there a sectoral conflict? Were there two separate elites? To empirically test the existence of a sectoral duality, particularly in the context of income taxation, the same \href{http://moxlad-staging.herokuapp.com/home/en?}{MOxLAD} sectoral data were used. Since the income tax (1) had positive spillover effects on overall state capacity and (2) its implementation was split across a sectoral base, we should see that (1) adopting the income tax fostered state institutions, causing long-term economic growth,\footnote{\textcite{North:1990vl,Besley:2011aa}.} and that (2) its implementation altered the sectoral mechanics of growth accumulation. In empirical terms, we should see that by altering the post-colonial order, implementing the income tax \emph{reversed} the flow of inputs, installing a mechanism of growth generation that went \emph{from} the agricultural sector \emph{to} the industrial sector. In econometric terms, we should see that the implementing the tax reversed the way in which one sector ``Granger-caused'' the other.\footnote{\textcite[42]{Lutkepohl2006} explains that if some variable $X$ forecasts variable $Y$ (and not vise versa), $X$ is said to ``Granger-cause'' $Y$. According to \textcite[349]{Granger1980}, this concept of ``causation'' is based on the idea ``that the future cannot cause the past.''} \autoref{granger:table} tests for Granger-causality both prior to and after the implementation of the income tax law.\footnote{The tests were computed after estimating \autoref{var:1}, which is a reduced form VAR in differences, both before and after implementing the tax. For both periods, the VAR equation passes standard unit root tests (see \autoref{unit:root:tests}), and as per the lag length structure, it also passes standard normality and stability  tests (\autoref{post:estimation:lag:lenght:tests}). More formally, the next equation was fitted:
+The paper has argued about the effect of sectoral conflicts on state consolidation. Was there a sectoral conflict? Were there two separate elites? To empirically test the existence of a sectoral duality, particularly in the context of income taxation, the same \href{http://moxlad-staging.herokuapp.com/home/en?}{MOxLAD} sectoral data were used. Since the income tax (1) had positive spillover effects on overall state capacity and (2) its implementation was split across a sectoral base, we should see that (1) adopting the income tax fostered state institutions, causing long-term economic growth,\footnote{\textcite{North:1990vl,Besley:2011aa}.} and that (2) its implementation altered the sectoral mechanics of growth accumulation. In empirical terms, we should see that by altering the post-colonial order, implementing the income tax \emph{reversed} the flow of inputs, installing a mechanism of growth generation that went \emph{from} the agricultural sector \emph{to} the industrial sector. In econometric terms, we should see that the implementing the tax reversed the way in which one sector ``Granger-caused'' the other.\footnote{\textcite[42]{Lutkepohl2006} explains that if some variable $X$ forecasts variable $Y$ (and not vise versa), $X$ is said to ``Granger-cause'' $Y$. According to \textcite[349]{Granger1980}, this concept of ``causation'' is based on the idea ``that the future cannot cause the past.''} \autoref{granger:table} tests for Granger-causality both prior to and after the implementation of the income tax law. The tests were computed after estimating \autoref{var:1}, which is a reduced form VAR in differences, both before and after implementing the tax. For both periods, the VAR equation passes standard unit root tests (see \autoref{unit:root:tests}), and as per the lag length structure, it also passes standard normality and stability  tests (\autoref{post:estimation:lag:lenght:tests}). More formally, the next equation was fitted:
 
 \begin{equation}\label{var:1}
   \begin{split}
@@ -456,7 +464,8 @@ The paper has argued about the effect of sectoral conflicts on state consolidati
     \bigtriangleup A_{t_{a}} = & \alpha_{a} + \beta_{a}  \bigtriangleup M_{t-l} + \beta_{a} \bigtriangleup A_{t-l} + \epsilon_{t_{a}}
   \end{split}
 \end{equation}
-} 
+
+
 The results strongly suggest that before the income tax law, industrial growth Granger-caused agricultural growth (backwards growth), but after the income tax law, the agricultural sector Granger-caused industrial development (modern growth), indicating that the implementation of the income tax was associated with the reversal of economically backwards institutions, fostering longer-run economic development. 
 
 
@@ -584,7 +593,7 @@ and,
 
 \begin{equation*} \label{indexes:2}
 \begin{split}
-\beta_{k,...K} \;\sim\; & \mathcal{N}(0, 0.01) \; \text{where} \; \text{K}=\Sexpr{as.numeric(length(eq.params.tax))}\\
+\beta_{k,...K} \;\sim\; & \mathcal{Unif}(-1000,1000) \; \text{where} \; \text{K}=\Sexpr{as.numeric(length(eq.params.tax))}\\
 \tau_{p,...P} \;\sim\; & \mathcal{G}(0.5, 0.001) \; \text{where} \; \text{P}=\Sexpr{as.numeric(jags.data.tax$yearN)}.
 \end{split}
 \end{equation*}

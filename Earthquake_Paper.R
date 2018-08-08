@@ -10,13 +10,13 @@ qi = "Hazard Rate" # original: Hazard Rate
 ci = 0.95
 
 # Bayesian: Sectoral Model
-n.iter.sectoral = 1000  # n.iter.sectoral = 200000 // this is for working model
-n.burnin.sectoral = 500 # n.burnin.sectoral = 5000 // this is for working model
+n.iter.sectoral = 200000  # n.iter.sectoral = 200000 // this is for working model
+n.burnin.sectoral = 20000 # n.burnin.sectoral = 20000 // this is for working model
 n.chains.sectoral = 4 # n.chains.sectoral = 4 for the working model
 
 # Bayesian: Tax Model
 n.iter.tax = 200000  # n.iter.tax = 200000 // this is for working model
-n.burnin.tax = 5000 # n.burnin.tax = 5000 // this is for working model
+n.burnin.tax = 20000 # n.burnin.tax = 20000 // this is for working model
 n.chains.tax = 4 # n.chains.tax = 4 for the working model
 ## ---- 
 
@@ -651,9 +651,9 @@ eq.params.sectoral <- c("b.Magnitude", "b.p.Population", "b.year", "b.r.long", "
 
 ## ---- sectoral:model:and:data:does:run ----
 # run the model
-# n.iter.sectoral = 10000  # n.iter.sectoral = 200000 // this is for working model
-# n.burnin.sectoral = 500 # n.burnin.sectoral = 5000 // this is for working model
-# n.chains.sectoral = 2 # n.chains.sectoral = 4 for the working model
+# n.iter.sectoral = 200000  # n.iter.sectoral = 200000 // this is for working model
+# n.burnin.sectoral = 20000 # n.burnin.sectoral = 5000 // this is for working model
+# n.chains.sectoral = 4 # n.chains.sectoral = 4 for the working model
 
 earthquakefit.sectoral <- jags(
   data=jags.data.sectoral,
@@ -662,8 +662,8 @@ earthquakefit.sectoral <- jags(
   n.chains=n.chains.sectoral,
   n.iter=n.iter.sectoral,
   n.burnin=n.burnin.sectoral, 
-  model.file=model.jags.sectoral#,
-  #progress.bar = "none"
+  model.file=model.jags.sectoral,
+  progress.bar = "none"
   )
 
 
@@ -912,12 +912,6 @@ print.xtable(xtable(
 # https://github.com/stan-dev/stan/wiki/Prior-Choice-Recommendations
 
 
-# Bayesian: Tax Model
-n.iter.tax = 200000  # n.iter.tax = 200000 // this is for working model
-n.burnin.tax = 100000 # n.burnin.tax = 5000 // this is for working model
-n.chains.tax = 4 # n.chains.tax = 4 for the working model
-
-
 # cat("\014")
 # rm(list=ls())
 # graphics.off()
@@ -1050,7 +1044,7 @@ eq.params.tax <- c(
 ## ---- income:tax:model:and:data:run ----
 # run the model
 # n.iter.tax = 200000  # n.iter.tax = 200000 // this is for working model
-# n.burnin.tax = 5000 # n.burnin.tax = 5000 // this is for working model
+# n.burnin.tax = 20000 # n.burnin.tax = 5000 // this is for working model
 # n.chains.tax = 4 # n.chains.tax = 4 for the working model
 
 earthquakefit.tax <- jags(
@@ -1061,8 +1055,8 @@ earthquakefit.tax <- jags(
   n.iter = n.iter.tax,
   n.burnin = n.burnin.tax, 
   #n.thin = 10,
-  model.file=model.jags.tax#,
-  #progress.bar = "none"
+  model.file=model.jags.tax,
+  progress.bar = "none"
   )
 
 #### Generates Diagnostic Plots - this links to a link in the Output Table.
@@ -1089,8 +1083,8 @@ tax.mcmc.mat <- as.matrix(tax.mcmc)
 tax.mcmc.dat <- as.data.frame(tax.mcmc.mat)
 
 # define confidence interval
-# CI.level.income.tax.ts.plot = c(0.05, 0.5, 0.95) # 95%
-CI.level.income.tax.ts.plot = c(0.2, 0.5, 0.8) # 80%
+CI.level.income.tax.ts.plot = c(0.05, 0.5, 0.95) # 95%
+# CI.level.income.tax.ts.plot = c(0.2, 0.5, 0.8) # 80%
 
 
 
@@ -1106,7 +1100,7 @@ for(i in 1:length(year.range)){
   sim.no.income.tax[, i] <- tax.mcmc.dat$b.p.Population*p.Population[i] + 
     tax.mcmc.dat$b.r.lat*r.lat[i] + 
     tax.mcmc.dat$b.r.long*r.long[i] + 
-    # tax.mcmc.dat$b.Urban*Urban[i] +
+    tax.mcmc.dat$b.Urban*Urban[i] +
     tax.mcmc.dat$b.Magnitude*Magnitude[i] +
     incometax.d[i]*0 
   }
@@ -1136,7 +1130,7 @@ for(i in 1:length(year.range)){
     tax.mcmc.dat$b.p.Population*p.Population[i] + 
     tax.mcmc.dat$b.r.lat*r.lat[i] + 
     tax.mcmc.dat$b.r.long*r.long[i] + 
-    # tax.mcmc.dat$b.Urban*Urban[i] +
+    tax.mcmc.dat$b.Urban*Urban[i] +
     tax.mcmc.dat$b.Magnitude*Magnitude[i] +
     tax.mcmc.dat$b.incometax.d*incometax.d[i]
   
@@ -1708,16 +1702,18 @@ model <- function() {
       mu ## intercept
   }
   
-  b.r.lat ~ dnorm(0, 0.01)
-  b.r.long ~ dnorm(0, 0.01)
-  mu  ~ dnorm(0, 0.01) ## intercept
-  b.p.Population ~ dnorm(0, 0.01)
-  b.Urban ~ dnorm(0, 0.01)
-  b.incometax.d ~ dnorm(0, 0.01)
-  b.Magnitude ~ dnorm(0, 0.01)
+  b.r.lat ~ dunif(-1000,1000)
+  b.r.long ~ dunif(-1000,1000)
+  mu  ~ dunif(-1000,1000) ## intercept
+  b.p.Population ~ dunif(-1000,1000)
+  b.Urban ~ dunif(-1000,1000)
+  b.incometax.d ~ dunif(-1000,1000)
+  b.Magnitude ~ dunif(-1000,1000)
   
   
 }
+
+
 
 
 # list elements
