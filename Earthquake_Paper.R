@@ -164,9 +164,17 @@ dat.chile.post1900 = dat.chile.post1900[!is.na(dat.chile.post1900$Urban),]
 cases.all = nrow(dat.chile.complete)
 cases.post1900 = nrow(dat.chile.post1900)
 
+dat.chile.complete$Included = factor(ifelse(
+  dat.chile.complete$year >= min(dat.chile.post1900$year) &
+    !is.na(dat.chile.complete$Magnitude) &
+    !is.na(dat.chile.complete$Deaths) & 
+    !is.na(dat.chile.complete$Sector) &
+    !is.na(dat.chile.complete$Population) &
+    !is.na(dat.chile.complete$Latitude) &
+    !is.na(dat.chile.complete$Longitude) & 
+    !is.na(dat.chile.complete$Urban), 1, 0),
+  levels = c(0,1),labels = c("No", "Yes"))
 
-dat.chile.complete$Included = factor(as.numeric(dat.chile.complete$year >= min(dat.chile.post1900$year)),  levels = c(0,1),
-                                     labels = c("No", "Yes"))
 
 
 
