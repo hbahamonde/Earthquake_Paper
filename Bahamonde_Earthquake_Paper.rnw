@@ -406,16 +406,7 @@ where,
 \begin{equation*} \label{indexes:1}
 \begin{split}
 i_{1,...I} & \; \text{and} \; \text{I}=\Sexpr{N} \;  \text{observations},\\
-j_{1,...J} & \; \text{and} \; \text{J}=\Sexpr{load("/Users/hectorbahamonde/RU/Dissertation/Papers/Earthquake_Paper/eq_output_d_Chile.RData");
-if (!require("pacman")) install.packages("pacman"); library(pacman);
-p_load(dplyr);
-dat$Sector <- as.factor(recode(as.character(dat$Sector), 
-                               "1" = "Industry", 
-                               "2" = "Industry",
-                               "3" = "Agriculture",
-                               "1 y 2" = "Industry",
-                               "1 y 3" = "Mixed",
-                               "2 y 3" = "Mixed"));as.numeric(as.vector(length(unique(as.numeric(dat$Sector)))))} \;  \text{sectors},\\
+j_{1,...J} & \; \text{and} \; \text{J}=\Sexpr{NSector} \;  \text{sectors},\\
 t_{1,...T} & \; \text{and} \; \text{T}=\Sexpr{yearN} \;  \text{years}.
 \end{split}
 \end{equation*}
