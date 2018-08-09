@@ -16,7 +16,7 @@
 \large
 \textsc{H\'ector Bahamonde}\\ 
 \thanks{I thank Robert Kaufman, Hillel Soifer, Ana de la O, Mark Dincecco, James Mahon, Christopher Hale, Alexander Lee, Jack Paine, Daniel Kelemen, Douglas Blair, Paul Poast, Jorge Atria, Christine Hunefeldt, the attendees of the Annual Meeting of the Southern Political Science Association in New Orleans 2018, the  International Congress of the Latin American Studies Association in Barcelona 2018, and of the Social Sciences Institute Seminar, at Universidad de O$'$Higgins, for all the useful comments. I also thank the School of Arts and Sciences at Rutgers University for granting me funds to collect part of the data used in this project. All errors are my own. Usual caveats apply.}
-\normalsize Assistant Professor $\bullet$ University O$'$Higgins\\
+\normalsize Assistant Professor $\bullet$ O$'$Higgins University\\
 \normalsize \href{mailto:\filetext}{\texttt{\filetext}}\\
 \normalsize \href{http://www.hectorbahamonde.com}{\texttt{www.HectorBahamonde.com}}
 \vspace{-5mm}
@@ -340,17 +340,16 @@ In an effort to generalize the argument about the sectoral origins of the income
 
 
 % MODELS
-Econometrically, this section is concerned about the \emph{timing} of implementing the income tax law in nine Latin American polities, and particularly, about the individual contribution of both the agricultural and industrial sectors. \autoref{results:table:cox} shows 3 models.\footnote{Tables were produced using the  \texttt{texreg} package \parencite[]{Leifeld:2013qr}. All Cox models were computed using the \texttt{survival R}  package (\textcite{Therneau:2015zr}). The GEE logistic regression was computed using the \texttt{geepack} package \parencite[]{Hojsgaard:2016}. The simulations were performed using the \texttt{simPH R} package \parencite{Gandrud2015}.} Following \textcite{Aidt2009a}, Model 1 computes the lagged conditional hazard ratio of a country which has not yet adopted the income tax adopts it in a given year, as a function of industrial and agricultural outputs. Since the idea is to capture the \emph{sectoral contribution} of the implementation of the income tax law, these variables were not combined. Following \textcite[49]{Box-Steffensmeier2004}, the next equation was fitted: 
+Econometrically, this section is concerned about the \emph{timing} of implementing the income tax law in nine Latin American polities, and particularly, about the individual contribution of both the agricultural and industrial sectors. \autoref{results:table:cox} shows 3 models.\footnote{Tables were produced using the  \texttt{texreg} package \parencite[]{Leifeld:2013qr}. All Cox models were computed using the \texttt{survival R}  package (\textcite{Therneau:2015zr}). The GEE logistic regression was computed using the \texttt{geepack} package \parencite[]{Hojsgaard:2016}. The simulations were performed using the \texttt{simPH R} package \parencite{Gandrud2015}.} Following \textcite{Aidt2009a}, Model 1 computes the lagged conditional hazard ratio of a country which has not yet adopted the income tax adopts it in a given year, as a function of industrial and agricultural outputs. Since the idea is to capture the \emph{sectoral contribution} of the implementation of the income tax law, these variables were not combined. Following \textcite[49]{Box-Steffensmeier2004}, the next equation was fitted for all countries $i$ and years $t$: 
 \begin{equation}\label{cox:eq}
 h_{i}(t) = exp(\beta_{1}\text{Industrial Growth}_{i,t} + \beta_{2}\text{Agricultural Growth}_{i,t} + \beta_{3}\text{Total Population}_{i,t})h_{0}(t)
-\end{equation},
+\end{equation}
 
-for all countries $i$ and years $t$.
 
 Countries drop out of the sample when they adopt the income tax. Model 2 shows the estimated coefficients of a generalized estimating equation (GEE). Following \textcite[331]{Zorn2006}, the next equation was fitted:
 \begin{equation}\label{gee:eq}
 \pi_{i,t}=\Phi(\beta_{1}\text{log(Industrial Growth$_{i,t}$)}+\beta_{2}\text{log(Agricultural Growth$_{i,t}$)}+\beta_{3}\text{log(Total Population$_{i,t}$)})
-\end{equation},
+\end{equation}
 
 where $\pi$ is the logit link function, and $\Phi$ is as scale parameter (i.e. the cumulative distribution function), for all $i$ countries, and years $t$.
 
@@ -358,7 +357,7 @@ Generalized estimating equations were introduced by \textcite{Liang1986} to fit 
 
 \begin{equation}\label{clogit:eq}
 \pi_{i,t}=\Phi(\beta_{0} + \beta_{1}\text{log(Industrial Growth$_{i,t}$)}+\beta_{2}\text{log(Agricultural Growth$_{i,t}$)}+\beta_{3}\text{log(Total Population$_{i,t}$)}+\alpha_{i})
-\end{equation},
+\end{equation}
 
 where $\alpha$ are the country fixed effects for all countries $i$. Since population has been associated with the probability elites expand the franchise,\footnote{\textcite[892-893]{Engerman2005}.} and consequently the tax base, country-year population was included as a control variable. 
 
@@ -407,7 +406,16 @@ where,
 \begin{equation*} \label{indexes:1}
 \begin{split}
 i_{1,...I} & \; \text{and} \; \text{I}=\Sexpr{N} \;  \text{observations},\\
-j_{1,...J} & \; \text{and} \; \text{J}=\Sexpr{NSector} \;  \text{sectors},\\
+j_{1,...J} & \; \text{and} \; \text{J}=\Sexpr{load("/Users/hectorbahamonde/RU/Dissertation/Papers/Earthquake_Paper/eq_output_d_Chile.RData");
+if (!require("pacman")) install.packages("pacman"); library(pacman);
+p_load(dplyr);
+dat$Sector <- as.factor(recode(as.character(dat$Sector), 
+                               "1" = "Industry", 
+                               "2" = "Industry",
+                               "3" = "Agriculture",
+                               "1 y 2" = "Industry",
+                               "1 y 3" = "Mixed",
+                               "2 y 3" = "Mixed"));as.numeric(as.vector(length(unique(as.numeric(dat$Sector)))))} \;  \text{sectors},\\
 t_{1,...T} & \; \text{and} \; \text{T}=\Sexpr{yearN} \;  \text{years}.
 \end{split}
 \end{equation*}
