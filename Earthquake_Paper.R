@@ -1687,7 +1687,7 @@ set.seed(602)
 # define the vectors of the data matrix for JAGS.
 Deaths <- as.vector(dat$Deaths)
 Magnitude <- as.vector(dat$Magnitude)
-incometax.d = as.vector(as.numeric(dat$incometax.d))
+incometax.d = as.vector(as.numeric(ifelse(dat$year>=1924,1,0)))
 p.Population <- as.vector(dat$p.Population)
 Urban = as.vector(as.numeric(dat$Urban))
 r.long = as.vector(as.numeric(dat$r.long))
