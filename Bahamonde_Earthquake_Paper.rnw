@@ -285,7 +285,7 @@ I constructed a novel hand-collected longitudinal dataset using the \emph{Signif
 
 
 % earthquake:map:plot:chile
-<<earthquake:map:plot:chile, echo = FALSE, fig.pos='H', warning = FALSE, message = FALSE,fig.cap=earthquake.map.note.chile, fig.align='center', fig.width=4,fig.height=7,dpi=1000,cache = FALSE,eval=TRUE>>=
+<<earthquake:map:plot:chile, echo = FALSE, fig.pos='H', warning = FALSE, message = FALSE,fig.cap=earthquake.map.note.chile, fig.align='center', fig.width=6,fig.height=7,dpi=1000,cache = FALSE,eval=TRUE>>=
 
 @
 \clearpage

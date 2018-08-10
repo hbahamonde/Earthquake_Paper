@@ -10,14 +10,14 @@ qi = "Hazard Rate" # original: Hazard Rate
 ci = 0.95
 
 # Bayesian: Sectoral Model
-n.iter.sectoral = 200000  # n.iter.sectoral = 200000 // this is for working model
-n.burnin.sectoral = 20000 # n.burnin.sectoral = 20000 // this is for working model
-n.chains.sectoral = 4 # n.chains.sectoral = 4 for the working model
+n.iter.sectoral = 100  # n.iter.sectoral = 200000 // this is for working model
+n.burnin.sectoral = 10 # n.burnin.sectoral = 20000 // this is for working model
+n.chains.sectoral = 1 # n.chains.sectoral = 4 for the working model
 
 # Bayesian: Tax Model
-n.iter.tax = 200000  # n.iter.tax = 200000 // this is for working model
-n.burnin.tax = 20000 # n.burnin.tax = 20000 // this is for working model
-n.chains.tax = 4 # n.chains.tax = 4 for the working model
+n.iter.tax = 100  # n.iter.tax = 200000 // this is for working model
+n.burnin.tax = 10 # n.burnin.tax = 20000 // this is for working model
+n.chains.tax = 1 # n.chains.tax = 4 for the working model
 ## ---- 
 
 
@@ -100,7 +100,7 @@ if (!require("pacman")) install.packages("pacman"); library(pacman)
 p_load(dplyr)
 
 
-dat$Sector <- as.factor(recode(as.character(dat$Sector), 
+dat$Sector = as.factor(recode(as.character(dat$Sector), 
                                "1" = "Industry", 
                                "2" = "Industry",
                                "3" = "Agriculture",
@@ -303,35 +303,42 @@ chile.provinces <- readOGR(dsn = "/Users/hectorbahamonde/RU/Data/shape_files/div
                            layer = "division_provincial",
                            verbose = FALSE)
 
-# load eq data
-load("/Users/hectorbahamonde/RU/Dissertation/Papers/Earthquake_Paper/Chile_Data_Earthquake.RData")
-dat.chile <- dat.chile[!(dat.chile$Longitude <= -76),]
-
-
 #chile.provinces <- gSimplify(chile.provinces, tol=10000, topologyPreserve=T)
 chile.provinces <- spTransform(chile.provinces, CRS("+proj=longlat +datum=WGS84"))
 chile.provinces <- fortify(chile.provinces)
-chile.provinces <- chile.provinces[!(chile.provinces$long <= -76),]
+# chile.provinces <- chile.provinces[!(chile.provinces$long <= -76),]
 
-# recode Sector
-if (!require("pacman")) install.packages("pacman"); library(pacman)
-p_load(car)
 
-dat.chile$Sector2 <- recode(as.factor(dat.chile$Sector), "1 = 'Industry' ; 2 = 'Industry' ; 3 = 'Agriculture' ; '1 y 2' = 'Industry' ; '1 y 3' = 'Mixed' ; '2 y 3' = 'Mixed' ")
+
+# load eq data
+load("/Users/hectorbahamonde/RU/Dissertation/Papers/Earthquake_Paper/eq_output_d_Chile.RData") 
+
+# rename df
+dat.chile = dat
+
+#dat.chile <- dat.chile[!(dat.chile$Longitude <= -76),]
+
+dat.chile = dat.chile[!is.na(dat.chile$Magnitude),] 
+dat.chile = dat.chile[!is.na(dat.chile$Deaths),] 
+dat.chile = dat.chile[!is.na(dat.chile$Sector),] 
+dat.chile = dat.chile[!is.na(dat.chile$Population),] 
+dat.chile = dat.chile[!is.na(dat.chile$Latitude),] 
+dat.chile = dat.chile[!is.na(dat.chile$Longitude),] 
+dat.chile = dat.chile[!is.na(dat.chile$Urban),] 
 
 
 chile.map.plot.d <- data.frame(
   Longitude = na.omit(dat.chile$Longitude),
   Latitude = na.omit(dat.chile$Latitude),
-  Magnitude = dat.chile$Magnitude,
-  Sector = dat.chile$Sector2,
-  Year = dat.chile$year) 
+  Magnitude = na.omit(dat.chile$Magnitude),
+  Sector = na.omit(dat.chile$Sector),
+  Year = na.omit(dat.chile$year)) 
 
 
 
-chile.map.plot.d$Sector<- as.character(chile.map.plot.d$Sector)
-chile.map.plot.d$Sector[chile.map.plot.d$Sector==""] <- NA
-chile.map.plot.d$Sector <- as.factor(chile.map.plot.d$Sector)
+# chile.map.plot.d$Sector<- as.character(chile.map.plot.d$Sector)
+# chile.map.plot.d$Sector[chile.map.plot.d$Sector==""] <- NA
+# chile.map.plot.d$Sector <- as.factor(chile.map.plot.d$Sector)
 
 
 # prepare DF for plot
@@ -475,6 +482,16 @@ dat$country <- as.integer(dat$country)
 # weight population 
 dat$w.Deaths = round((dat$Deaths/dat$Population),5)*10
 
+
+# recode sector
+dat$Sector = as.factor(recode(as.character(dat$Sector), 
+                              "1" = "Industry", 
+                              "2" = "Industry",
+                              "3" = "Agriculture",
+                              "1 y 2" = "Industry",
+                              "1 y 3" = "Mixed",
+                              "2 y 3" = "Mixed"))
+
 # proportion of Population 
 dat$p.Population = dat$Population/1000 
 save(dat, file = "/Users/hectorbahamonde/RU/Dissertation/Papers/Earthquake_Paper/eq_output_d_Chile.RData")
@@ -541,22 +558,6 @@ dispersiontest(o.Deaths,alternative = c("greater"), trafo=1) # overdispersion is
 
 # load data
 load("/Users/hectorbahamonde/RU/Dissertation/Papers/Earthquake_Paper/eq_output_d_Chile.RData")
-
-
-## packages
-if (!require("pacman")) install.packages("pacman"); library(pacman)
-p_load(dplyr)
-
-
-dat$Sector <- as.factor(recode(as.character(dat$Sector), 
-                               "1" = "Industry", 
-                               "2" = "Industry",
-                               "3" = "Agriculture",
-                               "1 y 2" = "Industry",
-                               "1 y 3" = "Mixed",
-                               "2 y 3" = "Mixed"))
-
-
 
 
 # load libraries
@@ -926,24 +927,7 @@ print.xtable(xtable(
 
 ## ---- income:tax:model:and:data:not:run ----
 # load data 
-
 load("/Users/hectorbahamonde/RU/Dissertation/Papers/Earthquake_Paper/eq_output_d_Chile.RData") 
-
-
-## packages
-if (!require("pacman")) install.packages("pacman"); library(pacman)
-p_load(dplyr)
-
-
-dat$Sector <- as.factor(recode(as.character(dat$Sector), 
-                               "1" = "Industry", 
-                               "2" = "Industry",
-                               "3" = "Agriculture",
-                               "1 y 2" = "Industry",
-                               "1 y 3" = "Mixed",
-                               "2 y 3" = "Mixed"))
-
-
 
 
 # load libraries
