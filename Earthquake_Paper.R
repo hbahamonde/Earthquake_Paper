@@ -5,7 +5,7 @@ graphics.off()
 
 ## ---- number:of:simulations ----
 # Hazard Rate simulations 
-nsim = 10000 # original: 10000
+nsim = 100 # original: 10000
 qi = "Hazard Rate" # original: Hazard Rate
 ci = 0.95
 
