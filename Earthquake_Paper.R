@@ -568,43 +568,48 @@ p_load(R2jags, coda, R2WinBUGS, lattice, rjags, runjags)
 options(scipen=10000)
 set.seed(602)
 
+
+
+
+
+
+
 # specify the model
 model.jags.sectoral <- function() {
-  for (i in 1:N){ # number of earthquakes
-    Deaths[i] ~ dpois(lambda[i])
-    
-    log(lambda[i]) <- 
-      #b.propagrmanu[Sector[i]]*propagrmanu[i] + # multi-level part: allow national output to vary at the local/sector level
-      b.Magnitude[Sector[i]]*Magnitude[i] + #  multi-level part: allow national output to vary at the local/sector level
-      b.p.Population*p.Population[i] +
-      b.Urban*Urban[i] +
-      b.year[yearID[i]] + # year fixed-effects
-      b.r.long*r.long[i] +
-      b.r.lat*r.lat[i] +
-      mu ## intercept
-  }
-  
-  b.r.lat ~ dunif(-1000,1000)
-  b.r.long ~ dunif(-1000,1000)
-  mu  ~ dunif(-1000,1000) ## intercept
-  b.p.Population ~ dunif(-1000,1000)
-  b.Urban ~ dunif(-1000,1000)
-  
-  
-  for (t in 1:yearN){ # fixed effects
-    b.year[t] ~ dnorm(m.b.year[t], tau.b.year[t])
-    
-    m.b.year[t] ~ dunif(-1000,1000)
-    tau.b.year[t] ~ dgamma(0.5, 0.001) # uninformative prior
-  }
-  
-  ## Varying Slopes for Sector (unmodeled)
-  for (k in 1:NSector){ # 
-    b.Magnitude[k] ~ dnorm(m.Magnitude[k], tau.Magnitude[k])
-    m.Magnitude[k] ~ dnorm(0,1)
-    tau.Magnitude[k] ~ dgamma(0.5, 0.001) # uninformative prior
-    }
-  }
+        for (i in 1:N){ # number of earthquakes
+                Deaths[i] ~ dpois(lambda[i])
+                
+                log(lambda[i]) <- 
+                        #b.propagrmanu[Sector[i]]*propagrmanu[i] + # multi-level part: allow national output to vary at the local/sector level
+                        b.Magnitude[Sector[i]]*Magnitude[i] + #  multi-level part: allow national output to vary at the local/sector level
+                        b.p.Population*p.Population[i] +
+                        b.Urban*Urban[i] +
+                        b.year[yearID[i]] + # year fixed-effects
+                        b.r.long*r.long[i] +
+                        b.r.lat*r.lat[i] +
+                        mu ## intercept
+        }
+        b.r.lat ~ dnorm(0,1)
+        b.r.long ~ dnorm(0,1)
+        mu  ~ dnorm(0,1) ## intercept
+        b.p.Population ~ dnorm(0,1)
+        b.Urban ~ dnorm(0,1)
+        
+        
+        for (t in 1:yearN){ # fixed effects
+                b.year[t] ~ dnorm(m.b.year[t], tau.b.year[t])
+                
+                m.b.year[t] ~ dnorm(0,1)
+                tau.b.year[t] ~ dgamma(0.5, 0.001) # uninformative prior
+        }
+        
+        ## Varying Slopes for Sector (unmodeled)
+        for (k in 1:NSector){ # 
+                b.Magnitude[k] ~ dnorm(m.Magnitude[k], tau.Magnitude[k])
+                m.Magnitude[k] ~ dnorm(0,1)
+                tau.Magnitude[k] ~ dgamma(0.5, 0.001) # uninformative prior
+        }
+}
 
 
 
@@ -954,19 +959,19 @@ model.jags.tax <- function() {
       mu ## intercept
   }
   
-  b.Magnitude ~ dunif(-1000,1000)
-  b.incometax.d ~ dunif(-1000,1000)
-  b.p.Population ~ dunif(-1000,1000)
-  b.r.lat ~ dunif(-1000,1000)
-  b.r.long ~ dunif(-1000,1000)
-  b.Urban ~ dunif(-1000,1000)
+  b.Magnitude ~ dnorm(0,1e6)
+  b.incometax.d ~ dnorm(0,1e6)
+  b.p.Population ~ dnorm(0,1e6)
+  b.r.lat ~ dnorm(0,1e6)
+  b.r.long ~ dnorm(0,1e6)
+  b.Urban ~ dnorm(0,1e6)
   
-  mu  ~ dunif(-1000,1000) ## intercept
+  mu  ~ dnorm(0,1e6) ## intercept
 
   for (t in 1:yearN){ # fixed effects 
     b.year[t] ~ dnorm(m.b.year[t], tau.b.year[t]) 
     
-    m.b.year[t] ~ dunif(-1000,1000)
+    m.b.year[t] ~ dnorm(0,1e6)
     tau.b.year[t] ~ dgamma(0.5, 0.001) # uninformative prior 
   } 
   
@@ -1047,8 +1052,8 @@ earthquakefit.tax <- jags(
   n.iter = n.iter.tax,
   n.burnin = n.burnin.tax, 
   #n.thin = 10,
-  model.file=model.jags.tax,
-  progress.bar = "none"
+  model.file=model.jags.tax#,
+  #progress.bar = "none"
   )
 
 #### Generates Diagnostic Plots - this links to a link in the Output Table.
@@ -1694,13 +1699,13 @@ model <- function() {
       mu ## intercept
   }
   
-  b.r.lat ~ dunif(-1000,1000)
-  b.r.long ~ dunif(-1000,1000)
-  mu  ~ dunif(-1000,1000) ## intercept
-  b.p.Population ~ dunif(-1000,1000)
-  b.Urban ~ dunif(-1000,1000)
-  b.incometax.d ~ dunif(-1000,1000)
-  b.Magnitude ~ dunif(-1000,1000)
+  b.r.lat ~ dnorm(0,1)
+  b.r.long ~ dnorm(0,1)
+  mu  ~ dnorm(0,1) ## intercept
+  b.p.Population ~ dnorm(0,1)
+  b.Urban ~ dnorm(0,1)
+  b.incometax.d ~ dnorm(0,1)
+  b.Magnitude ~ dnorm(0,1)
   
   
 }
