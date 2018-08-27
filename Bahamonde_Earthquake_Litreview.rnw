@@ -1,6 +1,9 @@
 % BEGIN  Jorge Atria comments
 Income taxation and state capacities in Chile: measuring institutional development using historical  earthquake data (H. Bahamonde)
 
+\textcite[109]{Mamalakis1971} explains that in Latin America ``[p]olitical institutions and agents are distinguished, primarily, on the basis of their sectoral foundations.''
+
+
 Comentario general
 El artículo ofrece una aproximación novedosa a un tema de gran importancia para los estados y de creciente abordaje en la literatura internacional, aunque aún poco desarrollado en los casos latinoamericanos. Es innovador para introducirse en la discusión sobre state capacity enfocándose los acuerdos y negociaciones entre elites y los terremotos como eventos exógenos que ayudan a estudiar la capacidad fiscal a lo largo de la historia. El paper discute con una vasta cantidad de autores y trabajos, sorprende por la referencia a casos y épocas diversas incluso más allá de América Latina, y se inserta con propiedad en una línea de trabajos recientes buscando aportar en estas discusiones. Desde este dominio aún se puede mejorar el argumento del paper, sea concentrándolo en uno de sus dos principales aportes (acuerdos y relaciones entre elites o terremotos como indicador) para poder ofrecer mayor evidencia sobre cada uno, o bien manteniendo ambos pero tratando de clarificar en qué medida esta hipótesis complementa, refuta o refrenda otros estudios que señalan la inefectividad del impuesto al ingreso en Chile, la importancia de las elites como un todo por sobre las desavenencias y negociaciones entre subelites, o los persistentes déficit en materia de state capacity en Chile, tanto para afrontar los terremotos como en términos de política tributaria y desarrollo estatal en general.
 
