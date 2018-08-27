@@ -963,7 +963,7 @@ model.jags.tax <- function() {
   b.incometax.d ~ dnorm(0,1e6)
   b.p.Population ~ dnorm(0,1e6)
   b.r.lat ~ dnorm(0,1e6)
-  b.r.long ~ dnorm(0,1e6)
+  #b.r.long ~ dnorm(0,1e6)
   b.Urban ~ dnorm(0,1e6)
   
   mu  ~ dnorm(0,1e6) ## intercept
@@ -972,7 +972,7 @@ model.jags.tax <- function() {
     b.year[t] ~ dnorm(m.b.year[t], tau.b.year[t]) 
     
     m.b.year[t] ~ dnorm(0,1e6)
-    tau.b.year[t] ~ dgamma(0.5, 0.001) # uninformative prior 
+    tau.b.year[t] ~ dgamma(2,100) # uninformative prior 
   } 
   
 }
@@ -1030,7 +1030,7 @@ eq.params.tax <- c(
   "b.Magnitude", 
   "b.p.Population", 
   "b.year", 
-  "b.r.long", 
+  #"b.r.long", 
   "b.r.lat", 
   "b.incometax.d", 
   "b.Urban", 
@@ -1096,7 +1096,7 @@ sim.no.income.tax <- matrix(rep(NA, nrow(tax.mcmc.dat)*length(year.range)), nrow
 for(i in 1:length(year.range)){
   sim.no.income.tax[, i] <- tax.mcmc.dat$b.p.Population*p.Population[i] + 
     tax.mcmc.dat$b.r.lat*r.lat[i] + 
-    tax.mcmc.dat$b.r.long*r.long[i] + 
+    #tax.mcmc.dat$b.r.long*r.long[i] + 
     tax.mcmc.dat$b.Urban*Urban[i] +
     tax.mcmc.dat$b.Magnitude*Magnitude[i] +
     incometax.d[i]*0 
@@ -1126,7 +1126,7 @@ for(i in 1:length(year.range)){
   sim.income.tax[, i] <-
     tax.mcmc.dat$b.p.Population*p.Population[i] + 
     tax.mcmc.dat$b.r.lat*r.lat[i] + 
-    tax.mcmc.dat$b.r.long*r.long[i] + 
+    #tax.mcmc.dat$b.r.long*r.long[i] + 
     tax.mcmc.dat$b.Urban*Urban[i] +
     tax.mcmc.dat$b.Magnitude*Magnitude[i] +
     tax.mcmc.dat$b.incometax.d*incometax.d[i]
