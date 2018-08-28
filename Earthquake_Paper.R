@@ -954,6 +954,7 @@ model.jags.tax <- function() {
       b.Urban*Urban[i] +
       b.r.long*r.long[i] +
       b.r.lat*r.lat[i] + 
+      b.Sector*Sector[i] +
       mu ## intercept
     }
   
@@ -961,20 +962,22 @@ model.jags.tax <- function() {
   b.Urban ~ dnorm(0,1e6)
   b.r.long ~ dnorm(0,1e6)
   b.r.lat ~ dnorm(0,1e6)
+  b.Sector ~ dnorm(0,1e6)
   
   mu  ~ dnorm(0,1e6) ## intercept
 
   ## Varying Slopes for year (unmodeled)
   for (t in 1:yearN){ # 
     b.Magnitude[t] ~ dnorm(m.b.Magnitude[t], tau.b.Magnitude[t])
-    m.b.Magnitude[t] ~ dnorm(0,1)
+    m.b.Magnitude[t] ~ dnorm(0,1e6)
     tau.b.Magnitude[t] ~ dgamma(1, 1)
   }
 }
 
 
-
-
+## notas:
+## conservar FE por ano.
+## agregar interaction term entre magnitud e incometax.
 
 
 
@@ -1016,6 +1019,7 @@ jags.data.tax <- list(Deaths = Deaths,
                       r.long = r.long,
                       r.lat = r.lat,
                       yearID = yearID,
+                      Sector = Sector,
                       #year = year,
                       yearN = yearN,
                       N = N)
@@ -1027,6 +1031,7 @@ eq.params.tax <- c(
   "b.p.Population", 
   "b.r.long", 
   "b.r.lat", 
+  "b.Sector",
   #"b.incometax.d", 
   "b.Urban", 
   "lambda")
@@ -1035,9 +1040,9 @@ eq.params.tax <- c(
 
 ## ---- income:tax:model:and:data:run ----
 # run the model
-# n.iter.tax = 2000000  # n.iter.tax = 200000 // this is for working model
-# n.burnin.tax = 200000 # n.burnin.tax = 5000 // this is for working model
-# n.chains.tax = 4 # n.chains.tax = 4 for the working model
+# n.iter.tax = 50000  # n.iter.tax = 200000 // this is for working model
+# n.burnin.tax = 1000 # n.burnin.tax = 5000 // this is for working model
+# n.chains.tax = 5 # n.chains.tax = 4 for the working model
 
 earthquakefit.tax <- jags(
   data=jags.data.tax,
@@ -1047,8 +1052,8 @@ earthquakefit.tax <- jags(
   n.iter = n.iter.tax,
   n.burnin = n.burnin.tax, 
   #n.thin = 10,
-  model.file=model.jags.tax,
-  progress.bar = "none"
+  model.file=model.jags.tax#,
+  #progress.bar = "none"
   )
 
 #### Generates Diagnostic Plots - this links to a link in the Output Table.
