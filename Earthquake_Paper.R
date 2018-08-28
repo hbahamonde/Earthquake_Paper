@@ -949,29 +949,36 @@ model.jags.tax <- function() {
     Deaths[i] ~ dpois(lambda[i])
     
     log(lambda[i]) <- 
-      b.Magnitude[yearID[i]]*Magnitude[i] + #  multi-level part: allow national output to vary at the local/sector level
+      b.Magnitude*Magnitude[i] + #  multi-level part: allow national output to vary at the local/sector level
+      b.incometax.d*incometax.d[i] +
+      b.interaction * Magnitude[i] + incometax.d[i] +
       b.p.Population*p.Population[i] +
       b.Urban*Urban[i] +
       b.r.long*r.long[i] +
       b.r.lat*r.lat[i] + 
-      b.Sector*Sector[i] +
+      #b.Sector*Sector[i] +
+      b.year[yearID[i]] + # year fixed-effects
       mu ## intercept
     }
   
+  b.Magnitude ~ dnorm(0,1e6)
+  b.incometax.d ~ dnorm(0,1e6)
+  b.interaction ~ dnorm(0,1e6)
   b.p.Population ~ dnorm(0,1e6)
   b.Urban ~ dnorm(0,1e6)
   b.r.long ~ dnorm(0,1e6)
   b.r.lat ~ dnorm(0,1e6)
-  b.Sector ~ dnorm(0,1e6)
+  #b.Sector ~ dnorm(0,1e6)
   
   mu  ~ dnorm(0,1e6) ## intercept
+  
+  for (t in 1:yearN){ # yearly fixed effects 
+    b.year[t] ~ dnorm(m.b.year[t], tau.b.year[t]) 
+    
+    m.b.year[t] ~ dunif(-1000,1000)
+    tau.b.year[t] ~ dgamma(0.5, 0.001) # uninformative prior 
+  } 
 
-  ## Varying Slopes for year (unmodeled)
-  for (t in 1:yearN){ # 
-    b.Magnitude[t] ~ dnorm(m.b.Magnitude[t], tau.b.Magnitude[t])
-    m.b.Magnitude[t] ~ dnorm(0,1e6)
-    tau.b.Magnitude[t] ~ dgamma(1, 1)
-  }
 }
 
 
@@ -1013,14 +1020,12 @@ r.lat = as.vector(as.numeric(dat$r.lat))
 
 jags.data.tax <- list(Deaths = Deaths,
                       Magnitude = Magnitude^2,
+                      incometax.d = incometax.d,
                       p.Population = p.Population,
-                      #incometax.d = incometax.d,
                       Urban = Urban,
                       r.long = r.long,
                       r.lat = r.lat,
                       yearID = yearID,
-                      Sector = Sector,
-                      #year = year,
                       yearN = yearN,
                       N = N)
 
@@ -1028,20 +1033,20 @@ jags.data.tax <- list(Deaths = Deaths,
 # Define and name the parameters so JAGS monitors them.
 eq.params.tax <- c(
   "b.Magnitude", 
+  "b.incometax.d",
+  "b.interaction",
   "b.p.Population", 
+  "b.Urban", 
   "b.r.long", 
   "b.r.lat", 
-  "b.Sector",
-  #"b.incometax.d", 
-  "b.Urban", 
   "lambda")
 ## ----
 
 
 ## ---- income:tax:model:and:data:run ----
 # run the model
-# n.iter.tax = 50000  # n.iter.tax = 200000 // this is for working model
-# n.burnin.tax = 1000 # n.burnin.tax = 5000 // this is for working model
+# n.iter.tax = 1000  # n.iter.tax = 200000 // this is for working model
+# n.burnin.tax = 100 # n.burnin.tax = 5000 // this is for working model
 # n.chains.tax = 5 # n.chains.tax = 4 for the working model
 
 earthquakefit.tax <- jags(
@@ -1071,7 +1076,22 @@ graphics.off()
 # Income Tax Adoption Plot
 ###############################
 
+# HERE
+x2.sim <- seq(min(jags.data.tax$Magnitude), max(jags.data.tax$Magnitude), by = 0.1)
 
+## Calculate conditional effect of X1 across the range of X2
+
+## Bayes:
+int.sim <- matrix(rep(NA, nrow(tax.mcmc.dat)*length(x2.sim)), nrow = nrow(tax.mcmc.dat))
+for(i in 1:length(x2.sim)){
+  int.sim[, i] <- tax.mcmc.dat$beta1 + tax.mcmc.dat$beta3 * x2.sim[i]
+}
+
+## Note: the variance now comes from the posterior, not the vcov matrix
+
+bayes.c.eff.mean <- apply(int.sim, 2, mean)
+bayes.c.eff.lower <- apply(int.sim, 2, function(x) quantile(x, probs = c(0.025)))
+bayes.c.eff.upper <- apply(int.sim, 2, function(x) quantile(x, probs = c(0.975)))
 
 
 
