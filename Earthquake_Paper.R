@@ -949,32 +949,27 @@ model.jags.tax <- function() {
     Deaths[i] ~ dpois(lambda[i])
     
     log(lambda[i]) <- 
-      b.Magnitude*Magnitude[i] +
-      b.incometax.d*incometax.d[i] +
+      b.Magnitude[yearID[i]]*Magnitude[i] + #  multi-level part: allow national output to vary at the local/sector level
       b.p.Population*p.Population[i] +
       b.Urban*Urban[i] +
-      b.year[yearID[i]] + # year fixed-effects
       b.r.long*r.long[i] +
       b.r.lat*r.lat[i] + 
       mu ## intercept
-  }
+    }
   
-  b.Magnitude ~ dnorm(0,1e6)
-  b.incometax.d ~ dnorm(0,1e6)
   b.p.Population ~ dnorm(0,1e6)
-  b.r.lat ~ dnorm(0,1e6)
-  b.r.long ~ dnorm(0,1e6)
   b.Urban ~ dnorm(0,1e6)
+  b.r.long ~ dnorm(0,1e6)
+  b.r.lat ~ dnorm(0,1e6)
   
   mu  ~ dnorm(0,1e6) ## intercept
 
-  for (t in 1:yearN){ # fixed effects 
-    b.year[t] ~ dnorm(m.b.year[t], tau.b.year[t]) 
-    
-    m.b.year[t] ~ dnorm(0,1e6)
-    tau.b.year[t] ~ dgamma(1,1) # uninformative prior 
-  } 
-  
+  ## Varying Slopes for year (unmodeled)
+  for (t in 1:yearN){ # 
+    b.Magnitude[t] ~ dnorm(m.b.Magnitude[t], tau.b.Magnitude[t])
+    m.b.Magnitude[t] ~ dnorm(0,1)
+    tau.b.Magnitude[t] ~ dgamma(1, 1)
+  }
 }
 
 
@@ -1016,11 +1011,12 @@ r.lat = as.vector(as.numeric(dat$r.lat))
 jags.data.tax <- list(Deaths = Deaths,
                       Magnitude = Magnitude^2,
                       p.Population = p.Population,
-                      incometax.d = incometax.d,
+                      #incometax.d = incometax.d,
                       Urban = Urban,
                       r.long = r.long,
                       r.lat = r.lat,
                       yearID = yearID,
+                      #year = year,
                       yearN = yearN,
                       N = N)
 
@@ -1029,10 +1025,9 @@ jags.data.tax <- list(Deaths = Deaths,
 eq.params.tax <- c(
   "b.Magnitude", 
   "b.p.Population", 
-  "b.year", 
   "b.r.long", 
   "b.r.lat", 
-  "b.incometax.d", 
+  #"b.incometax.d", 
   "b.Urban", 
   "lambda")
 ## ----
@@ -1040,8 +1035,8 @@ eq.params.tax <- c(
 
 ## ---- income:tax:model:and:data:run ----
 # run the model
-# n.iter.tax = 200000  # n.iter.tax = 200000 // this is for working model
-# n.burnin.tax = 20000 # n.burnin.tax = 5000 // this is for working model
+# n.iter.tax = 2000000  # n.iter.tax = 200000 // this is for working model
+# n.burnin.tax = 200000 # n.burnin.tax = 5000 // this is for working model
 # n.chains.tax = 4 # n.chains.tax = 4 for the working model
 
 earthquakefit.tax <- jags(
@@ -1052,8 +1047,8 @@ earthquakefit.tax <- jags(
   n.iter = n.iter.tax,
   n.burnin = n.burnin.tax, 
   #n.thin = 10,
-  model.file=model.jags.tax#,
-  #progress.bar = "none"
+  model.file=model.jags.tax,
+  progress.bar = "none"
   )
 
 #### Generates Diagnostic Plots - this links to a link in the Output Table.
@@ -1070,6 +1065,12 @@ graphics.off()
 ###############################
 # Income Tax Adoption Plot
 ###############################
+
+
+
+
+
+
 
 
 
