@@ -926,6 +926,31 @@ print.xtable(xtable(
 # https://github.com/stan-dev/stan/wiki/Prior-Choice-Recommendations
 
 
+# HERE
+model.jags.tax <- function() {
+        for(i in 1:N){ # loop through all data points
+                Deaths[i] ~ dpois(mu[i])
+                mu[i] <- lambda[i]*z[i] + 0.00001 ## hack required for Rjags -- otherwise 'incompatibl
+                z[i] ~ dbern(psi)
+                log(lambda[i]) <-  alpha + 
+                        b.Magnitude * Magnitude[i] + 
+                        b.incometax.d * incometax.d[i] +
+                        b.interaction * Magnitude[i] + incometax.d[i] +
+                        b.p.Population * p.Population[i] +
+                        # b.Urban*Urban[i] +
+                        b.r.long * r.long[i] +
+                        b.r.lat * r.lat[i] + 
+                        #b.Sector*Sector[i] +
+                        b.year[yearID[i]] #+ 
+                #mu ## intercept
+                # alpha is overall intercept
+        }
+        # priors:
+        alpha ~ dnorm(0, 0.01) # overall model intercept psi ~ dunif(0, 1) # proportion of non-zeros
+}
+
+
+
 # cat("\014")
 # rm(list=ls())
 # graphics.off()
@@ -945,32 +970,31 @@ set.seed(602)
 
 # specify the model
 model.jags.tax <- function() {
-  for (i in 1:N){ 
-    Deaths[i] ~ dpois(lambda[i])
-    
-    log(lambda[i]) <- 
-      b.Magnitude * Magnitude[i] + 
-      b.incometax.d * incometax.d[i] +
-      #b.interaction * Magnitude[i] + incometax.d[i] +
-      b.p.Population * p.Population[i] +
-      b.Urban*Urban[i] +
-      # b.r.long * r.long[i] +
-      # b.r.lat * r.lat[i] + 
-      #b.Sector*Sector[i] +
-      b.year[yearID[i]] + 
-      mu ## intercept
-    }
-  
+        for (i in 1:N){ 
+                Deaths[i] ~ dnorm(mu[i], tau)
+                mu[i] <- b.intercept + 
+                        b.Magnitude * Magnitude[i] + 
+                        b.incometax.d * incometax.d[i] +
+                        b.interaction * Magnitude[i] + incometax.d[i] +
+                        b.p.Population * p.Population[i] +
+                        # b.Urban*Urban[i] +
+                        b.r.long * r.long[i] +
+                        b.r.lat * r.lat[i] + 
+                        #b.Sector*Sector[i] +
+                        b.year[yearID[i]] #+ 
+                        #mu ## intercept
+                }
+        b.intercept ~ dnorm(0, 1e6)
   b.Magnitude ~ dnorm(0, 1e6)
   b.incometax.d ~ dnorm(0, 1e6)
-  # b.interaction ~ dnorm(0, 0.1)
+  b.interaction ~ dnorm(0, 1e6)
   b.p.Population ~ dnorm(0, 1e6)
-  b.Urban ~ dnorm(0, 1e6)
-  # b.r.long ~ dnorm(0, 1e6)
-  # b.r.lat ~ dnorm(0, 1e6)
+  # b.Urban ~ dnorm(0, 1e6)
+  b.r.long ~ dnorm(0, 1e6)
+  b.r.lat ~ dnorm(0, 1e6)
   # b.Sector ~ dnorm(0, 0.1)
   
-  mu  ~ dnorm(0, 1e6) ## intercept
+  tau  ~ dgamma(1, 0.1) ## precision
   
   for (t in 1:yearN){ # fixed effects 
           b.year[t] ~ dnorm(m.b.year[t], tau.b.year[t]) 
@@ -982,9 +1006,7 @@ model.jags.tax <- function() {
 
 
 ## notas:
-## conservar FE por ano.
-## agregar interaction term entre magnitud e incometax.
-
+## ZIP:  https://georgederpa.github.io/teaching/countModels.html
 
 
 
@@ -1035,13 +1057,14 @@ jags.data.tax <- list(Deaths = Deaths,
 eq.params.tax <- c(
   "b.Magnitude", 
   "b.incometax.d",
-  #"b.interaction",
+  "b.interaction",
   "b.p.Population", 
   #"b.Urban", 
-  # "b.r.long", 
-  # "b.r.lat", 
-  "b.year",
-  "lambda")
+  "b.r.long", 
+  "b.r.lat", 
+  "b.year"#,
+  #"lambda"
+  )
 ## ----
 
 
