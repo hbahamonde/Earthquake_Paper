@@ -940,46 +940,50 @@ if (!require("pacman")) install.packages("pacman"); library(pacman)
 p_load(R2jags, coda, R2WinBUGS, lattice, rjags, runjags)
 
 # lower tolerance
-options(scipen=10000)
+# options(scipen=10000)
 set.seed(602)
 
 # specify the model
 model.jags.tax <- function() {
-  for (i in 1:N){ # number of earthquakes
+  for (i in 1:N){ 
     Deaths[i] ~ dpois(lambda[i])
     
     log(lambda[i]) <- 
-      b.Magnitude*Magnitude[i] +
-      b.incometax.d*incometax.d[i] +
-      b.p.Population*p.Population[i] +
+      b.Magnitude * Magnitude[i] + 
+      b.incometax.d * incometax.d[i] +
+      #b.interaction * Magnitude[i] + incometax.d[i] +
+      b.p.Population * p.Population[i] +
       b.Urban*Urban[i] +
-      b.year[yearID[i]] + # year fixed-effects
-      b.r.long*r.long[i] +
-      b.r.lat*r.lat[i] + 
+      # b.r.long * r.long[i] +
+      # b.r.lat * r.lat[i] + 
+      #b.Sector*Sector[i] +
+      b.year[yearID[i]] + 
       mu ## intercept
-  }
+    }
   
-  b.Magnitude ~ dnorm(0,1e6)
-  b.incometax.d ~ dnorm(0,1e6)
-  b.p.Population ~ dnorm(0,1e6)
-  b.r.lat ~ dnorm(0,1e6)
-  b.r.long ~ dnorm(0,1e6)
-  b.Urban ~ dnorm(0,1e6)
+  b.Magnitude ~ dnorm(0, 1e6)
+  b.incometax.d ~ dnorm(0, 1e6)
+  # b.interaction ~ dnorm(0, 0.1)
+  b.p.Population ~ dnorm(0, 1e6)
+  b.Urban ~ dnorm(0, 1e6)
+  # b.r.long ~ dnorm(0, 1e6)
+  # b.r.lat ~ dnorm(0, 1e6)
+  # b.Sector ~ dnorm(0, 0.1)
   
-  mu  ~ dnorm(0,1e6) ## intercept
-
+  mu  ~ dnorm(0, 1e6) ## intercept
+  
   for (t in 1:yearN){ # fixed effects 
-    b.year[t] ~ dnorm(m.b.year[t], tau.b.year[t]) 
-    
-    m.b.year[t] ~ dnorm(0,1e6)
-    tau.b.year[t] ~ dgamma(1,1) # uninformative prior 
-  } 
-  
-}
+          b.year[t] ~ dnorm(m.b.year[t], tau.b.year[t]) 
+          
+          m.b.year[t] ~ dnorm(0,1e6)
+          tau.b.year[t] ~ dgamma(1,1) # uninformative prior
+          }   
+  }
 
 
-
-
+## notas:
+## conservar FE por ano.
+## agregar interaction term entre magnitud e incometax.
 
 
 
@@ -990,6 +994,7 @@ Deaths <- as.vector(dat$Deaths)
 constmanufact <- as.vector(dat$constmanufact)
 constagricult <- as.vector(dat$constagricult)
 Magnitude <- as.vector(dat$Magnitude)
+ln.Magnitude <- as.vector(dat$ln.Magnitude)
 p.Population <- as.vector(dat$p.Population)
 Population <- as.vector(dat$Population)
 country <- as.numeric(as.ordered(dat$country))
@@ -1015,11 +1020,12 @@ r.lat = as.vector(as.numeric(dat$r.lat))
 
 jags.data.tax <- list(Deaths = Deaths,
                       Magnitude = Magnitude^2,
-                      p.Population = p.Population,
                       incometax.d = incometax.d,
+                      p.Population = p.Population,
                       Urban = Urban,
                       r.long = r.long,
                       r.lat = r.lat,
+                      Sector = Sector,
                       yearID = yearID,
                       yearN = yearN,
                       N = N)
@@ -1028,12 +1034,13 @@ jags.data.tax <- list(Deaths = Deaths,
 # Define and name the parameters so JAGS monitors them.
 eq.params.tax <- c(
   "b.Magnitude", 
+  "b.incometax.d",
+  #"b.interaction",
   "b.p.Population", 
-  "b.year", 
-  "b.r.long", 
-  "b.r.lat", 
-  "b.incometax.d", 
-  "b.Urban", 
+  #"b.Urban", 
+  # "b.r.long", 
+  # "b.r.lat", 
+  "b.year",
   "lambda")
 ## ----
 
@@ -1042,7 +1049,7 @@ eq.params.tax <- c(
 # run the model
 # n.iter.tax = 200000  # n.iter.tax = 200000 // this is for working model
 # n.burnin.tax = 20000 # n.burnin.tax = 5000 // this is for working model
-# n.chains.tax = 4 # n.chains.tax = 4 for the working model
+# n.chains.tax = 5 # n.chains.tax = 4 for the working model
 
 earthquakefit.tax <- jags(
   data=jags.data.tax,
@@ -1055,6 +1062,11 @@ earthquakefit.tax <- jags(
   model.file=model.jags.tax#,
   #progress.bar = "none"
   )
+
+
+plot(earthquakefit.tax)
+
+
 
 #### Generates Diagnostic Plots - this links to a link in the Output Table.
 if (!require("pacman")) install.packages("pacman"); library(pacman) 
@@ -1070,6 +1082,38 @@ graphics.off()
 ###############################
 # Income Tax Adoption Plot
 ###############################
+tax.mcmc <- as.mcmc(earthquakefit.tax)
+tax.mcmc.mat <- as.matrix(tax.mcmc)
+tax.mcmc.dat <- as.data.frame(tax.mcmc.mat)
+
+
+# Simulate the range of the moderating variable
+x2.sim <- seq(min(jags.data.tax$incometax.d), max(jags.data.tax$incometax.d), by = 0.01)
+
+## Calculate conditional effect of X1 across the range of X2
+int.sim <- matrix(rep(NA, nrow(tax.mcmc.dat)*length(x2.sim)), nrow = nrow(tax.mcmc.dat))
+
+for(i in 1:length(x2.sim)){
+  int.sim[, i] <- tax.mcmc.dat$b.Magnitude + tax.mcmc.dat$b.interaction * x2.sim[i]
+}
+
+## Note: the variance now comes from the posterior, not the vcov matrix
+
+bayes.c.eff.mean <- apply(int.sim, 2, mean)
+bayes.c.eff.lower <- apply(int.sim, 2, function(x) quantile(x, probs = c(0.025)))
+bayes.c.eff.upper <- apply(int.sim, 2, function(x) quantile(x, probs = c(0.975)))
+
+
+plot.dat <- data.frame(x2.sim, bayes.c.eff.mean, bayes.c.eff.lower, bayes.c.eff.upper)
+
+
+library(ggplot2)
+ggplot(plot.dat, aes(x = x2.sim, y = bayes.c.eff.mean)) + geom_line(color = "blue", alpha = 0.8, size = 0.5) + 
+  xlab("X2") + ylab("Conditional effect of X1") + theme_bw() + 
+  geom_ribbon(aes(ymin = bayes.c.eff.lower, ymax = bayes.c.eff.upper), fill = "blue", alpha = 0.2)  + 
+  geom_line(aes(x = x2.sim, y = bayes.c.eff.lower), color = "blue", alpha = 0.8, size = 0.5) + geom_line(aes(x = x2.sim, y = bayes.c.eff.upper), color = "blue", alpha = 0.8, size = 0.5)
+
+
 
 
 
