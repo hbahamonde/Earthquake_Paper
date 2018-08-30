@@ -1086,6 +1086,8 @@ tax.mcmc <- as.mcmc(earthquakefit.tax)
 tax.mcmc.mat <- as.matrix(tax.mcmc)
 tax.mcmc.dat <- as.data.frame(tax.mcmc.mat)
 
+# HERE
+x2.sim <- seq(min(jags.data.tax$Magnitude), max(jags.data.tax$Magnitude), by = 0.1)
 
 # Simulate the range of the moderating variable
 x2.sim <- seq(min(jags.data.tax$incometax.d), max(jags.data.tax$incometax.d), by = 0.01)
