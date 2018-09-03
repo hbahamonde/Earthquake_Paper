@@ -946,7 +946,7 @@ model.jags.tax <- function() {
                 Deaths[i] ~ dpois(lambda[i])
                 
                 log(lambda[i]) <- 
-                        b.Magnitude * Magnitude[i] * Magnitude[i] + #  multi-level part: allow national output to vary at the local/sector level
+                        b.Magnitude * Magnitude[i] + #  multi-level part: allow national output to vary at the local/sector level
                         b.incometax.d * incometax.d[i] +
                         b.interaction * Magnitude[i] * incometax.d[i] +
                         b.p.Population * p.Population[i] +
@@ -1015,14 +1015,13 @@ jags.data.tax <- list(Deaths = Deaths,
                       Magnitude = Magnitude,
                       incometax.d = incometax.d,
                       p.Population = p.Population,
-                      Urban = Urban,
+                      #Urban = Urban,
                       r.long = r.long,
                       r.lat = r.lat,
-                      Sector = Sector,
                       NSector = NSector,
                       SectorID = SectorID,
-                      yearID = yearID,
-                      yearN = yearN,
+                      #yearID = yearID,
+                      #yearN = yearN,
                       N = N)
 
 
@@ -1036,7 +1035,7 @@ eq.params.tax <- c(
   "b.r.long", 
   "b.r.lat", 
   "b.Sector",
-  "b.year",
+  #"b.year",
   "lambda"
   )
 ## ----
@@ -1084,32 +1083,41 @@ tax.mcmc.mat <- as.matrix(tax.mcmc)
 tax.mcmc.dat <- as.data.frame(tax.mcmc.mat)
 
 # Simulate the range of the moderating variable
-x2.sim <- seq(min(jags.data.tax$incometax.d), max(jags.data.tax$incometax.d), by = 0.01)
+x2.sim <- seq(min(jags.data.tax$incometax.d), max(jags.data.tax$incometax.d), by = 1)
 
 ## Calculate conditional effect of X1 across the range of X2
 int.sim <- matrix(rep(NA, nrow(tax.mcmc.dat)*length(x2.sim)), nrow = nrow(tax.mcmc.dat))
+#int.sim = data.frame(int.sim); colnames(int.sim) <- c("No Income Tax","Income Tax")
+
 
 for(i in 1:length(x2.sim)){
   int.sim[, i] <- tax.mcmc.dat$b.Magnitude + tax.mcmc.dat$b.interaction * x2.sim[i]
 }
 
-## Note: the variance now comes from the posterior, not the vcov matrix
 
-bayes.c.eff.mean <- apply(int.sim, 2, mean)
-bayes.c.eff.lower <- apply(int.sim, 2, function(x) quantile(x, probs = c(0.025)))
-bayes.c.eff.upper <- apply(int.sim, 2, function(x) quantile(x, probs = c(0.975)))
-
-
-plot.dat <- data.frame(x2.sim, bayes.c.eff.mean, bayes.c.eff.lower, bayes.c.eff.upper)
+int.sim = data.frame(
+        x = c(int.sim[,1],int.sim[,2]),
+        'Income Tax' = c(rep("No", nrow(int.sim)),rep("Yes", nrow(int.sim)))
+        )
 
 
-library(ggplot2)
-ggplot(plot.dat, aes(x = x2.sim, y = bayes.c.eff.mean)) + geom_line(color = "blue", alpha = 0.8, size = 0.5) + 
-  xlab("X2") + ylab("Conditional effect of X1") + theme_bw() + 
-  geom_ribbon(aes(ymin = bayes.c.eff.lower, ymax = bayes.c.eff.upper), fill = "blue", alpha = 0.2)  + 
-  geom_line(aes(x = x2.sim, y = bayes.c.eff.lower), color = "blue", alpha = 0.8, size = 0.5) + geom_line(aes(x = x2.sim, y = bayes.c.eff.upper), color = "blue", alpha = 0.8, size = 0.5)
 
+if (!require("pacman")) install.packages("pacman"); library(pacman) 
+p_load(ggplot2)
 
+# geom_density
+ggplot(int.sim, aes(x=x, fill= Income.Tax)) + 
+        geom_density(alpha=.3) + 
+        xlab("Death-Toll") + ylab("Conditional Effect of Earthquake Magnitude\non Implementing the Income Tax") + 
+        theme_bw() + 
+        theme(axis.text.y = element_text(size=7), 
+              axis.text.x = element_text(size=7), 
+              axis.title.y = element_text(size=7), 
+              axis.title.x = element_text(size=7), 
+              legend.text=element_text(size=7), 
+              legend.title=element_text(size=7),
+              plot.title = element_text(size=7),
+              legend.position="bottom")
 
 
 
