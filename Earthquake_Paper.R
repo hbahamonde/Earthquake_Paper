@@ -929,26 +929,27 @@ print.xtable(xtable(
 # HERE
 model.jags.tax <- function() {
         for(i in 1:N){ # loop through all data points
-                Deaths[i] ~ dpois(mu[i])
-                mu[i] <- lambda[i]*z[i] + 0.00001 ## hack required for Rjags -- otherwise 'incompatibl
-                z[i] ~ dbern(psi)
-                log(lambda[i]) <-  alpha + 
-                        b.Magnitude * Magnitude[i] + 
-                        b.incometax.d * incometax.d[i] +
-                        b.interaction * Magnitude[i] + incometax.d[i] +
-                        b.p.Population * p.Population[i] +
-                        # b.Urban*Urban[i] +
-                        b.r.long * r.long[i] +
-                        b.r.lat * r.lat[i] + 
-                        #b.Sector*Sector[i] +
-                        b.year[yearID[i]] #+ 
-                #mu ## intercept
-                # alpha is overall intercept
-        }
-        # priors:
-        alpha ~ dnorm(0, 0.01) # overall model intercept psi ~ dunif(0, 1) # proportion of non-zeros
+                for(i in 1:N){
+                        Deaths[i] ~ dpois(mu[i])
+                        mu[i] <- lambda[i]*z[i] + 0.00001 ## hack required for Rjags -- otherwise 'incompatibl
+                        z[i] ~ dbern(psi)
+                        log(lambda[i]) <- 
+                                b.Magnitude * Magnitude[i] + 
+                                b.incometax.d * incometax.d[i] +
+                                b.interaction * Magnitude[i] + incometax.d[i] +
+                                b.p.Population * p.Population[i] +
+                                # b.Urban*Urban[i] +
+                                b.r.long * r.long[i] +
+                                b.r.lat * r.lat[i] + 
+                                #b.Sector*Sector[i] +
+                                b.year[yearID[i]] #+ 
+                        + alpha # alpha is overall intercept
+                }
+                # priors:
+                alpha ~ dnorm(0, 0.01) # overall model intercept 
+                psi ~ dunif(0, 1) # proportion of non-zeros
+                }
 }
-
 
 
 # cat("\014")
@@ -970,43 +971,57 @@ set.seed(602)
 
 # specify the model
 model.jags.tax <- function() {
-        for (i in 1:N){ 
-                Deaths[i] ~ dnorm(mu[i], tau)
-                mu[i] <- b.intercept + 
-                        b.Magnitude * Magnitude[i] + 
-                        b.incometax.d * incometax.d[i] +
-                        b.interaction * Magnitude[i] + incometax.d[i] +
-                        b.p.Population * p.Population[i] +
-                        # b.Urban*Urban[i] +
-                        b.r.long * r.long[i] +
-                        b.r.lat * r.lat[i] + 
-                        #b.Sector*Sector[i] +
-                        b.year[yearID[i]] #+ 
-                        #mu ## intercept
+        for(i in 1:N){ # loop through all data points
+                for(i in 1:N){
+                        Deaths[i] ~ dpois(lambda.hacked[i])
+                        lambda.hacked[i] <- lambda[i]*(1-zero[i]) + 1e-10*zero[i] ## hack required for Rjags -- otherwise 'incompatibl
+                        
+                        
+                        log(lambda[i]) <- 
+                                b.Magnitude * Magnitude[i] + 
+                                b.incometax.d * incometax.d[i] +
+                                b.interaction * Magnitude[i] * incometax.d[i] +
+                                b.p.Population * p.Population[i] +
+                                b.Urban * Urban[i] +
+                                b.r.long * r.long[i] +
+                                b.r.lat * r.lat[i] + 
+                                #b.Sector*Sector[i] +
+                                b.year[yearID[i]] + 
+                                alpha # alpha is overall intercept
+                        
+                        z[i] ~ dbern(psi)
+                       
                 }
-        b.intercept ~ dnorm(0, 1e6)
-  b.Magnitude ~ dnorm(0, 1e6)
-  b.incometax.d ~ dnorm(0, 1e6)
-  b.interaction ~ dnorm(0, 1e6)
-  b.p.Population ~ dnorm(0, 1e6)
-  # b.Urban ~ dnorm(0, 1e6)
-  b.r.long ~ dnorm(0, 1e6)
-  b.r.lat ~ dnorm(0, 1e6)
-  # b.Sector ~ dnorm(0, 0.1)
-  
-  tau  ~ dgamma(1, 0.1) ## precision
-  
-  for (t in 1:yearN){ # fixed effects 
-          b.year[t] ~ dnorm(m.b.year[t], tau.b.year[t]) 
-          
-          m.b.year[t] ~ dnorm(0,1e6)
-          tau.b.year[t] ~ dgamma(1,1) # uninformative prior
-          }   
-  }
+                # priors:
+               alpha ~ dnorm(0, 0.01) # overall model intercept 
+                psi ~ dunif(0, 1) # proportion of non-zeros
+
+                b.Magnitude ~ dnorm(0,1e6)
+                b.incometax.d ~ dnorm(0,1e6)
+                b.interaction ~ dnorm(0,1e6)
+                b.p.Population ~ dnorm(0,1e6)
+                b.Urban ~ dnorm(0,1e6)
+                b.r.long ~ dnorm(0,1e6)
+                b.r.lat ~ dnorm(0,1e6)
+
+                
+                # year fixed effects 
+                for (t in 1:yearN){
+                        b.year[t] ~ dnorm(m.b.year[t], tau.b.year[t]) 
+                        
+                        m.b.year[t] ~ dnorm(0,1e6)
+                        tau.b.year[t] ~ dgamma(1,1) # uninformative prior 
+                } 
+        }
+}
+
 
 
 ## notas:
-## ZIP:  https://georgederpa.github.io/teaching/countModels.html
+## ZIP:  
+        ### https://georgederpa.github.io/teaching/countModels.html
+        ### https://biometry.github.io/APES/LectureNotes/2016-JAGS/ZeroInflation/ZeroInflation_JAGS.pdf
+
 
 
 
@@ -1062,17 +1077,17 @@ eq.params.tax <- c(
   #"b.Urban", 
   "b.r.long", 
   "b.r.lat", 
-  "b.year"#,
-  #"lambda"
+  "b.year",
+  "lambda"
   )
 ## ----
 
 
 ## ---- income:tax:model:and:data:run ----
 # run the model
-# n.iter.tax = 200000  # n.iter.tax = 200000 // this is for working model
-# n.burnin.tax = 20000 # n.burnin.tax = 5000 // this is for working model
-# n.chains.tax = 5 # n.chains.tax = 4 for the working model
+# n.iter.tax = 1000  # n.iter.tax = 200000 // this is for working model
+# n.burnin.tax = 400 # n.burnin.tax = 5000 // this is for working model
+# n.chains.tax = 2 # n.chains.tax = 4 for the working model
 
 earthquakefit.tax <- jags(
   data=jags.data.tax,
