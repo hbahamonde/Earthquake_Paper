@@ -946,11 +946,11 @@ model.jags.tax <- function() {
                 Deaths[i] ~ dpois(lambda[i])
                 
                 log(lambda[i]) <- 
-                        b.Magnitude * Magnitude[i] + #  multi-level part: allow national output to vary at the local/sector level
+                        b.Magnitude * Magnitude[i] * Magnitude[i] + #  multi-level part: allow national output to vary at the local/sector level
                         b.incometax.d * incometax.d[i] +
                         b.interaction * Magnitude[i] * incometax.d[i] +
                         b.p.Population * p.Population[i] +
-                        b.Urban * Urban[i] +
+                        #b.Urban * Urban[i] +
                         b.r.long * r.long[i] +
                         b.r.lat * r.lat[i] + 
                         b.Sector[SectorID[i]] +
@@ -962,7 +962,7 @@ model.jags.tax <- function() {
         b.incometax.d ~ dnorm(0,0.1)
         b.interaction ~ dnorm(0,0.1)
         b.p.Population ~ dnorm(0,0.1)
-        b.Urban ~ dnorm(0,0.1)
+        #b.Urban ~ dnorm(0,0.1)
         b.r.long ~ dnorm(0,0.1)
         b.r.lat ~ dnorm(0,0.1)
         #b.Sector ~ dnorm(0,0.1)
@@ -979,14 +979,6 @@ model.jags.tax <- function() {
         
 
 }
-
-for (t in 1:yearN){ # yearly fixed effects 
-        b.year[t] ~ dnorm(m.b.year[t], tau.b.year[t]) 
-        
-        m.b.year[t] ~ dnorm(0,0.1)
-        tau.b.year[t] ~ dgamma(0.5, 0.001) # uninformative prior 
-} 
-
 
 # define the vectors of the data matrix for JAGS.
 w.Deaths <- as.vector(dat$w.Deaths)
