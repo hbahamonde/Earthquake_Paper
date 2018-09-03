@@ -1050,8 +1050,8 @@ eq.params.tax <- c(
 
 ## ---- income:tax:model:and:data:run ----
 # run the model
-# n.iter.tax = 5000  # n.iter.tax = 200000 // this is for working model
-# n.burnin.tax = 500 # n.burnin.tax = 5000 // this is for working model
+# n.iter.tax = 10000  # n.iter.tax = 200000 // this is for working model
+# n.burnin.tax = 1000 # n.burnin.tax = 5000 // this is for working model
 # n.chains.tax = 2 # n.chains.tax = 4 for the working model
 
 earthquakefit.tax <- jags(
@@ -1115,7 +1115,7 @@ p_load(ggplot2)
 # geom_density
 ggplot(int.sim, aes(x=x, fill= Income.Tax)) + 
         geom_density(alpha=.3) + 
-        xlab("Death-Toll") + ylab("Conditional Effect of Earthquake Magnitude\non Implementing the Income Tax") + 
+        xlab("Death-Toll (posterior)") + ylab("Conditional Effect of Earthquake Magnitude\non Implementing the Income Tax") + 
         theme_bw() + 
         theme(axis.text.y = element_text(size=7), 
               axis.text.x = element_text(size=7), 
