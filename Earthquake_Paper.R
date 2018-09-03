@@ -954,7 +954,7 @@ model.jags.tax <- function() {
                         b.r.long * r.long[i] +
                         b.r.lat * r.lat[i] + 
                         b.Sector[SectorID[i]] +
-                        b.year[yearID[i]] + # year fixed-effects
+                        # b.year[yearID[i]] + # year fixed-effects
                         mu ## intercept
         }
         
@@ -974,18 +974,9 @@ model.jags.tax <- function() {
                 
                 m.b.Sector[t] ~ dnorm(0,0.1)
                 tau.b.Sector[t] ~ dgamma(0.5, 0.001) # uninformative prior 
-        } 
+        }
         
-        for (t in 1:yearN){ # yearly fixed effects 
-          b.year[t] ~ dnorm(m.b.year[t], tau.b.year[t]) 
-          
-          m.b.year[t] ~ dnorm(0,0.1)
-          tau.b.year[t] ~ dgamma(1, 1) # uninformative prior 
-        }  
-        
-        
-
-}
+      }
 
 # define the vectors of the data matrix for JAGS.
 w.Deaths <- as.vector(dat$w.Deaths)
@@ -1027,8 +1018,8 @@ jags.data.tax <- list(Deaths = Deaths,
                       r.lat = r.lat,
                       NSector = NSector,
                       SectorID = SectorID,
-                      yearID = yearID,
-                      yearN = yearN,
+                      # yearID = yearID,
+                      # yearN = yearN,
                       N = N)
 
 
@@ -1042,7 +1033,7 @@ eq.params.tax <- c(
   "b.r.long", 
   "b.r.lat", 
   "b.Sector",
-  "b.year",
+  # "b.year",
   "lambda"
   )
 ## ----
@@ -1115,7 +1106,7 @@ p_load(ggplot2)
 # geom_density
 ggplot(int.sim, aes(x=x, fill= Income.Tax)) + 
         geom_density(alpha=.3) + 
-        xlab("Death-Toll (posterior)") + ylab("Conditional Effect of Earthquake Magnitude\non Implementing the Income Tax") + 
+        xlab("Death-Toll (posterior)") + ylab("Density") + 
         theme_bw() + 
         theme(axis.text.y = element_text(size=7), 
               axis.text.x = element_text(size=7), 
@@ -1124,9 +1115,11 @@ ggplot(int.sim, aes(x=x, fill= Income.Tax)) +
               legend.text=element_text(size=7), 
               legend.title=element_text(size=7),
               plot.title = element_text(size=7),
-              legend.position="bottom")
+              legend.position="bottom") + 
+  ggtitle("Conditional Effect of Earthquake Magnitude on Implementing the Income Tax")
 
-
+# HERE
+int.sim[int.sim$Income.Tax =="Yes"]
 
 ## ---- income:tax:model:plot:not:run ----
 ## passing fitted model as mcmc object
