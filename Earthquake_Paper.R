@@ -954,7 +954,7 @@ model.jags.tax <- function() {
                         b.r.long * r.long[i] +
                         b.r.lat * r.lat[i] + 
                         b.Sector[SectorID[i]] +
-                        # b.year[yearID[i]] + # year fixed-effects
+                        b.year[yearID[i]] + # year fixed-effects
                         mu ## intercept
         }
         
@@ -975,6 +975,13 @@ model.jags.tax <- function() {
                 m.b.Sector[t] ~ dnorm(0,0.1)
                 tau.b.Sector[t] ~ dgamma(0.5, 0.001) # uninformative prior 
         } 
+        
+        for (t in 1:yearN){ # yearly fixed effects 
+          b.year[t] ~ dnorm(m.b.year[t], tau.b.year[t]) 
+          
+          m.b.year[t] ~ dnorm(0,0.1)
+          tau.b.year[t] ~ dgamma(1, 1) # uninformative prior 
+        }  
         
         
 
@@ -1020,8 +1027,8 @@ jags.data.tax <- list(Deaths = Deaths,
                       r.lat = r.lat,
                       NSector = NSector,
                       SectorID = SectorID,
-                      #yearID = yearID,
-                      #yearN = yearN,
+                      yearID = yearID,
+                      yearN = yearN,
                       N = N)
 
 
@@ -1035,7 +1042,7 @@ eq.params.tax <- c(
   "b.r.long", 
   "b.r.lat", 
   "b.Sector",
-  #"b.year",
+  "b.year",
   "lambda"
   )
 ## ----
@@ -1043,9 +1050,9 @@ eq.params.tax <- c(
 
 ## ---- income:tax:model:and:data:run ----
 # run the model
-# n.iter.tax = 100000  # n.iter.tax = 200000 // this is for working model
-# n.burnin.tax = 40000 # n.burnin.tax = 5000 // this is for working model
-# n.chains.tax = 5 # n.chains.tax = 4 for the working model
+# n.iter.tax = 5000  # n.iter.tax = 200000 // this is for working model
+# n.burnin.tax = 500 # n.burnin.tax = 5000 // this is for working model
+# n.chains.tax = 2 # n.chains.tax = 4 for the working model
 
 earthquakefit.tax <- jags(
   data=jags.data.tax,
