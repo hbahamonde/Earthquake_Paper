@@ -953,7 +953,7 @@ model.jags.tax <- function() {
                         b.Urban * Urban[i] +
                         b.r.long * r.long[i] +
                         b.r.lat * r.lat[i] + 
-                        #b.Sector*Sector[i] +
+                        b.Sector[SectorID[i]] +
                         # b.year[yearID[i]] + # year fixed-effects
                         mu ## intercept
         }
@@ -965,9 +965,17 @@ model.jags.tax <- function() {
         b.Urban ~ dnorm(0,0.1)
         b.r.long ~ dnorm(0,0.1)
         b.r.lat ~ dnorm(0,0.1)
-        #b.Sector ~ dnorm(0,1e6)
+        #b.Sector ~ dnorm(0,0.1)
         
         mu  ~ dnorm(0,0.1) ## intercept
+        
+        for (t in 1:NSector){ # yearly fixed effects 
+                b.Sector[t] ~ dnorm(m.b.Sector[t], tau.b.Sector[t]) 
+                
+                m.b.Sector[t] ~ dnorm(0,0.1)
+                tau.b.Sector[t] ~ dgamma(0.5, 0.001) # uninformative prior 
+        } 
+        
         
 
 }
@@ -997,6 +1005,7 @@ yearID = as.factor(as.ordered(dat$year)) #as.numeric(as.ordered(dat$year))
 yearN = length(unique(dat$year))
 Sector = as.vector(as.numeric(factor(dat$Sector)))
 NSector = as.numeric(as.vector(length(unique(as.numeric(dat$Sector)))))
+SectorID = as.factor(as.ordered(dat$Sector))
 NIncometax = as.vector(length(unique(as.numeric(dat$incometax.d))))
 incometax.d = as.vector(as.numeric(ifelse(dat$year>=1924,1,0)))
 NIncometax.y = as.vector(length(unique(as.numeric(dat$incometax.y))))
@@ -1018,6 +1027,8 @@ jags.data.tax <- list(Deaths = Deaths,
                       r.long = r.long,
                       r.lat = r.lat,
                       Sector = Sector,
+                      NSector = NSector,
+                      SectorID = SectorID,
                       yearID = yearID,
                       yearN = yearN,
                       N = N)
@@ -1032,6 +1043,7 @@ eq.params.tax <- c(
   #"b.Urban", 
   "b.r.long", 
   "b.r.lat", 
+  "b.Sector",
   "b.year",
   "lambda"
   )
@@ -1080,13 +1092,13 @@ tax.mcmc.mat <- as.matrix(tax.mcmc)
 tax.mcmc.dat <- as.data.frame(tax.mcmc.mat)
 
 # Simulate the range of the moderating variable
-x2.sim <- seq(min(jags.data.tax$Magnitude), max(jags.data.tax$Magnitude), by = 0.1)
+x2.sim <- seq(min(jags.data.tax$incometax.d), max(jags.data.tax$incometax.d), by = 0.01)
 
 ## Calculate conditional effect of X1 across the range of X2
 int.sim <- matrix(rep(NA, nrow(tax.mcmc.dat)*length(x2.sim)), nrow = nrow(tax.mcmc.dat))
 
 for(i in 1:length(x2.sim)){
-  int.sim[, i] <- tax.mcmc.dat$b.incometax.d + tax.mcmc.dat$b.interaction * x2.sim[i]
+  int.sim[, i] <- tax.mcmc.dat$b.Magnitude + tax.mcmc.dat$b.interaction * x2.sim[i]
 }
 
 ## Note: the variance now comes from the posterior, not the vcov matrix
