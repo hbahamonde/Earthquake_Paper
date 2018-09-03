@@ -923,35 +923,6 @@ print.xtable(xtable(
 # Income Tax Adoption Model
 ###############################
 
-# https://github.com/stan-dev/stan/wiki/Prior-Choice-Recommendations
-
-
-# HERE
-model.jags.tax <- function() {
-        for(i in 1:N){ # loop through all data points
-                for(i in 1:N){
-                        Deaths[i] ~ dpois(mu[i])
-                        mu[i] <- lambda[i]*z[i] + 0.00001 ## hack required for Rjags -- otherwise 'incompatibl
-                        z[i] ~ dbern(psi)
-                        log(lambda[i]) <- 
-                                b.Magnitude * Magnitude[i] + 
-                                b.incometax.d * incometax.d[i] +
-                                b.interaction * Magnitude[i] + incometax.d[i] +
-                                b.p.Population * p.Population[i] +
-                                # b.Urban*Urban[i] +
-                                b.r.long * r.long[i] +
-                                b.r.lat * r.lat[i] + 
-                                #b.Sector*Sector[i] +
-                                b.year[yearID[i]] #+ 
-                        + alpha # alpha is overall intercept
-                }
-                # priors:
-                alpha ~ dnorm(0, 0.01) # overall model intercept 
-                psi ~ dunif(0, 1) # proportion of non-zeros
-                }
-}
-
-
 # cat("\014")
 # rm(list=ls())
 # graphics.off()
@@ -971,58 +942,42 @@ set.seed(602)
 
 # specify the model
 model.jags.tax <- function() {
-        for(i in 1:N){ # loop through all data points
-                for(i in 1:N){
-                        Deaths[i] ~ dpois(lambda.hacked[i])
-                        lambda.hacked[i] <- lambda[i]*(1-zero[i]) + 1e-10*zero[i] ## hack required for Rjags -- otherwise 'incompatibl
-                        
-                        
-                        log(lambda[i]) <- 
-                                b.Magnitude * Magnitude[i] + 
-                                b.incometax.d * incometax.d[i] +
-                                b.interaction * Magnitude[i] * incometax.d[i] +
-                                b.p.Population * p.Population[i] +
-                                b.Urban * Urban[i] +
-                                b.r.long * r.long[i] +
-                                b.r.lat * r.lat[i] + 
-                                #b.Sector*Sector[i] +
-                                b.year[yearID[i]] + 
-                                alpha # alpha is overall intercept
-                        
-                        z[i] ~ dbern(psi)
-                       
-                }
-                # priors:
-               alpha ~ dnorm(0, 0.01) # overall model intercept 
-                psi ~ dunif(0, 1) # proportion of non-zeros
-
-                b.Magnitude ~ dnorm(0,1e6)
-                b.incometax.d ~ dnorm(0,1e6)
-                b.interaction ~ dnorm(0,1e6)
-                b.p.Population ~ dnorm(0,1e6)
-                b.Urban ~ dnorm(0,1e6)
-                b.r.long ~ dnorm(0,1e6)
-                b.r.lat ~ dnorm(0,1e6)
-
+        for (i in 1:N){ # number of earthquakes
+                Deaths[i] ~ dpois(lambda[i])
                 
-                # year fixed effects 
-                for (t in 1:yearN){
-                        b.year[t] ~ dnorm(m.b.year[t], tau.b.year[t]) 
-                        
-                        m.b.year[t] ~ dnorm(0,1e6)
-                        tau.b.year[t] ~ dgamma(1,1) # uninformative prior 
-                } 
+                log(lambda[i]) <- 
+                        b.Magnitude * Magnitude[i] + #  multi-level part: allow national output to vary at the local/sector level
+                        b.incometax.d * incometax.d[i] +
+                        b.interaction * Magnitude[i] * incometax.d[i] +
+                        b.p.Population * p.Population[i] +
+                        b.Urban * Urban[i] +
+                        b.r.long * r.long[i] +
+                        b.r.lat * r.lat[i] + 
+                        #b.Sector*Sector[i] +
+                        # b.year[yearID[i]] + # year fixed-effects
+                        mu ## intercept
         }
+        
+        b.Magnitude ~ dnorm(0,0.1)
+        b.incometax.d ~ dnorm(0,0.1)
+        b.interaction ~ dnorm(0,0.1)
+        b.p.Population ~ dnorm(0,0.1)
+        b.Urban ~ dnorm(0,0.1)
+        b.r.long ~ dnorm(0,0.1)
+        b.r.lat ~ dnorm(0,0.1)
+        #b.Sector ~ dnorm(0,1e6)
+        
+        mu  ~ dnorm(0,0.1) ## intercept
+        
+
 }
 
-
-
-## notas:
-## ZIP:  
-        ### https://georgederpa.github.io/teaching/countModels.html
-        ### https://biometry.github.io/APES/LectureNotes/2016-JAGS/ZeroInflation/ZeroInflation_JAGS.pdf
-
-
+for (t in 1:yearN){ # yearly fixed effects 
+        b.year[t] ~ dnorm(m.b.year[t], tau.b.year[t]) 
+        
+        m.b.year[t] ~ dnorm(0,0.1)
+        tau.b.year[t] ~ dgamma(0.5, 0.001) # uninformative prior 
+} 
 
 
 # define the vectors of the data matrix for JAGS.
@@ -1056,7 +1011,7 @@ r.lat = as.vector(as.numeric(dat$r.lat))
 
 
 jags.data.tax <- list(Deaths = Deaths,
-                      Magnitude = Magnitude^2,
+                      Magnitude = Magnitude,
                       incometax.d = incometax.d,
                       p.Population = p.Population,
                       Urban = Urban,
@@ -1085,9 +1040,9 @@ eq.params.tax <- c(
 
 ## ---- income:tax:model:and:data:run ----
 # run the model
-# n.iter.tax = 1000  # n.iter.tax = 200000 // this is for working model
-# n.burnin.tax = 400 # n.burnin.tax = 5000 // this is for working model
-# n.chains.tax = 2 # n.chains.tax = 4 for the working model
+# n.iter.tax = 100000  # n.iter.tax = 200000 // this is for working model
+# n.burnin.tax = 40000 # n.burnin.tax = 5000 // this is for working model
+# n.chains.tax = 5 # n.chains.tax = 4 for the working model
 
 earthquakefit.tax <- jags(
   data=jags.data.tax,
@@ -1124,17 +1079,14 @@ tax.mcmc <- as.mcmc(earthquakefit.tax)
 tax.mcmc.mat <- as.matrix(tax.mcmc)
 tax.mcmc.dat <- as.data.frame(tax.mcmc.mat)
 
-# HERE
-x2.sim <- seq(min(jags.data.tax$Magnitude), max(jags.data.tax$Magnitude), by = 0.1)
-
 # Simulate the range of the moderating variable
-x2.sim <- seq(min(jags.data.tax$incometax.d), max(jags.data.tax$incometax.d), by = 0.01)
+x2.sim <- seq(min(jags.data.tax$Magnitude), max(jags.data.tax$Magnitude), by = 0.1)
 
 ## Calculate conditional effect of X1 across the range of X2
 int.sim <- matrix(rep(NA, nrow(tax.mcmc.dat)*length(x2.sim)), nrow = nrow(tax.mcmc.dat))
 
 for(i in 1:length(x2.sim)){
-  int.sim[, i] <- tax.mcmc.dat$b.Magnitude + tax.mcmc.dat$b.interaction * x2.sim[i]
+  int.sim[, i] <- tax.mcmc.dat$b.incometax.d + tax.mcmc.dat$b.interaction * x2.sim[i]
 }
 
 ## Note: the variance now comes from the posterior, not the vcov matrix
