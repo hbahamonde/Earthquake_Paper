@@ -124,17 +124,11 @@ read_chunk('/Users/hectorbahamonde/RU/Dissertation/Papers/Earthquake_Paper/Earth
 @
 
 
-<<sectoral:model:and:data:not:run, echo=FALSE, comment=NA, warning=FALSE, message=F, results='hide', cache=FALSE, eval=TRUE>>=
 
-@
 
-<<sectoral:model:and:data:does:run, echo=FALSE, comment=NA, warning=FALSE, message=FALSE, include = FALSE, cache=FALSE, eval=TRUE>>=
 
-@
 
-<<sectoral:model:regression:table:not:run, echo=FALSE, comment=NA, warning=FALSE, message=F, results='hide', cache=FALSE, eval=TRUE>>=
 
-@
 
 <<year:fixed:effects:plot:data, echo=FALSE, comment=NA, warning=FALSE, message=F, results='hide', cache=FALSE, eval=TRUE>>=
 
