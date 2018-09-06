@@ -123,17 +123,6 @@ read_chunk('/Users/hectorbahamonde/RU/Dissertation/Papers/Earthquake_Paper/Earth
 
 @
 
-
-
-
-
-
-
-
-<<year:fixed:effects:plot:data, echo=FALSE, comment=NA, warning=FALSE, message=F, results='hide', cache=FALSE, eval=TRUE>>=
-
-@
-
 % keep this at the end
 <<earthquake:ts:plot:chile:data, echo=FALSE, comment=NA, warning=FALSE, message=F, results='hide', cache=FALSE, eval=TRUE>>=
 
@@ -382,39 +371,8 @@ Undoubtedly, some municipalities should be wealthier than others, and presumably
 % geographical self-selection
 A second potential issue might be whether certain sectors self-select into less earthquake-prone geographical locations. For instance, it might be argued that agricultural areas, being mostly rural, might have lower constructions, while industrial areas, being more urban, might have both highly populated municipalities and higher constructions (edifices), potentially showing higher default death-tolls. To rule-out this possibility, a hierarchical variant of \autoref{model:2} was estimated. Using the same set of control variables, \autoref{model:1} considers whether earthquake magnitudes affect the death-toll of agricultural, industrial or mixed municipalities in different ways. More formally, \autoref{model:1} was fitted: 
 
-\begin{equation} \label{model:1}
-\begin{split}
-\text{Deaths} \;\sim\; & \text{Poisson}(\lambda_{i})\\
-log(\lambda_{i})  = 
-&\;\mu + 
-\beta_{1_j}\text{Magnitude}^2_{i} +
-\beta_{2}\text{Latitude}_{i} + 
-\beta_{3}\text{Longitude}_{i} + \\
-& \beta_{4}\text{Population}_{i} +
-\beta_{5}\text{Urban}_{i} + 
-\beta_{6}\text{Year}_{t}
-\end{split}
-\end{equation}
 
-where,
-
-\begin{equation*} \label{indexes:1}
-\begin{split}
-i_{1,...I} & \; \text{and} \; \text{I}=\Sexpr{N} \;  \text{observations},\\
-j_{1,...J} & \; \text{and} \; \text{J}=\Sexpr{NSector} \;  \text{sectors},\\
-t_{1,...T} & \; \text{and} \; \text{T}=\Sexpr{yearN} \;  \text{years}.
-\end{split}
-\end{equation*}
-
-\autoref{sectoral:model:regression:table:run} suggests that death-tolls are orthogonal to the economic sector. Belonging to an agricultural or industrial sector contributes with $\Sexpr{reg.results.table.sectoral[rownames(reg.results.table.sectoral) == "Magnitude [Agr]",1]}$ or $\Sexpr{reg.results.table.sectoral[rownames(reg.results.table.sectoral) == "Magnitude [Ind]",1]}$ additional deaths, respectively.
-
-
-% table 1
-% regression:table
-<<sectoral:model:regression:table:run, echo=FALSE, comment=NA, warning=FALSE, message=F, results='asis', cache=FALSE,eval=TRUE>>=
-
-@
-
+\todo{referirse aqui a EQ1, donde ya inclui el componente sectoral.}
 
 % sectoral unity
 Finally, it could be argued that the distinction between two separate and opposite sectors is inaccurate. Some historians claim that since landowners also invested in industry,\footnote{\textcite[57, 95]{Kirsch:1977aa}, citing \textcite[]{Bauer:2008kx}, who explains that ``[m]iners and merchants bought haciendas but landowners in turn invested in banks, insurance companies, commercial firms and the incipient industrial sector.'' \textcite[23]{Coatsworth2002} argue that ``[t]he only landowners that mattered in 19th century Latin American politics were those for whom land represented but one asset in a much broader portfolio.''} there was a blurry class division between the industrial and agricultural sectors.\footnote{\textcite[30, 44, 94, 108]{Bauer:2008kx}.} Perhaps the most cited reference regarding this issue is \textcite[231-247]{Veliz1963}. However, there are a number of stylized facts that strongly suggest that there was indeed a structural sectoral cleavage. For example, it was common that industrialists invested in real estate. Yet, in many instances they did so \emph{just} to obtain credit. \textcite[59]{Kirsch:1977aa} explains that ``in a \emph{rural society} land offered one of the best guarantees for loans [since] loans could not be secured by equipment, machinery, or inventory. Only real estate was acceptable collateral.''\footnote{Emphases are mine.} In fact, this practice shows how the credit system was oriented to give unfair advantage to the landed elites.\footnote{\textcite[9]{UndaGutierrez2017} explains that in Mexico, industrial elites complied with the income tax in exchange for having a credit system more adequate for them.} Similarly, \textcite[174]{Zeitlin:1984aa} finds ``the combined ownership of capital and landed property was a distinctive quality of \emph{certain} [elites] actors,''\footnote{Emphasis is mine.} not \emph{all} elites. There were also other instances where miners invested in banking. Yet, \textcite{Segall1953} argues that Chilean bankers, after the crisis of the mining sector around the 1870s, had acquired a number of mineral deposits given as collateral years before. And finally, but for the Argentinean case, \textcite[609]{Hora2002} explains that ``the image of an entrepreneurial elite with assets \emph{scattered throughout several spheres of investment} does not appear entirely correct.''\footnote{Emphasis is mine.}
@@ -594,13 +552,6 @@ and,
 \clearpage
 
 
-\newpage
-% earthquake:ts:plot:chile:plot
-<<earthquake:ts:plot:chile:plot, echo = FALSE, fig.pos='h', warning = FALSE, message = F,fig.cap=time.series.plot.note, fig.align='center', fig.width=6.5,fig.height=2.5,dpi=1000,cache = FALSE,eval=TRUE>>=
-
-@
-\clearpage
-
 
 \newpage
 % income:tax:model:regression:table:run
@@ -612,12 +563,6 @@ and,
 \newpage
 
 
-<<year:fixed:effects:plot:plot, echo = FALSE, fig.pos='h', warning = FALSE, message = F, fig.cap=year.fixed.effects.plot.note, fig.align='center', fig.width=7, fig.height=3,dpi=1000,cache = FALSE,eval=TRUE>>=
-
-@
-\clearpage
-\newpage
-
 
 <<predicted:observed:plot:plot, echo = FALSE, fig.pos='h', warning = FALSE, message = F, fig.cap=predicted.observed.plot.note, fig.align='center', fig.width=8, fig.height=3,dpi=1000,cache = FALSE,eval=TRUE>>=
 
@@ -625,19 +570,6 @@ and,
 \clearpage
 
 
-\newpage
-<<traplot:plot:tax, echo = FALSE, fig.pos='h', warning = FALSE, message = F, fig.cap='Trace Plots: Income Tax Adoption Model', fig.align='center', fig.width=9, fig.height=9,dpi=1000,cache = FALSE,eval=TRUE>>=
-
-@
-\clearpage
-
-
-
-\newpage
-<<denplot:plot:tax, echo = FALSE, fig.pos='h', warning = FALSE, message = F, fig.cap='Density Plots: Income Tax Adoption Model', fig.align='center', fig.width=9, fig.height=9,dpi=1000,cache = FALSE,eval=TRUE>>=
-
-@
-\clearpage
 
 
 \newpage
