@@ -973,7 +973,7 @@ model.jags.tax <- function() {
                 tau.b.Sector[t] ~ dgamma(1, 1)
         }
         
-        for (t in 1:yearN){ # random effects 
+        for (t in 1:yearN){ # fixed effects 
                 b.year[t] ~ dnorm(m.b.year[t], tau.b.year[t]) 
                 
                 m.b.year[t] ~ dnorm(0,0.0001)
@@ -1037,6 +1037,7 @@ eq.params.tax <- c(
   "b.r.long", 
   "b.r.lat", 
   "b.Sector",
+  "b.year",
   "lambda"
   )
 ## ----
@@ -1044,8 +1045,8 @@ eq.params.tax <- c(
 
 ## ---- income:tax:model:and:data:run ----
 # run the model
-# n.iter.tax = 300000  # n.iter.tax = 200000 // this is for working model
-# n.burnin.tax = 30000 # n.burnin.tax = 5000 // this is for working model
+# n.iter.tax = 800000  # n.iter.tax = 200000 // this is for working model
+# n.burnin.tax = 80000 # n.burnin.tax = 5000 // this is for working model
 # n.chains.tax = 5 # n.chains.tax = 4 for the working model
 
 earthquakefit.tax <- jags(
@@ -1506,6 +1507,7 @@ earthquake.out.tax <- as.data.frame(as.matrix(as.mcmc(earthquakefit.tax)))
 earthquake.year.tax <- earthquake.out.tax[, grep("b.year[", colnames(earthquake.out.tax), fixed=T)]
 
 earthquake.year.tax <- earthquake.year.tax[, c(mixedsort(names(earthquake.year.tax)))]
+
 colnames(earthquake.year.tax) <- paste("Y",unique(sort(dat$year)), sep = "")
 
 
