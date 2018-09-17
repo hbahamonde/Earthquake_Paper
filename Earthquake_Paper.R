@@ -176,11 +176,20 @@ dat.chile.complete$Included = factor(ifelse(
   levels = c(0,1),labels = c("No", "Yes"))
 
 
+## leaves out everything that's not included
+dat.chile.complete <- dat.chile.complete[which(dat.chile.complete$Included == "Yes"), ] # drop early earthquakes 
 
+## dummy for pre/post implementation of the income tax
+dat.chile.complete$IncomeTax = factor(
+    ifelse(
+      dat.chile.complete$year >= 1924,
+      1,0),
+  levels = c(0,1),
+  labels = c("No", "Yes"))
 
 # time-series plot
-time.series.plot <- ggplot(dat.chile.complete, aes(x = year, y = Magnitude)) +
-  geom_point(shape = 21, aes(fill = dat.chile.complete$Included)) +
+time.series.plot = ggplot(dat.chile.complete, aes(x = year, y = Magnitude)) +
+  geom_point(shape = 21, aes(fill = dat.chile.complete$IncomeTax)) +
   theme_bw() +
   xlab("Year") +
   ggtitle(NULL) +
@@ -192,8 +201,8 @@ time.series.plot <- ggplot(dat.chile.complete, aes(x = year, y = Magnitude)) +
         legend.title=element_text(size=7),
         plot.title = element_text(size=7),
         legend.position="bottom") +
-  guides(fill=guide_legend(title="Included in Analyses"))#+
-#stat_smooth(show.legend = F,  method = 'loess')
+  guides(fill=guide_legend(title="Income Tax"))+
+stat_smooth(show.legend = F,  method = 'loess')
 ## ----
 
 
@@ -201,13 +210,16 @@ time.series.plot <- ggplot(dat.chile.complete, aes(x = year, y = Magnitude)) +
 ## ---- earthquake:ts:plot:chile:plot ----
 # dropping NAs 
 time.series.plot
-
 time.series.plot.note <- paste(
-  paste("{\\bf Earthquakes in Chile: 1500-2010}.",
+  paste(paste("{\\bf Earthquakes in Chile:", paste(min(dat.chile.complete$year),max(dat.chile.complete$year), sep = "-"), ".}", sep = ""),
         "\\\\\\hspace{\\textwidth}", 
-        paste(paste(paste("{\\bf Note}: Figure shows earthquakes available in the \\href{https://data.noaa.gov/dataset}{NOAA dataset} (N=", cases.all,").", sep = ""), "Due to data availability at the local level (local population, for example), however, it was only possible to include in the analyses the earthquakes that took place begining in", paste(min(dat.chile.post1900$year), ".", sep="")), " \\autoref{fig:earthquake:map:plot:chile} shows the geographical location of the actual observations used in the analyses", sep = ""), paste("(",paste("N=",cases.post1900, sep = ""),").", sep = "")),
-  "\n")
+        paste(paste("{\\bf Note}: Figure shows earthquakes overtime (N=", nrow(dat.chile.complete),").", sep = ""),
+              " Additionally, the figure shows earthquakes before and after the implementation of the income tax in 1924. A smoothing function was added to show that there are not statistically significant differences decreases/increases in the magnitudes overtime.", 
+              sep = "")),
+        "\n")
 ## ----
+
+
 
 
 
