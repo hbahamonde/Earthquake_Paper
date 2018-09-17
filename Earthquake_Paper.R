@@ -5,19 +5,19 @@ graphics.off()
 
 ## ---- number:of:simulations ----
 # Hazard Rate simulations 
-nsim = 100 # original: 10000
+nsim = 20 # original: 10000
 qi = "Hazard Rate" # original: Hazard Rate
 ci = 0.95
 
 # Bayesian: Sectoral Model
-n.iter.sectoral = 300000  # n.iter.sectoral = 200000 // this is for working model
-n.burnin.sectoral = 30000 # n.burnin.sectoral = 20000 // this is for working model
-n.chains.sectoral = 5 # n.chains.sectoral = 4 for the working model
+n.iter.sectoral = 100  # n.iter.sectoral = 300000 // this is for working model
+n.burnin.sectoral = 10 # n.burnin.sectoral = 30000 // this is for working model
+n.chains.sectoral = 1 # n.chains.sectoral = 5 for the working model
 
 # Bayesian: Tax Model
-n.iter.tax = 300000  # n.iter.tax = 200000 // this is for working model
-n.burnin.tax = 30000 # n.burnin.tax = 20000 // this is for working model
-n.chains.tax = 5 # n.chains.tax = 4 for the working model
+n.iter.tax = 100  # n.iter.tax = 300000 // this is for working model
+n.burnin.tax = 10 # n.burnin.tax = 30000 // this is for working model
+n.chains.tax = 1 # n.chains.tax = 5 for the working model
 ## ---- 
 
 
@@ -373,7 +373,7 @@ earthquake.map.plot.chile
 earthquake.map.note.chile <- paste(
   paste("{\\bf Data Used in the Analyses: Geographical Distribution of Earthquakes in Chile,", paste(paste(min(chile.map.plot.d$Year), max(chile.map.plot.d$Year), sep="-"), "}.", sep = "" ), sep=" "),
   "\\\\\\hspace{\\textwidth}", 
-  paste("{\\bf Note}:", paste(paste(paste("Using a combination of archival information and external sources, the figure shows a total of", nrow(chile.map.plot.d), ""), "earthquakes.", sep = ""), "Each quake was colorized according to the predominant economic sector at the municipal level. In total, there were", as.numeric(table(chile.map.plot.d$Sector)["Agriculture"]), "earthquakes that took place in agricultural localities,", as.numeric(table(chile.map.plot.d$Sector)["Industry"]), "in industrial, and", as.numeric(table(chile.map.plot.d$Sector)["Mixed"]), "in mixed municipalities. \\autoref{fig:earthquake:ts:plot:chile:plot} shows the overtime variation.",   sep = " "), sep=" "),
+  paste("{\\bf Note}:", paste(paste(paste("Using a combination of archival information and external sources, the figure shows a total of", nrow(chile.map.plot.d), ""), "earthquakes.", sep = ""), "Each quake was colorized according to the predominant economic sector at the municipal level. In total, there were", as.numeric(table(chile.map.plot.d$Sector)["Agriculture"]), "earthquakes that took place in agricultural localities,", as.numeric(table(chile.map.plot.d$Sector)["Industry"]), "in industrial, and", as.numeric(table(chile.map.plot.d$Sector)["Mixed"]), "in mixed municipalities.",   sep = " "), sep=" "),
   "\n")
 ## ----
 
@@ -1057,8 +1057,8 @@ earthquakefit.tax <- jags(
   n.iter = n.iter.tax,
   n.burnin = n.burnin.tax, 
   #n.thin = 10,
-  model.file=model.jags.tax#,
-  #progress.bar = "none"
+  model.file=model.jags.tax,
+  progress.bar = "none"
   )
 
 
