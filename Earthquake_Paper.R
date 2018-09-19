@@ -1135,7 +1135,7 @@ income.tax.model.plot = ggplot(int.sim, aes(x=x, fill= Income.Tax, y=..scaled..)
               legend.title=element_text(size=7),
               plot.title = element_text(size=7),
               legend.position="bottom") + 
-        ggtitle("Conditional Effect of Earthquake Magnitude on Implementing the Income Tax")
+        ggtitle("Conditional Effect of Earthquake Magnitudes on Implementing the Income Tax")
 ## ----
 
 ## ---- income:tax:model:plot:run ----
