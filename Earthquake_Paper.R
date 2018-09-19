@@ -214,7 +214,7 @@ time.series.plot.note <- paste(
   paste(paste("{\\bf Earthquakes in Chile:", paste(min(dat.chile.complete$year),max(dat.chile.complete$year), sep = "-"), ".}", sep = ""),
         "\\\\\\hspace{\\textwidth}", 
         paste(paste("{\\bf Note}: Figure shows earthquakes overtime (N=", nrow(dat.chile.complete),").", sep = ""),
-              " Additionally, the figure shows earthquakes before and after the implementation of the income tax in 1924. A smoothing function was added to show that there are not statistically significant differences decreases/increases in the magnitudes overtime.", 
+              " Additionally, the figure shows earthquakes before and after the implementation of the income tax in 1924. A smoothing function was added to show that there are not statistically significant different decreases/increases in magnitudes overtime.", 
               sep = "")),
         "\n")
 ## ----
