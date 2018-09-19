@@ -945,6 +945,7 @@ print.xtable(xtable(
 load("/Users/hectorbahamonde/RU/Dissertation/Papers/Earthquake_Paper/eq_output_d_Chile.RData") 
 
 
+
 # load libraries
 if (!require("pacman")) install.packages("pacman"); library(pacman) 
 p_load(R2jags, coda, R2WinBUGS, lattice, rjags, runjags)
