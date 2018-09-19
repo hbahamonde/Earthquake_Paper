@@ -371,7 +371,8 @@ earthquake.map.plot.chile = ggplot() +
         axis.title.x = element_text(size=7), 
         legend.text=element_text(size=7), 
         legend.title=element_text(size=7),
-        plot.title = element_text(size=7))
+        plot.title = element_text(size=7),
+        legend.position="bottom")
 ## ----
 
 
