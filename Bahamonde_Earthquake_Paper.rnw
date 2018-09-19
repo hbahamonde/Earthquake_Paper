@@ -262,7 +262,7 @@ The proposed measurement has a number of advantages. Unlike non-experimental sur
 
 However, the measurement has a number of drawbacks. Obviously, the country needs to have earthquakes, possibly limiting the number of potential cases. Yet, good indicators of state-capacity also suffer from the same problem (i.e. context-specificity). For instance, \textcite[593]{Soifer2012} and \textcite[252]{Slater2008} propose a measurement based on whether states are able to enforce voter registration ``where voting is mandatory,'' or conduct ``state registration of marginal populations,'' respectively, limiting the study of state-capacity to democratic countries only. This is not only a democracy-specific limitation, but also a temporal one.
 
-One advantage that actually mitigates some of these drawbacks is that most earthquakes occur at the various borders of the Pacific, Latin American, African, Arabic, Indian and Eurasian plates \parencite[1534]{Keefer2011}, allowing a number of potential cross-country comparisons \parencite[1534]{Keefer2011}. In fact, from a population size perspective, this measurement is also a convenient one. A ``quarter of the world's population inhabits [...] the northern edge of the Arabian and Indian Plates that are colliding with the southern margin of the Eurasian Plate'' \parencite[618]{Bilham2013a}. 
+One advantage that actually mitigates some of these drawbacks is that most earthquakes occur at the various borders of the Pacific, Latin American, African, Arabic, Indian and Eurasian plates, allowing a number of potential cross-country comparisons \parencite[1534]{Keefer2011}. In fact, from a population size perspective, this measurement is also a convenient one. A ``quarter of the world's population inhabits [...] the northern edge of the Arabian and Indian Plates that are colliding with the southern margin of the Eurasian Plate'' \parencite[618]{Bilham2013a}. 
 
 
 Moving forward, there are countries, like India or the United States, where earthquakes happen in certain regions only. Presumably, mitigation policies in these places would need to be targeted to specific areas, possibly undermining the assumption that these kinds of policies should penetrate the entire territory. For instance, \textcite[164]{Dunbar2003} explains that the Indian state implements targeted policies (that might not necessarily correspond to the administrative areas) based on isoseismal maps that define different zones of seismic hazard. 
@@ -274,10 +274,13 @@ Another potential concern is that the ability of counting the death-toll might b
 \section{Empirical Section\label{models}}
 
 
-\subsection{Spillover Effects of Income Taxation on State Capacity}
+\subsection{Data and Statistical Model}
 
 % explain dataset: 
-I constructed a novel hand-collected longitudinal dataset using the \emph{Significant Earthquake Database} compiled by the National Centers for Environmental Information (NOAA) as a starting point \parencite[]{noaa2015}. The dataset ``contains information on destructive earthquakes from 2150 B.C. to the present,'' such as the magnitude, date, latitude, and longitude of every quake, among other variables, and records the number of deaths. Tsunami casualties were excluded. Using archival census data from 1907 to 2012,\footnote{Particularly, censuses of 1907, 1920, 1930, 1940, 1952, 1960, 1970, 1982, 1992, 2002 and 2012. Some of them were kept at the \emph{Biblioteca Nacional} and others at the \emph{National Statistic Institute} historical library.} the NOAA dataset was complemented with local population at the municipal level where the quake hit. Local population was used to weight the death toll.\footnote{Around 90\% of the times it was possible to recover the actual local population. For the rest, the population of the most concentrated area nearby was recovered. Consequently, population is used as a control, not to directly weight the dependent variable.} Using archival census data as well, the main economic activity of the affected municipality was coded,\footnote{This variable was constructed by coding press and official sources (mainly censuses) of the main economic sector at the local level. \text{$\Sexpr{levels(factor(dat$Sector))[1]}$} (n=$\Sexpr{as.character(table(factor(dat$Sector))[1])}$), \text{$\Sexpr{levels(factor(dat$Sector))[2]}$} (n=$\Sexpr{as.character(table(factor(dat$Sector))[2])}$), \text{$\Sexpr{levels(factor(dat$Sector))[3]}$} (n=$\Sexpr{as.character(table(factor(dat$Sector))[3])}$).} in addition to whether the municipality was urban or rural.\footnote{Urban=$\Sexpr{table(dat$Urban[dat$Urban==1])}$, rural=$\Sexpr{table(dat$Urban[dat$Urban==0])}$. If more than 50\% of the population lived in an urban setting, I assigned a 1 to that municipality, 0 otherwise. Urban concentrations are most likely to have vertical constructions rather than one-story buildings, increasing the potential number of casualties. Consequently, it is important to control for this source of variation. I thank Daniel Kelemen for this suggestion.} The death tolls and magnitudes proportionated by the NOAA dataset were contrasted case by case with historical press archival information.\footnote{\emph{El Mercurio} and \emph{La Naci\'on} newspapers, both kept at the \emph{Archivo Nacional} of the \emph{Biblioteca Nacional de Chile}.} Magnitudes, in particular, were also compared with the \href{http://www.isc.ac.uk/iscbulletin/search/bulletin/}{International Seismological Centre}. 
+I constructed a novel hand-collected longitudinal dataset using the \emph{Significant Earthquake Database} compiled by the National Centers for Environmental Information (NOAA) as a starting point \parencite[]{noaa2015}. The dataset ``contains information on destructive earthquakes from 2150 B.C. to the present,'' such as magnitude, date, latitude, longitude, number of deaths, among other variables. Tsunami casualties were excluded. And since ``most of the damage in major earthquakes occurs within 30 km of the epicenter'' \parencite[172]{Dunbar2003}, earthquakes that did not happen on land were not dropped. While the epicenter might have been a few miles away from the shore, the consequences certainly reached the land. 
+
+% explain dataset: 
+Using archival census data from 1907 to 2012,\footnote{Particularly, censuses of 1907, 1920, 1930, 1940, 1952, 1960, 1970, 1982, 1992, 2002 and 2012. Some of them were kept at the \emph{Biblioteca Nacional} and others at the \emph{National Statistic Institute} historical library.} the NOAA dataset was complemented with local population at the municipal level where the quake hit. Local population was used to weight the death toll.\footnote{Around 90\% of the times it was possible to recover the actual local population. For the rest, the population of the most concentrated area nearby was recovered. Consequently, population is used as a control, not to directly weight the dependent variable.} Using archival census data as well, the main economic activity of the affected municipality was coded,\footnote{This variable was constructed by coding press and official sources (mainly censuses) of the main economic sector at the local level. \text{$\Sexpr{levels(factor(dat$Sector))[1]}$} (n=$\Sexpr{as.character(table(factor(dat$Sector))[1])}$), \text{$\Sexpr{levels(factor(dat$Sector))[2]}$} (n=$\Sexpr{as.character(table(factor(dat$Sector))[2])}$), \text{$\Sexpr{levels(factor(dat$Sector))[3]}$} (n=$\Sexpr{as.character(table(factor(dat$Sector))[3])}$).} in addition to whether the municipality was urban or rural.\footnote{Urban=$\Sexpr{table(dat$Urban[dat$Urban==1])}$, rural=$\Sexpr{table(dat$Urban[dat$Urban==0])}$. If more than 50\% of the population lived in an urban setting, I assigned a 1 to that municipality, 0 otherwise. Urban concentrations are most likely to have vertical constructions rather than one-story buildings, increasing the potential number of casualties. Consequently, it is important to control for this source of variation. I thank Daniel Kelemen for this suggestion.} The death tolls and magnitudes proportionated by the NOAA dataset were contrasted case by case with historical press archival information.\footnote{\emph{El Mercurio} and \emph{La Naci\'on} newspapers, both kept at the \emph{Archivo Nacional} of the \emph{Biblioteca Nacional de Chile}.} Magnitudes, in particular, were also compared with the \href{http://www.isc.ac.uk/iscbulletin/search/bulletin/}{International Seismological Centre}. 
 
 % earthquake:ts:plot:chile:plot
 <<earthquake:ts:plot:chile:plot, echo = FALSE, fig.pos='H', warning = FALSE, message = FALSE,fig.cap=time.series.plot.note, fig.align='center', fig.width=6,fig.height=3,dpi=1000,cache = FALSE,eval=TRUE>>=
@@ -285,47 +288,95 @@ I constructed a novel hand-collected longitudinal dataset using the \emph{Signif
 @
 
 % case justification
-\autoref{fig:earthquake:ts:plot:chile:plot} plots the over time variation, while \autoref{fig:earthquake:map:plot:chile} plots the geographical variation, as well as the dominant productive sector. Both figures suggest that Chile is a good case to study infrastructural state-capacity using the earthquake framework, since it has considerable variance regarding quake magnitudes, locations and sectoral variation. The northern part of Chile has historically been an industrial region, while the southern part of Chile has traditionally been an agricultural region. Relatedly, both regions vary according to their climate. Furthermore, the distance from Santiago, which is located near latitude 33$^{\circ}$, might impose some degree of difficulty for the central government to reach the farthest northern/southern parts of the territory.\footnote{\textcite[418]{Foa2016}.} There is also variance considering longitude. Closeness to the Andean mountains (around longitude 70$^{\circ}$) determines the ruggedness of the terrain, presumably making it harder for the state to penetrate these areas.\footnote{\textcite[729]{Brancati2007} explains that ``[e]arthquakes often occur in mountainous areas.''} All things considered, earthquakes have affected the territory from coast to mountain,\footnote{Since ``most of the damage in major earthquakes occurs within 30 km of the epicenter'' \parencite[172]{Dunbar2003}, earthquakes that did not happen on land were not dropped. While the epicenter might have been a few miles away from the shore, the consequences certainly reached the land.} and both north and south, solving potential concerns about geographical sectoral self-selection.
+\autoref{fig:earthquake:ts:plot:chile:plot} plots the over time variation, while \autoref{fig:earthquake:map:plot:chile} plots the geographical variation, as well as the dominant productive sector. Both figures suggest that Chile is a good case to study infrastructural state-capacity using the earthquake framework: Chile has considerable variance regarding quake magnitudes, locations and sectoral variation. The northern part of Chile has historically been an industrial region, while the southern part of Chile has traditionally been agricultural. Relatedly, both regions vary according to their climate (which correlates with agriculture). Furthermore, the distance from Santiago, which is located near latitude 33$^{\circ}$, might impose some degree of difficulty for the central government to reach the farthest northern/southern parts of the territory \parencite[418]{Foa2016}. There is also variance considering longitude. Closeness to the Andean mountains (around longitude 70$^{\circ}$) determines the ruggedness of the terrain, presumably making it harder for the state to penetrate these areas. In fact, \textcite[729]{Brancati2007} explains that ``[e]arthquakes often occur in mountainous areas.'' All things considered, earthquakes have affected the territory from coast to mountain, both north and south, and both agricultural and industrial areas, solving potential concerns about geographical sectoral self-selection.
 
 
 % earthquake:map:plot:chile
-<<earthquake:map:plot:chile, echo = FALSE, fig.pos='H', warning = FALSE, message = FALSE,fig.cap=earthquake.map.note.chile, fig.align='center', fig.width=8,fig.height=7,dpi=30000,cache = FALSE,eval=TRUE>>=
+<<earthquake:map:plot:chile, echo = FALSE, fig.pos='H', warning = FALSE, message = FALSE,fig.cap=earthquake.map.note.chile, fig.align='center', fig.width=8,fig.height=10,dpi=30000,cache = FALSE,eval=TRUE>>=
 
 @
 \clearpage
 
 
 % Poisson model // main IVs
-Following the conventional wisdom, the unit of analysis is the earthquake \parencite[273]{Kahn2005}. As an event, each earthquake has associated to it a death toll, a location, a magnitude, a local population, and an urban/rural setting. Specifically, following the statistical convention, a Bayesian Poisson regression was employed to test the effect of implementing the income tax law on death-tolls over time.\footnote{\textcite[1907]{Anbarci2005} use ``a Negative Binomial estimation strategy with both random and fixed estimators'' to estimate death-tolls, \textcite[276]{Kahn2005} estimates a Zero Inflated Negative Binomial model, \textcite[729]{Brancati2007} uses ``a negative binomial model with robust standard errors clustered by country,'' and \textcite{Escaleras2007} use ``a Negative Binomial.'' Yet, no study tests for over dispersion. No evidence of over dispersion is found in the analyzed dataset.} 
+Following conventional wisdom, the unit of analysis is the earthquake \parencite[273]{Kahn2005}. As an event, each earthquake has associated to it a death toll, a location, a magnitude, a local population, and an urban/rural setting. And following statistical convention, a count model was used to test the effect of implementing the income tax law on death-tolls over time (\textcite[1907]{Anbarci2005}, \textcite[276]{Kahn2005}, \textcite[729]{Brancati2007}, \textcite{Escaleras2007}), in particular, a Bayesian Poisson regression was employed.
 
 % main QI
-The main quantity of interest is an interaction term between earthquake magnitude and a  binary variable that denotes whether the income tax had been implemented at the time of the event. The idea is to inspect whether the base line propensity of the earthquake's magnitude of increasing the death-toll is modified if combined with the introduction of the income tax. The null hypothesis is that the income tax does not alter this baseline propensity. The alternative is that introducing the income tax either increases or decreases the propensity. The model also considers year fixed-effects to account for time-varying confounding factors and for unmeasured sources of variation.
+The main quantity of interest is an interaction term---$\beta_{3}$ in \autoref{model:2}---between earthquake magnitude and a binary variable that denotes whether the income tax had been implemented at the time of the event. The idea is to inspect whether the base line propensity of the earthquake's magnitude of increasing the death-toll is modified when combined with the introduction of the income tax. The null hypothesis is that the income tax does not alter this baseline propensity. The alternative, however, is that introducing the income tax decreases (increases) the propensity. 
 
-% HERE
+% fixed effects
+Following standard convention, the model includes year fixed-effects to account for time-varying confounding factors, and for unmeasured sources of variation \parencite[729]{Brancati2007}. For instance, fiscal development is also a function of country-specific prior state-capacities. Additionally, technological changes (advances in construction, for example) should diminish death-tolls.\footnote{I thank Hillel Soifer for this suggestion.} Fixed-effects should be able to account for these, and other unmeasured yearly factors. 
 
 
-More formally,\footnote{\href{https://data.noaa.gov/dataset/earthquake-damage-general}{According to the NOAA}, an ``increase of one in magnitude represents a tenfold increase in the recorded wave amplitude.'' To account for non-linear effects, \autoref{model:2} considers the square term of magnitude. Parameters $\beta_{k}$ have uniform noninformative priors. Precisions $\tau_{p}$ have noninformative Gamma priors. See \autoref{indexes:2} for technical details. \textcite[729]{Brancati2007} also includes in his analyses ``year-fixed effects to control for trends over time.''} \autoref{model:2} was fitted:
+% other covariates
+In addition, local population also serves as a rough proxy for local economic development \parencite{Sokoloff:2000ug}, which might impact negatively casualties. Latitude was included to control for the proximity to the Andean mountains, aiming to control for a built-in tectonic earthquake predisposition. Longitude seeks to control for climate, and other unmeasured conditions that make agricultural development more difficult. In turn, both measurements serve as good proxies of terrain ruggedness, and the difficulties the state faces in reaching these areas.
+
+
+% other covariates 2.
+Undoubtedly, there are many more factors that might increase death tolls. \textcite[154]{Ambraseys2011}, for example, explain that the ``number of fatalities depends on whether an earthquake happens at night or during the day, in the winter or in the summer, in a mountainous region or in a valley, after strong and protracted fore-shocks and with or without warning.'' While the model has some of these factors accounted for, complete hourly data is lacking. However, \textcite[1309]{Lomnitz1970} explains that ``some of the larger Chilean earthquakes which have caused deaths'' between the 1900's and the 1960's have been afternoon quakes. Other factors such as ``the speed of tectonic movements [and] the degree to which the lower plate bends the upper plate'' and the focal depth \parencite[1534]{Keefer2011}, could not be included due to the lack of complete data over time.
+
+
+All in all, the next equation was fitted:\footnote{All parameters $\beta \;\sim\; \mathcal{N}(0,0.0001)$, all precisions $\tau \;\sim\; \mathcal{G}(1,1)$, while $\mu \;\sim\; \mathcal{N}(0,0.0001)$.} 
+
+
 \begin{equation} \label{model:2}
 \begin{split}
 \text{Deaths} \;\sim\; & \text{Poisson}(\lambda_{i})\\
 log(\lambda_{i})  = 
-&\;\mu + 
-\beta_{1}\text{Income Tax}_{i} + 
-\beta_{2}\text{Magnitude}^2_{i} +
-\beta_{3}\text{Latitude}_{i} + 
-\beta_{4}\text{Longitude}_{i} + \\
-& \beta_{5}\text{Population}_{i} +
-\beta_{6}\text{Urban}_{i} + 
-\beta_{7}\text{Year}_{t}
+&\; \mu + \beta_{1}\text{Magnitude}_{i} + \beta_{2}\text{Income Tax}_{i} + \\
+&\; \beta_{3}\text{Magnitude}_{i}\star\text{Income Tax}_{i} + \\
+&\; \beta_{4}\text{Population}_{i} + \beta_{5}\text{Longitude}_{i} + \beta_{6}\text{Latitude}_{i} + \\
+&\; \beta_{7,k}\text{Sector}_{i} + \beta_{8,t}\text{Year}_{i}
 \end{split}
 \end{equation}
 
 
-For instance, fiscal development is also a function of country-specific prior state-capacities. Additionally, technological changes (advances in construction, for example) should diminish death-tolls.\footnote{I thank Hillel Soifer for this suggestion.} Fixed-effects should be able to account for these and other unmeasured yearly factors. In addition, local population also serves as a rough proxy for local economic development,\footnote{\textcite{Sokoloff:2000ug}.} which might impact negatively casualties. Latitude was included to control for the proximity to the Andean mountains, aiming to control for a built-in tectonic earthquake predisposition. Longitude seeks to control for climate and other unmeasured conditions that make agricultural development more difficult. In turn, both measurements serve as good proxies of terrain ruggedness and the difficulties the state faces in reaching these areas.\footnote{Undoubtedly, there are many more factors that might increase death tolls. \textcite[154]{Ambraseys2011}, for example, explain that the ``number of fatalities depends on whether an earthquake happens at night or during the day, in the winter or in the summer, in a mountainous region or in a valley, after strong and protracted fore-shocks and with or without warning.'' While the model has some of these factors accounted for, complete hourly data is lacking. However, \textcite[1309]{Lomnitz1970} explains that ``some of the larger Chilean earthquakes which have caused deaths'' between the 1900's and the 1960's have been afternoon quakes. Other factors such as ``the speed of tectonic movements [and] the degree to which the lower plate bends the upper plate'' and the focal depth \parencite[1534]{Keefer2011}, could not be included due to the lack of complete data over time.} 
+where,
+
+\begin{equation*} \label{indexes:2}
+\begin{split}
+i_{1,...I} & \; \text{and} \; \text{I}=\Sexpr{as.numeric(jags.data.tax$N)} \; \text{events};\\
+k_{1,...K} & \; \text{and} \; \text{T}=\Sexpr{as.numeric(jags.data.tax$NSector)} \; \text{sectors};\\
+t_{1,...T} & \; \text{and} \; \text{T}=\Sexpr{as.numeric(jags.data.tax$yearN)} \; \text{years}.\\
+\end{split}
+\end{equation*}
 
 
-Fiscal sociologists, mostly focusing on the continental cases, have for a long time claimed that the capacity of taxing individuals' incomes fosters overall state-capacities. Unfortunately, there have not been attempts to study this relationship for the Latin American cases. The results presented in \autoref{income:tax:model:regression:table:run} find support for this claim. Particularly, implementing the income tax \emph{decreases} the death-toll by an estimated over time average of $\Sexpr{abs(round(reg.results.table.tax$Mean[rownames(reg.results.table.tax) == 'Income Tax'],0))}$. \autoref{fig:income:tax:model:plot:run} shows that death-tolls (state capacities) systematically \emph{decrease} (increase) over time once the income tax law is implemented. Before the income tax law was implemented, death-tolls were relatively stable, averaging approximately $\Sexpr{death.toll.before.tax}$  casualties per earthquake. However, once the income tax law was implemented, the death-toll decreased to $\Sexpr{death.toll.after.tax}$. The fixed-effects estimation makes these results robust to considerations of geography and economic development.\todo{expand this.}
 
+\subsection{Spillover Effects of Income Taxation on State Capacity}
+
+
+Fiscal sociologists, mostly focusing on the continental cases, have for a long time claimed that the capacity of taxing individuals' incomes fosters overall state-capacities. Unfortunately, there have not been attempts to study this relationship for the Latin American cases. The results presented in this paper, find support for this claim. 
+
+
+
+%\autoref{income:tax:model:regression:table:run} find support for this claim. 
+
+\autoref{fig:income:tax:model:plot:run} shows the conditional effect of earthquake magnitudes on implementing the income tax. 
+
+Substantively, it shows that that the death-toll systematically \emph{decreases}---i.e. state capacity systematically \emph{increases}---overtime \emph{once the income tax law is implemented}. Particularly, by implementing the income tax, the baseline propensity of earthquake of increasing the death-toll \emph{decreases} by an estimated overtime average of $\Sexpr{death.toll.before.tax}$ to an estimated overtime average of $\Sexpr{death.toll.after.tax}$.
+
+Methodologically, \autoref{fig:income:tax:model:plot:run} follows 
+
+
+% HERE
+
+
+
+
+
+% gee problems // simulation
+%While this method is very flexible, GEE estimates remain uninterpretable in practice,\footnote{\textcite{Carlin2001}.} making regression tables useless from a substantive standpoint. In this case, the problem is even more severe due to the interactive nature of the hypothesis being tested in this paper, which is a parameter for the multiplicative term between the variables wealth index, political competition, and density of the poor.\footnote{\textcite[74]{Brambor2006} offer the same advice.} Methodologists agree on ``not interpret[ing] the coefficients on the constitutive terms,'' as they lack substantive meaning.\footnote{\textcite[77]{Brambor2006}.} These problems get more complex when it comes to generalized models, as a number of challenges arise.\footnote{As \textcite{Ai2003} explained, \emph{(1) the interaction effect could be nonzero, even when the estimation says it is zero, (2) the statistical significance of the interaction effect cannot be tested with a simple t-test on the coefficient of the interaction term, (3) the interaction effect is conditional on the independent variables, [...] and (4) the interaction effect may have different signs for different values of covariates}.} Given that cross-partial derivatives are not advisable either, simulation methods are required.\footnote{\textcite[]{WilliamJ.Wales2013}.} Particularly, I follow the simulation approach introduced in \textcite{King2000}. This procedure samples via simulation from the point estimates, generating a new and larger distribution. That is, taking the single estimated parameters (i.e. the regression coefficients), I constructed a distribution of estimated values for each coefficient. Relying on the central limit theorem, with enough sampling draws, the new simulated distribution is a transformation that approximates with a great degree of precision the (uninterpretable) coefficients. Subsequently, means and uncertainty measures can be constructed for each of these distributions. From a substantive standpoint, simulation methods also allow for sampling new distributions at different values of the independent variables. This will be important in simulating the expected value of clientelism for different ``profiles,'' such as \emph{non}-poor individuals nested in \emph{high}-poor dense municipalities in contexts of \emph{high} political competition, among other profiles.
+
+% explain table
+%Since it is ``impossible to evaluate conditional hypotheses using only the information provided in traditional results tables,''\footnote{\textcite[76]{Brambor2006}.} I focus instead on the substantive results from the simulation methods. However, I still present the raw results in \autoref{tab:1} in the Appendix.\footnote{Table generated via the \texttt{texreg R} package. The first column shows the estimates for the matched dataset while the second column shows the results for the GPS wighted model. Virtually all coefficients have the same size and sign.} Analogous to  \autoref{tab:strategy:set}, in \autoref{fig:plot:four:quadrants} I simulate the predicted probabilities of being targeted using both the matched and weighted/GPS models. The horizontal panel depicts simulations for the ``upper'' (``non-poor,'' 75\%) and ``lower'' (``poor,'' 25\%) quartiles of the wealth index. In turn, the vertical panel shows the simulated values for the maximum (\Sexpr{round(max(m.data$munopp),0)}\%) and minimum (\Sexpr{round(min(m.data$munopp),0)}\%) values of the municipal opposition index. Each quadrant shows simulations for individuals nested in poor municipalities (\emph{high} density of the poor), and non-poor municipalities (\emph{low} density of the poor). Each profile shows two simulated probability distributions (with 95\% confidence intervals), one for the matched sample, and one for the weighted/GPS model.\footnote{In the case of the weighted/GPS model which does not use the dichotomized variable, I use the continuous version of the size of the poor variable, where ``low density'' represents the lower quartile while ``high density'' the upper quartile.} The idea is to show that the decision of dichotomizing the density of the poor variable at its median gives substantively exact results than using the continuous version of that variable via the GPS analysis.
+
+
+
+
+Before the income tax law was implemented, death-tolls were relatively stable, averaging approximately $\Sexpr{death.toll.before.tax}$  casualties per earthquake. However, once the income tax law was implemented, the death-toll decreased to $\Sexpr{death.toll.after.tax}$. The fixed-effects estimation makes these results robust to considerations of geography and economic development.\todo{expand this.}
+
+\todo{explain the plot, and use the interaction term literature.}
 
 % income:tax:model:plot:run
 <<income:tax:model:plot:run, echo = FALSE, fig.pos='h', warning = FALSE, message = FALSE,fig.cap=income.tax.model.plot.note, fig.align='center', fig.width=5 ,fig.height=3,dpi=1000,cache = FALSE,eval=TRUE>>=
@@ -560,25 +611,6 @@ count <- comma(as.numeric(count)) # add comma
 \renewcommand{\thetable}{OA\arabic{table}}
 \setcounter{figure}{0}
 \renewcommand{\thefigure}{OA\arabic{figure}}
-
-
-\begin{equation*} \label{indexes:2}
-\begin{split}
-i_{1,...I} & \; \text{and} \; \text{I}=\Sexpr{as.numeric(jags.data.tax$N)}\\
-t_{1,...T} & \; \text{and} \; \text{T}=\Sexpr{as.numeric(jags.data.tax$yearN)};
-\end{split}
-\end{equation*}
-
-and,
-
-\begin{equation*} \label{indexes:2}
-\begin{split}
-\beta_{k,...K} \;\sim\; & \mathcal{Unif}(-1000,1000) \; \text{where} \; \text{K}=\Sexpr{as.numeric(length(eq.params.tax))}\\
-\tau_{p,...P} \;\sim\; & \mathcal{G}(0.5, 0.001) \; \text{where} \; \text{P}=\Sexpr{as.numeric(jags.data.tax$yearN)}.
-\end{split}
-\end{equation*}
-\clearpage
-
 
 
 \newpage
