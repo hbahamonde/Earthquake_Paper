@@ -2031,15 +2031,15 @@ mexico.p= ggplot() +
 
 ##### All
 grid_arrange_shared_legend(
+  argentina.p, 
   chile.p, 
+  venezuela.p, 
+  mexico.p,
+  colombia.p, 
+  peru.p, 
   ecuador.p, 
   nicaragua.p, 
-  venezuela.p, 
-  peru.p, 
-  colombia.p, 
   guatemala.p, 
-  argentina.p, 
-  mexico.p,
   ncol = 3, nrow = 3)
 
 outputstitle <- paste(
