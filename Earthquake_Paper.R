@@ -1942,7 +1942,7 @@ ecuador.p= ggplot() +
   geom_line(data=subset(dissertation, country=="Ecuador"), aes(x=year, y=log(constagricult), colour="Agricultural Output"), fill=NA, size=1) +
   geom_line(data=subset(dissertation, country=="Ecuador"), aes(x=year, y=log(constmanufact), colour="Industrial Output"), fill=NA, size=1) + 
   xlab("Year") +
-  ylab("GDP Output (ln)") +
+  ylab("Lower Level\n\nGDP Output (ln)") +
   labs(colour = "Legend") +
   scale_x_continuous(limits=c(1890,2010)) + 
   geom_vline(data=subset(dissertation, country=="Ecuador"), aes(xintercept = 1945, colour= "Income Tax Law"), linetype = "longdash") + # Income Tax Law
@@ -2001,7 +2001,7 @@ argentina.p= ggplot() +
   geom_line(data=subset(dissertation, country=="Argentina"), aes(x=year, y=log(constagricult), colour="Agricultural Output"), fill=NA, size=1) +
   geom_line(data=subset(dissertation, country=="Argentina"), aes(x=year, y=log(constmanufact), colour="Industrial Output"), fill=NA, size=1) + 
   xlab("Year") +
-  ylab("GDP Output (ln)") +
+  ylab("Higher Level\n\nGDP Output (ln)") +
   labs(colour = "Income Tax (ln)") +
   scale_x_continuous(limits=c(1890,2010)) + 
   geom_vline(data=subset(dissertation, country=="Argentina"), aes(xintercept = 1933, colour= "Income Tax Law"), linetype = "longdash") + # Income Tax Law
@@ -2015,7 +2015,7 @@ mexico.p= ggplot() +
   geom_line(data=subset(dissertation, country=="Mexico"), aes(x=year, y=log(constagricult), colour="Agricultural Output"), fill=NA, size=1) +
   geom_line(data=subset(dissertation, country=="Mexico"), aes(x=year, y=log(constmanufact), colour="Industrial Output"), fill=NA, size=1) + 
   xlab("Year") +
-  ylab("GDP Output (ln)") +
+  ylab("Intermediate Level\n\nGDP Output (ln)") +
   labs(colour = "Income Tax (ln)") +
   scale_x_continuous(limits=c(1890,2010)) + 
   geom_vline(data=subset(dissertation, country=="Mexico"), aes(xintercept = 1925, colour= "Income Tax Law"), linetype = "longdash") + # Income Tax Law
@@ -2045,7 +2045,7 @@ grid_arrange_shared_legend(
 outputstitle <- paste(
   "{\\bf Industrial and Agricultural Outputs, and The Passage of the Income Tax Law}.",
   "\\\\\\hspace{\\textwidth}", 
-  "{\\bf Note}: Figure shows historical sectoral outputs, and year of the passage of the income tax law. Following convention, the figure shows logged values.",
+  "{\\bf Note}: Figure shows historical sectoral outputs, and year of the passage of the income tax law. Following convention, the figure shows logged values. Following the economic development typology suggested in \\textcite[5]{Mahoney:2010aa}, nine polities were selected. Three ``higher level'' countries (Argentina, Chile, and Venezuela), three ``intermediate level'' countries (Mexico, Colombia, and Peru), and three ``lower level'' countries (Ecuador, Nicaragua, and Guatemala).",
   "\\\\\\hspace{\\textwidth}", 
   paste("{\\bf Source}: \\href{http://moxlad-staging.herokuapp.com/home/en?}{MOxLAD}, and other sources compiled by the author (see \\autoref{sample:data:income:tax:tab})."),
   "\n")
@@ -2174,9 +2174,9 @@ texreg(
     "Agricultural Output (ln)",        
     "Total Population (ln)"),
   custom.model.names = c(
-    "(1) Cox (1 lag)",# Base Model
+    "(1) Cox",# Base Model
     "(2) Logit GEE", # GEE
-    "(3) Conditional Logit (FE)" # Fixed Effects model
+    "(3) Conditional Logit" # Fixed Effects model
   ),
   label = "results:table:cox",
   custom.note = "%stars. Robust standard errors in all models. Intercept omitted.",

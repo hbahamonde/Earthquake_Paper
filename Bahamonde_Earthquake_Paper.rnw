@@ -369,7 +369,7 @@ Fortunately, the Bayesian framework has embedded these procedures into it, provi
 Substantively, \autoref{fig:income:tax:model:plot:run} shows that the death-toll systematically \emph{decreases}---i.e. state capacity systematically \emph{increases} overtime---\emph{once the income tax law is implemented}. Particularly, by implementing the income tax, the baseline propensity of earthquake of increasing the death-toll, \emph{decreases} from an estimated overtime average of $\Sexpr{death.toll.before.tax}$ to an estimated overtime average of $\Sexpr{death.toll.after.tax}$. Importantly, the fixed-effects approach makes these results robust to considerations of progressive national and local economic development. By absorbing yearly sources of variation, \autoref{model:2} is capable of controlling for unobserved factors that might have an impact on the dependent variable (\autoref{fig:year:fixed:effects:plot:plot} shows the estimated year fixed-effects).
 
 
-% HERE
+
 \todo{Diagnostics here}
 
 % income:tax:model:plot:run
@@ -384,11 +384,6 @@ Substantively, \autoref{fig:income:tax:model:plot:run} shows that the death-toll
 
 The theory, and the empirics, put heavy emphasis on the long-term effects of implementing the income tax. In particular, the implementation of the income tax in Chile is associated with an increase in state-capacity overtime. However, \emph{where does the income tax come from?} The historical evidence presented above strongly suggests that there existed an inter-sectoral alliance. Chilean industrialists posed credible threats to agricultural landowners, materializing an inter-sectoral alliance between the two: industrial elites pursued the implementation of the income tax, in exchange of public goods delivered at the local level. \emph{Can this finding be generalized to other countries?}
 
-
-% HERE
-In this section, the paper presents an effort to generalize the argument about the sectoral origins of the implementation of the income tax law. Following the economic development typology suggested in \textcite[5]{Mahoney:2010aa}, nine polities were selected. Three ``higher level'' countries (Argentina, Chile, and Venezuela), three ``intermediate level'' countries (Mexico, Colombia, and Peru), and three ``lower level'' countries (Ecuador, Nicaragua, and Guatemala). For each polity, economic data were collected to observe the degree in which industrial elites challenged incumbent landowners. Sectoral contestation was measured by using industrial and agricultural sectoral growth rates as presented in the  \href{http://moxlad-staging.herokuapp.com/home/en?}{MOxLAD} data.\footnote{Both the \emph{agriculture value-added} and \emph{manufacturing value-added} variables were used.}  The dataset spans from $\Sexpr{min(data$year)}$ to (potentially) $\Sexpr{max(data$year)}$.\footnote{Since countries are censored once they implement the income tax law, they leave the sample (potentially) before 2010.} According to \textcite[790]{Astorga2005}, these data provide extended comparable sectoral value-added series in constant purchasing power parity prices.\footnote{Using a similar strategy, \textcite[]{Thies2005a} also uses data on taxation and compare those data between cross sections.} Leveraging some more additional archival data, \autoref{sample:data:income:tax:tab} shows the year when the income tax law was passed in these countries. Finally, \autoref{fig:incometax:plot} conveys both agricultural and industrial outputs (independent variables) and the year when the income tax law was passed (dependent variable). 
-
-
 % Industrial and Agricultural Outputs, and The Passage of the Income Tax Law
 \afterpage{
 <<incometax:plot, echo = FALSE, fig.pos='H', warning = FALSE, message = F, fig.cap=outputstitle, fig.align='center', fig.width=13, fig.height=12,dpi=30000,cache = FALSE, eval=TRUE>>=
@@ -397,45 +392,60 @@ In this section, the paper presents an effort to generalize the argument about t
 }
 
 
+In this section, the paper presents an effort to generalize the argument about the sectoral origins of the implementation of the income tax law. Following the economic development typology suggested in \textcite[5]{Mahoney:2010aa}, nine polities were selected. Three ``higher level'' countries (Argentina, Chile, and Venezuela), three ``intermediate level'' countries (Mexico, Colombia, and Peru), and three ``lower level'' countries (Ecuador, Nicaragua, and Guatemala). For each polity, economic data were collected to observe the degree in which industrial elites challenged incumbent landowners. 
+
+
+Sectoral contestation was measured by using industrial and agricultural sectoral growth rates, as presented in the  \href{http://moxlad-staging.herokuapp.com/home/en?}{MOxLAD} data.\footnote{Both the \emph{agriculture value-added} and \emph{manufacturing value-added} variables were used.}  The dataset has been used before in the state-formation literature \parencite[]{Thies2005a}. Outputs span from $\Sexpr{min(data$year)}$ to (potentially) $\Sexpr{max(data$year)}$.\footnote{Since countries are censored once they implement the income tax law, they leave the sample (potentially) before 2010.} According to \textcite[790]{Astorga2005}, these data provide extended comparable sectoral value-added series in constant purchasing power parity prices. Leveraging some more additional archival data, \autoref{sample:data:income:tax:tab} shows the year when the income tax law was passed in these countries. Finally, \autoref{fig:incometax:plot} conveys both agricultural and industrial outputs (independent variables) and the year when the income tax law was passed (dependent variable). 
+
+
+
 % MODELS
-Econometrically, this section is concerned about the \emph{timing} of implementing the income tax law in nine Latin American polities, and particularly, about the individual contribution of both the agricultural and industrial sectors. \autoref{results:table:cox} shows 3 models.\footnote{Tables were produced using the  \texttt{texreg} package \parencite[]{Leifeld:2013qr}. All Cox models were computed using the \texttt{survival R}  package (\textcite{Therneau:2015zr}). The GEE logistic regression was computed using the \texttt{geepack} package \parencite[]{Hojsgaard:2016}. The simulations were performed using the \texttt{simPH R} package \parencite{Gandrud2015}.} Following \textcite{Aidt2009a}, Model 1 computes the lagged conditional hazard ratio of a country which has not yet adopted the income tax adopts it in a given year, as a function of industrial and agricultural outputs. Since the idea is to capture the \emph{sectoral contribution} of the implementation of the income tax law, these variables were not combined. Following \textcite[49]{Box-Steffensmeier2004}, the next equation was fitted for all countries $i$ and years $t$: 
+Econometrically, this section is concerned about the sectoral contribution regarding the \emph{timing} of implementing the income tax law. In other words, \emph{was the income tax law implemented because of industrial or agricultural expansion?} \autoref{results:table:cox} shows 3 models.\footnote{Tables were produced using the  \texttt{texreg} package \parencite[]{Leifeld:2013qr}. All Cox models were computed using the \texttt{survival R}  package \parencite{Therneau:2015zr}. The GEE logistic regression was computed using the \texttt{geepack} package \parencite[]{Hojsgaard:2016}. The simulations were performed using the \texttt{simPH R} package \parencite{Gandrud2015}.} Following \textcite{Aidt2009a}, model 1 computes the lagged conditional hazard ratio of a country which has not yet adopted the income tax, adopts it in a given year. Since the idea is to capture the \emph{sectoral contribution} on the implementation of the income tax law, these variables were not combined. Following \textcite[49]{Box-Steffensmeier2004}, the next Cox model was fitted for all countries $i$ and years $t$: 
 \begin{equation}\label{cox:eq}
-h_{i}(t) = exp(\beta_{1}\text{Industrial Growth}_{i,t} + \beta_{2}\text{Agricultural Growth}_{i,t} + \beta_{3}\text{Total Population}_{i,t})h_{0}(t)
+h_{i}(t) = exp(\beta_{1}\text{Industrial Growth}_{i,t-1} + \beta_{2}\text{Agricultural Growth}_{i,t-1} + \beta_{3}\text{Total Population}_{i,t-1})h_{0}(t)
 \end{equation}
 
 
-Countries drop out of the sample when they adopt the income tax. Model 2 shows the estimated coefficients of a generalized estimating equation (GEE). Following \textcite[331]{Zorn2006}, the next equation was fitted:
+Model 2 in \autoref{results:table:cox} shows the estimated coefficients of a generalized estimating equation (GEE). Following \textcite[331]{Zorn2006}, the next equation was fitted:
 \begin{equation}\label{gee:eq}
 \pi_{i,t}=\Phi(\beta_{1}\text{log(Industrial Growth$_{i,t}$)}+\beta_{2}\text{log(Agricultural Growth$_{i,t}$)}+\beta_{3}\text{log(Total Population$_{i,t}$)})
 \end{equation}
 
 where $\pi$ is the logit link function, and $\Phi$ is as scale parameter (i.e. the cumulative distribution function), for all $i$ countries, and years $t$.
 
-Generalized estimating equations were introduced by \textcite{Liang1986} to fit clustered, repeated/correlated, and panel data.\footnote{\textcite[322]{Zorn2006}. This method is especially well suited to analyze binary data \parencite{Hanley2003a}, something particularly useful given the nature of the dependent variable. GEE methods require analysts to parameterize the working correlation matrix. While GEE models are robust to misspecification of the correlation structure \parencite[139]{Hedeker2006}, following \textcite[166]{Hardin2013}, the ``independence'' working covariance structure was used, since observations were collected overtime.} From a substantive standpoint, GEE models provide an estimated marginal mean, or the \emph{weighted average} of all cluster-specific effects (or conditional means). Model 3 is a conditional logit. More formally, the next equation was fitted:
+Generalized estimating equations were introduced by \textcite{Liang1986} to fit clustered, repeated/correlated, and panel data \parencite[322]{Zorn2006}. This method is especially well suited to analyze binary data \parencite{Hanley2003a}, something particularly useful given the nature of the dependent variable. GEE methods require analysts to parameterize the working correlation matrix. While GEE models are robust to misspecification of the correlation structure \parencite[139]{Hedeker2006}, following \textcite[166]{Hardin2013}, the ``independence'' working covariance structure was used, since observations were collected overtime. From a substantive standpoint, GEE models provide an estimated marginal mean, or the weighted average of all cluster-specific effects (or conditional means). 
+
+
+Finally, model 3 is a conditional logit, or ``fixed-effects'' panel logit model: 
 
 \begin{equation}\label{clogit:eq}
 \pi_{i,t}=\Phi(\beta_{0} + \beta_{1}\text{log(Industrial Growth$_{i,t}$)}+\beta_{2}\text{log(Agricultural Growth$_{i,t}$)}+\beta_{3}\text{log(Total Population$_{i,t}$)}+\alpha_{i})
 \end{equation}
 
-where $\alpha$ are the country fixed effects for all countries $i$. Since population has been associated with the probability elites expand the franchise,\footnote{\textcite[892-893]{Engerman2005}.} and consequently the tax base, country-year population was included as a control variable. 
+where $\alpha$ are the country fixed effect for all countries $i$. 
+
+Since population has been associated with the probability elites expand the franchise \parencite[892-893]{Engerman2005}, and consequently the tax base, country-year population was included as a control variable in all three models. 
+
+\newpage
+% results:table:cox
+<<results:table:cox, echo=FALSE, comment=NA, warning=FALSE, message=F, results='asis', cache=FALSE,eval=TRUE>>=
+
+@
+\clearpage
+
+\autoref{results:table:cox} shows that industrial expansion is always positive and statistically significant, while agricultural expansion is always negative and statistically significant. Substantively, industrial expansion is systematically associated with an \emph{earlier} implementation of the income tax, while agricultural expansion in fact \emph{delays} the implementation of the income tax. 
+
+% HERE
+To have a more substantive grasp 
+
+\label{cox:eq}
+
+\autoref{fig:simulation:plots} shows that it is not \emph{overall} growth that accelerates the implementation of the income tax, but \emph{industrial} growth. In fact, agricultural expansion \emph{delays} the implementation of the law, harming state development. Since industrialists preferred the income tax, these analyses suggest that industrial expansion is systematically associated with the implementation of the income tax, not only in Chile, but in other Latin American polities too. These results support the idea that income tax is directly related with industrial expansion rather than economic development, but also support the idea of the sectoral \emph{conflict} behind its implementation. Since each sector had their own preferences toward income taxation, the emergence of the industrial sector facilitated state development by implementing the income tax, while agricultural expansion not only delayed the income tax, but also compromised state formation.
 
 
 <<simulation:plots, echo=FALSE, fig.pos='H', warning=FALSE, message=F, fig.cap=simtitle, fig.align='center', fig.width=7, fig.height=3,dpi=30000,cache=FALSE, eval=TRUE>>=
 
 @
-
-
-
-
-
-
-
-
-
-\autoref{fig:simulation:plots} shows that it is not \emph{overall} growth that accelerates the implementation of the income tax, but \emph{industrial} growth. In fact, agricultural expansion \emph{delays} the implementation of the law, harming state development. Since industrialists preferred the income tax, these analyses suggest that industrial expansion is systematically associated with the implementation of the income tax, not only in Chile, but in other Latin American polities too. These results support the idea that income tax is directly related with industrial expansion rather than economic development, but also support the idea of the sectoral \emph{conflict} behind its implementation. Since each sector had their own preferences toward income taxation, the emergence of the industrial sector facilitated state development by implementing the income tax, while agricultural expansion not only delayed the income tax, but also compromised state formation.
-
-
-
 
 \subsection{Alternative Explanations}
 
@@ -685,14 +695,6 @@ count <- comma(as.numeric(count)) # add comma
 \label{sample:data:income:tax:tab}
 \end{center}
 \end{table}
-\clearpage
-
-
-\newpage
-% results:table:cox
-<<results:table:cox, echo=FALSE, comment=NA, warning=FALSE, message=F, results='asis', cache=FALSE,eval=TRUE>>=
-
-@
 \clearpage
 
 
