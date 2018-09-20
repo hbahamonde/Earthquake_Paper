@@ -359,23 +359,39 @@ t_{1,...T} & \; \text{and} \; \text{T}=\Sexpr{as.numeric(jags.data.tax$yearN)} \
 Fiscal sociologists, mostly focusing on the continental cases, have for a long time claimed that the capacity of taxing individuals' incomes fosters overall state-capacities. Unfortunately, there have not been attempts to study this relationship for the Latin American cases. The results presented in this paper, find support for this claim. 
 
 
+% income:tax:model:regression:table:run
+<<income:tax:model:regression:table:run, echo=FALSE, comment=NA, warning=FALSE, message=F, results='asis', cache=FALSE,eval=TRUE>>=
+
+@
+
+
 % methodological problems
 \autoref{income:tax:model:regression:table:run} shows the estimated results. Methodologically speaking, however, the coefficient of the interaction term (i.e. $\beta_{3}$) remains uninterpretable in practice, making regression tables useless from a substantive standpoint \parencite[74]{Brambor2006}. These problems get more complex when it comes to generalized models, as a number of challenges arise. In an important paper, \textcite{Ai2003} explain that the interaction effect could be nonzero, even when the coefficient says it is zero; the statistical significance of the interaction effect cannot be tested with a simple t-test on the coefficient of the interaction term; the interaction effect is conditional on the independent variables; and that the interaction effect may have different signs for different values of covariates. In addition to all these challenges, and given that cross-partial derivatives are not advisable either, simulation methods are required \parencite[]{WilliamJ.Wales2013,King2000}. This procedure samples via simulation from the point estimates, generating a new, and larger distribution. That is, taking the single estimated parameters (i.e. the regression coefficients), I constructed a distribution of estimated values for each coefficient. Relying on the central limit theorem, with enough sampling draws, the new simulated distribution is a transformation that approximates with a great degree of precision the (uninterpretable) coefficients. Subsequently, means and uncertainty measures can be constructed for each of these distributions. 
 
 % methodological solution
 Fortunately, the Bayesian framework has embedded these procedures into it, providing a systematic, and yet intuitive, methodology to solve these challenges. In particular, for every coefficient, I estimated \Sexpr{n.chains.tax} chains, with \Sexpr{n.iter.tax} iterations per chain. And considering the Monte Carlo Markov Chain properties, I discarded the first \Sexpr{n.burnin.tax} iterations of every chain. Following \parencite[]{Brambor2006}, \autoref{fig:income:tax:model:plot:run} shows the conditional effect of earthquake magnitudes on implementing the income tax.\footnote{Based on \autoref{model:2}, the simulated matrix was constructed following the routine described above, iterating over the next generalized equation: $\beta_{1}+\beta_{3}\times\text{Income Tax}_{i}$.} 
 
-% substantively
-Substantively, \autoref{fig:income:tax:model:plot:run} shows that the death-toll systematically \emph{decreases}---i.e. state capacity systematically \emph{increases} overtime---\emph{once the income tax law is implemented}. Particularly, by implementing the income tax, the baseline propensity of earthquake of increasing the death-toll, \emph{decreases} from an estimated overtime average of $\Sexpr{death.toll.before.tax}$ to an estimated overtime average of $\Sexpr{death.toll.after.tax}$. Importantly, the fixed-effects approach makes these results robust to considerations of progressive national and local economic development. By absorbing yearly sources of variation, \autoref{model:2} is capable of controlling for unobserved factors that might have an impact on the dependent variable (\autoref{fig:year:fixed:effects:plot:plot} shows the estimated year fixed-effects).
-
-
-
-\todo{Diagnostics here}
 
 % income:tax:model:plot:run
 <<income:tax:model:plot:run, echo = FALSE, fig.pos='h', warning = FALSE, message = FALSE,fig.cap=income.tax.model.plot.note, fig.align='center', fig.width=5 ,fig.height=3,dpi=30000,cache = FALSE,eval=TRUE>>=
 
 @
+
+
+% substantively
+Substantively, \autoref{fig:income:tax:model:plot:run} shows that the death-toll systematically \emph{decreases}---i.e. state capacity systematically \emph{increases} overtime---\emph{once the income tax law is implemented}. Particularly, by implementing the income tax, the baseline propensity of earthquake of increasing the death-toll, \emph{decreases} from an estimated overtime average of $\Sexpr{death.toll.before.tax}$ to an estimated overtime average of $\Sexpr{death.toll.after.tax}$. Importantly, the fixed-effects approach makes these results robust to considerations of progressive national and local economic development. By absorbing yearly sources of variation, \autoref{model:2} is capable of controlling for unobserved factors that might have an impact on the dependent variable (\autoref{fig:year:fixed:effects:plot:plot} shows the estimated year fixed-effects).
+
+
+% geographical self-selection
+As argued before, a potential issue might be that sectors self-select into more/less earthquake-prone geographical locations. For instance, it might be argued that agricultural areas, being mostly rural, might have lower constructions, and less populated areas, with potentially less earthquake death-tolls. Industrialists, in turn, being a more urban-oriented sector, might have both highly populated municipalities, and higher constructions (edifices), potentially showing higher default death-tolls. 
+
+
+% sectoral self-selection
+To rule-out this possibility, $\beta_{7,k}$---in \autoref{model:2}---has a hierarchical structure which allows having three different intercepts, one per every $k$ sector. In other words, this parameter shows whether earthquake magnitudes affect earthquake death-tolls in agricultural, industrial or mixed municipalities, in different ways. \autoref{income:tax:model:regression:table:run} strongly suggests that industrial areas do not have higher earthquake death-tolls when compared to agricultural areas. The posterior predicted means for the former are \Sexpr{round(reg.results.table.tax$Mean[row.names(reg.results.table.tax)=="Sector[Industry]"],0)} casualties, and for the latter, \Sexpr{round(reg.results.table.tax$Mean[row.names(reg.results.table.tax)=="Sector[Agriculture]"],0)} deaths. Similarly, mixed municipalities have a predicted death-toll of \Sexpr{round(reg.results.table.tax$Mean[row.names(reg.results.table.tax)=="Sector[Mixed]"],0)}.
+
+
+\todo{Diagnostics here: traplot, etc.}
+
 
 
 
@@ -395,20 +411,33 @@ The theory, and the empirics, put heavy emphasis on the long-term effects of imp
 In this section, the paper presents an effort to generalize the argument about the sectoral origins of the implementation of the income tax law. Following the economic development typology suggested in \textcite[5]{Mahoney:2010aa}, nine polities were selected. Three ``higher level'' countries (Argentina, Chile, and Venezuela), three ``intermediate level'' countries (Mexico, Colombia, and Peru), and three ``lower level'' countries (Ecuador, Nicaragua, and Guatemala). For each polity, economic data were collected to observe the degree in which industrial elites challenged incumbent landowners. 
 
 
-Sectoral contestation was measured by using industrial and agricultural sectoral growth rates, as presented in the  \href{http://moxlad-staging.herokuapp.com/home/en?}{MOxLAD} data.\footnote{Both the \emph{agriculture value-added} and \emph{manufacturing value-added} variables were used.}  The dataset has been used before in the state-formation literature \parencite[]{Thies2005a}. Outputs span from $\Sexpr{min(data$year)}$ to (potentially) $\Sexpr{max(data$year)}$.\footnote{Since countries are censored once they implement the income tax law, they leave the sample (potentially) before 2010.} According to \textcite[790]{Astorga2005}, these data provide extended comparable sectoral value-added series in constant purchasing power parity prices. Leveraging some more additional archival data, \autoref{sample:data:income:tax:tab} shows the year when the income tax law was passed in these countries. Finally, \autoref{fig:incometax:plot} conveys both agricultural and industrial outputs (independent variables) and the year when the income tax law was passed (dependent variable). 
+Sectoral contestation was measured by using industrial and agricultural sectoral growth rates, as presented in the  \href{http://moxlad-staging.herokuapp.com/home/en?}{MOxLAD} data.\footnote{Both the \emph{agriculture value-added} and \emph{manufacturing value-added} variables were used.}  The dataset has been used before in the state-formation literature \parencite[]{Thies2005a}, and outputs span from $\Sexpr{min(data$year)}$ to (potentially) $\Sexpr{max(data$year)}$.\footnote{Since countries are censored once they implement the income tax law, they leave the sample (potentially) before 2010.} According to \textcite[790]{Astorga2005}, these data provide extended comparable sectoral value-added series in constant purchasing power parity prices. Leveraging some more additional archival data, \autoref{sample:data:income:tax:tab} shows the year when the income tax law was passed in these countries. Finally, \autoref{fig:incometax:plot} conveys both agricultural and industrial outputs (independent variables), and the year when the income tax law was passed (dependent variable). 
 
 
 
 % MODELS
-Econometrically, this section is concerned about the sectoral contribution regarding the \emph{timing} of implementing the income tax law. In other words, \emph{was the income tax law implemented because of industrial or agricultural expansion?} \autoref{results:table:cox} shows 3 models.\footnote{Tables were produced using the  \texttt{texreg} package \parencite[]{Leifeld:2013qr}. All Cox models were computed using the \texttt{survival R}  package \parencite{Therneau:2015zr}. The GEE logistic regression was computed using the \texttt{geepack} package \parencite[]{Hojsgaard:2016}. The simulations were performed using the \texttt{simPH R} package \parencite{Gandrud2015}.} Following \textcite{Aidt2009a}, model 1 computes the lagged conditional hazard ratio of a country which has not yet adopted the income tax, adopts it in a given year. Since the idea is to capture the \emph{sectoral contribution} on the implementation of the income tax law, these variables were not combined. Following \textcite[49]{Box-Steffensmeier2004}, the next Cox model was fitted for all countries $i$ and years $t$: 
+Econometrically, this section is concerned about the sectoral contribution to the \emph{timing} of implementing the income tax law. In other words, we would like to know if the income tax law was implemented \emph{because} of agricultural expansion, \emph{or} industrial expansion. \autoref{results:table:cox} shows 3 models.\footnote{The table was produced using the  \texttt{texreg} package \parencite[]{Leifeld:2013qr}. The Cox model was computed using the \texttt{survival R}  package \parencite{Therneau:2015zr}. The GEE logistic regression model was computed using the \texttt{geepack} package \parencite[]{Hojsgaard:2016}. The simulations were performed using the \texttt{simPH R} package \parencite{Gandrud2015}.} Following \textcite{Aidt2009a}, model 1 computes the lagged conditional hazard ratio of a country which has not yet adopted the income tax, adopts it in a given year. Since the idea is to capture the \emph{sectoral contribution} to the implementation of the income tax law, these variables were not combined. Following \textcite[49]{Box-Steffensmeier2004}, the next Cox model was fitted for all countries $i$ and years $t$: 
+
+
 \begin{equation}\label{cox:eq}
-h_{i}(t) = exp(\beta_{1}\text{Industrial Growth}_{i,t-1} + \beta_{2}\text{Agricultural Growth}_{i,t-1} + \beta_{3}\text{Total Population}_{i,t-1})h_{0}(t)
+\begin{split}
+h_{i}(t) = exp(	& \beta_{1}\text{Industrial Growth}_{i,t-1} + \\
+				& \beta_{2}\text{Agricultural Growth}_{i,t-1} + \\
+				& \beta_{3}\text{Total Population}_{i,t-1}\\
+				&)h_{0}(t)
+\end{split}
 \end{equation}
 
 
 Model 2 in \autoref{results:table:cox} shows the estimated coefficients of a generalized estimating equation (GEE). Following \textcite[331]{Zorn2006}, the next equation was fitted:
+
 \begin{equation}\label{gee:eq}
-\pi_{i,t}=\Phi(\beta_{1}\text{log(Industrial Growth$_{i,t}$)}+\beta_{2}\text{log(Agricultural Growth$_{i,t}$)}+\beta_{3}\text{log(Total Population$_{i,t}$)})
+\begin{split}
+\pi_{i,t}=\Phi(	& \beta_{1}\text{log(Industrial Growth$_{i,t}$)}+ \\
+				& \beta_{2}\text{log(Agricultural Growth$_{i,t}$)}+ \\
+				& \beta_{3}\text{log(Total Population$_{i,t}$)}\\
+				&)
+\end{split}
 \end{equation}
 
 where $\pi$ is the logit link function, and $\Phi$ is as scale parameter (i.e. the cumulative distribution function), for all $i$ countries, and years $t$.
@@ -419,28 +448,27 @@ Generalized estimating equations were introduced by \textcite{Liang1986} to fit 
 Finally, model 3 is a conditional logit, or ``fixed-effects'' panel logit model: 
 
 \begin{equation}\label{clogit:eq}
-\pi_{i,t}=\Phi(\beta_{0} + \beta_{1}\text{log(Industrial Growth$_{i,t}$)}+\beta_{2}\text{log(Agricultural Growth$_{i,t}$)}+\beta_{3}\text{log(Total Population$_{i,t}$)}+\alpha_{i})
+\begin{split}
+\pi_{i,t}=\Phi( & \beta_{0} + \\
+				& \beta_{1}\text{log(Industrial Growth$_{i,t}$)}+ \\
+				& \beta_{2}\text{log(Agricultural Growth$_{i,t}$)}+ \\ 
+				& \beta_{3}\text{log(Total Population$_{i,t}$)}+ \\
+				& \alpha_{i})
+\end{split}
 \end{equation}
 
-where $\alpha$ are the country fixed effect for all countries $i$. 
+where $\alpha_{i}$ are the country fixed effects for all countries $i$. 
 
 Since population has been associated with the probability elites expand the franchise \parencite[892-893]{Engerman2005}, and consequently the tax base, country-year population was included as a control variable in all three models. 
 
-\newpage
 % results:table:cox
 <<results:table:cox, echo=FALSE, comment=NA, warning=FALSE, message=F, results='asis', cache=FALSE,eval=TRUE>>=
 
 @
-\clearpage
 
 \autoref{results:table:cox} shows that industrial expansion is always positive and statistically significant, while agricultural expansion is always negative and statistically significant. Substantively, industrial expansion is systematically associated with an \emph{earlier} implementation of the income tax, while agricultural expansion in fact \emph{delays} the implementation of the income tax. 
 
-% HERE
-To have a more substantive grasp 
-
-\label{cox:eq}
-
-\autoref{fig:simulation:plots} shows that it is not \emph{overall} growth that accelerates the implementation of the income tax, but \emph{industrial} growth. In fact, agricultural expansion \emph{delays} the implementation of the law, harming state development. Since industrialists preferred the income tax, these analyses suggest that industrial expansion is systematically associated with the implementation of the income tax, not only in Chile, but in other Latin American polities too. These results support the idea that income tax is directly related with industrial expansion rather than economic development, but also support the idea of the sectoral \emph{conflict} behind its implementation. Since each sector had their own preferences toward income taxation, the emergence of the industrial sector facilitated state development by implementing the income tax, while agricultural expansion not only delayed the income tax, but also compromised state formation.
+To have a more substantive grasp, and using simulation methods, \autoref{fig:simulation:plots} shows the hazard rates of the Cox model (model 1 in \autoref{results:table:cox}, or \label{cox:eq}). The simulation considers both the maximum and the minimum output rate in the entire dataset. THe figure shows that it is not \emph{overall} growth that accelerates the implementation of the income tax, but \emph{industrial} growth. In fact, agricultural expansion \emph{delays} the implementation of the law, harming state development in the long run. Since industrialists preferred the income tax, these analyses suggest that industrial expansion is systematically associated with the implementation of the income tax, not only in Chile, but in other Latin American polities too. These results support the idea that income tax is directly related with industrial expansion rather than economic development, but also support the idea of the sectoral \emph{conflict} behind its implementation. Since each sector had their own preferences toward income taxation, the emergence of the industrial sector facilitated state development by implementing the income tax, while agricultural expansion not only delayed the income tax, but also compromised state formation.
 
 
 <<simulation:plots, echo=FALSE, fig.pos='H', warning=FALSE, message=F, fig.cap=simtitle, fig.align='center', fig.width=7, fig.height=3,dpi=30000,cache=FALSE, eval=TRUE>>=
@@ -455,8 +483,9 @@ To have a more substantive grasp
 
 
 % geographical self-selection
-A second potential issue might be whether certain sectors self-select into less earthquake-prone geographical locations. For instance, it might be argued that agricultural areas, being mostly rural, might have lower constructions, while industrial areas, being more urban, might have both highly populated municipalities and higher constructions (edifices), potentially showing higher default death-tolls. To rule-out this possibility, a hierarchical variant of \autoref{model:2} was estimated. Using the same set of control variables, \autoref{model:1} considers whether earthquake magnitudes affect the death-toll of agricultural, industrial or mixed municipalities in different ways. More formally, \autoref{model:1} was fitted: 
+% A potential issue might be whether certain sectors self-select into less earthquake-prone geographical locations. For instance, it might be argued that agricultural areas, being mostly rural, might have lower constructions, while industrial areas, being more urban, might have both highly populated municipalities and higher constructions (edifices), potentially showing higher default death-tolls. To rule-out this possibility, a hierarchical variant of \autoref{model:2} was estimated. Using the same set of control variables, \autoref{model:1} considers whether earthquake magnitudes affect the death-toll of agricultural, industrial or mixed municipalities in different ways. More formally, \autoref{model:1} was fitted: 
 
+% HERE
 
 \todo{referirse aqui a EQ1, donde ya inclui el componente sectoral.}
 
@@ -620,14 +649,7 @@ count <- comma(as.numeric(count)) # add comma
 \renewcommand{\thefigure}{OA\arabic{figure}}
 
 
-\newpage
-% income:tax:model:regression:table:run
-<<income:tax:model:regression:table:run, echo=FALSE, comment=NA, warning=FALSE, message=F, results='asis', cache=FALSE,eval=TRUE>>=
 
-@
-
-\clearpage
-\newpage
 
 
 

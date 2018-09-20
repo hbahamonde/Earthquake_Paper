@@ -1236,7 +1236,7 @@ reg.results.table.tax = data.frame(rbind( # re order df by name of the rowname a
 
 var.labels.tax = c("Income Tax", 
                    "Magnitude", 
-                   "Income Tax \\times Magnitude",
+                   "Income Tax * Magnitude",
                    "Latitude", 
                    "Longitude",
                    "Population", 
@@ -1253,7 +1253,7 @@ if (!require("pacman")) install.packages("pacman"); library(pacman)
 p_load(xtable)
 
 note.tax <- paste0(
-  "\\hline \n \\multicolumn{6}{l}", "{ \\scriptsize {\\bf Note}: ", format(round(as.numeric(n.iter.tax), 0), nsmall=0, big.mark=","), " iterations with a burn-in period of n = ", format(round(as.numeric(n.burnin.tax), 0), nsmall=0, big.mark=",") , " iterations discarded.}\\\\", "\n \\multicolumn{6}{l}", "{ \\scriptsize ", ci.number.tax*100 ,"\\% credible intervals (upper/lower bounds). All R-Hat statistics below critical levels.}\\\\" ,"\n \\multicolumn{6}{l}", "{ \\scriptsize Standard convergence diagnostics suggest good mixing and convergence.}\\\\","\n \\multicolumn{6}{l}","{ \\scriptsize A total of ", n.chains.tax, " chains were run. \\autoref{fig:predicted:observed:plot:plot} shows that the model fits well the data. Detailed diagnostic plots available \\href{https://github.com/hbahamonde/Earthquake_Paper/raw/master/Bahamonde_Earthquake_Paper_Diagnostic_Plots_Income_Tax_Model.pdf}{\\texttt here}.} \\\\")
+  "\\hline \n \\multicolumn{6}{l}", "{ \\scriptsize {\\bf Note}: ", format(round(as.numeric(n.iter.tax), 0), nsmall=0, big.mark=","), " iterations with a burn-in period of n = ", format(round(as.numeric(n.burnin.tax), 0), nsmall=0, big.mark=",") , " iterations discarded.}\\\\", "\n \\multicolumn{6}{l}", "{ \\scriptsize ", ci.number.tax*100 ,"\\% credible intervals (upper/lower bounds). All R-Hat statistics below critical levels.}\\\\" ,"\n \\multicolumn{6}{l}", "{ \\scriptsize Standard convergence diagnostics suggest good mixing and convergence.}\\\\","\n \\multicolumn{6}{l}","{ \\scriptsize A total of ", n.chains.tax, " chains were run. \\autoref{fig:predicted:observed:plot:plot} shows that the model fits well the data.} \\\\")
 ## ----
 
 ## ---- income:tax:model:regression:table:run ----
@@ -1270,7 +1270,6 @@ print.xtable(xtable(
   table.placement = "H"
 )
 ## ----
-
 
 
 
@@ -2192,7 +2191,7 @@ texreg(
   stars = c(0.001, 0.01, 0.05, 0.1),
   #sideways = TRUE,
   no.margin = TRUE, 
-  float.pos = "!htbp"
+  float.pos = "ht" # !htbp
 )
 ## ---- 
 
@@ -2253,7 +2252,7 @@ sim.m.agr <- coxsimLinear(cox2,
 simtitle <- paste(
   paste0("{\\bf ",qi, " of Implementing the Income Tax Law}."),
   "\\\\\\hspace{\\textwidth}", 
-  paste("{\\bf Note}:", "Using estimations of Model 1 in \\autoref{results:table:cox} (\\autoref{cox:eq}), figure shows", formatC(nsim, format="d", big.mark=","), "simulations with different sectoral growth speeds. ``Slow'' is the minimum value, while ``rapid'' is the maximum value for each sectoral output."),
+  paste("{\\bf Note}:", "Using estimations of model 1 in \\autoref{results:table:cox}, figure shows", formatC(nsim, format="d", big.mark=","), "simulations with different sectoral growth speeds. ``Slow'' is the minimum value, while ``rapid'' is the maximum value for each sectoral output."),
   paste(paste("The figure also shows the ", paste(ci*100, "\\%", sep = ""), sep = ""), "confidence intervals."), 
   "\n")
 ## ----
