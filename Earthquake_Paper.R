@@ -903,7 +903,7 @@ p_load(xtable)
 
 note.sectoral <- paste0(
   "\\hline \n \\multicolumn{6}{l}", "{ \\scriptsize {\\bf Note}: ", format(round(as.numeric(n.iter.sectoral), 0), nsmall=0, big.mark=","), " iterations with a burn-in period of n = ", format(round(as.numeric(n.burnin.sectoral), 0), nsmall=0, big.mark=","), " iterations discarded.}\\\\", "\n \\multicolumn{6}{l}", "{ \\scriptsize ", ci.number.sectoral*100 ,"\\% credible intervals (upper/lower bounds). All R-Hat statistics below critical levels.}\\\\" ,"\n \\multicolumn{6}{l}", "{ \\scriptsize Standard convergence diagnostics suggest good mixing and convergence.}\\\\","\n \\multicolumn{6}{l}", "{ \\scriptsize Year fixed effects were omitted in the table.}\\\\", 
-  "\n \\multicolumn{6}{l}","{ \\scriptsize A total of ", n.chains.sectoral, " chains were run. Detailed diagnostic plots available  \\href{https://github.com/hbahamonde/Earthquake_Paper/raw/master/Bahamonde_Earthquake_Paper_Diagnostic_Plots_Sectoral_Competition.pdf}{\\texttt here}.} \\\\")
+  "\n \\multicolumn{6}{l}","{ \\scriptsize A total of ", n.chains.sectoral, " chains were run.} \\\\")
 ## ----
 
 
@@ -1125,27 +1125,30 @@ if (!require("pacman")) install.packages("pacman"); library(pacman)
 p_load(ggplot2)
 
 income.tax.model.plot = ggplot(int.sim, aes(x=x, fill= Income.Tax, y=..scaled..)) + 
-        geom_density(alpha=.3) + 
-        xlab("Death-Toll (posterior)") + ylab("Density") + 
-        theme_bw() + 
-        theme(axis.text.y = element_text(size=7), 
-              axis.text.x = element_text(size=7), 
-              axis.title.y = element_text(size=7), 
-              axis.title.x = element_text(size=7), 
-              legend.text=element_text(size=7), 
-              legend.title=element_text(size=7),
-              plot.title = element_text(size=7),
-              legend.position="bottom") + 
-        ggtitle("Conditional Effect of Earthquake Magnitudes on Implementing the Income Tax")
+  geom_density(alpha=.3) + 
+  xlab("Death-Toll (posterior)") + ylab("Density") + 
+  theme_bw() + 
+  guides(fill=guide_legend(title="Income Tax")) + 
+  theme(axis.text.y = element_text(size=7), 
+        axis.text.x = element_text(size=7), 
+        axis.title.y = element_text(size=7), 
+        axis.title.x = element_text(size=7), 
+        legend.text=element_text(size=7), 
+        legend.title=element_text(size=7),
+        plot.title = element_text(size=7),
+        legend.position="bottom") #+ 
+#ggtitle("Conditional Effect of Earthquake Magnitudes on Implementing the Income Tax")
 ## ----
 
 ## ---- income:tax:model:plot:run ----
 income.tax.model.plot
 income.tax.model.plot.note <- paste(
-  "{\\bf Income Taxation and State Capacity in Chile: An Overtime Approach}.",
+  "{\\bf Conditional Effect of Earthquake Magnitudes on Implementing the Income Tax}.",
   "\\\\\\hspace{\\textwidth}",
-  paste(paste(paste(paste("{\\bf Note}: Using the estimations from \\autoref{income:tax:model:regression:table:run} (\\autoref{model:2}), the figure shows predicted death-tolls before and after the implementation of the income tax in 1924. In average, the death-toll decreases from"), death.toll.before.tax, "to", sep = " "), death.toll.after.tax, sep= " "), ".", sep=""), paste(paste(paste("The figure suggests that implementing the income tax law had positive effects on state-capacity overtime.", sep = " "), sep = ""), sep = " "), sep = " ")
+  paste("{\\bf Note}: Using the estimations from \\autoref{income:tax:model:regression:table:run} (\\autoref{model:2}), and following the advice of \\textcite{Brambor2006}, the figure shows the conditional effect of earthquake magnitudes on implementing the income tax in 1924 ($\\beta_{1}+\\beta_{3}\\times\\text{Income Tax}_{i}$). Particularly, by implementing the income tax, the base line propensity of the earthquake's magnitude of increasing the death-toll, \\emph{decreases} from an estimated overtime average of", death.toll.before.tax, "to an estimated overtime average of", death.toll.after.tax, "\\unskip. Hence, the figure suggests that implementing the income tax law had positive effects on state-capacity overtime.", "Both distributions were computed via a MCMC routine, particularly iterating", n.chains.tax, "chains", "with", n.iter.tax, "iterations per chain. And considering the Monte Carlo Markov Chain properties, the first", n.burnin.tax, "observations of every chain were discarded.")
+  )
 ## ----
+
 
 ###############################
 # Income Tax Adoption Table
@@ -1233,7 +1236,7 @@ reg.results.table.tax = data.frame(rbind( # re order df by name of the rowname a
 
 var.labels.tax = c("Income Tax", 
                    "Magnitude", 
-                   "Income Tax * Magnitude",
+                   "Income Tax \\times Magnitude",
                    "Latitude", 
                    "Longitude",
                    "Population", 
@@ -1250,7 +1253,7 @@ if (!require("pacman")) install.packages("pacman"); library(pacman)
 p_load(xtable)
 
 note.tax <- paste0(
-  "\\hline \n \\multicolumn{6}{l}", "{ \\scriptsize {\\bf Note}: ", format(round(as.numeric(n.iter.tax), 0), nsmall=0, big.mark=","), " iterations with a burn-in period of n = ", format(round(as.numeric(n.burnin.tax), 0), nsmall=0, big.mark=",") , " iterations discarded.}\\\\", "\n \\multicolumn{6}{l}", "{ \\scriptsize ", ci.number.tax*100 ,"\\% credible intervals (upper/lower bounds). All R-Hat statistics below critical levels.}\\\\" ,"\n \\multicolumn{6}{l}", "{ \\scriptsize Standard convergence diagnostics suggest good mixing and convergence.}\\\\","\n \\multicolumn{6}{l}","{ \\scriptsize A total of ", n.chains.tax, " chains were run. Detailed diagnostic plots available \\href{https://github.com/hbahamonde/Earthquake_Paper/raw/master/Bahamonde_Earthquake_Paper_Diagnostic_Plots_Income_Tax_Model.pdf}{\\texttt here}.} \\\\")
+  "\\hline \n \\multicolumn{6}{l}", "{ \\scriptsize {\\bf Note}: ", format(round(as.numeric(n.iter.tax), 0), nsmall=0, big.mark=","), " iterations with a burn-in period of n = ", format(round(as.numeric(n.burnin.tax), 0), nsmall=0, big.mark=",") , " iterations discarded.}\\\\", "\n \\multicolumn{6}{l}", "{ \\scriptsize ", ci.number.tax*100 ,"\\% credible intervals (upper/lower bounds). All R-Hat statistics below critical levels.}\\\\" ,"\n \\multicolumn{6}{l}", "{ \\scriptsize Standard convergence diagnostics suggest good mixing and convergence.}\\\\","\n \\multicolumn{6}{l}","{ \\scriptsize A total of ", n.chains.tax, " chains were run. \\autoref{fig:predicted:observed:plot:plot} shows that the model fits well the data. Detailed diagnostic plots available \\href{https://github.com/hbahamonde/Earthquake_Paper/raw/master/Bahamonde_Earthquake_Paper_Diagnostic_Plots_Income_Tax_Model.pdf}{\\texttt here}.} \\\\")
 ## ----
 
 ## ---- income:tax:model:regression:table:run ----
@@ -1356,7 +1359,7 @@ predicted.observed.plot
 predicted.observed.plot.note <- paste(
   "{\\bf Assessing Model Fit}.",
   "\\\\\\hspace{\\textwidth}", 
-  paste("{\\bf Note}: The figure assesses the goodness of fit of \\autoref{model:1} (\\autoref{income:tax:model:regression:table:run}). Since the model deals with the \\underline{count} of casualties associated with earthquakes (Y-axis), a ``good'' model should minimize the distance between the predicted count (black dots, with credible intervals), and the actual count (red dots). The figure shows that the model does a good job in predicting the actual death-toll."),
+  paste("{\\bf Note}: The figure assesses the goodness of fit of \\autoref{model:2} (\\autoref{income:tax:model:regression:table:run}). Since the model deals with the \\underline{count} of casualties associated with earthquakes (Y-axis), a ``good'' model should minimize the distance between the predicted count (black dots, with credible intervals), and the actual count (red dots). The figure shows that the model does a good job in predicting the actual death-toll."),
   "\n")
 
 ## ----
@@ -1554,9 +1557,9 @@ year.fixed.effects.plot = ggplot(data = earthquake.year.tax, aes(x = variable, y
 ## ---- year:fixed:effects:plot:plot ----
 year.fixed.effects.plot 
 year.fixed.effects.plot.note <- paste(
-  "{\\bf Year Fixed Effects}.",
+  "{\\bf Year Fixed-Effects}.",
   "\\\\\\hspace{\\textwidth}", 
-  paste("{\\bf Note}: Figure shows the estimated posteriors of the year fixed effects (as per \\autoref{income:tax:model:regression:table:run}). Formally, it shows all $\\protect\\beta_{6}$'s from \\autoref{model:1}. Substantively, the figure suggests that, overall, there are no influential years driving the results."),
+  paste("{\\bf Note}: Figure shows the estimated posteriors of the year fixed-effects (as per \\autoref{income:tax:model:regression:table:run}). Formally, it shows all $\\protect\\beta_{8}$'s from \\autoref{model:2}. Substantively, the figure suggests that, overall, there are no influential years driving the results."),
   "\n")
 ## ----
 

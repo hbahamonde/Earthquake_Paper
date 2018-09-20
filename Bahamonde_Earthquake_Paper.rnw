@@ -80,6 +80,7 @@ read_chunk('/Users/hectorbahamonde/RU/Dissertation/Papers/Earthquake_Paper/Earth
 
 @
 
+
 %%%%%%%%%%%%%%%%%% order: (1) table, (2) plot
 <<income:tax:model:regression:table:not:run, echo=FALSE, comment=NA, warning=FALSE, message=F, results='hide', cache=FALSE, eval=TRUE>>=
 
@@ -118,6 +119,15 @@ read_chunk('/Users/hectorbahamonde/RU/Dissertation/Papers/Earthquake_Paper/Earth
 <<incometax:data, echo=FALSE, comment=NA, warning=FALSE, message=F,results='asis', cache=FALSE, eval=TRUE>>=
 
 @
+
+
+
+
+% year:fixed:effects:plot:data
+<<year:fixed:effects:plot:data, echo=FALSE, comment=NA, warning=FALSE, message=F, results='hide', cache=FALSE, eval=TRUE>>=
+
+@
+
 
 % keep this at the end
 <<earthquake:ts:plot:chile:data, echo=FALSE, comment=NA, warning=FALSE, message=F, results='hide', cache=FALSE, eval=TRUE>>=
@@ -283,7 +293,7 @@ I constructed a novel hand-collected longitudinal dataset using the \emph{Signif
 Using archival census data from 1907 to 2012,\footnote{Particularly, censuses of 1907, 1920, 1930, 1940, 1952, 1960, 1970, 1982, 1992, 2002 and 2012. Some of them were kept at the \emph{Biblioteca Nacional} and others at the \emph{National Statistic Institute} historical library.} the NOAA dataset was complemented with local population at the municipal level where the quake hit. Local population was used to weight the death toll.\footnote{Around 90\% of the times it was possible to recover the actual local population. For the rest, the population of the most concentrated area nearby was recovered. Consequently, population is used as a control, not to directly weight the dependent variable.} Using archival census data as well, the main economic activity of the affected municipality was coded,\footnote{This variable was constructed by coding press and official sources (mainly censuses) of the main economic sector at the local level. \text{$\Sexpr{levels(factor(dat$Sector))[1]}$} (n=$\Sexpr{as.character(table(factor(dat$Sector))[1])}$), \text{$\Sexpr{levels(factor(dat$Sector))[2]}$} (n=$\Sexpr{as.character(table(factor(dat$Sector))[2])}$), \text{$\Sexpr{levels(factor(dat$Sector))[3]}$} (n=$\Sexpr{as.character(table(factor(dat$Sector))[3])}$).} in addition to whether the municipality was urban or rural.\footnote{Urban=$\Sexpr{table(dat$Urban[dat$Urban==1])}$, rural=$\Sexpr{table(dat$Urban[dat$Urban==0])}$. If more than 50\% of the population lived in an urban setting, I assigned a 1 to that municipality, 0 otherwise. Urban concentrations are most likely to have vertical constructions rather than one-story buildings, increasing the potential number of casualties. Consequently, it is important to control for this source of variation. I thank Daniel Kelemen for this suggestion.} The death tolls and magnitudes proportionated by the NOAA dataset were contrasted case by case with historical press archival information.\footnote{\emph{El Mercurio} and \emph{La Naci\'on} newspapers, both kept at the \emph{Archivo Nacional} of the \emph{Biblioteca Nacional de Chile}.} Magnitudes, in particular, were also compared with the \href{http://www.isc.ac.uk/iscbulletin/search/bulletin/}{International Seismological Centre}. 
 
 % earthquake:ts:plot:chile:plot
-<<earthquake:ts:plot:chile:plot, echo = FALSE, fig.pos='H', warning = FALSE, message = FALSE,fig.cap=time.series.plot.note, fig.align='center', fig.width=6,fig.height=3,dpi=1000,cache = FALSE,eval=TRUE>>=
+<<earthquake:ts:plot:chile:plot, echo = FALSE, fig.pos='H', warning = FALSE, message = FALSE,fig.cap=time.series.plot.note, fig.align='center', fig.width=6,fig.height=3,dpi=30000,cache = FALSE,eval=TRUE>>=
 
 @
 
@@ -324,7 +334,7 @@ All in all, the next equation was fitted:\footnote{All parameters $\beta \;\sim\
 \text{Deaths} \;\sim\; & \text{Poisson}(\lambda_{i})\\
 log(\lambda_{i})  = 
 &\; \mu + \beta_{1}\text{Magnitude}_{i} + \beta_{2}\text{Income Tax}_{i} + \\
-&\; \beta_{3}\text{Magnitude}_{i}\star\text{Income Tax}_{i} + \\
+&\; \beta_{3}\text{Magnitude}_{i}\times\text{Income Tax}_{i} + \\
 &\; \beta_{4}\text{Population}_{i} + \beta_{5}\text{Longitude}_{i} + \beta_{6}\text{Latitude}_{i} + \\
 &\; \beta_{7,k}\text{Sector}_{i} + \beta_{8,t}\text{Year}_{i}
 \end{split}
@@ -345,41 +355,25 @@ t_{1,...T} & \; \text{and} \; \text{T}=\Sexpr{as.numeric(jags.data.tax$yearN)} \
 
 \subsection{Spillover Effects of Income Taxation on State Capacity}
 
-
+% bajada substantiva
 Fiscal sociologists, mostly focusing on the continental cases, have for a long time claimed that the capacity of taxing individuals' incomes fosters overall state-capacities. Unfortunately, there have not been attempts to study this relationship for the Latin American cases. The results presented in this paper, find support for this claim. 
 
 
+% methodological problems
+\autoref{income:tax:model:regression:table:run} shows the estimated results. Methodologically, however, the coefficient of the interaction term remains uninterpretable in practice, making regression tables useless from a substantive standpoint \parencite[74]{Brambor2006}. These problems get more complex when it comes to generalized models, as a number of challenges arise. In an important paper, \textcite{Ai2003} explain that the interaction effect could be nonzero, even when the coefficient says it is zero; the statistical significance of the interaction effect cannot be tested with a simple t-test on the coefficient of the interaction term; the interaction effect is conditional on the independent variables; and that the interaction effect may have different signs for different values of covariates. In addition to all these challenges, and given that cross-partial derivatives are not advisable either, simulation methods are required \parencite[]{WilliamJ.Wales2013,King2000}. This procedure samples via simulation from the point estimates, generating a new and larger distribution. That is, taking the single estimated parameters (i.e. the regression coefficients), I constructed a distribution of estimated values for each coefficient. Relying on the central limit theorem, with enough sampling draws, the new simulated distribution is a transformation that approximates with a great degree of precision the (uninterpretable) coefficients. Subsequently, means and uncertainty measures can be constructed for each of these distributions. 
 
-%\autoref{income:tax:model:regression:table:run} find support for this claim. 
+% methodological solution
+Fortunately, the Bayesian framework has embedded these procedures into it, providing a systematic, and yet intuitive, methodology to solve these challenges. In particular, for every coefficient, I estimated \Sexpr{n.chains.tax} chains, with \Sexpr{n.iter.tax} iterations per chain. And considering the Monte Carlo Markov Chain properties, I discarded the first \Sexpr{n.burnin.tax} iterations of every chain. Following \parencite[]{Brambor2006}, \autoref{fig:income:tax:model:plot:run} shows the conditional effect of earthquake magnitudes on implementing the income tax.\footnote{Based on \autoref{model:2}, the simulated matrix was constructed following the routine described above, iterating over the next generalized equation: $\beta_{1}+\beta_{3}\times\text{Income Tax}_{i}$.} 
 
-\autoref{fig:income:tax:model:plot:run} shows the conditional effect of earthquake magnitudes on implementing the income tax. 
-
-Substantively, it shows that that the death-toll systematically \emph{decreases}---i.e. state capacity systematically \emph{increases}---overtime \emph{once the income tax law is implemented}. Particularly, by implementing the income tax, the baseline propensity of earthquake of increasing the death-toll \emph{decreases} by an estimated overtime average of $\Sexpr{death.toll.before.tax}$ to an estimated overtime average of $\Sexpr{death.toll.after.tax}$.
-
-Methodologically, \autoref{fig:income:tax:model:plot:run} follows 
+% substantively
+Substantively, \autoref{fig:income:tax:model:plot:run} shows that the death-toll systematically \emph{decreases}---i.e. state capacity systematically \emph{increases}---overtime \emph{once the income tax law is implemented}. Particularly, by implementing the income tax, the baseline propensity of earthquake of increasing the death-toll, \emph{decreases} from an estimated overtime average of $\Sexpr{death.toll.before.tax}$ to an estimated overtime average of $\Sexpr{death.toll.after.tax}$. Importantly, the fixed-effects approach makes these results robust to considerations of progressive economic development. By absorbing yearly sources of variation, \autoref{model:2} is capable of controlling for unobserved factors that might have an impact on the dependent variable (\autoref{fig:year:fixed:effects:plot:plot} shows the estimated year fixed-effects).
 
 
 % HERE
-
-
-
-
-
-% gee problems // simulation
-%While this method is very flexible, GEE estimates remain uninterpretable in practice,\footnote{\textcite{Carlin2001}.} making regression tables useless from a substantive standpoint. In this case, the problem is even more severe due to the interactive nature of the hypothesis being tested in this paper, which is a parameter for the multiplicative term between the variables wealth index, political competition, and density of the poor.\footnote{\textcite[74]{Brambor2006} offer the same advice.} Methodologists agree on ``not interpret[ing] the coefficients on the constitutive terms,'' as they lack substantive meaning.\footnote{\textcite[77]{Brambor2006}.} These problems get more complex when it comes to generalized models, as a number of challenges arise.\footnote{As \textcite{Ai2003} explained, \emph{(1) the interaction effect could be nonzero, even when the estimation says it is zero, (2) the statistical significance of the interaction effect cannot be tested with a simple t-test on the coefficient of the interaction term, (3) the interaction effect is conditional on the independent variables, [...] and (4) the interaction effect may have different signs for different values of covariates}.} Given that cross-partial derivatives are not advisable either, simulation methods are required.\footnote{\textcite[]{WilliamJ.Wales2013}.} Particularly, I follow the simulation approach introduced in \textcite{King2000}. This procedure samples via simulation from the point estimates, generating a new and larger distribution. That is, taking the single estimated parameters (i.e. the regression coefficients), I constructed a distribution of estimated values for each coefficient. Relying on the central limit theorem, with enough sampling draws, the new simulated distribution is a transformation that approximates with a great degree of precision the (uninterpretable) coefficients. Subsequently, means and uncertainty measures can be constructed for each of these distributions. From a substantive standpoint, simulation methods also allow for sampling new distributions at different values of the independent variables. This will be important in simulating the expected value of clientelism for different ``profiles,'' such as \emph{non}-poor individuals nested in \emph{high}-poor dense municipalities in contexts of \emph{high} political competition, among other profiles.
-
-% explain table
-%Since it is ``impossible to evaluate conditional hypotheses using only the information provided in traditional results tables,''\footnote{\textcite[76]{Brambor2006}.} I focus instead on the substantive results from the simulation methods. However, I still present the raw results in \autoref{tab:1} in the Appendix.\footnote{Table generated via the \texttt{texreg R} package. The first column shows the estimates for the matched dataset while the second column shows the results for the GPS wighted model. Virtually all coefficients have the same size and sign.} Analogous to  \autoref{tab:strategy:set}, in \autoref{fig:plot:four:quadrants} I simulate the predicted probabilities of being targeted using both the matched and weighted/GPS models. The horizontal panel depicts simulations for the ``upper'' (``non-poor,'' 75\%) and ``lower'' (``poor,'' 25\%) quartiles of the wealth index. In turn, the vertical panel shows the simulated values for the maximum (\Sexpr{round(max(m.data$munopp),0)}\%) and minimum (\Sexpr{round(min(m.data$munopp),0)}\%) values of the municipal opposition index. Each quadrant shows simulations for individuals nested in poor municipalities (\emph{high} density of the poor), and non-poor municipalities (\emph{low} density of the poor). Each profile shows two simulated probability distributions (with 95\% confidence intervals), one for the matched sample, and one for the weighted/GPS model.\footnote{In the case of the weighted/GPS model which does not use the dichotomized variable, I use the continuous version of the size of the poor variable, where ``low density'' represents the lower quartile while ``high density'' the upper quartile.} The idea is to show that the decision of dichotomizing the density of the poor variable at its median gives substantively exact results than using the continuous version of that variable via the GPS analysis.
-
-
-
-
-Before the income tax law was implemented, death-tolls were relatively stable, averaging approximately $\Sexpr{death.toll.before.tax}$  casualties per earthquake. However, once the income tax law was implemented, the death-toll decreased to $\Sexpr{death.toll.after.tax}$. The fixed-effects estimation makes these results robust to considerations of geography and economic development.\todo{expand this.}
-
-\todo{explain the plot, and use the interaction term literature.}
+\todo{Diagnostics here}
 
 % income:tax:model:plot:run
-<<income:tax:model:plot:run, echo = FALSE, fig.pos='h', warning = FALSE, message = FALSE,fig.cap=income.tax.model.plot.note, fig.align='center', fig.width=5 ,fig.height=3,dpi=1000,cache = FALSE,eval=TRUE>>=
+<<income:tax:model:plot:run, echo = FALSE, fig.pos='h', warning = FALSE, message = FALSE,fig.cap=income.tax.model.plot.note, fig.align='center', fig.width=5 ,fig.height=3,dpi=30000,cache = FALSE,eval=TRUE>>=
 
 @
 
@@ -394,7 +388,7 @@ In an effort to generalize the argument about the sectoral origins of the income
 
 % Industrial and Agricultural Outputs, and The Passage of the Income Tax Law
 \afterpage{
-<<incometax:plot, echo = FALSE, fig.pos='H', warning = FALSE, message = F, fig.cap=outputstitle, fig.align='center', fig.width=13, fig.height=12,dpi=1000,cache = FALSE, eval=TRUE>>=
+<<incometax:plot, echo = FALSE, fig.pos='H', warning = FALSE, message = F, fig.cap=outputstitle, fig.align='center', fig.width=13, fig.height=12,dpi=30000,cache = FALSE, eval=TRUE>>=
 
 @
 }
@@ -423,7 +417,7 @@ Generalized estimating equations were introduced by \textcite{Liang1986} to fit 
 where $\alpha$ are the country fixed effects for all countries $i$. Since population has been associated with the probability elites expand the franchise,\footnote{\textcite[892-893]{Engerman2005}.} and consequently the tax base, country-year population was included as a control variable. 
 
 
-<<simulation:plots, echo=FALSE, fig.pos='H', warning=FALSE, message=F, fig.cap=simtitle, fig.align='center', fig.width=7, fig.height=3,dpi=10000,cache=FALSE, eval=TRUE>>=
+<<simulation:plots, echo=FALSE, fig.pos='H', warning=FALSE, message=F, fig.cap=simtitle, fig.align='center', fig.width=7, fig.height=3,dpi=30000,cache=FALSE, eval=TRUE>>=
 
 @
 
@@ -624,7 +618,18 @@ count <- comma(as.numeric(count)) # add comma
 
 
 
-<<predicted:observed:plot:plot, echo = FALSE, fig.pos='h', warning = FALSE, message = F, fig.cap=predicted.observed.plot.note, fig.align='center', fig.width=8, fig.height=3,dpi=1000,cache = FALSE,eval=TRUE>>=
+
+\newpage
+% year:fixed:effects:plot:plot
+<<year:fixed:effects:plot:plot, echo = FALSE, fig.pos='h', warning = FALSE, message = FALSE,fig.cap=year.fixed.effects.plot.note, fig.align='center', fig.width=7 ,fig.height=3,dpi=30000,cache = FALSE,eval=TRUE>>=
+
+@
+
+\clearpage
+\newpage
+
+
+<<predicted:observed:plot:plot, echo = FALSE, fig.pos='h', warning = FALSE, message = F, fig.cap=predicted.observed.plot.note, fig.align='center', fig.width=8, fig.height=3,dpi=30000,cache = FALSE,eval=TRUE>>=
 
 @
 \clearpage
