@@ -18,6 +18,10 @@ n.chains.sectoral = 1 # n.chains.sectoral = 5 for the working model
 n.iter.tax = 100  # n.iter.tax = 300000 // this is for working model
 n.burnin.tax = 10 # n.burnin.tax = 30000 // this is for working model
 n.chains.tax = 1 # n.chains.tax = 5 for the working model
+
+
+chain.chains.word = ifelse(n.chains.tax==1 ,"chain","chains")  # introduces right word into the text
+iteration.iterations.word = ifelse(n.iter.tax==1 ,"iteration","iterations")  # introduces right word into the text
 ## ---- 
 
 
