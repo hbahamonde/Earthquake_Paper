@@ -1,3 +1,9 @@
+{\textcite[57, 95]{Kirsch:1977aa}, citing \textcite[]{Bauer:2008kx}, who explains that ``[m]iners and merchants bought haciendas but landowners in turn invested in banks, insurance companies, commercial firms and the incipient industrial sector.'' \textcite[23]{Coatsworth2002} argue that ``[t]he only landowners that mattered in 19th century Latin American politics were those for whom land represented but one asset in a much broader portfolio.''
+
+\textcite[129]{ReyesCampos2015} documents a real increment in industrial salaries around 1938.
+
+\parencite[419]{Carlin2014a} study how earthquakes damage interpersonal trust. They argue that ``state capacity plays a decisive role in determining natural disasters' consequences for social capital.''
+
 % BEGIN  Jorge Atria comments
 Income taxation and state capacities in Chile: measuring institutional development using historical  earthquake data (H. Bahamonde)
 
