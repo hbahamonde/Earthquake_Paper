@@ -5,23 +5,76 @@ graphics.off()
 
 ## ---- number:of:simulations ----
 # Hazard Rate simulations 
-nsim = 20 # original: 10000
+nsim = 10000 # original: 10000
 qi = "Hazard Rate" # original: Hazard Rate
 ci = 0.95
 
 # Bayesian: Sectoral Model
-n.iter.sectoral = 100  # n.iter.sectoral = 300000 // this is for working model
-n.burnin.sectoral = 10 # n.burnin.sectoral = 30000 // this is for working model
-n.chains.sectoral = 1 # n.chains.sectoral = 5 for the working model
+n.iter.sectoral = 300000  # n.iter.sectoral = 300000 // this is for working model
+n.burnin.sectoral = 30000 # n.burnin.sectoral = 30000 // this is for working model
+n.chains.sectoral = 5 # n.chains.sectoral = 5 for the working model
 
 # Bayesian: Tax Model
-n.iter.tax = 100  # n.iter.tax = 300000 // this is for working model
-n.burnin.tax = 10 # n.burnin.tax = 30000 // this is for working model
-n.chains.tax = 1 # n.chains.tax = 5 for the working model
+n.iter.tax = 300000  # n.iter.tax = 300000 // this is for working model
+n.burnin.tax = 30000 # n.burnin.tax = 30000 // this is for working model
+n.chains.tax = 5 # n.chains.tax = 5 for the working model
 
 
 chain.chains.word = ifelse(n.chains.tax==1 ,"chain","chains")  # introduces right word into the text
 iteration.iterations.word = ifelse(n.iter.tax==1 ,"iteration","iterations")  # introduces right word into the text
+
+# function to convert numbers to word (for paper)
+#https://github.com/ateucher/useful_code/blob/master/R/numbers2words.r
+numbers2words <- function(x){
+        ## Function by John Fox found here: 
+        ## http://tolstoy.newcastle.edu.au/R/help/05/04/2715.html
+        ## Tweaks by AJH to add commas and "and"
+        helper <- function(x){
+                
+                digits <- rev(strsplit(as.character(x), "")[[1]])
+                nDigits <- length(digits)
+                if (nDigits == 1) as.vector(ones[digits])
+                else if (nDigits == 2)
+                        if (x <= 19) as.vector(teens[digits[1]])
+                else trim(paste(tens[digits[2]],
+                                Recall(as.numeric(digits[1]))))
+                else if (nDigits == 3) trim(paste(ones[digits[3]], "hundred and", 
+                                                  Recall(makeNumber(digits[2:1]))))
+                else {
+                        nSuffix <- ((nDigits + 2) %/% 3) - 1
+                        if (nSuffix > length(suffixes)) stop(paste(x, "is too large!"))
+                        trim(paste(Recall(makeNumber(digits[
+                                nDigits:(3*nSuffix + 1)])),
+                                suffixes[nSuffix],"," ,
+                                Recall(makeNumber(digits[(3*nSuffix):1]))))
+                }
+        }
+        trim <- function(text){
+                #Tidy leading/trailing whitespace, space before comma
+                text=gsub("^\ ", "", gsub("\ *$", "", gsub("\ ,",",",text)))
+                #Clear any trailing " and"
+                text=gsub(" and$","",text)
+                #Clear any trailing comma
+                gsub("\ *,$","",text)
+        }  
+        makeNumber <- function(...) as.numeric(paste(..., collapse=""))     
+        #Disable scientific notation
+        opts <- options(scipen=100) 
+        on.exit(options(opts)) 
+        ones <- c("", "one", "two", "three", "four", "five", "six", "seven",
+                  "eight", "nine") 
+        names(ones) <- 0:9 
+        teens <- c("ten", "eleven", "twelve", "thirteen", "fourteen", "fifteen",
+                   "sixteen", " seventeen", "eighteen", "nineteen")
+        names(teens) <- 0:9 
+        tens <- c("twenty", "thirty", "forty", "fifty", "sixty", "seventy", "eighty",
+                  "ninety") 
+        names(tens) <- 2:9 
+        x <- round(x)
+        suffixes <- c("thousand", "million", "billion", "trillion")     
+        if (length(x) > 1) return(trim(sapply(x, helper)))
+        helper(x)
+}
 ## ---- 
 
 
@@ -373,8 +426,8 @@ earthquake.map.plot.chile = ggplot() +
         axis.text.x = element_text(size=7), 
         axis.title.y = element_text(size=7), 
         axis.title.x = element_text(size=7), 
-        legend.text=element_text(size=7), 
-        legend.title=element_text(size=7),
+        legend.text=element_text(size=12), 
+        legend.title=element_text(size=12),
         plot.title = element_text(size=7),
         legend.position="bottom")
 ## ----
@@ -1149,9 +1202,11 @@ income.tax.model.plot
 income.tax.model.plot.note <- paste(
   "{\\bf Conditional Overtime Effects of Earthquake Magnitudes on Implementing the Income Tax}.",
   "\\\\\\hspace{\\textwidth}",
-  paste("{\\bf Note}: Using the estimations from \\autoref{income:tax:model:regression:table:run} (\\autoref{model:2}), and following the advice of \\textcite{Brambor2006}, the figure shows the conditional effect of earthquake magnitudes on implementing the income tax in 1924 ($\\beta_{1}+\\beta_{3}\\times\\text{Income Tax}_{i}$). Particularly, by implementing the income tax, the base line propensity of the earthquake's magnitude of increasing the death-toll, \\emph{decreases} from an estimated overtime average of", death.toll.before.tax, "to an estimated overtime average of", death.toll.after.tax, "\\unskip. Hence, the figure suggests that implementing the income tax law had positive effects on state-capacity overtime.", "Both distributions were computed via a MCMC routine, particularly iterating", n.chains.tax, "chains", "with", n.iter.tax, "iterations per chain. And considering the Monte Carlo Markov Chain properties, the first", n.burnin.tax, "observations of every chain were discarded.")
+  paste("{\\bf Note}: Using the estimations from \\autoref{income:tax:model:regression:table:run} (\\autoref{model:2}), and following the advice of \\textcite{Brambor2006}, the figure shows the conditional effect of earthquake magnitudes on implementing the income tax in 1924 ($\\beta_{1}+\\beta_{3}\\times\\text{Income Tax}_{i}$). Particularly, by implementing the income tax, the base line propensity of the earthquake's magnitude of increasing the death-toll, \\emph{decreases} from an estimated overtime average of", death.toll.before.tax, "to an estimated overtime average of", death.toll.after.tax, "\\unskip. Hence, the figure suggests that implementing the income tax law had positive effects on state-capacity overtime.", "Both distributions were computed via a MCMC routine, particularly iterating", numbers2words(n.chains.tax), "chains", "with", format(round(as.numeric(n.iter.tax), 0), nsmall=0, big.mark=","), "iterations per chain. And considering the Monte Carlo Markov Chain properties, the first", format(round(as.numeric(n.burnin.tax), 0), nsmall=0, big.mark=","), "observations of every chain were discarded.")
   )
 ## ----
+
+
 
 
 ###############################
@@ -1257,7 +1312,7 @@ if (!require("pacman")) install.packages("pacman"); library(pacman)
 p_load(xtable)
 
 note.tax <- paste0(
-  "\\hline \n \\multicolumn{6}{l}", "{ \\scriptsize {\\bf Note}: ", format(round(as.numeric(n.iter.tax), 0), nsmall=0, big.mark=","), " iterations with a burn-in period of n = ", format(round(as.numeric(n.burnin.tax), 0), nsmall=0, big.mark=",") , " iterations discarded.}\\\\", "\n \\multicolumn{6}{l}", "{ \\scriptsize ", ci.number.tax*100 ,"\\% credible intervals (upper/lower bounds). All R-Hat statistics below critical levels.}\\\\" ,"\n \\multicolumn{6}{l}", "{ \\scriptsize Standard convergence diagnostics suggest good mixing and convergence.}\\\\","\n \\multicolumn{6}{l}","{ \\scriptsize A total of ", n.chains.tax, " chains were run. \\autoref{fig:predicted:observed:plot:plot} shows that the model fits well the data.} \\\\")
+  "\\hline \n \\multicolumn{6}{l}", "{ \\scriptsize {\\bf Note}: ", format(round(as.numeric(n.iter.tax), 0), nsmall=0, big.mark=","), " iterations with a burn-in period of n = ", format(round(as.numeric(n.burnin.tax), 0), nsmall=0, big.mark=",") , " iterations discarded.}\\\\", "\n \\multicolumn{6}{l}", "{ \\scriptsize ", ci.number.tax*100 ,"\\% credible intervals (upper/lower bounds). All R-Hat statistics below critical levels.}\\\\" ,"\n \\multicolumn{6}{l}", "{ \\scriptsize Standard convergence diagnostics suggest good mixing and convergence.}\\\\","\n \\multicolumn{6}{l}","{ \\scriptsize A total of ", numbers2words(n.chains.tax), " chains were run. \\autoref{fig:predicted:observed:plot:plot} shows that the model fits well the data.} \\\\")
 ## ----
 
 ## ---- income:tax:model:regression:table:run ----
@@ -1441,7 +1496,7 @@ traplot(earthquakefit.tax,
         style="plain", 
         auto.layout = T,
         main=labels.tax,
-        plot.title = paste(n.chains.tax, "chains,", format(round(as.numeric(n.iter.tax), 0), nsmall=0, big.mark=","), "iterations and burn-in period of", format(round(as.numeric(n.burnin.tax), 0), nsmall=0, big.mark=","))
+        plot.title = paste(numbers2words(n.chains.tax), "chains,", format(round(as.numeric(n.iter.tax), 0), nsmall=0, big.mark=","), "iterations and burn-in period of", format(round(as.numeric(n.burnin.tax), 0), nsmall=0, big.mark=","))
 )
 ## ----
 
@@ -1462,7 +1517,7 @@ denplot(earthquakefit.tax,
         #col=2, 
         lty=1, 
         main=c(labels.tax),
-        plot.title = paste(n.chains.tax, "chains,", format(round(as.numeric(n.iter.tax), 0), nsmall=0, big.mark=","), "iterations, burn-in period of", format(round(as.numeric(n.burnin.tax), 0), nsmall=0, big.mark=","), "and", ci.number.tax*100, "% credible intervals")
+        plot.title = paste(numbers2words(n.chains.tax), "chains,", format(round(as.numeric(n.iter.tax), 0), nsmall=0, big.mark=","), "iterations, burn-in period of", format(round(as.numeric(n.burnin.tax), 0), nsmall=0, big.mark=","), "and", ci.number.tax*100, "% credible intervals")
 )
 ## ----
 
