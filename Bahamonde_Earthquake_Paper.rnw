@@ -338,12 +338,11 @@ Using archival census data from 1907 to 2012,\footnote{Particularly, censuses of
 \autoref{fig:earthquake:ts:plot:chile:plot} plots the overtime variation, while \autoref{fig:earthquake:map:plot:chile} plots the geographical variation, as well as the dominant productive sector at the municipal level. Both figures suggest that Chile is a good case to study infrastructural state-capacity using the earthquake framework: Chile has considerable variance regarding quake magnitudes, locations, and sectoral variation. The northern part of Chile has historically been an industrial region, while the southern part of Chile has traditionally been agricultural. Both have been affected by earthquakes in a similar fashion.  Relatedly, both regions vary according to their climate (which correlates with agriculture). Furthermore, the distance from Santiago, which is located near latitude 33$^{\circ}$, might impose some degree of difficulty for the central government to reach the farthest northern/southern parts of the territory \parencite[418]{Foa2016}. However, the central part also has considerable earthquake activity. There is also variance considering longitude. Closeness to the Andean mountains (around longitude 70$^{\circ}$) determines the ruggedness of the terrain, presumably making it harder for the state to penetrate these areas. In fact, \textcite[729]{Brancati2007} explains that ``[e]arthquakes often occur in mountainous areas.'' All things considered, earthquakes have affected the territory from coast to mountain, both north and south, close and far away from Santiago,  and both agricultural and industrial areas, solving potential concerns about geographical sectoral self-selection. For instance, it would have been a problem that a specific sector, say the industrialists, were located \emph{only} in the northern part, which is the most earthquake-prone area.
 
 
-\newpage
 % earthquake:map:plot:chile
-<<earthquake:map:plot:chile, echo = FALSE, fig.pos='H', warning = FALSE, message = FALSE,fig.cap=earthquake.map.note.chile, fig.align='center', fig.width=10.5,fig.height=10,dpi=30000,cache = FALSE,eval=TRUE>>=
+<<earthquake:map:plot:chile, echo = FALSE, fig.pos='H', warning = FALSE, message = FALSE,fig.cap=earthquake.map.note.chile, fig.align='center', fig.width=12,fig.height=12,dpi=30000,cache = FALSE,eval=TRUE>>=
 
 @
-\clearpage
+
 
 
 % Poisson model // main IVs
