@@ -270,8 +270,8 @@ time.series.plot
 time.series.plot.note <- paste(
   paste(paste("{\\bf Earthquakes in Chile: ", paste(min(dat.chile.complete$year),max(dat.chile.complete$year), sep = "-"), ".}", sep = ""),
         "\\\\\\hspace{\\textwidth}", 
-        paste(paste("{\\bf Note}: Figure shows earthquakes overtime (N=", nrow(dat.chile.complete),").", sep = ""),
-              " Additionally, the figure shows earthquakes before and after the implementation of the income tax in 1924. A smoothing function was added to show that there are not statistically significant different decreases/increases in magnitudes overtime.", 
+        paste(paste("{\\bf Note}: Figure shows earthquakes over time (N=", nrow(dat.chile.complete),").", sep = ""),
+              " Additionally, the figure shows earthquakes before and after the implementation of the income tax in 1924. A smoothing function was added to show that there are not statistically significant different decreases/increases in magnitudes over time.", 
               sep = "")),
         "\n")
 ## ----
@@ -443,7 +443,7 @@ earthquake.map.plot.chile
 earthquake.map.note.chile <- paste(
   paste("{\\bf Data Used in the Analyses: Geographical Distribution of Earthquakes in Chile,", paste(paste(min(chile.map.plot.d$Year), max(chile.map.plot.d$Year), sep="-"), "}.", sep = "" ), sep=" "),
   "\\\\\\hspace{\\textwidth}", 
-  paste("{\\bf Note}:", paste(paste(paste("Using a combination of archival information and external sources, the figure shows a total of", nrow(chile.map.plot.d), ""), "earthquakes.", sep = ""), "Each quake was colorized according to the predominant economic sector at the municipal level. In total, there were", as.numeric(table(chile.map.plot.d$Sector)["Agriculture"]), "earthquakes that took place in agricultural localities,", as.numeric(table(chile.map.plot.d$Sector)["Industry"]), "in industrial, and", as.numeric(table(chile.map.plot.d$Sector)["Mixed"]), "in mixed municipalities.",   sep = " "), sep=" "),
+  paste("{\\bf Note}:", paste(paste(paste("The figure shows a total of", nrow(chile.map.plot.d), ""), "earthquakes.", sep = ""), "earthquakes using a combination of archival information and external sources. Each quake was colorized according to the predominant economic sector at the municipal level. In total, there were", as.numeric(table(chile.map.plot.d$Sector)["Agriculture"]), "earthquakes that took place in agricultural localities,", as.numeric(table(chile.map.plot.d$Sector)["Industry"]), "in industrial, and", as.numeric(table(chile.map.plot.d$Sector)["Mixed"]), "in mixed municipalities.",   sep = " "), sep=" "),
   "\n")
 ## ----
 
@@ -959,7 +959,7 @@ if (!require("pacman")) install.packages("pacman"); library(pacman)
 p_load(xtable)
 
 note.sectoral <- paste0(
-  "\\hline \n \\multicolumn{6}{l}", "{ \\scriptsize {\\bf Note}: ", format(round(as.numeric(n.iter.sectoral), 0), nsmall=0, big.mark=","), " iterations with a burn-in period of n = ", format(round(as.numeric(n.burnin.sectoral), 0), nsmall=0, big.mark=","), " iterations discarded.}\\\\", "\n \\multicolumn{6}{l}", "{ \\scriptsize ", ci.number.sectoral*100 ,"\\% credible intervals (lower/upper bounds). All R-Hat statistics below critical levels.}\\\\" ,"\n \\multicolumn{6}{l}", "{ \\scriptsize Standard convergence diagnostics suggest good mixing and convergence.}\\\\","\n \\multicolumn{6}{l}", "{ \\scriptsize Year fixed effects were omitted in the table.}\\\\", 
+  "\\hline \n \\multicolumn{6}{l}", "{ \\scriptsize {\\bf Note}: ", format(round(as.numeric(n.iter.sectoral), 0), nsmall=0, big.mark=","), " iterations with a burn-in period of n = ", format(round(as.numeric(n.burnin.sectoral), 0), nsmall=0, big.mark=","), " iterations discarded.}\\\\", "\n \\multicolumn{6}{l}", "{ \\scriptsize ", ci.number.sectoral*100 ,"\\% credible intervals (lower/upper bounds). All R-Hat statistics are below critical levels.}\\\\" ,"\n \\multicolumn{6}{l}", "{ \\scriptsize Standard convergence diagnostics suggest good mixing and convergence.}\\\\","\n \\multicolumn{6}{l}", "{ \\scriptsize Year fixed effects were omitted in the table.}\\\\", 
   "\n \\multicolumn{6}{l}","{ \\scriptsize A total of ", n.chains.sectoral, " chains were run.} \\\\")
 ## ----
 
@@ -1200,9 +1200,9 @@ income.tax.model.plot = ggplot(int.sim, aes(x=x, fill= Income.Tax, y=..scaled..)
 ## ---- income:tax:model:plot:run ----
 income.tax.model.plot
 income.tax.model.plot.note <- paste(
-  "{\\bf Conditional Overtime Effects of Earthquake Magnitudes on Implementing the Income Tax}.",
+  "{\\bf Conditional Effects of Earthquake Magnitudes on Implementing the Income Tax Over Time}.",
   "\\\\\\hspace{\\textwidth}",
-  paste("{\\bf Note}: Using the estimations from \\autoref{income:tax:model:regression:table:run} (\\autoref{model:2}), and following the advice of \\textcite{Brambor2006}, the figure shows the conditional effect of earthquake magnitudes on implementing the income tax in 1924 ($\\beta_{1}+\\beta_{3}\\times\\text{Income Tax}_{i}$). Particularly, by implementing the income tax, the base line propensity of the earthquake's magnitude of increasing the death-toll, \\emph{decreases} from an estimated overtime average of", death.toll.before.tax, "to an estimated overtime average of", death.toll.after.tax, "\\unskip. Hence, the figure suggests that implementing the income tax law had positive effects on state-capacity overtime.", "Both distributions were computed via a MCMC routine, particularly iterating", numbers2words(n.chains.tax), "chains", "with", format(round(as.numeric(n.iter.tax), 0), nsmall=0, big.mark=","), "iterations per chain. And considering the Monte Carlo Markov Chain properties, the first", format(round(as.numeric(n.burnin.tax), 0), nsmall=0, big.mark=","), "observations of every chain were discarded.")
+  paste("{\\bf Note}: Using the estimations from \\autoref{income:tax:model:regression:table:run} (\\autoref{model:2}), and following the advice of \\textcite{Brambor2006}, the figure shows the conditional effect of earthquake magnitudes on implementing the income tax in 1924 ($\\beta_{1}+\\beta_{3}\\times\\text{Income Tax}_{i}$). Particularly, by implementing the income tax, the baseline propensity of the earthquake's magnitude of increasing the death toll \\emph{decreases} from an estimated overtime average of", numbers2words(death.toll.before.tax), "to an estimated overtime average of", numbers2words(death.toll.after.tax), "\\unskip. Hence, the figure suggests that implementing the income tax law had positive effects on state capacity over time.", "Both distributions were computed via a MCMC routine, particularly the iteration of", numbers2words(n.chains.tax), "chains", "with", format(round(as.numeric(n.iter.tax), 0), nsmall=0, big.mark=","), "iterations per chain. Considering the Monte Carlo Markov Chain properties, the first", format(round(as.numeric(n.burnin.tax), 0), nsmall=0, big.mark=","), "observations of every chain were discarded.")
   )
 ## ----
 
