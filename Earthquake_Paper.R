@@ -1312,7 +1312,7 @@ if (!require("pacman")) install.packages("pacman"); library(pacman)
 p_load(xtable)
 
 note.tax <- paste0(
-  "\\hline \n \\multicolumn{6}{l}", "{ \\scriptsize {\\bf Note}: ", format(round(as.numeric(n.iter.tax), 0), nsmall=0, big.mark=","), " iterations with a burn-in period of n = ", format(round(as.numeric(n.burnin.tax), 0), nsmall=0, big.mark=",") , " iterations discarded.}\\\\", "\n \\multicolumn{6}{l}", "{ \\scriptsize ", ci.number.tax*100 ,"\\% credible intervals (upper/lower bounds). All R-Hat statistics below critical levels.}\\\\" ,"\n \\multicolumn{6}{l}", "{ \\scriptsize Standard convergence diagnostics suggest good mixing and convergence.}\\\\","\n \\multicolumn{6}{l}","{ \\scriptsize A total of ", numbers2words(n.chains.tax), " chains were run. \\autoref{fig:predicted:observed:plot:plot} shows that the model fits well the data.} \\\\")
+  "\\hline \n \\multicolumn{6}{l}", "{ \\scriptsize {\\bf Note}: ", format(round(as.numeric(n.iter.tax), 0), nsmall=0, big.mark=","), " iterations with a burn-in period of n = ", format(round(as.numeric(n.burnin.tax), 0), nsmall=0, big.mark=",") , " iterations discarded.}\\\\", "\n \\multicolumn{6}{l}", "{ \\scriptsize ", ci.number.tax*100 ,"\\% credible intervals (upper/lower bounds). All R-Hat statistics are below critical levels.}\\\\" ,"\n \\multicolumn{6}{l}", "{ \\scriptsize Standard convergence diagnostics suggest good mixing and convergence.}\\\\","\n \\multicolumn{6}{l}","{ \\scriptsize A total of ", numbers2words(n.chains.tax), " chains were run. \\autoref{fig:predicted:observed:plot:plot} shows that the model fits well the data.} \\\\")
 ## ----
 
 ## ---- income:tax:model:regression:table:run ----
@@ -2103,9 +2103,9 @@ grid_arrange_shared_legend(
 outputstitle <- paste(
   "{\\bf Industrial and Agricultural Outputs, and The Passage of the Income Tax Law}.",
   "\\\\\\hspace{\\textwidth}", 
-  "{\\bf Note}: Figure shows historical sectoral outputs, and year of the passage of the income tax law. Following convention, the figure shows logged values. Following the economic development typology suggested in \\textcite[5]{Mahoney:2010aa}, nine polities were selected. Three ``higher level'' countries (Argentina, Chile, and Venezuela), three ``intermediate level'' countries (Mexico, Colombia, and Peru), and three ``lower level'' countries (Ecuador, Nicaragua, and Guatemala).",
+  "{\\bf Note}: Figure shows historical sectoral outputs and year of the passage of the income tax law. Following convention, the figure shows logged values. Following the economic development typology suggested in \\textcite[5]{Mahoney:2010aa}, nine polities were selected: Three ``higher level'' countries (Argentina, Chile, and Venezuela), three ``intermediate level'' countries (Mexico, Colombia, and Peru), and three ``lower level'' countries (Ecuador, Nicaragua, and Guatemala).",
   "\\\\\\hspace{\\textwidth}", 
-  paste("{\\bf Source}: \\href{http://moxlad-staging.herokuapp.com/home/en?}{MOxLAD}, and other sources compiled by the author (see \\autoref{sample:data:income:tax:tab})."),
+  paste("{\\bf Source}: \\href{http://moxlad-staging.herokuapp.com/home/en?}{MOxLAD} and other sources compiled by the author (see \\autoref{sample:data:income:tax:tab})."),
   "\n")
 # ----
 
@@ -2317,7 +2317,7 @@ sim.m.agr <- coxsimLinear(cox2,
 simtitle <- paste(
   paste0("{\\bf ",qi, " of Implementing the Income Tax Law}."),
   "\\\\\\hspace{\\textwidth}", 
-  paste("{\\bf Note}:", "Using estimations of model 1 in \\autoref{results:table:cox}, figure shows", formatC(nsim, format="d", big.mark=","), "simulations with different sectoral growth speeds. ``Slow'' is the minimum value, while ``rapid'' is the maximum value for each sectoral output."),
+  paste("{\\bf Note}:", "Using estimations of model 1 in \\autoref{results:table:cox}, the figure shows", formatC(nsim, format="d", big.mark=","), "simulations with different sectoral growth speeds. ``Slow'' is the minimum value, while ``rapid'' is the maximum value for each sectoral output."),
   paste(paste("The figure also shows the ", paste(ci*100, "\\%", sep = ""), sep = ""), "confidence intervals."), 
   "\n")
 ## ----
