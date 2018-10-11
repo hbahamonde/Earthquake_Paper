@@ -9,14 +9,14 @@
 
 % TITLE SECTION
 
-\title{\vspace{-15mm}\fontsize{18pt}{7pt}\selectfont\textbf{\input{/Users/hectorbahamonde/RU/Dissertation/Papers/Earthquake_Paper/title.txt}\unskip}} % Article title
+\title{State Capacity: A Historical Approach (anonymized title)} % Article title
 
 
 \author[1]{
 \large
-\textsc{H\'ector Bahamonde}\\ 
-\thanks{I thank Robert Kaufman, Hillel Soifer, Ana de la O, Mark Dincecco, James Mahon, Christopher Hale, Alexander Lee, Jack Paine, Daniel Kelemen, Douglas Blair, Paul Poast, Jorge Atria, Christine Hunefeldt, the attendees of the Annual Meeting of the Southern Political Science Association in New Orleans 2018, the  International Congress of the Latin American Studies Association in Barcelona 2018, and of the Social Sciences Institute Seminar, at Universidad de O$'$Higgins, for all the useful comments. I also thank the School of Arts and Sciences at Rutgers University for granting me funds to collect part of the data used in this project. Usual caveats apply.}
-\normalsize Assistant Professor $\bullet$ O$'$Higgins University\\
+\textsc{author}\\ 
+\thanks{Thank you paragraph.}
+\normalsize Rank $\bullet$ Institution\\
 \normalsize \href{mailto:\filetext}{\texttt{\filetext}}\\
 \normalsize \href{http://www.hectorbahamonde.com}{\texttt{www.HectorBahamonde.com}}
 \vspace{-5mm}
