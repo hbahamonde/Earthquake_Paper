@@ -443,7 +443,7 @@ earthquake.map.plot.chile
 earthquake.map.note.chile <- paste(
   paste("{\\bf Data Used in the Analyses: Geographical Distribution of Earthquakes in Chile,", paste(paste(min(chile.map.plot.d$Year), max(chile.map.plot.d$Year), sep="-"), "}.", sep = "" ), sep=" "),
   "\\\\\\hspace{\\textwidth}", 
-  paste("{\\bf Note}:", paste(paste(paste("The figure shows a total of", nrow(chile.map.plot.d), ""), "earthquakes.", sep = ""), "earthquakes using a combination of archival information and external sources. Each quake was colorized according to the predominant economic sector at the municipal level. In total, there were", as.numeric(table(chile.map.plot.d$Sector)["Agriculture"]), "earthquakes that took place in agricultural localities,", as.numeric(table(chile.map.plot.d$Sector)["Industry"]), "in industrial, and", as.numeric(table(chile.map.plot.d$Sector)["Mixed"]), "in mixed municipalities.",   sep = " "), sep=" "),
+  paste("{\\bf Note}:", paste(paste(paste("The figure shows a total of", nrow(chile.map.plot.d), ""), "earthquakes", sep = ""), "using a combination of archival information and external sources. Each quake was colorized according to the predominant economic sector at the municipal level. In total, there were", as.numeric(table(chile.map.plot.d$Sector)["Agriculture"]), "earthquakes that took place in agricultural localities,", as.numeric(table(chile.map.plot.d$Sector)["Industry"]), "in industrial, and", as.numeric(table(chile.map.plot.d$Sector)["Mixed"]), "in mixed municipalities.",   sep = " "), sep=" "),
   "\n")
 ## ----
 
