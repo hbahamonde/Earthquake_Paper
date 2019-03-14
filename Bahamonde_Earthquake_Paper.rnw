@@ -169,7 +169,7 @@ The paper also contributes to the literature from an empirical perspective. Expl
 
 
 % add on: origins of income taxation // paper 2 extension
-Additionally, the article outlines a theory that explains the \emph{timing} of the implementation of the income tax. Given that industrialists were more dependent on capital (relative to landowners), they opposed import taxes, favoring the implementation of the income tax. These fiscal resources paid for public goods that benefited the industrial class in the long run, such as roads and bridges. Leveraging sectoral outputs since 1900 for a sample of nine Latin American countries, including Chile, and employing a number of survival models, we present evidence that suggests that the emergence of the industrial sector \emph{accelerated} the implementation of the income tax. Also, using vector auto-regressive time-series models and Granger-causality tests, we also challenge the stereotypical idea that Chilean landowners and industrialists conformed a single entrepreneurial elite with assets scattered throughout several spheres of investment. These tests strongly suggest that both sectors were, in fact, in constant opposition and that levels of inter-sectoral asset diversification were weak.
+%Additionally, the article outlines a theory that explains the \emph{timing} of the implementation of the income tax. Given that industrialists were more dependent on capital (relative to landowners), they opposed import taxes, favoring the implementation of the income tax. These fiscal resources paid for public goods that benefited the industrial class in the long run, such as roads and bridges. Leveraging sectoral outputs since 1900 for a sample of nine Latin American countries, including Chile, and employing a number of survival models, we present evidence that suggests that the emergence of the industrial sector \emph{accelerated} the implementation of the income tax. Also, using vector auto-regressive time-series models and Granger-causality tests, we also challenge the stereotypical idea that Chilean landowners and industrialists conformed a single entrepreneurial elite with assets scattered throughout several spheres of investment. These tests strongly suggest that both sectors were, in fact, in constant opposition and that levels of inter-sectoral asset diversification were weak.
 
 
 \begin{figure}[h]
@@ -196,7 +196,7 @@ As such, this article is an attempt to provide an alternative explanation of sta
 
 
 % agr were important
-The landed Latin American elites were an hegemonic economic group protected by norms and institutions that originated during colonial times \parencite[13]{Keller1931}. Not only that, the post-colonial institutional and economic orders were designed to give an unfair advantage to the agricultural sector. \textcite[99]{Mamalakis1971} is well known for describing how an agriculture-government coalition was formed in Chile, beginning with the colonial period. Several historians point out that ``[i]n those areas where the government did interfere in the countryside, the effect was to strengthen the position of the landowning class''\parencite[118]{Bauer:2008kx}. In fact, the little public infrastructure that existed benefited mostly the agricultural sector \parencite{Rippy:1971rz,Marichal:1989bh,Zeitlin:1984aa,Bauer:2008kx}. By extension, the landowning class controlled most of the politics, too (\textcite[45-46]{Wright1975}, \textcite[13]{Zeitlin:1984aa}, \textcite[45]{Bauer:2008kx}, \textcite[1748]{Baland2008}, \textcite[56]{Best1976}, \textcite{Rippy:1971rz} and \textcite{Marichal:1989bh}). For example, \textcite[106]{Collier:2002db} explain that the Chilean ``national government was dominated by the central part of the country, with owners of large agricultural holdings playing a predominant role.''\footnote{Similarly, \textcite[15]{McBride:1971fv} explains that ``Chile's people live on the soil. Her life is agricultural to the core. \emph{Her government has always been of farm owners. Her Congress is made up chiefly of rich landlords}. Social life is dominated by families whose proudest possession is the ancestral estate.'' My emphases.} 
+The landed Latin American elites were an hegemonic economic group protected by norms and institutions that originated during colonial times \parencite[13]{Keller1931}. Not only that, the post-colonial institutional and economic orders were designed to give an unfair advantage to the agricultural sector. \textcite[99]{Mamalakis1971} is well known for describing how an agriculture-government coalition was formed in Chile, beginning with the colonial period. Several historians point out that ``[i]n those areas where the government did interfere in the countryside, the effect was to strengthen the position of the landowning class'' \parencite[118]{Bauer:2008kx}. In fact, the little public infrastructure that existed benefited mostly the agricultural sector \parencite{Rippy:1971rz,Marichal:1989bh,Zeitlin:1984aa,Bauer:2008kx}. By extension, the landowning class controlled most of the politics, too (\textcite[45-46]{Wright1975}, \textcite[13]{Zeitlin:1984aa}, \textcite[45]{Bauer:2008kx}, \textcite[1748]{Baland2008}, \textcite[56]{Best1976}, \textcite{Rippy:1971rz} and \textcite{Marichal:1989bh}). For example, \textcite[106]{Collier:2002db} explain that the Chilean ``national government was dominated by the central part of the country, with owners of large agricultural holdings playing a predominant role.''\footnote{Similarly, \textcite[15]{McBride:1971fv} explains that ``Chile's people live on the soil. Her life is agricultural to the core. \emph{Her government has always been of farm owners. Her Congress is made up chiefly of rich landlords}. Social life is dominated by families whose proudest possession is the ancestral estate.'' My emphases.} 
 
 
 % but then industrialists emerged
@@ -212,7 +212,7 @@ However, when the ``structural transformation'' happened---a process by which th
 % from conflict to compromise: income tax
 The preferences over fiscal policy of the expanding industrial sector clashed with the ones of the agricultural class. On the one hand, land fixity increased the risk premium of the landed elite's main asset \parencite[512]{Robinson2006a}, so they systematically resisted taxation. However, as capital could be reinvested in nontaxable sectors (\textcite[]{Hirschman:1970bl}; R. Rogowski in \textcite[ch. 4]{Drake:1998pi}; however, see \textcite[15]{Bates1985}), industrialists' preferences toward taxation were more elastic. 
 
-The emergence of a strong industrial class led to heavier pressures for the implementation of the income tax law. As industrialists depended more on infrastructure implemented at the local level---such as roads, railroads, and bridges---the industrial classes in Latin America ``[\emph{preferred}] to shoulder a higher tax burden through progressive direct taxation'' \parencite[18]{Beramendi2016}. 
+The emergence of a strong industrial class led to heavier pressures for the implementation of the income tax law.\footnote{Separate panel-data analyses, available upon request, also confirm this hypothesis.} As industrialists depended more on infrastructure implemented at the local level---such as roads, railroads, and bridges---the industrial classes in Latin America ``[\emph{preferred}] to shoulder a higher tax burden through progressive direct taxation'' \parencite[18]{Beramendi2016}. 
 
 In fact, in 1924 Chilean industrial elites accepted income taxes by agriculturalist incumbents \emph{in exchange} for having more state services and being included in state politics. As others have explained, the non-agricultural sector ``accepted taxation, while demanding state services and expecting to influence how tax revenues were spent [...] Consultation and cooperation were relatively institutionalised between the two sides'' (Carmenza Gallo, in \textcite[165]{Brautigam2008}).\footnote{My emphases.} Since both elites agreed on implementing the income tax, compliance was high. 
 
@@ -329,7 +329,7 @@ Another potential concern is that the ability to count the death toll might be a
 I constructed a novel hand-collected longitudinal dataset using the \emph{Significant Earthquake Database} compiled by the National Centers for Environmental Information (NOAA) as a starting point \parencite[]{noaa2015}. The dataset ``contains information on destructive earthquakes from 2150 B.C. to the present,'' such as magnitude, date, latitude, longitude, number of deaths, among other variables. Tsunami casualties were excluded. Additionally, since ``most of the damage in major earthquakes occurs within 30 km of the epicenter'' \parencite[172]{Dunbar2003}, earthquakes that did not happen on land were not dropped. While the epicenter might have been a few miles away from the shore, the consequences certainly reached the land. 
 
 % explain dataset: 
-Using archival census data from 1907 to 2012,\footnote{Particularly, censuses of 1907, 1920, 1930, 1940, 1952, 1960, 1970, 1982, 1992, 2002 and 2012. Some of them were kept at the \emph{Biblioteca Nacional} and others at the \emph{National Statistic Institute} historical library.} the NOAA dataset was complemented with local population measures at the municipal level where the quake hit. The local population was used to weight the death toll.\footnote{Around 90\% of the time it was possible to recover the actual local population. For the rest, the population of the most concentrated area nearby was recovered. Consequently, population is used as a control, not to weight the dependent variable directly.} Adding archival census data, I coded the main economic activity of the affected municipality\footnote{This variable was constructed by coding press and official sources (mainly censuses) of the main economic sector at the local level: \text{$\Sexpr{levels(factor(dat$Sector))[1]}$} (n=$\Sexpr{as.character(table(factor(dat$Sector))[1])}$), \text{$\Sexpr{levels(factor(dat$Sector))[2]}$} (n=$\Sexpr{as.character(table(factor(dat$Sector))[2])}$), \text{$\Sexpr{levels(factor(dat$Sector))[3]}$} (n=$\Sexpr{as.character(table(factor(dat$Sector))[3])}$).} as to whether the municipality was urban or rural.\footnote{Urban=$\Sexpr{table(dat$Urban[dat$Urban==1])}$, rural=$\Sexpr{table(dat$Urban[dat$Urban==0])}$. If more than 50\% of the population lived in an urban setting, I assigned a 1 to that municipality, 0 otherwise. Urban concentrations are most likely to have vertical constructions rather than one-story buildings, increasing the potential number of casualties. Consequently, it is important to control for this source of variation. I thank Daniel Kelemen for this suggestion.} The death-tolls and magnitudes proportionated by the NOAA dataset were contrasted case by case with historical press archival information.\footnote{\emph{El Mercurio} and \emph{La Naci\'on} newspapers, both kept at the \emph{Archivo Nacional} of the \emph{Biblioteca Nacional de Chile}.} Magnitudes, in particular, were also compared with the \href{http://www.isc.ac.uk/iscbulletin/search/bulletin/}{International Seismological Centre}. 
+Using archival census data from 1907 to 2012,\footnote{Particularly, censuses of 1907, 1920, 1930, 1940, 1952, 1960, 1970, 1982, 1992, 2002 and 2012. Some of them were kept at the \emph{Biblioteca Nacional} and others at the \emph{National Statistic Institute} historical library.} the NOAA dataset was complemented with local population measures at the municipal level where the quake hit. The local population was used to weight the death toll.\footnote{Around 90\% of the time it was possible to recover the actual local population. For the rest, the population of the most concentrated area nearby was recovered. Consequently, population is used as a control, not to weight the dependent variable directly.} Adding archival census data, I coded the main economic activity of the affected municipality\footnote{This variable was constructed by coding press and official sources (mainly censuses) of the main economic sector at the local level: \text{$\Sexpr{levels(factor(dat$Sector))[1]}$} (n=$\Sexpr{as.character(table(factor(dat$Sector))[1])}$), \text{$\Sexpr{levels(factor(dat$Sector))[2]}$} (n=$\Sexpr{as.character(table(factor(dat$Sector))[2])}$), \text{$\Sexpr{levels(factor(dat$Sector))[3]}$} (n=$\Sexpr{as.character(table(factor(dat$Sector))[3])}$).} and whether the municipality was urban or rural.\footnote{Urban=$\Sexpr{table(dat$Urban[dat$Urban==1])}$, rural=$\Sexpr{table(dat$Urban[dat$Urban==0])}$. If more than 50\% of the population lived in an urban setting, I assigned a 1 to that municipality, 0 otherwise. Urban concentrations are most likely to have vertical constructions rather than one-story buildings, increasing the potential number of casualties. Consequently, it is important to control for this source of variation. I thank Daniel Kelemen for this suggestion.} The death-tolls and magnitudes proportionated by the NOAA dataset were contrasted case by case with historical press archival information.\footnote{\emph{El Mercurio} and \emph{La Naci\'on} newspapers, both kept at the \emph{Archivo Nacional} of the \emph{Biblioteca Nacional de Chile}.} Magnitudes, in particular, were also compared with the \href{http://www.isc.ac.uk/iscbulletin/search/bulletin/}{International Seismological Centre}. 
 
 % earthquake:ts:plot:chile:plot
 <<earthquake:ts:plot:chile:plot, echo = FALSE, fig.pos='H', warning = FALSE, message = FALSE,fig.cap=time.series.plot.note, fig.align='center', fig.width=6,fig.height=3,dpi=30000,cache = FALSE,eval=TRUE>>=
@@ -425,7 +425,7 @@ Fortunately, Bayesian methods have embedded a systematic and intuitive framework
 
 
 % substantively
-Substantively, \autoref{fig:income:tax:model:plot:run} shows that the death toll systematically \emph{decreases} over time---i.e. levels of state capacity systematically increase over time---\emph{once the income tax law is implemented}. Particularly, by implementing the income tax, the baseline propensity of an earthquake increasing the death toll decreases from an estimated over time average of $\Sexpr{numbers2words(death.toll.before.tax)}$ to an estimated over time average of $\Sexpr{numbers2words(death.toll.after.tax)}$. Importantly, the fixed-effects approach makes these results robust to considerations of progressive national and local economic development. By absorbing yearly sources of variation, \autoref{model:2} is capable of controlling for unobserved heterogeneous factors that might have an impact on the dependent variable (\autoref{fig:year:fixed:effects:plot:plot} shows the estimated year fixed-effects).
+Substantively, \autoref{fig:income:tax:model:plot:run} shows that the death toll systematically \emph{decreases} over time---i.e. levels of state capacity systematically increase over time---\emph{once the income tax law is implemented}. Particularly, by implementing the income tax, the baseline propensity of an earthquake increasing the death toll decreases from an estimated over time average of $\Sexpr{numbers2words(death.toll.before.tax)}$ to an estimated over time average of $\Sexpr{numbers2words(death.toll.after.tax)}$. Importantly, the fixed-effects approach makes these results robust to considerations of progressive national and local economic/political development. By absorbing yearly sources of variation, \autoref{model:2} is capable of controlling for unobserved heterogeneous factors that might have an impact on the dependent variable (\autoref{fig:year:fixed:effects:plot:plot} shows the estimated year fixed-effects).
 
 
 
@@ -449,7 +449,7 @@ To rule out this possibility, $\beta_{7,k}$ in \autoref{model:2} has a hierarchi
 % sectoral unity
 \paragraph{Blurry distinction between the two sectors.} Finally, it could be argued that the idea of sectoral conflict is overstated and that they were not conflicting sectors. 
 
-Some historians claim that there was just one economic and political elite, invested in both sectors. Since landowners also invested in industry (\textcite[57, 95]{Kirsch:1977aa}, \textcite[]{Bauer:2008kx}, \textcite[23]{Coatsworth2002}), it could be argued that there was a blurry class division between the industrial and agricultural sectors \parencite[30, 44, 94, 108]{Bauer:2008kx}. Perhaps the most cited reference regarding this issue is \textcite[231-247]{Veliz1963}. 
+%Some historians claim that there was just one economic and political elite, invested in both sectors. Since landowners also invested in industry (\textcite[57, 95]{Kirsch:1977aa}, \textcite[]{Bauer:2008kx}, \textcite[23]{Coatsworth2002}), it could be argued that there was a blurry class division between the industrial and agricultural sectors \parencite[30, 44, 94, 108]{Bauer:2008kx}. Perhaps the most cited reference regarding this issue is \textcite[231-247]{Veliz1963}. 
 
 However, there are a number of stylized facts that strongly suggest that there was indeed a structural cleavage between the two sectors. For example, it was common that industrialists invested in real estate, yet, in many instances, they did so \emph{just} to obtain credit. \textcite[59]{Kirsch:1977aa} explains that ``in a \emph{rural society} land offered one of the best guarantees for loans [since] loans could not be secured by equipment, machinery, or inventory. Only real estate was acceptable collateral.''\footnote{My emphases.} In fact, this practice shows how the credit system was oriented to give an unfair advantage to the landed elites. \textcite[9]{UndaGutierrez2017}, for instance, explains that in Mexico, industrial elites complied with the income tax in exchange for having a credit system more adequate for them. Similarly, \textcite[174]{Zeitlin:1984aa} finds ``the combined ownership of capital and landed property was a distinctive quality of \emph{certain} [elites] actors,''\footnote{My emphasis.} not \emph{all} their members. There were also other instances where miners invested in banking, yet, \textcite{Segall1953} argues that Chilean bankers, after the crisis of the mining sector around the 1870s, had acquired a number of mineral deposits given as collateral years before. And finally, but for the Argentinean case, \textcite[609]{Hora2002} explains that ``the image of an entrepreneurial elite with assets \emph{scattered throughout several spheres of investment} does not appear entirely correct.''\footnote{My emphasis.}
 
@@ -485,35 +485,35 @@ There are also structural reasons to believe that cross-sectoral investments wer
 
 
 % Granger
-\paragraph{Were there two separate and conflicting elites?} To empirically test the existence of a sectoral duality, particularly in the context of income taxation, the same \href{http://moxlad-staging.herokuapp.com/home/en?}{MOxLAD} sectoral data were used. Since the income tax (1) had positive spillover effects on state capacity and (2) its implementation was split across a sectoral base, we should see that (a) adopting the income tax fostered state institutions, causing long-term economic growth \parencite{North:1990vl,Besley:2011aa} and that (b) its implementation altered the sectoral mechanics of growth accumulation. 
+%\paragraph{Were there two separate and conflicting elites?} To empirically test the existence of a sectoral duality, particularly in the context of income taxation, the same \href{http://moxlad-staging.herokuapp.com/home/en?}{MOxLAD} sectoral data were used. Since the income tax (1) had positive spillover effects on state capacity and (2) its implementation was split across a sectoral base, we should see that (a) adopting the income tax fostered state institutions, causing long-term economic growth \parencite{North:1990vl,Besley:2011aa} and that (b) its implementation altered the sectoral mechanics of growth accumulation. 
 
 
-In empirical terms, we should see that by altering the post-colonial order, implementing the income tax \emph{reversed} the flow of inputs, installing a mechanism of growth generation that went \emph{from} the agricultural sector \emph{to} the industrial sector. In econometric terms, we should see that implementing the tax reversed the way in which one sector ``Granger-caused'' the other. \textcite[42]{Lutkepohl2006} explains that if some variable $X$ forecasts variable $Y$ (and not vise versa), $X$ is said to ``Granger-cause'' $Y$. According to \textcite[349]{Granger1980}, this concept of ``causation'' is based on the idea ``that the future cannot cause the past.'' 
+%In empirical terms, we should see that by altering the post-colonial order, implementing the income tax \emph{reversed} the flow of inputs, installing a mechanism of growth generation that went \emph{from} the agricultural sector \emph{to} the industrial sector. In econometric terms, we should see that implementing the tax reversed the way in which one sector ``Granger-caused'' the other. \textcite[42]{Lutkepohl2006} explains that if some variable $X$ forecasts variable $Y$ (and not vise versa), $X$ is said to ``Granger-cause'' $Y$. According to \textcite[349]{Granger1980}, this concept of ``causation'' is based on the idea ``that the future cannot cause the past.'' 
 
 
-\autoref{granger:table} tests for Granger-causality both prior to and after the implementation of the income tax law. The tests were computed after estimating \autoref{var:1}, which is a reduced form VAR in differences, both before and after implementing the tax. For both periods, the VAR equation passes standard unit root tests (see \autoref{unit:root:tests}), and as per the lag length structure, it also passes standard normality and stability  tests (\autoref{post:estimation:lag:lenght:tests}). More formally, the next equation was fitted:
+%\autoref{granger:table} tests for Granger-causality both prior to and after the implementation of the income tax law. The tests were computed after estimating \autoref{var:1}, which is a reduced form VAR in differences, both before and after implementing the tax. For both periods, the VAR equation passes standard unit root tests (see \autoref{unit:root:tests}), and as per the lag length structure, it also passes standard normality and stability  tests (\autoref{post:estimation:lag:lenght:tests}). More formally, the next equation was fitted:
 
-\begin{equation}\label{var:1}
-  \begin{split}
-    \bigtriangleup M_{t_{m}} = & \alpha_{m} + \beta_{m}  \bigtriangleup M_{t-l} + \beta_{m} \bigtriangleup A_{t-l} + \epsilon_{t_{m}} \\
-    \bigtriangleup A_{t_{a}} = & \alpha_{a} + \beta_{a}  \bigtriangleup M_{t-l} + \beta_{a} \bigtriangleup A_{t-l} + \epsilon_{t_{a}}
-  \end{split}
-\end{equation}
-
-
-The results strongly suggest that before the income tax law, industrial growth Granger-caused agricultural growth (backwards growth), but after the income tax law, the agricultural sector Granger-caused industrial development (modern growth), indicating that the implementation of the income tax in Chile was associated with the reversal of economically backwards institutions, fostering longer-run economic development. 
+%\begin{equation}\label{var:1}
+%  \begin{split}
+%    \bigtriangleup M_{t_{m}} = & \alpha_{m} + \beta_{m}  \bigtriangleup M_{t-l} + \beta_{m} \bigtriangleup A_{t-l} + \epsilon_{t_{m}} \\
+%    \bigtriangleup A_{t_{a}} = & \alpha_{a} + \beta_{a}  \bigtriangleup M_{t-l} + \beta_{a} \bigtriangleup A_{t-l} + \epsilon_{t_{a}}
+%  \end{split}
+%\end{equation}
 
 
-\begin{figure}[h]
-	\includegraphics[scale=.75, center]{/Users/hectorbahamonde/RU/Dissertation/Papers/NegativeLink/Chile_IRF_paper.pdf}
-	\caption[VAR Impulse Response Functions]{{\bf VAR Impulse Response Functions: Sectoral Responses to Each Other's Growths}. \\\hspace{\textwidth} {\bf Note}: Granger-causality tests in \autoref{granger:table} show the instantaneous causality between industrial and agricultural expansion and vice versa. Impulse response functions, however, show via forecasting methods the inter-sectoral long-run equilibrium. In particular, the figure shows that the instantaneous Granger-causal relationships established in \autoref{granger:table} (i.e. the reversal of institutions after implementing the income tax) persist in the long run.}
-	\label{irf:fig:1}
-\end{figure}
+%The results strongly suggest that before the income tax law, industrial growth Granger-caused agricultural growth (backwards growth), but after the income tax law, the agricultural sector Granger-caused industrial development (modern growth), indicating that the implementation of the income tax in Chile was associated with the reversal of economically backwards institutions, fostering longer-run economic development. 
+
+
+%\begin{figure}[h]
+%	\includegraphics[scale=.75, center]{/Users/hectorbahamonde/RU/Dissertation/Papers/NegativeLink/Chile_IRF_paper.pdf}
+%	\caption[VAR Impulse Response Functions]{{\bf VAR Impulse Response Functions: Sectoral Responses to Each Other's Growths}. \\\hspace{\textwidth} {\bf Note}: Granger-causality tests in \autoref{granger:table} show the instantaneous causality between industrial and agricultural expansion and vice versa. Impulse response functions, however, show via forecasting methods the inter-sectoral long-run equilibrium. In particular, the figure shows that the instantaneous Granger-causal relationships established in \autoref{granger:table} (i.e. the reversal of institutions after implementing the income tax) persist in the long run.}
+%	\label{irf:fig:1}
+%\end{figure}
 
 
 
 
-It also needs to be examined whether these changes persisted in the long term. Following \textcite[]{Johansen1988}, the long-run sectoral relationship was estimated using a vector-autoregressive (VAR) approach. \autoref{irf:fig:1} suggests that implementing the tax is associated with long-term economic growth. Particularly, the response of industry to agriculture after implementing the tax seems to persist for some time, not decaying at least after five periods.
+%It also needs to be examined whether these changes persisted in the long term. Following \textcite[]{Johansen1988}, the long-run sectoral relationship was estimated using a vector-autoregressive (VAR) approach. \autoref{irf:fig:1} suggests that implementing the tax is associated with long-term economic growth. Particularly, the response of industry to agriculture after implementing the tax seems to persist for some time, not decaying at least after five periods.
 
 
 
@@ -523,143 +523,130 @@ It also needs to be examined whether these changes persisted in the long term. F
 
 
 % dual sector model (implications of dual sector model, and econometric comments)
-Overall, these structural conditions should have prevented cross-sectoral investments. Given the transference of inputs from one sector to another, and given that the agricultural sector is determined to lag behind the industrial sector (\cite[311]{Jorgenson1961}, \cite[59]{Ranis:1964uq}, \cite[291]{Jorgenson1967}, \cite[279-280]{Skott1998}, and \cite[290]{Vollrath2009a}),\footnote{The industrial sector uses capital and labor with increasing returns to scale, while agriculture uses land (which is fixed) as the main input.} elites invested in both sectors should experiment important allocative inefficiencies and deadweight losses, putting heavy pressures to invest in one or the other, not both. Granger-causality tests also suggest that after the tax is implemented, the agricultural sector lagged behind the industrial sector, while the VAR equation suggests a long-term equilibrium between the two sectors, where growth---that is, factor allocation---begins in the land and ends in the industries. However, and to clarify, ``the agricultural sector declines relative to the overall economy but continues to expand absolutely'' \parencite[14]{Nerlove1994}. In other words, it is the ``the proportional contribution of agriculture to the growth'' that decays \parencite[45]{Kuznets1961a}, implying that in the long run, the agricultural sector ``must also grow'' \parencite[534]{Ranis1961}, especially given the continuing dependence on a constant supply of food \parencite[2]{Nicholls1963}.
+%Overall, these structural conditions should have prevented cross-sectoral investments. Given the transference of inputs from one sector to another, and given that the agricultural sector is determined to lag behind the industrial sector (\cite[311]{Jorgenson1961}, \cite[59]{Ranis:1964uq}, \cite[291]{Jorgenson1967}, \cite[279-280]{Skott1998}, and \cite[290]{Vollrath2009a}),\footnote{The industrial sector uses capital and labor with increasing returns to scale, while agriculture uses land (which is fixed) as the main input.} elites invested in both sectors should experiment important allocative inefficiencies and deadweight losses, putting heavy pressures to invest in one or the other, not both. Granger-causality tests also suggest that after the tax is implemented, the agricultural sector lagged behind the industrial sector, while the VAR equation suggests a long-term equilibrium between the two sectors, where growth---that is, factor allocation---begins in the land and ends in the industries. However, and to clarify, ``the agricultural sector declines relative to the overall economy but continues to expand absolutely'' \parencite[14]{Nerlove1994}. In other words, it is the ``the proportional contribution of agriculture to the growth'' that decays \parencite[45]{Kuznets1961a}, implying that in the long run, the agricultural sector ``must also grow'' \parencite[534]{Ranis1961}, especially given the continuing dependence on a constant supply of food \parencite[2]{Nicholls1963}.
 
 
 
 
 
 
-\subsection{Industrial Expansion and the Origins of the Income Tax}
+%\subsection{Industrial Expansion and the Origins of the Income Tax}
 
-The theory and empirics put a heavy emphasis on the long-term effects of implementing the income tax. In particular, the implementation of the income tax in Chile is associated with an increase in state capacity over time. However, \emph{where does the income tax law come from?} The historical evidence presented above strongly suggests that there existed an inter-sectoral alliance. Chilean industrialists posed credible threats to agricultural landowners, materializing an inter-sectoral alliance between the two: industrial elites pursued the implementation of the income tax in exchange for public goods delivered at the local level. \emph{Can this finding be generalized to other countries?}
+%The theory and empirics put a heavy emphasis on the long-term effects of implementing the income tax. In particular, the implementation of the income tax in Chile is associated with an increase in state capacity over time. However, \emph{where does the income tax law come from?} The historical evidence presented above strongly suggests that there existed an inter-sectoral alliance. Chilean industrialists posed credible threats to agricultural landowners, materializing an inter-sectoral alliance between the two: industrial elites pursued the implementation of the income tax in exchange for public goods delivered at the local level. \emph{Can this finding be generalized to other countries?}
 
 
 %% define text warpping in table
-\newcolumntype{C}{>{\centering\arraybackslash}m{3cm}}
+%\newcolumntype{C}{>{\centering\arraybackslash}m{3cm}}
 
 % table
-\begin{table}[h]
-\begin{center}
-\begin{tiny}
-\begin{tabular}{ c c c C C} 
-\toprule
-\\[.1em] {\bf Country} & {\bf Available Data} & {\bf Year Income Tax} & {\bf Law} & {\bf Source} \\ 
-\\[-.5em] 
-\midrule
-\\[.1em] Chile & 1900 - 2009 &  1924 & \emph{Ley} 3996 & \textcite[20]{Mamalakis:1976kx} and \href{https://goo.gl/OMbImM}{LeyChile.Cl} (official)\\ 
-\\[-.5em] 
-\hline 
-\\[.1em] Peru & 1929 - 2009  & 1934 & \emph{Ley} 7904 & \textcite{GobiernodelPeru1934} (official)  \\ 
-\\[-.5em] 
-\hline 
-\\[.1em] Venezuela & 1936 - 2006  & 1943  & \emph{Ley} 20851  & \emph{Gaceta Oficial} (official) and \textcite[27]{Ventura2013} \\ 
-\\[-.5em] 
-\hline 
-\\[.1em] Colombia & 1900 - 2009 & 1935 & \emph{Ley} 78 & \textcite[9]{Figueroa2008a} \\ 
-\\[-.5em] 
-\hline 
-\\[.1em] Argentina & 1900 - 2010 & 1933 & \emph{Ley} 11682 & \href{https://goo.gl/UkWq7W}{Infoleg.Gob.Ar} (official) \\ 
-\\[-.5em] 
-\hline 
-\\[.1em] Mexico & 1900 - 2009 & 1925 & \emph{Ley de Impuesto sobre la Renta} & \textcite[8]{UndaGutierrez2017} \\ 
-\\[-.5em] 
-\hline 
-\\[.1em] Ecuador & 1939 - 2007 & 1945 & -   & \textcite[135]{Aguilera2013} \\ 
-\\[-.5em] 
-\hline 
-\\[.1em] Nicaragua & 1920 - 2009 & 1974 & \emph{Ley} 662 & \href{https://goo.gl/JGcA9p}{Legislacion.Asamblea.Gob.Ni} (official)\\ 
-\\[-.5em] 
-\hline 
-\\[.1em] Guatemala & 1920 - 2009 & 1963 & \emph{Decreto} 1559 & \textcite[165]{De2007}\\[.2em]
-\bottomrule
-\end{tabular}
-\end{tiny}
-\caption{{\bf Sample, Data Availability, and Year the Income Tax Law was Implemented}.}
-\label{sample:data:income:tax:tab}
-\end{center}
-\end{table}
+%\begin{table}[h]
+%\begin{center}
+%\begin{tiny}
+%\begin{tabular}{ c c c C C} 
+%\toprule
+%\\[.1em] {\bf Country} & {\bf Available Data} & {\bf Year Income Tax} & {\bf Law} & {\bf Source} \\ 
+%\\[-.5em] 
+%\midrule
+%\\[.1em] Chile & 1900 - 2009 &  1924 & \emph{Ley} 3996 & \textcite[20]{Mamalakis:1976kx} and \href{https://goo.gl/OMbImM}{LeyChile.Cl} (official)\\ 
+%\\[-.5em] 
+%\hline 
+%\\[.1em] Peru & 1929 - 2009  & 1934 & \emph{Ley} 7904 & \textcite{GobiernodelPeru1934} (official)  \\ 
+%\\[-.5em] 
+%\hline 
+%\\[.1em] Venezuela & 1936 - 2006  & 1943  & \emph{Ley} 20851  & \emph{Gaceta Oficial} (official) and \textcite[27]{Ventura2013} \\ 
+%\\[-.5em] 
+%\hline 
+%\\[.1em] Colombia & 1900 - 2009 & 1935 & \emph{Ley} 78 & \textcite[9]{Figueroa2008a} \\ 
+%\\[-.5em] 
+%\hline 
+%\\[.1em] Argentina & 1900 - 2010 & 1933 & \emph{Ley} 11682 & \href{https://goo.gl/UkWq7W}{Infoleg.Gob.Ar} (official) \\ 
+%\\[-.5em] 
+%\hline 
+%\\[.1em] Mexico & 1900 - 2009 & 1925 & \emph{Ley de Impuesto sobre la Renta} & \textcite[8]{UndaGutierrez2017} \\ 
+%\\[-.5em] 
+%\hline 
+%\\[.1em] Ecuador & 1939 - 2007 & 1945 & -   & \textcite[135]{Aguilera2013} \\ 
+%\\[-.5em] 
+%\hline 
+%\\[.1em] Nicaragua & 1920 - 2009 & 1974 & \emph{Ley} 662 & \href{https://goo.gl/JGcA9p}{Legislacion.Asamblea.Gob.Ni} (official)\\ 
+%\\[-.5em] 
+%\hline 
+%\\[.1em] Guatemala & 1920 - 2009 & 1963 & \emph{Decreto} 1559 & \textcite[165]{De2007}\\[.2em]
+%\bottomrule
+%\end{tabular}
+%\end{tiny}
+%\caption{{\bf Sample, Data Availability, and Year the Income Tax Law was Implemented}.}
+%\label{sample:data:income:tax:tab}
+%\end{center}
+%\end{table}
 
 
 
 
-In this section, the paper presents an effort to generalize the argument about the sectoral origins of the implementation of the income tax law. Following the economic development typology suggested in \textcite[5]{Mahoney:2010aa}, nine polities were selected: Three ``higher level'' countries (Argentina, Chile, and Venezuela), three ``intermediate level'' countries (Mexico, Colombia, and Peru), and three ``lower level'' countries (Ecuador, Nicaragua, and Guatemala). For each polity, economic data were collected to observe the degree in which industrial elites challenged incumbent landowners. 
+%In this section, the paper presents an effort to generalize the argument about the sectoral origins of the implementation of the income tax law. Following the economic development typology suggested in \textcite[5]{Mahoney:2010aa}, nine polities were selected: Three ``higher level'' countries (Argentina, Chile, and Venezuela), three ``intermediate level'' countries (Mexico, Colombia, and Peru), and three ``lower level'' countries (Ecuador, Nicaragua, and Guatemala). For each polity, economic data were collected to observe the degree in which industrial elites challenged incumbent landowners. 
 
 
 
-In particular, the argument is that higher levels of sectoral contestation fostered the implementation of the income tax law. Given the initial structural advantage of the landed elites (\autoref{causal:mechanism:fig}), ``sectoral contestation'' was measured by using industrial and agricultural sectoral growth rates, as presented in the  \href{http://moxlad-staging.herokuapp.com/home/en?}{MOxLAD} data.\footnote{Both the \emph{agriculture} and \emph{manufacturing value-added} variables were used.}  More ``contested'' polities were instances when the rate of sectoral expansion of one sector was ``faster'' relative to the other sector. The dataset has been used before in the state-formation literature \parencite[]{Thies2005a}, and the two outputs span from $\Sexpr{min(data$year)}$ to (potentially) $\Sexpr{max(data$year)}$.\footnote{Since countries are censored once they implement the income tax law, they leave the sample (potentially) before 2010.} According to \textcite[790]{Astorga2005}, these data provide extended comparable sectoral value-added series in constant purchasing power parity prices. \autoref{sample:data:income:tax:tab} shows the year when the income tax law was passed in these countries, leveraging some additional archival data. Finally, \autoref{fig:incometax:plot} conveys both agricultural and industrial outputs (independent variables), and the year when the income tax law was passed (dependent variable). 
+%In particular, the argument is that higher levels of sectoral contestation fostered the implementation of the income tax law. Given the initial structural advantage of the landed elites (\autoref{causal:mechanism:fig}), ``sectoral contestation'' was measured by using industrial and agricultural sectoral growth rates, as presented in the  \href{http://moxlad-staging.herokuapp.com/home/en?}{MOxLAD} data.\footnote{Both the \emph{agriculture} and \emph{manufacturing value-added} variables were used.}  More ``contested'' polities were instances when the rate of sectoral expansion of one sector was ``faster'' relative to the other sector. The dataset has been used before in the state-formation literature \parencite[]{Thies2005a}, and the two outputs span from $\Sexpr{min(data$year)}$ to (potentially) $\Sexpr{max(data$year)}$.\footnote{Since countries are censored once they implement the income tax law, they leave the sample (potentially) before 2010.} According to \textcite[790]{Astorga2005}, these data provide extended comparable sectoral value-added series in constant purchasing power parity prices. \autoref{sample:data:income:tax:tab} shows the year when the income tax law was passed in these countries, leveraging some additional archival data. Finally, \autoref{fig:incometax:plot} conveys both agricultural and industrial outputs (independent variables), and the year when the income tax law was passed (dependent variable). 
 
-
-
-% Industrial and Agricultural Outputs, and The Passage of the Income Tax Law
-\afterpage{
-<<incometax:plot, echo = FALSE, fig.pos='H', warning = FALSE, message = F, fig.cap=outputstitle, fig.align='center', fig.width=13, fig.height=12,dpi=30000,cache = FALSE, eval=TRUE>>=
-
-@
-}
 
 
 % MODELS
-Econometrically, this section is concerned about the sectoral contribution to the \emph{timing} of implementing the income tax law. In other words, we would like to know if the income tax law was implemented \emph{because} of agricultural \emph{or} industrial expansion. \autoref{results:table:cox} shows three models.\footnote{The table was produced using the  \texttt{texreg} package \parencite[]{Leifeld:2013qr}. The Cox model was computed using the \texttt{survival R}  package \parencite{Therneau:2015zr}. The GEE logistic regression model was computed using the \texttt{geepack} package \parencite[]{Hojsgaard:2016}. The simulations were performed using the \texttt{simPH R} package \parencite{Gandrud2015}.} Following \textcite{Aidt2009a}, model 1 computes the lagged conditional hazard ratio of a country that has not yet adopted the income tax, adopts it in a given year. Since the idea is to capture the sectoral contribution to the implementation of the income tax law, these variables were not combined. Following \textcite[49]{Box-Steffensmeier2004}, the next Cox model was fitted for all countries $i$ and years $t$: 
+%Econometrically, this section is concerned about the sectoral contribution to the \emph{timing} of implementing the income tax law. In other words, we would like to know if the income tax law was implemented \emph{because} of agricultural \emph{or} industrial expansion. \autoref{results:table:cox} shows three models.\footnote{The table was produced using the  \texttt{texreg} package \parencite[]{Leifeld:2013qr}. The Cox model was computed using the \texttt{survival R}  package \parencite{Therneau:2015zr}. The GEE logistic regression model was computed using the \texttt{geepack} package \parencite[]{Hojsgaard:2016}. The simulations were performed using the \texttt{simPH R} package \parencite{Gandrud2015}.} Following \textcite{Aidt2009a}, model 1 computes the lagged conditional hazard ratio of a country that has not yet adopted the income tax, adopts it in a given year. Since the idea is to capture the sectoral contribution to the implementation of the income tax law, these variables were not combined. Following \textcite[49]{Box-Steffensmeier2004}, the next Cox model was fitted for all countries $i$ and years $t$: 
 
 
-\begin{equation}\label{cox:eq}
-\begin{split}
-h_{i}(t) = exp(	& \beta_{1}\text{Industrial Growth}_{i,t-1} + \\
-				& \beta_{2}\text{Agricultural Growth}_{i,t-1} + \\
-				& \beta_{3}\text{Total Population}_{i,t-1}\\
-				&)h_{0}(t)
-\end{split}
-\end{equation}
+%\begin{equation}\label{cox:eq}
+%\begin{split}
+%h_{i}(t) = exp(	& \beta_{1}\text{Industrial Growth}_{i,t-1} + \\
+%				& \beta_{2}\text{Agricultural Growth}_{i,t-1} + \\
+%				& \beta_{3}\text{Total Population}_{i,t-1}\\
+%				&)h_{0}(t)
+%\end{split}
+%\end{equation}
 
 
-Model 2 in \autoref{results:table:cox} shows the estimated coefficients of a generalized estimating equation (GEE). Following \textcite[331]{Zorn2006}, the next equation was fitted:
+%Model 2 in \autoref{results:table:cox} shows the estimated coefficients of a generalized estimating equation (GEE). Following \textcite[331]{Zorn2006}, the next equation was fitted:
 
-\begin{equation}\label{gee:eq}
-\begin{split}
-\pi_{i,t}=\Phi(	& \beta_{1}\text{log(Industrial Growth$_{i,t}$)}+ \\
-				& \beta_{2}\text{log(Agricultural Growth$_{i,t}$)}+ \\
-				& \beta_{3}\text{log(Total Population$_{i,t}$)}\\
-				&)
-\end{split}
-\end{equation}
+%\begin{equation}\label{gee:eq}
+%\begin{split}
+%\pi_{i,t}=\Phi(	& \beta_{1}\text{log(Industrial Growth$_{i,t}$)}+ \\
+%				& \beta_{2}\text{log(Agricultural Growth$_{i,t}$)}+ \\
+%				& \beta_{3}\text{log(Total Population$_{i,t}$)}\\
+%				&)
+%\end{split}
+%\end{equation}
 
-where $\pi$ is the logit link function, and $\Phi$ is a scale parameter (i.e. the cumulative distribution function) for all $i$ countries and years $t$.
+%where $\pi$ is the logit link function, and $\Phi$ is a scale parameter (i.e. the cumulative distribution function) for all $i$ countries and years $t$.
 
-Generalized estimating equations were introduced by \textcite{Liang1986} to fit clustered, repeated/correlated, and panel data \parencite[322]{Zorn2006}. This method is especially well suited to analyze binary data \parencite{Hanley2003a}, something particularly useful given the nature of the dependent variable. GEE methods require analysts to parameterize the working correlation matrix. While GEE models are robust to misspecification of the correlation structure \parencite[139]{Hedeker2006}, following \textcite[166]{Hardin2013}, the ``independence'' working covariance structure was used since observations were collected over time. From a substantive standpoint, GEE models provide an estimated marginal mean or the weighted average of all cluster-specific effects (or conditional means). 
-
-
-Finally, model 3 is a conditional logit or ``fixed-effects'' panel logit model: 
-
-\begin{equation}\label{clogit:eq}
-\begin{split}
-\pi_{i,t}=\Phi( & \beta_{0} + \\
-				& \beta_{1}\text{log(Industrial Growth$_{i,t}$)}+ \\
-				& \beta_{2}\text{log(Agricultural Growth$_{i,t}$)}+ \\ 
-				& \beta_{3}\text{log(Total Population$_{i,t}$)}+ \\
-				& \alpha_{i})
-\end{split}
-\end{equation}
-
-where $\alpha_{i}$ are the country fixed effects for all countries $i$. 
-
-Since population has been associated with the probability that elites expand the franchise \parencite[892-893]{Engerman2005} and consequently, the tax base, country-year population was included as a control variable in all three models. 
-
-% results:table:cox
-<<results:table:cox, echo=FALSE, comment=NA, warning=FALSE, message=F, results='asis', cache=FALSE,eval=TRUE>>=
-
-@
-
-\autoref{results:table:cox} shows that industrial expansion is always positive and statistically significant, while agricultural expansion is always negative and statistically significant. Substantively, industrial expansion is systematically associated with an \emph{earlier} implementation of the income tax, while agricultural expansion, in fact, \emph{delays} the implementation of the income tax. 
-
-<<simulation:plots, echo=FALSE, fig.pos='h', warning=FALSE, message=F, fig.cap=simtitle, fig.align='center', fig.width=7, fig.height=3,dpi=30000,cache=FALSE, eval=TRUE>>=
-
-@
-
-To have a more substantive grasp at these results, \autoref{fig:simulation:plots} shows the simulated over time hazard rates of $\beta_{1}$ and $\beta_{2}$, both from \autoref{cox:eq} (Cox model). The simulation shows the following counterfactual: what would have happened to a country, regarding the implementation of the income tax law, under two hypothetical conditions, had either the empirically slowest or the empirically fastest sectoral expansion. The figure clearly shows that it is not \emph{overall} growth that accelerates the implementation of the income tax but \emph{industrial} growth only. In fact, agricultural expansion \emph{delays} the implementation of the law, harming state development in the long run. Since industrialists preferred the income tax, these analyses suggest that industrial expansion is systematically associated with the implementation of the income tax, not only in Chile but also in other Latin American polities. 
+%Generalized estimating equations were introduced by \textcite{Liang1986} to fit clustered, repeated/correlated, and panel data \parencite[322]{Zorn2006}. This method is especially well suited to analyze binary data \parencite{Hanley2003a}, something particularly useful given the nature of the dependent variable. GEE methods require analysts to parameterize the working correlation matrix. While GEE models are robust to misspecification of the correlation structure \parencite[139]{Hedeker2006}, following \textcite[166]{Hardin2013}, the ``independence'' working covariance structure was used since observations were collected over time. From a substantive standpoint, GEE models provide an estimated marginal mean or the weighted average of all cluster-specific effects (or conditional means). 
 
 
-The overall results support the idea that income tax was directly related to industrial expansion rather than general economic development but also support the idea of the sectoral conflict behind its implementation. Since each sector had their preferences toward income taxation, the emergence of the industrial sector facilitated state development by implementing the income tax, while agricultural expansion not only delayed the income tax but also compromised state formation.
+%Finally, model 3 is a conditional logit or ``fixed-effects'' panel logit model: 
+
+%\begin{equation}\label{clogit:eq}
+%\begin{split}
+%\pi_{i,t}=\Phi( & \beta_{0} + \\
+%				& \beta_{1}\text{log(Industrial Growth$_{i,t}$)}+ \\
+%				& \beta_{2}\text{log(Agricultural Growth$_{i,t}$)}+ \\ 
+%				& \beta_{3}\text{log(Total Population$_{i,t}$)}+ \\
+%				& \alpha_{i})
+%\end{split}
+%\end{equation}
+%
+%where $\alpha_{i}$ are the country fixed effects for all countries $i$. 
+
+%Since population has been associated with the probability that elites expand the franchise \parencite[892-893]{Engerman2005} and consequently, the tax base, country-year population was included as a control variable in all three models. 
+
+
+
+%\autoref{results:table:cox} shows that industrial expansion is always positive and statistically significant, while agricultural expansion is always negative and statistically significant. Substantively, industrial expansion is systematically associated with an \emph{earlier} implementation of the income tax, while agricultural expansion, in fact, \emph{delays} the implementation of the income tax. 
+
+
+
+%To have a more substantive grasp at these results, \autoref{fig:simulation:plots} shows the simulated over time hazard rates of $\beta_{1}$ and $\beta_{2}$, both from \autoref{cox:eq} (Cox model). The simulation shows the following counterfactual: what would have happened to a country, regarding the implementation of the income tax law, under two hypothetical conditions, had either the empirically slowest or the empirically fastest sectoral expansion. The figure clearly shows that it is not \emph{overall} growth that accelerates the implementation of the income tax but \emph{industrial} growth only. In fact, agricultural expansion \emph{delays} the implementation of the law, harming state development in the long run. Since industrialists preferred the income tax, these analyses suggest that industrial expansion is systematically associated with the implementation of the income tax, not only in Chile but also in other Latin American polities. 
+
+
+%The overall results support the idea that income tax was directly related to industrial expansion rather than general economic development but also support the idea of the sectoral conflict behind its implementation. Since each sector had their preferences toward income taxation, the emergence of the industrial sector facilitated state development by implementing the income tax, while agricultural expansion not only delayed the income tax but also compromised state formation.
 
 
 
@@ -671,7 +658,7 @@ The overall results support the idea that income tax was directly related to ind
 
 The paper sketched an argument about how higher levels of sectoral contestation increased state capacity over time. Particularly, it explained how the emergence of industrial elites posited credible threats to incumbent landowners, pushing agricultural and industrial elites to reach agreements that materialized in investments in state-making institutions (the income tax), which in turn fostered higher levels of state consolidation over time. 
 
-The empirical analyses showed that earthquake death tolls decrease (i.e. state capacity increases) after the income tax law is implemented and that the emergence of the industrial sector accelerated the implementation of the income tax. Additional analyses also suggest that there was a structural, sectoral cleavage rather than a blurred elite separation. 
+The empirical analyses showed that earthquake death tolls decrease (i.e. state capacity increases) after the income tax law is implemented and that the emergence of the industrial sector accelerated the implementation of the income tax. % Additional analyses also suggest that there was a structural, sectoral cleavage rather than a blurred elite separation. 
 
 Enforcing quake-sensitive building codes embodies the most basic form of social contract that exists between the state and its subjects. Earthquake damage poses a major threat to commercial, official, and residential buildings, potentially triggering higher levels of looting and social unrest. Any kind of political leader should be interested in preventing looting and social unrest. Leaders not only care about their own survival but also about the legitimacy of the state. In the event of heavy social unrest, not only is the essential social Hobbesian-like contract broken, but the expectations of social peace are also questioned \parencite[419]{Carlin2014a}. The physical presence of the state literally \emph{crumbles} when institutions of social coercion and discipline, such as state schools, prisons, and police stations, collapse. For example, when the magnitude 7.0 earthquake hit Hati in 2010, the \emph{Prison Civile de Port-au-Prince} had a population of 4,500 inmates. During the quake, five inmates died. As a prison guard describes it, ``everyone escaped. Everyone. Except the dead.'' This natural disaster exacerbated the already existent chaos, freeing ``gang bosses, kidnappers, gunmen,'' among others \parencite{Reed:2011,Laursen2010}, reducing the legitimacy of the state to zero.
 
