@@ -458,25 +458,25 @@ However, there are a number of stylized facts that strongly suggest that there w
 % dual sector model (theory)
 There are also structural reasons to believe that cross-sectoral investments were not efficient. The ``dual sector'' model argues that the economy is divided into agriculture and industry \parencite[311]{Jorgenson1961}. One finding of this paradigm is that the ``natural'' structural role of the agricultural sector is to provide labor and cheap foodstuff to the industrial sector (\textcite[114]{Ranis:1964uq}, \textcite[129]{ReyesCampos2015}). For instance, \textcite[326]{Dixit:1973aa} argues that the ``agricultural sector \emph{must} fulfill [...] its dual \emph{role} of supplier of labour to industry and of food for the industrial labour force.''\footnote{My emphases.} The rationale is that more efficient agricultural techniques make agricultural production less labor intensive, allowing landowners to free workers that the industrial sector can rely on \parencite[498]{Johnston1951}. A surplus of labor naturally leads to a reallocation of redundant workers into the industrial sector, which is the crux of economic development (\textcite[7]{Ranis:1964uq}, \textcite[51]{Leibenstein:1957aa}). \textcite[]{Nurkse:1953aa}, in fact, argues that development means to employ the surplus labor. Similarly, \textcite[621-622]{Matsuyama1991} points out that  ``[i]ndustrialization [\emph{consists of}] a shift of resources from agriculture to manufacturing.'' % If the agricultural sector lacks economic efficiency, the industrial sector hardly develops, leading to a stagnant economy. As \textcite[59]{Kuznets1961a} puts it, ``economic growth is \emph{impossible} unless there is a substantial rise in product per worker in the agricultural sector.''\footnote{My emphasis. \textcite[105]{Hayami1969} argue that industrialization is ``\emph{conditioned}'' by agricultural productivity.} 
 
-
-\begin{table}[h]
-\begin{center}
-\begin{scriptsize}
-\begin{tabular}{c c c c c } 
-\toprule
-{\bf Pre/Post Income Tax } & {\bf Period} & {\bf Directionality} & {\bf chi2}  & {\bf P-value} \\
-\midrule
-\multirow{2}{*}{Pre}  & \multirow{2}{*}{1905 - 1924} 	& Agriculture $\rightarrow$ Industry & 3.55 & 0.47 \\
-\\                	  &                            		& Industry $\rightarrow$ Agriculture & 12.13 & 0.02 \\ 
-\\                       \multirow{2}{*}{Post} & \multirow{2}{*}{1925 - 2009} & Agriculture $\rightarrow$ Industry & 11.92 & 0.00 \\
-\\                                             &                              & Industry $\rightarrow$ Agriculture & 5.37 & 0.07 \\
-\bottomrule
-\end{tabular}
-\end{scriptsize}
-\caption[Granger Causality Wald Tests]{{\bf Granger Causality Wald Tests (Chilean Sectoral Growth)}. \\\hspace{\textwidth} {\bf Note}: The table shows which sector Granger-causes the other. The p-values change in a way that suggests that there was a reversal of institutions after implementing the income tax. Before the tax, industrial expansion Granger-caused agricultural production (a backwards equilibrium); however, after implementing the tax, agricultural expansion Granger-causes industrial development (modern growth).}
-\label{granger:table}
-\end{center}
-\end{table}
+%
+%\begin{table}[h]
+%\begin{center}
+%\begin{scriptsize}
+%\begin{tabular}{c c c c c } 
+%\toprule
+%{\bf Pre/Post Income Tax } & {\bf Period} & {\bf Directionality} & {\bf chi2}  & {\bf P-value} \\
+%\midrule
+%\multirow{2}{*}{Pre}  & \multirow{2}{*}{1905 - 1924} 	& Agriculture $\rightarrow$ Industry & 3.55 & 0.47 \\
+%\\                	  &                            		& Industry $\rightarrow$ Agriculture & 12.13 & 0.02 \\ 
+%\\                       \multirow{2}{*}{Post} & \multirow{2}{*}{1925 - 2009} & Agriculture $\rightarrow$ Industry & 11.92 & 0.00 \\
+%\\                                             &                              & Industry $\rightarrow$ Agriculture & 5.37 & 0.07 \\
+%\bottomrule
+%\end{tabular}
+%\end{scriptsize}
+%\caption[Granger Causality Wald Tests]{{\bf Granger Causality Wald Tests (Chilean Sectoral Growth)}. \\\hspace{\textwidth} {\bf Note}: The table shows which sector Granger-causes the other. The p-values change in a way that suggests that there was a reversal of institutions after implementing the income tax. Before the tax, industrial expansion Granger-caused agricultural production (a backwards equilibrium); however, after implementing the tax, agricultural expansion Granger-causes industrial development (modern growth).}
+%\label{granger:table}
+%\end{center}
+%\end{table}
 
 
 
@@ -492,14 +492,14 @@ There are also structural reasons to believe that cross-sectoral investments wer
 
 
 %\autoref{granger:table} tests for Granger-causality both prior to and after the implementation of the income tax law. The tests were computed after estimating \autoref{var:1}, which is a reduced form VAR in differences, both before and after implementing the tax. For both periods, the VAR equation passes standard unit root tests (see \autoref{unit:root:tests}), and as per the lag length structure, it also passes standard normality and stability  tests (\autoref{post:estimation:lag:lenght:tests}). More formally, the next equation was fitted:
-
-%\begin{equation}\label{var:1}
+%
+%%\begin{equation}\label{var:1}
 %  \begin{split}
-%    \bigtriangleup M_{t_{m}} = & \alpha_{m} + \beta_{m}  \bigtriangleup M_{t-l} + \beta_{m} \bigtriangleup A_{t-l} + \epsilon_{t_{m}} \\
-%    \bigtriangleup A_{t_{a}} = & \alpha_{a} + \beta_{a}  \bigtriangleup M_{t-l} + \beta_{a} \bigtriangleup A_{t-l} + \epsilon_{t_{a}}
-%  \end{split}
-%\end{equation}
-
+%    \bigtriangleup M_{t_{m}} = & \alpha_{m} + \beta_{m}  \bigtriangleup M_{t-l} + \beta_{m} \bigtriangleup A_{t-l} %+ \epsilon_{t_{m}} \\
+%%    \bigtriangleup A_{t_{a}} = & \alpha_{a} + \beta_{a}  \bigtriangleup M_{t-l} + \beta_{a} \bigtriangleup %A_{t-l} + \epsilon_{t_{a}}
+%%  \end{split}
+%%\end{equation}%
+%
 
 %The results strongly suggest that before the income tax law, industrial growth Granger-caused agricultural growth (backwards growth), but after the income tax law, the agricultural sector Granger-caused industrial development (modern growth), indicating that the implementation of the income tax in Chile was associated with the reversal of economically backwards institutions, fostering longer-run economic development. 
 
@@ -767,58 +767,58 @@ count <- comma(as.numeric(count)) # add comma
 \newpage
 %% Lag Length and Post-Estimation Results // post:estimation:lag:lenght:tests
 % defines a checkmark and x mark symbols
-\newcommand{\cmark}{\ding{51}}%
-\newcommand{\xmark}{\ding{55}}%
+%\newcommand{\cmark}{\ding{51}}%
+%\newcommand{\xmark}{\ding{55}}%
 
 %\afterpage{
-\begin{table}[ph!]
-\begin{center}
-\begin{tiny}
-\begin{tabular}{ c c c c c c c c } 
-\toprule
-{\bf Country} & {\bf Time Frame} & {\bf Number of Lags} & {\bf LM} & \multicolumn{3}{c}{{\bf Normally Tests}}  & {\bf Stability Condition}\\
-              &                  &                      &          & \emph{Jarque-Bera} &  \emph{Skewness} &  \emph{Kurtosis}    & \\
-\midrule
-\\\multirow{2}{*}{Chile}  & Pre   & 4 & \cmark & \cmark & \cmark & \cmark & \cmark \\
-\\                        & Post  & 2 & \cmark & \cmark$^{-}$ & \cmark$^{-}$ & \cmark$^{-}$ & \cmark \\
-\bottomrule
-\end{tabular}
-\end{tiny}
-\caption{{\bf Lag Length and Post-Estimation Results}.}
-\label{post:estimation:lag:lenght:tests}
-\end{center}
-\end{table}
+%\begin{table}[ph!]
+%\begin{center}
+%\begin{tiny}
+%\begin{tabular}{ c c c c c c c c } 
+%\toprule
+%{\bf Country} & {\bf Time Frame} & {\bf Number of Lags} & {\bf LM} & \multicolumn{3}{c}{{\bf Normally Tests}}  & {\bf Stability Condition}\\
+%              &                  &                      &          & \emph{Jarque-Bera} &  \emph{Skewness} &  \emph{Kurtosis}    & \\
+%\midrule
+%\\\multirow{2}{*}{Chile}  & Pre   & 4 & \cmark & \cmark & \cmark & \cmark & \cmark \\
+%\\                        & Post  & 2 & \cmark & \cmark$^{-}$ & \cmark$^{-}$ & \cmark$^{-}$ & \cmark \\
+%\bottomrule
+%\end{tabular}
+%\end{tiny}
+%\caption{{\bf Lag Length and Post-Estimation Results}.}
+%\label{post:estimation:lag:lenght:tests}
+%\end{center}
+%\end{table}
 %}
-\clearpage
+%\clearpage
 
 
 
 
-\newpage
+%\newpage
 %% Unit Root Tests for Agricultural and Industrial Growth // unit:root:tests
 %\afterpage{
-\begin{table}[ph!]
-\begin{center}
-\begin{tiny}
-\begin{tabular}{ c c c c c c c } 
-\toprule
-{\bf Country} & Time Frame & {\bf Sector} & {\bf Augmented Dickey-Fuller}  & {\bf Phillips-Perron} & {\bf KPSS} & {\bf Conclusion} \\
-\midrule
-\\\multirow{6}{*}{Chile}& \multirow{2}{*}{Pre}  & Agriculture & -1.185 (0.68) & -1.241 (0.66)   & .107$^{\dagger}$ &  I(1)\\
-\\                        &                         & Industry    & 2.310 (0.99) & 2.556 (0.99) & .113$^{\dagger}$ &  I(1)\\[.2em]\cline{3-7}
-\\                        & \multirow{2}{*}{Post} & Agriculture & 4.557 (1.00) & 5.40 (1.00)    & .289 &  I(1)\\
-\\                        &                         & Industry    & 0.908 (0.99) & 1.458 (0.99) & .249 &  I(1)\\ [.2em]\cline{3-7}                     
-\\                        & \multirow{2}{*}{All}  & Agriculture & 5.521 (1.00) & 6.722 (1.00)   & .31  &  I(1)\\
-\\                        &                         & Industry    & 1.582 (0.99) & 2.305 (0.99) & .314 &  I(1)\\[.2em]
-\bottomrule
-\end{tabular}
-\end{tiny}
-\caption{{\bf Unit Root Tests for Agricultural and Industrial Growth}.}
-\label{unit:root:tests}
-\end{center}
-\end{table}
+%\begin{table}[ph!]
+%\begin{center}
+%\begin{tiny}
+%\begin{tabular}{ c c c c c c c } 
+%\toprule
+%{\bf Country} & Time Frame & {\bf Sector} & {\bf Augmented Dickey-Fuller}  & {\bf Phillips-Perron} & {\bf KPSS} & {\bf Conclusion} \\
+%\midrule
+%\\\multirow{6}{*}{Chile}& \multirow{2}{*}{Pre}  & Agriculture & -1.185 (0.68) & -1.241 (0.66)   & .107$^{\dagger}$ &  I(1)\\
+%\\                        &                         & Industry    & 2.310 (0.99) & 2.556 (0.99) & .113$^{\dagger}$ &  I(1)\\[.2em]\cline{3-7}
+%\\                        & \multirow{2}{*}{Post} & Agriculture & 4.557 (1.00) & 5.40 (1.00)    & .289 &  I(1)\\
+%\\                        &                         & Industry    & 0.908 (0.99) & 1.458 (0.99) & .249 &  I(1)\\ [.2em]\cline{3-7}                     
+%\\                        & \multirow{2}{*}{All}  & Agriculture & 5.521 (1.00) & 6.722 (1.00)   & .31  &  I(1)\\
+%\\                        &                         & Industry    & 1.582 (0.99) & 2.305 (0.99) & .314 &  I(1)\\[.2em]
+%\bottomrule
+%\end{tabular}
+%\end{tiny}
+%\caption{{\bf Unit Root Tests for Agricultural and Industrial Growth}.}
+%\label{unit:root:tests}
+%\end{center}
+%\end{table}
 %}
-\clearpage
+%\clearpage
 
 
 \end{document}
