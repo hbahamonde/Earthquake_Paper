@@ -1,0 +1,10 @@
+\begin{equation} \label{model:2}
+\begin{split}
+\text{Deaths} \;\sim\; & \text{Poisson}(\lambda_{i})\\
+log(\lambda_{i})  = 
+&\; \mu + \beta_{1}\text{Magnitude}_{i} + \beta_{2}\text{Income Tax}_{i} + \\
+&\; \beta_{3}\text{Magnitude}_{i}\times\text{Income Tax}_{i} + \\
+&\; \beta_{4}\text{Population}_{i} + \beta_{5}\text{Longitude}_{i} + \beta_{6}\text{Latitude}_{i} + \\
+&\; \beta_{7,k}\text{Sector}_{i} + \beta_{8,t}\text{Year}_{i}
+\end{split}
+\end{equation}
