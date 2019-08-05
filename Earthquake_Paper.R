@@ -1024,7 +1024,7 @@ model.jags.tax <- function() {
                         b.r.long * r.long[i] +
                         b.r.lat * r.lat[i] + 
                         b.Sector[SectorID[i]] +
-                        b.year[yearID[i]] + # year fixed-effects 
+                        #b.year[yearID[i]] + # year fixed-effects 
                         mu ## intercept
         }
         
@@ -1044,13 +1044,13 @@ model.jags.tax <- function() {
                 tau.b.Sector[t] ~ dgamma(1, 1)
         }
         
-        for (t in 1:yearN){ # fixed effects 
-                b.year[t] ~ dnorm(m.b.year[t], tau.b.year[t]) 
+        #for (t in 1:yearN){ # fixed effects 
+        #        b.year[t] ~ dnorm(m.b.year[t], tau.b.year[t]) 
+        #        
+        #        m.b.year[t] ~ dnorm(0,0.0001)
+        #        tau.b.year[t] ~ dgamma(1, 1)
                 
-                m.b.year[t] ~ dnorm(0,0.0001)
-                tau.b.year[t] ~ dgamma(1, 1)
-                
-        }
+        #}
                 
 
       }
@@ -1094,8 +1094,8 @@ jags.data.tax <- list(Deaths = Deaths,
                       r.lat = r.lat,
                       NSector = NSector,
                       SectorID = SectorID,
-                      yearID = yearID,
-                      yearN = yearN,
+                      #yearID = yearID,
+                      #yearN = yearN,
                       N = N)
 
 
@@ -1108,7 +1108,7 @@ eq.params.tax <- c(
   "b.r.long", 
   "b.r.lat", 
   "b.Sector",
-  "b.year",
+  #"b.year",
   "lambda"
   )
 ## ----
