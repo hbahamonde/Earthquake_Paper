@@ -15,7 +15,7 @@
 \author[1]{
 \large
 \textsc{H\'ector Bahamonde}\\ 
-\thanks{I thank Robert Kaufman, Hillel Soifer, Ana de la O, Mark Dincecco, James Mahon, Christopher Hale, Alexander Lee, Jack Paine, Daniel Kelemen, Douglas Blair, Paul Poast, Jorge Atria, Christine Hunefeldt, the attendees of the Annual Meeting of the Southern Political Science Association in New Orleans 2018, the  International Congress of the Latin American Studies Association in Barcelona 2018, and of the Social Sciences Institute Seminar, at Universidad de O$'$Higgins, for all the useful comments. I also thank the School of Arts and Sciences at Rutgers University for granting me funds to collect part of the data used in this project. Usual caveats apply.}
+\thanks{I thank Robert Kaufman, Hillel Soifer, Ana de la O, Mark Dincecco, James Mahon, Christopher Hale, Alexander Lee, Jack Paine, Daniel Kelemen, Douglas Blair, Paul Poast, Jorge Atria, Christine Hunefeldt, the attendees of the Annual Meeting of the Southern Political Science Association in New Orleans 2018, the International Congress of the Latin American Studies Association in Barcelona 2018, the \emph{Red de Econom\'ia Pol\'itica para Am\'erica Latina} (REPAL) in New Orleans 2019, and of the Social Sciences Institute Seminar, at \emph{Universidad de O$'$Higgins}, for all the helpful comments. I also thank the School of Arts and Sciences at Rutgers University for granting me funds to collect part of the data used in this project, and the \emph{Universidad de O$'$Higgins} for several travel grants. Usual caveats apply.}
 \normalsize Assistant Professor $\bullet$ O$'$Higgins University\\
 \normalsize \href{mailto:\filetext}{\texttt{\filetext}}\\
 \normalsize \href{http://www.hectorbahamonde.com}{\texttt{www.HectorBahamonde.com}}
@@ -73,9 +73,15 @@ p_load(knitr)
 @
 
 <<echo=FALSE, cache= F, warning = FALSE, message = F, eval=TRUE>>=
-read_chunk('/Users/hectorbahamonde/RU/Dissertation/Papers/Earthquake_Paper/Earthquake_Paper.R')
+read_chunk('/Users/hectorbahamonde/RU/Dissertation/Papers/Earthquake_Paper/Earthquake_Paper.R') # earthquake
+read_chunk('/Users/hectorbahamonde/RU/Dissertation/Papers/IncomeTaxAdoption/IncomeTaxAdoption.R') # p.2
 
 @
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%% EARTHQUAKE CODE %%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
 
 % this one goes very first
 <<number:of:simulations, echo=FALSE, comment=NA, warning=FALSE, message=F, results='hide', cache=FALSE, eval=TRUE>>=
@@ -113,37 +119,30 @@ read_chunk('/Users/hectorbahamonde/RU/Dissertation/Papers/Earthquake_Paper/Earth
 @
 
 
-<<texreg-extractor-geeglm, echo=FALSE, comment=NA, warning=FALSE, message=F, results='hide', cache=FALSE, eval=TRUE>>=
-
-@
-
-<<results:data, echo=FALSE, comment=NA, warning=FALSE, message=F, results='hide', cache=FALSE, eval=TRUE>>=
-
-@
-
-<<simulation, echo=FALSE, comment=NA, warning=FALSE, message=F, results='hide', cache=FALSE, eval=TRUE>>=
-
-@
-
-
-
-<<incometax:data, echo=FALSE, comment=NA, warning=FALSE, message=F,results='asis', cache=FALSE, eval=TRUE>>=
-
-@
-
-
-
-
-% year:fixed:effects:plot:data
-<<year:fixed:effects:plot:data, echo=FALSE, comment=NA, warning=FALSE, message=F, results='hide', cache=FALSE, eval=TRUE>>=
-
-@
-
-
 % keep this at the end
 <<earthquake:ts:plot:chile:data, echo=FALSE, comment=NA, warning=FALSE, message=F, results='hide', cache=FALSE, eval=TRUE>>=
 
 @
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%% INCOME TAX ADOPTION CODE %%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+% regression table
+<<texreg-extractor-geeglm, echo=FALSE, comment=NA, warning=FALSE, message=F,results='hide', cache=FALSE>>=
+
+@
+
+<<results:1:data, echo=FALSE, comment=NA, warning=FALSE, message=F, results='hide', cache=FALSE, eval=TRUE>>=
+
+@
+
+<<results:2:data, echo=FALSE, comment=NA, warning=FALSE, message=F, results='hide', cache=FALSE, eval=TRUE>>=
+
+@
+
+
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \clearpage
@@ -162,7 +161,7 @@ read_chunk('/Users/hectorbahamonde/RU/Dissertation/Papers/Earthquake_Paper/Earth
 
 
 % summary (substantive)
-This paper contributes to the literature from a substantive perspective by explaining the positive relationship between income taxation and state consolidation over time. The historical evidence suggests that since the income tax law was an agreement among the elites, the institution had quasi-voluntary compliance. In turn, the argument outlines how income taxation had positive spillover effects over state institutions, increasing levels of state consolidation over time. The mechanisms evidence how the presence of tax assessors and collectors throughout the territory increased norms of enforcement of state regulations more generally, fostering overall state capacity over time. 
+This paper contributes to the literature from a substantive perspective by explaining the positive relationship between adopting the income tax and sectoral conflicts. The historical evidence suggests that since the income tax law was an agreement among the elites, the institution had quasi-voluntary compliance. In turn, the argument outlines how income taxation had positive spillover effects over state institutions, increasing levels of state consolidation over time. The mechanisms evidence how the presence of tax assessors and collectors throughout the territory increased norms of enforcement of state regulations more generally, fostering overall state capacity over time. 
 
 % summary (empirical)
 The paper also contributes to the literature from an empirical perspective. Exploiting the exogeneity of earthquake shocks, I leverage a novel hand-collected dataset on Chilean earthquake death tolls between 1900 and 2010. Earthquakes are time-invariant, and importantly, orthogonal to economic development and regime type. Under reasonable assumptions, if the state's capacity for enforcing and monitoring building codes throughout the territory is a reflection of overall state capacity, then death-toll differentials should be mainly associated with state capacity. Exploiting this variation via a Bayesian Poisson model with year fixed-effects, I find that death tolls associated with earthquakes systematically decreased (that is, \emph{state capacities increased}) after the income tax law was implemented in 1924. Importantly, these changes are not correlated with economic growth or industrialization levels. The empirical section also provides an in-depth qualitative case study.%, several robustness checks, and different tests of alternative explanations. 
@@ -180,7 +179,9 @@ The paper also contributes to the literature from an empirical perspective. Expl
 
 
 % framework
-The paper argues, in more detail, that the emergence of the industrial sector caused higher levels of sectoral conflicts, triggering the implementation of the income tax, which in turn, fostered state development over time via spillover effects (\autoref{causal:mechanism:fig}). The paper not only builds on the fiscal sociology literature \parencite{Musgrave1992}, but on the sectoral politics approach, too \parencite{Moore,Rueschemeyer:1992,Ansell:2014ty,Boix:2003db,Acemoglu:1996rm}. In particular, it argues that elites whose assets are allocated in different sectors of the economy have different preferences over direct taxation, and consequently, state centralization (\textcite[289]{Acemoglu:1996rm}, \textcite[50]{Best1976}, \textcite[109]{Mamalakis1971}). The framework follows \textcite{Mamalakis1969,Mamalakis1971}, who introduced the sectoral conflict approach for the Latin American cases but also \textcite[1085]{Hechter1980a} who explain,  ``state formation will be most likely to the degree that powerful individual actors form two groups on the basis of divergent economic and political interests.'' 
+The paper argues, in more detail, that (a) the emergence of the industrial sector caused higher levels of sectoral conflicts, triggering the implementation of the income tax, which in turn, (b) fostered state development over time via spillover effects (\autoref{causal:mechanism:fig}). The article empirically tests both hypotheses, while providing a short Chilean case study.
+
+The paper not only builds on the fiscal sociology literature \parencite{Musgrave1992}, but on the sectoral politics approach, too \parencite{Moore,Rueschemeyer:1992,Ansell:2014ty,Boix:2003db,Acemoglu:1996rm}. In particular, it argues that elites whose assets are allocated in different sectors of the economy have different preferences over direct taxation, and consequently, state centralization (\textcite[289]{Acemoglu:1996rm}, \textcite[50]{Best1976}, \textcite[109]{Mamalakis1971}). The framework follows \textcite{Mamalakis1969,Mamalakis1971}, who introduced the sectoral conflict approach for the Latin American cases but also \textcite[1085]{Hechter1980a} who explain,  ``state formation will be most likely to the degree that powerful individual actors form two groups on the basis of divergent economic and political interests.'' 
 
 As such, this article is an attempt to provide an alternative explanation of state development to the bellicist approach \parencite{Tilly:1992rr,Dincecco2016} and extended to the Latin American case by \textcite{Thies2005a,Thies2016,Kurtz2006}---but see \textcite{Centeno:2002qf}. And while \textcite{Kurtz2009,Kurtz:2013aa,Soifer2015a} situate the relevant state-building critical juncture at the end of the colonial period, before the class compromises that this paper identifies, the argument pursued in this paper explains that the implementation of the income tax was an important building block in this process. 
 
@@ -232,7 +233,7 @@ Fiscal sociologists, however, explain that direct taxation fostered state consol
 The mechanism through which the positive spillover effects of taxation on state-building occur is based on the endogenous accumulation---and transmission---of knowledge. Particularly, the mechanism considers situations where the stock of know-how accumulated in the revenue service spread to other state institutions such as institutions related to the counting of individuals, policing, and the enforcement of public security, contracts, building codes, zoning laws, among others. The state-building literature has also considered these types of mechanisms before. For instance, \textcite{Soifer2013a,Soifer2012,Bahamonde:Trasberg:2018} proxy state capacity by considering a cumulative count of censuses taken in a particular country. The understanding is the same: as early states learn to count their inhabitants (or tax them, in my account), they also learn---at marginally lower costs---to perform other state tasks. 
 
 
-This paper explains that direct taxation via a learning-by-doing process produced \emph{technical complementarities}\footnote{These are situations in which ``an increase in the output of [a] commodity [...] lowers the marginal costs of producing [other] commodity'' \parencite[67]{Hirschman:1958aa}.} between the state's existing stock of know-how and fiscal capacities. In simple, implementing the tax lowered the marginal costs of adding an additional layer of state\emph{ness} onto the territory. \textcite[46]{Krasner:1985lq} explains that ``tariffs and export taxes are easier to obtain than direct taxes, \emph{which require high levels of bureaucratic skill and voluntary compliance}.''\footnote{My emphases.} This paper argues that it is this \emph{bureaucratic effort} (contingent on elite-led fiscal pacts) that was what fostered state consolidation over time. For instance, it was necessary to send official emissaries to check on accounting books of the refinery in the north, the winery in the central valley, and the \emph{hacienda} in the south. Eventually, these delegations became more complex---and at lower marginal costs---increasing the density of state presence in the territory.
+This paper explains that direct taxation via a learning-by-doing process produced technical complementarities\footnote{These are situations in which ``an increase in the output of [a] commodity [...] lowers the marginal costs of producing [other] commodity'' \parencite[67]{Hirschman:1958aa}.} between the state's existing stock of know-how and fiscal capacities. In short, implementing the tax lowered the marginal costs of adding an additional layer of state\emph{ness} onto the territory. \textcite[46]{Krasner:1985lq} explains that ``tariffs and export taxes are easier to obtain than direct taxes, which require high levels of bureaucratic skill and voluntary compliance.'' This paper argues that it is this bureaucratic effort (contingent on elite-led fiscal pacts) that was what fostered state consolidation over time. For instance, it was necessary to send official emissaries to check on accounting books of the refinery in the north, the winery in the central valley, and the \emph{hacienda} in the south. Eventually, these delegations became more complex---and at lower marginal costs---increasing the density of state presence in the territory.
 
 
 
@@ -240,7 +241,7 @@ This paper explains that direct taxation via a learning-by-doing process produce
 %For instance, bureaucrats in Chile that were sent to collect and administer taxes, eventually learned to solve land disputes and dispense justice, among other state tasks. 
 %\footnote{For the European context, \textcite{Strayer:2005uq} explains how official state delegations traveled the territory dispensing judicial decisions, thereby fostering state centralization.} 
 
-And while there exists a tension between the \emph{intention} to tax and the \emph{capacity} to actually do it, it is important to remember that the elites \emph{wanted} to implement a system of income taxation, fostering an equilibrium of quasi-voluntary compliance. The literature, in fact, finds that \emph{introducing} the income tax has been associated with improvements in efficiency and expansion of the scope of a number of other state tasks. For instance, Kaldor explains that the revenue service is the ``point of entry.'' Once this institution is secured, securing the rest is marginally easier (in \textcite[15]{Brautigam2008}). In turn, \textcite[208]{Besley2013a} explain that \emph{implementing} the income tax law is ``associated with investments in public administrative structures that support tax collection'' in a number of countries, including Chile, while \textcite[3]{Dincecco2015a} find ``a positive and significant relationship between the introduction of the income tax'' and per capita (1) total expenditures, (2) education expenditures, and (3) health expenditures. Others have found that literacy levels in Chile rose from 40\% in 1907 to 66\% in 1925  (Engerman, Sokoloff and Mariscal, in \textcite[Ch. 5]{Engerman:2011aa}), and the share of national revenue accounted for by income taxes after implementing the income tax in 1924 rose from 6\% in 1920 to 23.7\% in 1940 (Engerman, Sokoloff and Zolt, in \textcite[178]{Engerman:2011aa}). In turn, Humud (1969, p. 154) documents that the income tax was \emph{widely} enforced, generating considerable resources for the Chilean treasury (in \textcite[451-452]{Bowman1982}), and that the dependence on custom taxes decreased from 70.2\% to 41.1\% during those same years (Engerman, Sokoloff and Zolt, in \textcite[Ch. 6]{Engerman:2011aa}). 
+And while there exists a tension between the intention to tax and the capacity to actually do it, it is important to remember that both elites wanted to implement a system of income taxation, fostering an equilibrium of quasi-voluntary compliance. The literature, in fact, finds that introducing the income tax has been associated with improvements in efficiency and expansion of the scope of a number of other state tasks. For instance, Kaldor explains that the revenue service is the ``point of entry.'' Once this institution is secured, securing the rest is marginally easier (in \textcite[15]{Brautigam2008}). In turn, \textcite[208]{Besley2013a} explain that implementing the income tax law is ``associated with investments in public administrative structures that support tax collection'' in a number of countries, including Chile, while \textcite[3]{Dincecco2015a} find ``a positive and significant relationship between the introduction of the income tax'' and per capita (1) total expenditures, (2) education expenditures, and (3) health expenditures. Others have found that literacy levels in Chile rose from 40\% in 1907 to 66\% in 1925  (Engerman, Sokoloff and Mariscal, in \textcite[Ch. 5]{Engerman:2011aa}), and the share of national revenue accounted for by income taxes after implementing the income tax in 1924 rose from 6\% in 1920 to 23.7\% in 1940 (Engerman, Sokoloff and Zolt, in \textcite[178]{Engerman:2011aa}). In turn, Humud (1969, p. 154) documents that the income tax was widely enforced, generating considerable resources for the Chilean treasury (in \textcite[451-452]{Bowman1982}), and that the dependence on custom taxes decreased from 70.2\% to 41.1\% during those same years (Engerman, Sokoloff and Zolt, in \textcite[Ch. 6]{Engerman:2011aa}). 
 
 
 
@@ -257,17 +258,17 @@ And while there exists a tension between the \emph{intention} to tax and the \em
 More than being blessed, the literature is in fact cursed due to an over-abundance of poor indicators of state consolidation \parencite[589]{Soifer2012}. In fact, its abundance ``points to the poor state of empirical measures of the quality of states'' \parencite[347]{Fukuyama2013} mostly because most indices are conflated with analytical and conceptual problems \parencite[1292]{Ferreira2017}.  %The literature points to two major concerns. First, ``most [state] fragility indices barely satisfy scientific standards''\footnote{\textcite[35]{Mata2009}. They point out particularly to the fact that data are usually poor.} and, second, most indices are conflated with analytical and conceptual problems.\footnote{See also \textcite[1292]{Ferreira2017}.} 
 
 
-One notable example is ``protection of the rule of law,'' which is commonly used as a proxy for state capacity \parencite[1237]{Besley2009}. As \textcite[543]{Kurtz2007} explain, this strategy is severely confounded ``with policy preferences over the structure of private property rights.'' On the one hand, this is problematic since the sources of these data are usually elite interviews \parencite[349]{Fukuyama2013}. To ``the extent that public bureaucracies \emph{are} effective in imposing taxes or regulatory demands [...] they are likely to be judged `burdensome' and `growth-inhibiting' by many businesspersons'' \parencite[542]{Kurtz2007} thereby introducing systematic measurement error \parencite[618]{Kurtz2012}. On the other hand, the problem is conceptual. As \textcite[247]{Soifer2008a} puts it, there is a widely spread ``problem of misalignment between dimension and indicator.'' \textcite[619]{Kurtz2012} recommend ``explicitly avoid[ing] an emphasis on outputs that are at the center of political or policy debates, such as property rights.'' For example, the U.S.S.R. had a strong state; however, it did \emph{not} protect property rights.
+One notable example is ``protection of the rule of law,'' which is commonly used as a proxy for state capacity \parencite[1237]{Besley2009}. As \textcite[543]{Kurtz2007} explain, this strategy is severely confounded ``with policy preferences over the structure of private property rights.'' On the one hand, this is problematic since the sources of these data are usually elite interviews \parencite[349]{Fukuyama2013}. To ``the extent that public bureaucracies \emph{are} effective in imposing taxes or regulatory demands [...] they are likely to be judged `burdensome' and `growth-inhibiting' by many businesspersons'' \parencite[542]{Kurtz2007} thereby introducing systematic measurement error \parencite[618]{Kurtz2012}. On the other hand, the problem is conceptual. As \textcite[247]{Soifer2008a} puts it, there is a widely spread ``problem of misalignment between dimension and indicator.'' \textcite[619]{Kurtz2012} recommend ``explicitly avoid[ing] an emphasis on outputs that are at the center of political or policy debates, such as property rights.'' For example, the U.S.S.R. had a strong state; however, it did not protect property rights.
 
 
-Another iconic example of this misalignment problem is the use of fiscal extraction as a proxy of state capacity. \textcite[3]{Johnson2017} explain that ``[t]ax revenue per capita is a commonly used metric of fiscal capacity,''  which in turn ``speaks'' to levels of state capacity. In fact, \textcite[172]{Thies2015} conceptualizes ``fiscal capacity [...] in terms of tax revenue extracted from society.'' This error is very common in the literature, and other examples are \textcite[224]{Besley2013a} and \textcite{Besley2014}. Not only do tax shares reflect policy preferences \parencite[9]{Soifer2013a} but also, as \textcite[353]{Fukuyama2013} explains it, there ``is a difference between extractive \emph{potential} and \emph{actual} extraction rates.''\footnote{My emphases.} For instance, since American institutions were deliberately designed to limit the exercise of state power, the U.S. taxes very little \parencite[6]{Fukuyama:2004nr}. However, it is not reasonable to say that the U.S. is a ``weak state.'' Moreover, in late imperial China, ``high taxes on peasants [...] were the result of rulers' \emph{lack} of power. Chinese rulers consistently attempted to limit officials' excessive extractions from the masses, but were unable to do so'' \parencite[301]{Kiser1992}.\footnote{My emphasis.} 
+Another iconic example of this misalignment problem is the use of fiscal extraction as a proxy of state capacity. \textcite[3]{Johnson2017} explain that ``[t]ax revenue per capita is a commonly used metric of fiscal capacity,''  which in turn ``speaks'' to levels of state capacity. In fact, \textcite[172]{Thies2015} conceptualizes ``fiscal capacity [...] in terms of tax revenue extracted from society.'' This error is very common in the literature, and other examples are \textcite[224]{Besley2013a} and \textcite{Besley2014}. Not only do tax shares reflect policy preferences \parencite[9]{Soifer2013a} but also, as \textcite[353]{Fukuyama2013} explains it, there ``is a difference between extractive potential and actual extraction rates.'' For instance, since American institutions were deliberately designed to limit the exercise of state power, the U.S. taxes very little \parencite[6]{Fukuyama:2004nr}. However, it is not reasonable to say that the U.S. is a ``weak state.'' Moreover, in late imperial China, ``high taxes on peasants [...] were the result of rulers' \emph{lack} of power. Chinese rulers consistently attempted to limit officials' excessive extractions from the masses, but were unable to do so'' \parencite[301]{Kiser1992}.\footnote{My emphasis.} 
 
 Finally, others have proxied state capacity with economic growth, which is also problematic \parencite{Fearon2003,Besley:2011aa}. Interestingly, \textcite[4, 6-7]{Mahoney:2010aa} pursues the same strategy. As \textcite{Dargent2017} explain, state capacity and economic growth are causally distinct mechanisms. For instance, boom-led economic growth has left net state capacity low in Peru.
 
 
 
 % temporal
-This paper identifies an additional limitation. Beyond conceptual and analytical problems, most available measurements are unable to capture temporal variations of state capacity. Since most explanations of state-making have a strong historical component, the lack of an indicator able to \emph{travel in time} represents a huge deficit in the literature. Just to name a few examples, \textcite[585]{Soifer2012} ``builds a new measure of state capacity for [...] \emph{contemporary} Latin America [combining] multiple dimensions (extraction, security, and the administration of basic services).''\footnote{My emphasis.} \textcite[618-619]{Kurtz2012} designed some list-experiments to study bureaucrats' opinions, \textcite{Dargent2017} ``analyses the evolution of state capacity in Peru during the \emph{recent} commodity boom,''\footnote{My emphasis.} while \textcite{Luna2014,Luna2017} employ a survey-based design to measure \emph{contemporary} subnational state capacities. While these measurements do overcome the conceptual and analytical problems mentioned above, they do not help us in studying state capacities in a historical setup. 
+This paper identifies an additional limitation. Beyond conceptual and analytical problems, most available measurements are unable to capture temporal variations of state capacity. Since most explanations of state-making have a strong historical component, the lack of an indicator able to \emph{travel in time} represents a huge deficit in the literature. Just to name a few examples, \textcite[585]{Soifer2012} ``builds a new measure of state capacity for [...] {contemporary Latin America [combining] multiple dimensions (extraction, security, and the administration of basic services).'' \textcite[618-619]{Kurtz2012} designed some list-experiments to study bureaucrats' opinions, \textcite{Dargent2017} ``analyses the evolution of state capacity in Peru during the recent commodity boom,'' while \textcite{Luna2014,Luna2017} employ a survey-based design to measure contemporary subnational state capacities. While these measurements do overcome the conceptual and analytical problems mentioned above, they do not help us in studying state capacities in a historical setup. 
 
 
 Still, economic historians offer other alternatives to proxy levels of state capacity over time. Some examples are levels of investments in public goods such as infrastructure \parencite{Enriquez2017}, roads \parencite{Mann1984a,Mann2008a,Acemoglu2005a,Saylor2012,Thies2009,Besley2010}, electrification (measured as light intensity per pixel, \textcite{Huntington2014}), and railroads (\textcite[302]{Saylor2012}, \textcite{Coatsworth1974a}). 
@@ -298,14 +299,14 @@ I focus on earthquakes and not on other natural disasters, such as ``extreme tem
 
 
 % preparedeness // construction
-Under reasonable assumptions, the capacity of deploying inspectors to enforce quake-sensitive zoning and building codes should be a reflection of the overall levels of state capacity. In fact, \textcite[153]{Ambraseys2011} explain that ``[e]arthquake-resistant construction depends on responsible governance,'' while \textcite[628]{Raschky2008} argues that the effects of natural hazards depend on the region's ``institutional vulnerability.'' Thus, state capacity acts as a scope condition undermining (facilitating) the implementation of construction norms. For example, \textcite[169]{Bilham2013} explains that ``although engineering codes may \emph{exist}[,] mechanisms to \emph{implement} these codes are largely unavailable''\footnote{My emphases.} in low-capacity states. For example, \textcite[1910]{Anbarci2005} explain that ``while Iran has building codes [...] comparable to those existing in the United States, they tend to be enforced only in the country's larger cities,'' not in the countryside.
+Under reasonable assumptions, the capacity of deploying inspectors to enforce quake-sensitive zoning and building codes should be a reflection of the overall levels of state capacity. In fact, \textcite[153]{Ambraseys2011} explain that ``[e]arthquake-resistant construction depends on responsible governance,'' while \textcite[628]{Raschky2008} argues that the effects of natural hazards depend on the region's ``institutional vulnerability.'' Thus, state capacity acts as a scope condition undermining (facilitating) the implementation of construction norms. For example, \textcite[169]{Bilham2013} explains that ``although engineering codes may exist[,] mechanisms to implement these codes are largely unavailable'' in low-capacity states. For example, \textcite[1910]{Anbarci2005} explain that ``while Iran has building codes [...] comparable to those existing in the United States, they tend to be enforced only in the country's larger cities,'' not in the countryside.
 
 % marco legal
 Only high-capacity states implement and enforce quake-sensitive regulations. The Chilean government started its efforts to ameliorate the impact of earthquakes after the great quake of 1928 in Talca. A first effort happened in 1929 when \href{http://www.leychile.cl/Navegar?idNorma=149306}{\emph{Ley} number 4563} was implemented. The law was among the first attempts to prohibit ``construction, reconstruction or any other repairing or transformations [...] without a permit from the authorities.'' Importantly, the law required that all blueprints had to be signed off by an expert before the construction started. By 1930, \href{https://www.leychile.cl/Navegar?idNorma=1038437&idParte=0&idVersion=}{\emph{Decreto} number 4882} was adopted, but this time the rule made a number of technical prescriptions,\footnote{See, especially, article 151.} determining what kinds of construction materials ought to be used, among other requirements. Critically, while the central government had retained the control of the supervision of the code since the promulgation of the \emph{ley}, the \emph{decreto} explicitly created the role of the \emph{inspector} to supervise, enforce, and monitor these measures at the local level. Furthermore, \emph{art\'iculo} 414 of the Chilean \emph{Decreto} 4882 granted inspectors ``free access to the building'' at any time during the construction process. The proposed measurement captures whether these good intentions achieved lower death tolls.
 
 
 % advantages // it's objective and subnational
-The proposed measurement has a number of advantages. Unlike non-experimental survey-based or purely policy-based measures, earthquake death tolls are an \emph{objective} measurement of earthquake preparedness, an activity that \emph{any} state \emph{must} perform. For instance, \textcite[422]{Carlin2014a} explain that ``a basket of `minimal' state functions [typically includes] primary education, public health, [the] rule of law, public finance management, and \emph{disaster relief}.''\footnote{My emphases.} 
+The proposed measurement has a number of advantages. Unlike non-experimental survey-based or purely policy-based measures, earthquake death tolls are an objective measurement of earthquake preparedness, an activity that any state must perform. For instance, \textcite[422]{Carlin2014a} explain that ``a basket of `minimal' state functions [typically includes] primary education, public health, [the] rule of law, public finance management, and disaster relief.'' 
 
 
 However, the measurement has a number of drawbacks. Obviously, the country needs to have earthquakes, possibly limiting the number of potential cases. Yet, good indicators of state capacity also suffer from the same problem (i.e. context-specificity). For instance, \textcite[593]{Soifer2012} and \textcite[252]{Slater2008} propose a measurement based on whether states are able to enforce voter registration ``where voting is mandatory,'' or conduct ``state registration of marginal populations,'' respectively, limiting the study of state-capacity to democratic countries only. This is not only a democracy-specific limitation but also a temporal one.
@@ -316,11 +317,77 @@ One advantage that actually mitigates some of these drawbacks is that most earth
 Additionally, there are countries like India or the United States where earthquakes happen only in certain regions. Presumably, mitigation policies in these places would need to be targeted to specific areas, possibly undermining the assumption that these kinds of policies should penetrate the entire territory. For instance, \textcite[164]{Dunbar2003} explain that the Indian state implements targeted policies (that might not necessarily correspond to the administrative areas) based on isoseismal maps that define different zones of seismic hazard.
  
 
-Another potential concern is that the ability to count the death toll might be a function of state capacity itself.\footnote{I thank Paul Poast for this comment.} However, in most cases, civic organizations, the Catholic Church, and, particularly, the press (national and local) have been the main entities who (willingly or not) have carried out the task of enumerating the deaths. Another potential issue is the measurement of the magnitudes. Before the instrumental period, magnitudes were obtained in an estimative way and, while there are methods to approximate historically-felt magnitudes to instrumental-like intensities \parencite{Szeliga2010}, this strategy, unfortunately, adds more than one layer of complexity. All in all, this measurement offers a rough approximation of levels of state capacities over time.
+Another potential concern is that the ability to count the death toll might be a function of state capacity itself.\footnote{I thank \fbox{\phantom{Paul Poast}} for this comment.} However, in most cases, civic organizations, the Catholic Church, and, particularly, the press (national and local) have been the main entities who (willingly or not) have carried out the task of enumerating the deaths. Another potential issue is the measurement of the magnitudes. Before the instrumental period, magnitudes were obtained in an estimative way and, while there are methods to approximate historically-felt magnitudes to instrumental-like intensities \parencite{Szeliga2010}, this strategy, unfortunately, adds more than one layer of complexity. All in all, this measurement offers a rough approximation of levels of state capacities over time.
 
 
 
 \section{Empirical Section\label{models}}
+
+The theory should pass two tests. First, the implementation of the income tax should be associated with the rising of the industrial sector. Given that all Latin American economies began by developing an agricultural sector first, the emergence of an industrial sector can be conceptualized as a sectoral conflict. In other words, the timing of the rising of the industrial sector should coincide with the implementation of the income tax. Second, we should observe that once the income tax is implemented, we should observe higher levels of state development.
+
+
+\subsection{Income Tax Adoption: Latin America}
+
+Sectoral conflict was proxied by measuring industrial and agricultural sectoral growth rates, as presented in the  \href{http://moxlad-staging.herokuapp.com/home/en?}{MOxLAD} data.\footnote{Particularly, the \emph{agriculture value-added} and \emph{manufacturing value-added} variables. Both are expressed in local currency at 1970 constant prices.} The dataset spans from 1900 to potentially 2010.\footnote{Since countries are ``censored'' once they implement the income tax law, they leave the sample (potentially) before 2010. According to \textcite[790]{Astorga2005}, these data provide extended comparable sectoral value-added series in constant purchasing power parity prices. These data, and similar strategies, have been employed before (see \cite{Thies2005a})}. Since the idea is to capture the contribution of each individual sector, sectoral growths rates were not combined. 
+
+Using secondary information, \autoref{sample:data:income:tax:tab}\todo{complete table} states when the income tax was implemented. \autoref{fig:incometax} shows both sectoral outputs (independent variables), and the year when the income tax law was passed (dependent variable). Since population has been associated with the probability elites expand the franchise---and consequently the tax base, \text[892-893]{Engerman2005}---the total country-year population as a control variable was included.
+
+
+% sectoral outputs plot
+\afterpage{
+<<incometax, echo = FALSE, fig.pos='H', warning = FALSE, message = F, fig.cap=outputstitle, fig.align='center', fig.width=13, fig.height=12,dpi=1000,cache = FALSE>>=
+
+@
+}
+
+
+% models
+\autoref{results:1} shows 3 models.\footnote{All tables were produced using the  \texttt{texreg} package \autocite[]{Leifeld:2013qr}. All Cox models were computed using the \texttt{survival R}  package (\cite{Therneau:2015zr}). The GEE logistic regression was computed using the \texttt{geepack} package \autocite[]{Hojsgaard:2016}. The simulations were performed using the \texttt{simPH R} package (\cite{Gandrud2015}).} Following \textcite{Aidt2009a}, Model 1 computes the lagged conditional hazard ratio of a country which has not yet adopted the income tax, adopts it in a given year, as a function of industrial and agricultural outputs.\footnote{Following \textcite[49]{Box-Steffensmeier2004}, the next equation was fitted: 
+\begin{equation}\label{cox:eq}
+h_{i}(t) = exp(\beta_{1}\text{Industrial Growth}_{i,t-1} + \beta_{2}\text{Agricultural Growth}_{i,t-1} + \beta_{3}\text{Total Population}_{i,t-1})h_{0}(t)
+\end{equation}
+for all countries $i$ and years $t$.} Countries drop out of the sample when they adopt the income tax. Lagging the independent variables should account for non-contemporaneous factors that might conflate the contribution of sectoral growths, such as prior state capacities, among others. Model 2 shows the estimated coefficients of a generalized estimating equation (GEE).\footnote{Following \textcite[331]{Zorn2006}, the next equation was fitted:
+\begin{equation}\label{gee:eq}
+\pi_{i,t}=\Phi(\beta_{1}\text{log(Industrial Growth$_{i,t}$)}+\beta_{2}\text{log(Agricultural Growth$_{i,t}$)}+\beta_{3}\text{log(Total Population$_{i,t}$)})
+\end{equation}
+where $\pi$ is the logit link function, and $\Phi$ is as scale parameter (i.e. the cumulative distribution function), for all $i$ countries, and $t$ years.} 
+
+
+
+
+<<results:1:table, echo=FALSE, comment=NA, warning=FALSE, message=F, results='asis', cache=FALSE>>=
+
+@
+
+
+% here
+Generalized estimating equations were introduced by \textcite{Liang1986} to fit clustered, repeated/correlated, and panel data \autocite[322]{Zorn2006}. This method is especially well suited to analyze binary data \parencite{Hanley2003a}, something particularly useful given the nature of the dependent variable (e.g. whether a polity has implemented the income tax or not). GEE methods require analysts to parameterize the working correlation matrix. Though \textcite[139]{Hedeker2006} explain that ``the GEE is robust to misspecification of the correlation structure,''\footnote{\textcite[402]{Carlin2001} argue that ``[r]elatively minor differences in estimates may arise depending on how the estimating equations are weighted, in particular within the generalized estimating equation (GEE) framework.'' \textcite[]{Westgate2017a} and \textcite[227]{Gardiner2009} make the same point.} \textcite[338]{Zorn2006} explains that whereas the choice of estimator makes little or no difference, the unit on which the data are grouped makes a big difference. Hence, following the advice of \textcite[166]{Hardin2013}, who point out that when ``the observations are clustered (not collected over time) [...] the exchangeable correlation structure'' should be used, I assume an ``independence'' working covariance structure, which also corrects for small-sized panel designs.\footnote{\textcite[166]{Hardin2013} explains that if ``the number of panels is small, then the independence model may be the best; but [analysts should] calculate the sandwich estimate of variance for use with hypothesis tests and interpretation of coefficient,'' which is what I report in \autoref{results:1}.} Substantively, GEE models provide an estimated marginal mean, or the \emph{weighted average} of all cluster-specific effects (or conditional means). Model 3 is a conditional logit model (``fixed effects'').\footnote{More formally,
+\begin{equation}\label{clogit:eq}
+\pi_{i,t}=\Phi(\beta_{0} + \beta_{1}\text{log(Industrial Growth$_{i,t}$)}+\beta_{2}\text{log(Agricultural Growth$_{i,t}$)}+\beta_{3}\text{log(Total Population$_{i,t}$)}+\alpha_{i})
+\end{equation}
+where $\alpha$ are the country fixed effects for all countries $i$.} One important advantage of this strategy is the ability to account for country-specific effects. For example, fiscal expansion could be a function of country-specific prior state-building capacities.\footnote{I thank Matthias vom Hau for this suggestion.} A number of scholars rightly argue that post-colonial state-capacities are in part a function of pre-colonial state-capacities (\cite[1416]{Wimmer2016}, \cite{Mahoney:2010aa}, \cite[1426]{Lange2006}). Fixed-effects should be able to account for these and other unobserved or hard-to-measure covariates, which if left unaccounted for, would introduce omitted variable biases \parencite{Angrist:2008fk}. \autoref{results:2} in the Online Appendix section shows other models, including one with a different transformation to capture different shapes of the baseline hazard, and another one to account for possible spatial dependency. The results do not vary. All models suggest that the rise of a strong industrial sector largely accelerates the implementation of the income tax law. Moreover, a strong agricultural sector not only has zero impact on fiscal development, but a negative one. 
+
+
+
+% simulation plot // don't move this one here, since I am loading in-text R information into the next paragraph.
+<<simulation, echo=FALSE, comment=NA, warning=FALSE, message=F,results='asis', cache=FALSE>>=
+
+@
+
+
+
+<<simulation:plots, echo = FALSE, fig.pos='H', warning = FALSE, message = F, fig.cap=simtitle, fig.align='center', fig.width=7, fig.height=3,dpi=10000,cache = FALSE>>=
+
+@
+
+
+
+
+% substantiative interpretation // comments on the simulation
+%Using the estimations from Model 1, I follow \textcite{Gandrud2015} and \textcite{King2000}, and in \autoref{fig:simulation:plots}, simulate \Sexpr{format(nsim,big.mark=",",scientific=FALSE)} times the \Sexpr{tolower(qi)} of implementing the income tax law, conditional on industrial and agricultural growth rates.\footnote{\textcite[15]{Box-Steffensmeier2004} explain that the \Sexpr{tolower(qi)} is the most common quantity of interest analysts focus on. \autoref{fig:simulation:plots} shows \Sexpr{ci*100}\% confidence intervals.} While the outcome of interest does \emph{not} depend \emph{directly} on time (\autoref{fig:survival:plot}), sectoral outputs do grow in time (\autoref{fig:incometax}).\footnote{The economics literature refers to these kinds of time series ``integrated'' or I(1) processes.} Consequently, it will be necessary to account for this tendency by allowing estimations to vary with time as well. Since the \Sexpr{tolower(qi)} ``is the probability that a case will fail at time $t$'' \parencite[231]{Licht2011}, I take advantage of this quantity of interest which allows some dependency on both time, \emph{and} the covariates \parencite[15]{Box-Steffensmeier2004}. \autoref{fig:simulation:plots} strongly suggests that the faster the agricultural sector develops, the less likely the implementation of the income tax. This relationship does not change at later stages of development, suggesting that polities with a strong agricultural elite are not associated with fiscal development. However, rapid industrial development is associated with an earlier implementation of the income tax law. 
+
+
+\subsection{Positive Spillover Effects of Income Taxation: Chile}
 
 
 \subsection{Data and Statistical Model}
@@ -373,7 +440,7 @@ Undoubtedly, there are many more factors that might increase death tolls. \textc
 All in all, the next equation was fitted:\footnote{All parameters $\beta \;\sim\; \mathcal{N}(0,0.0001)$, all precisions $\tau \;\sim\; \mathcal{G}(1,1)$, while $\mu \;\sim\; \mathcal{N}(0,0.0001)$. Traceplots---not shown but available upon request---indicate that the model has good mixing.} 
 
 
-{\input{⁨/Users/hectorbahamonde/RU/Dissertation/Papers/Earthquake_Paper⁩/model_poisson.txt}\unskip}
+{\input{/Users/hectorbahamonde/RU/Dissertation/Papers/Earthquake_Paper/model_poisson.txt}}
 
 where
 
@@ -646,7 +713,7 @@ The paper sketched an argument about how higher levels of sectoral contestation 
 
 The empirical analyses showed that earthquake death tolls decrease (i.e. state capacity increases) after the income tax law is implemented and that the emergence of the industrial sector accelerated the implementation of the income tax. % Additional analyses also suggest that there was a structural, sectoral cleavage rather than a blurred elite separation. 
 
-Enforcing quake-sensitive building codes embodies the most basic form of social contract that exists between the state and its subjects. Earthquake damage poses a major threat to commercial, official, and residential buildings, potentially triggering higher levels of looting and social unrest. Any kind of political leader should be interested in preventing looting and social unrest. Leaders not only care about their own survival but also about the legitimacy of the state. In the event of heavy social unrest, not only is the essential social Hobbesian-like contract broken, but the expectations of social peace are also questioned \parencite[419]{Carlin2014a}. The physical presence of the state literally \emph{crumbles} when institutions of social coercion and discipline, such as state schools, prisons, and police stations, collapse. For example, when the magnitude 7.0 earthquake hit Hati in 2010, the \emph{Prison Civile de Port-au-Prince} had a population of 4,500 inmates. During the quake, five inmates died. As a prison guard describes it, ``everyone escaped. Everyone. Except the dead.'' This natural disaster exacerbated the already existent chaos, freeing ``gang bosses, kidnappers, gunmen,'' among others \parencite{Reed:2011,Laursen2010}, reducing the legitimacy of the state to zero.
+Enforcing quake-sensitive building codes embodies the most basic form of social contract that exists between the state and its subjects. Earthquake damage poses a major threat to commercial, official, and residential buildings, potentially triggering higher levels of looting and social unrest. Any kind of political leader should be interested in preventing looting and social unrest. Leaders not only care about their own survival but also about the legitimacy of the state. In the event of heavy social unrest, not only is the essential social Hobbesian-like contract broken, but the expectations of social peace are also questioned \parencite[419]{Carlin2014a}. The physical presence of the state literally \emph{crumbles} when institutions of social coercion and discipline, such as state schools, prisons, and police stations, collapse. For example, when the magnitude 7.0 earthquake hit Haiti in 2010, the \emph{Prison Civile de Port-au-Prince} had a population of 4,500 inmates. During the quake, five inmates died. As a prison guard describes it, ``everyone escaped. Everyone. Except the dead.'' This natural disaster exacerbated the already existent chaos, freeing ``gang bosses, kidnappers, gunmen,'' among others \parencite{Reed:2011,Laursen2010}, reducing the legitimacy of the state to zero.
 
 
 Finally, income taxation did even more than just trigger other state capacities. Via a process of assimilation, it also helped in constructing the figure of the citizen, centered on the concept of the taxpayer. Regardless of an individual's race, religion, culture, or any other kind of status, the state classifies its subjects according to their incomes and obliges them to pay, punishing whoever refuses to do so. From a sociological standpoint, this ``generality makes taxation a crucial element in the development of the ``imagined community'' \parencite[]{Anderson2006a}, of the modern nation-state [...] Taxation enmeshes us in the web of generalized reciprocity that constitutes modern society'' (Martin et al., in \cite[3]{Martin2009a}).
@@ -729,6 +796,59 @@ count <- comma(as.numeric(count)) # add comma
 
 
 
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\newpage
+%% define text warpping in table
+\newcolumntype{C}{>{\centering\arraybackslash}m{3cm}}
+
+% table
+\begin{table}[h]
+\begin{center}
+\begin{tiny}
+\begin{tabular}{ c c c C C} 
+\toprule
+\\[.1em] {\bf Country} & {\bf Available Data} & {\bf Year Income Tax} & {\bf Law} & {\bf Source} \\ 
+\\[-.5em] 
+\midrule
+\\[.1em] Chile & 1900 - 2009 &  1924 & \emph{Ley} 3996 & \textcite[20]{Mamalakis:1976kx} and \href{https://goo.gl/OMbImM}{LeyChile.Cl} (official)\\ 
+\\[-.5em] 
+\hline 
+\\[.1em] Peru & 1929 - 2009  & 1934 & \emph{Ley} 7904 & \textcite{GobiernodelPeru1934} (official)  \\ 
+\\[-.5em] 
+\hline 
+\\[.1em] Venezuela & 1936 - 2006  & 1943  & \emph{Ley} 20851  & \emph{Gaceta Oficial} (official) and \textcite[27]{Ventura2013} \\ 
+\\[-.5em] 
+\hline 
+\\[.1em] Colombia & 1900 - 2009 & 1935 & \emph{Ley} 78 & \textcite[9]{Figueroa2008a} \\ 
+\\[-.5em] 
+\hline 
+\\[.1em] Argentina & 1900 - 2010 & 1933 & \emph{Ley} 11682 & \href{https://goo.gl/UkWq7W}{Infoleg.Gob.Ar} (official) \\ 
+\\[-.5em] 
+\hline 
+\\[.1em] Mexico & 1900 - 2009 & 1925 & \emph{Ley de Impuesto sobre la Renta} & \textcite[8]{UndaGutierrez2017} \\ 
+\\[-.5em] 
+\hline 
+\\[.1em] Ecuador & 1939 - 2007 & 1945 & -   & \textcite[135]{Aguilera2013} \\ 
+\\[-.5em] 
+\hline 
+\\[.1em] Nicaragua & 1920 - 2009 & 1974 & \emph{Ley} 662 & \href{https://goo.gl/JGcA9p}{Legislacion.Asamblea.Gob.Ni} (official)\\ 
+\\[-.5em] 
+\hline 
+\\[.1em] Guatemala & 1920 - 2009 & 1963 & \emph{Decreto} 1559 & \textcite[165]{De2007}\\[.2em]
+\bottomrule
+\end{tabular}
+\end{tiny}
+\caption{Sample, Data Available, and Year the Income Tax was Implemented}
+\label{sample:data:income:tax:tab}
+\end{center}
+\end{table}
+\clearpage
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
 \newpage
 <<predicted:observed:plot:plot, echo = FALSE, fig.pos='h', warning = FALSE, message = F, fig.cap=predicted.observed.plot.note, fig.align='center', fig.width=8, fig.height=3,dpi=30000,cache = FALSE,eval=TRUE>>=
 
@@ -736,75 +856,6 @@ count <- comma(as.numeric(count)) # add comma
 \clearpage
 
 
-
-\newpage
-% year:fixed:effects:plot:plot
-<<year:fixed:effects:plot:plot, echo = FALSE, fig.pos='h', warning = FALSE, message = FALSE,fig.cap=year.fixed.effects.plot.note, fig.align='center', fig.width=7 ,fig.height=3,dpi=30000,cache = FALSE,eval=TRUE>>=
-
-@
-\clearpage
-
-
-
-
-
-
-
-\newpage
-%% Lag Length and Post-Estimation Results // post:estimation:lag:lenght:tests
-% defines a checkmark and x mark symbols
-%\newcommand{\cmark}{\ding{51}}%
-%\newcommand{\xmark}{\ding{55}}%
-
-%\afterpage{
-%\begin{table}[ph!]
-%\begin{center}
-%\begin{tiny}
-%\begin{tabular}{ c c c c c c c c } 
-%\toprule
-%{\bf Country} & {\bf Time Frame} & {\bf Number of Lags} & {\bf LM} & \multicolumn{3}{c}{{\bf Normally Tests}}  & {\bf Stability Condition}\\
-%              &                  &                      &          & \emph{Jarque-Bera} &  \emph{Skewness} &  \emph{Kurtosis}    & \\
-%\midrule
-%\\\multirow{2}{*}{Chile}  & Pre   & 4 & \cmark & \cmark & \cmark & \cmark & \cmark \\
-%\\                        & Post  & 2 & \cmark & \cmark$^{-}$ & \cmark$^{-}$ & \cmark$^{-}$ & \cmark \\
-%\bottomrule
-%\end{tabular}
-%\end{tiny}
-%\caption{{\bf Lag Length and Post-Estimation Results}.}
-%\label{post:estimation:lag:lenght:tests}
-%\end{center}
-%\end{table}
-%}
-%\clearpage
-
-
-
-
-%\newpage
-%% Unit Root Tests for Agricultural and Industrial Growth // unit:root:tests
-%\afterpage{
-%\begin{table}[ph!]
-%\begin{center}
-%\begin{tiny}
-%\begin{tabular}{ c c c c c c c } 
-%\toprule
-%{\bf Country} & Time Frame & {\bf Sector} & {\bf Augmented Dickey-Fuller}  & {\bf Phillips-Perron} & {\bf KPSS} & {\bf Conclusion} \\
-%\midrule
-%\\\multirow{6}{*}{Chile}& \multirow{2}{*}{Pre}  & Agriculture & -1.185 (0.68) & -1.241 (0.66)   & .107$^{\dagger}$ &  I(1)\\
-%\\                        &                         & Industry    & 2.310 (0.99) & 2.556 (0.99) & .113$^{\dagger}$ &  I(1)\\[.2em]\cline{3-7}
-%\\                        & \multirow{2}{*}{Post} & Agriculture & 4.557 (1.00) & 5.40 (1.00)    & .289 &  I(1)\\
-%\\                        &                         & Industry    & 0.908 (0.99) & 1.458 (0.99) & .249 &  I(1)\\ [.2em]\cline{3-7}                     
-%\\                        & \multirow{2}{*}{All}  & Agriculture & 5.521 (1.00) & 6.722 (1.00)   & .31  &  I(1)\\
-%\\                        &                         & Industry    & 1.582 (0.99) & 2.305 (0.99) & .314 &  I(1)\\[.2em]
-%\bottomrule
-%\end{tabular}
-%\end{tiny}
-%\caption{{\bf Unit Root Tests for Agricultural and Industrial Growth}.}
-%\label{unit:root:tests}
-%\end{center}
-%\end{table}
-%}
-%\clearpage
 
 
 \end{document}
