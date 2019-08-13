@@ -138,11 +138,6 @@ read_chunk('/Users/hectorbahamonde/RU/Dissertation/Papers/IncomeTaxAdoption/Inco
 
 @
 
-<<results:2:data, echo=FALSE, comment=NA, warning=FALSE, message=F, results='hide', cache=FALSE, eval=TRUE>>=
-
-@
-
-
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \clearpage
@@ -327,17 +322,26 @@ The theory should pass two tests. First, the implementation of the income tax sh
 
 
 \subsection{Income Tax Adoption: Latin America}
-
-Sectoral conflict was proxied by measuring industrial and agricultural sectoral growth rates, as presented in the  \href{http://moxlad-staging.herokuapp.com/home/en?}{MOxLAD} data.\footnote{Particularly, the \emph{agriculture value-added} and \emph{manufacturing value-added} variables. Both are expressed in local currency at 1970 constant prices.} The dataset spans from 1900 to potentially 2010.\footnote{Since countries are ``censored'' once they implement the income tax law, they leave the sample (potentially) before 2010. According to \textcite[790]{Astorga2005}, these data provide extended comparable sectoral value-added series in constant purchasing power parity prices. These data, and similar strategies, have been employed before (see \cite{Thies2005a})}. Since the idea is to capture the contribution of each individual sector, sectoral growths rates were not combined. 
-
-Using secondary information, \autoref{sample:data:income:tax:tab}\todo{complete table} states when the income tax was implemented. \autoref{fig:incometax} shows both sectoral outputs (independent variables), and the year when the income tax law was passed (dependent variable). Since population has been associated with the probability elites expand the franchise---and consequently the tax base, \text[892-893]{Engerman2005}---the total country-year population as a control variable was included.
-
+This section seeks to establish an empirical connection between sectoral conflict and the implementation of the income tax. All countries began as agricultural economies. Thus, sectoral conflict was proxied by measuring industrial development relative to agricultural sectoral growth rates, as presented in the  \href{http://moxlad-staging.herokuapp.com/home/en?}{MOxLAD} data.\footnote{Particularly, the \emph{agriculture value-added} and \emph{manufacturing value-added} variables. Both are expressed in local currency at 1970 constant prices.} The dataset spans from 1900 to potentially 2010.\footnote{Since countries are ``censored'' once they implement the income tax law, they leave the sample (potentially) before 2010. According to \textcite[790]{Astorga2005}, these data provide extended comparable sectoral value-added series in constant purchasing power parity prices. These data, and similar strategies, have been employed before (see \cite{Thies2005a})} Since the idea is to capture the contribution of each individual sector, sectoral growths rates were not combined. 
 
 % sectoral outputs plot
+
+
 \afterpage{
 <<incometax, echo = FALSE, fig.pos='H', warning = FALSE, message = F, fig.cap=outputstitle, fig.align='center', fig.width=13, fig.height=12,dpi=1000,cache = FALSE>>=
 
 @
+
+}
+
+Using secondary information, \autoref{sample:data:income:tax:tab} \todo{complete table} states when the income tax was implemented. \autoref{fig:incometax} shows both sectoral outputs (independent variables), and the year when the income tax law was passed (dependent variable). Since population has been associated with the probability elites expand the franchise---and consequently the tax base, \textcite[892-893]{Engerman2005}---the total country-year population as a control variable was included.
+
+
+\afterpage{
+ <<results:1:table, echo=FALSE, comment=NA, warning=FALSE, message=F, results='asis', cache=FALSE>>=
+
+@
+
 }
 
 
@@ -354,49 +358,53 @@ where $\pi$ is the logit link function, and $\Phi$ is as scale parameter (i.e. t
 
 
 
+Generalized estimating equations were introduced by \textcite{Liang1986} to fit clustered, correlated, and panel data \autocite[322]{Zorn2006}. This method is especially well suited to analyze binary data \parencite{Hanley2003a}.\footnote{GEE methods require analysts to parameterize the working correlation matrix. Though GEE are robust to misspecified  correlation structures (\textcite[139]{Hedeker2006}, \textcite[]{Westgate2017a}, \textcite[227]{Gardiner2009}, \textcite[402]{Carlin2001}).  \textcite[338]{Zorn2006} explains that whereas the choice of estimator makes little or no difference, the unit on which the data are grouped makes a big difference. Hence, following \textcite[166]{Hardin2013} the ``independence'' working covariance structure was used, which also corrects for small-sized panel designs.} 
 
-<<results:1:table, echo=FALSE, comment=NA, warning=FALSE, message=F, results='asis', cache=FALSE>>=
+  
 
-@
-
-
-% here
-Generalized estimating equations were introduced by \textcite{Liang1986} to fit clustered, repeated/correlated, and panel data \autocite[322]{Zorn2006}. This method is especially well suited to analyze binary data \parencite{Hanley2003a}, something particularly useful given the nature of the dependent variable (e.g. whether a polity has implemented the income tax or not). GEE methods require analysts to parameterize the working correlation matrix. Though \textcite[139]{Hedeker2006} explain that ``the GEE is robust to misspecification of the correlation structure,''\footnote{\textcite[402]{Carlin2001} argue that ``[r]elatively minor differences in estimates may arise depending on how the estimating equations are weighted, in particular within the generalized estimating equation (GEE) framework.'' \textcite[]{Westgate2017a} and \textcite[227]{Gardiner2009} make the same point.} \textcite[338]{Zorn2006} explains that whereas the choice of estimator makes little or no difference, the unit on which the data are grouped makes a big difference. Hence, following the advice of \textcite[166]{Hardin2013}, who point out that when ``the observations are clustered (not collected over time) [...] the exchangeable correlation structure'' should be used, I assume an ``independence'' working covariance structure, which also corrects for small-sized panel designs.\footnote{\textcite[166]{Hardin2013} explains that if ``the number of panels is small, then the independence model may be the best; but [analysts should] calculate the sandwich estimate of variance for use with hypothesis tests and interpretation of coefficient,'' which is what I report in \autoref{results:1}.} Substantively, GEE models provide an estimated marginal mean, or the \emph{weighted average} of all cluster-specific effects (or conditional means). Model 3 is a conditional logit model (``fixed effects'').\footnote{More formally,
+Substantively, GEE models provide an estimated marginal mean, or the \emph{weighted average} of all cluster-specific effects (or conditional means). Model 3 is a conditional logit model (``fixed effects'').\footnote{More formally,
 \begin{equation}\label{clogit:eq}
 \pi_{i,t}=\Phi(\beta_{0} + \beta_{1}\text{log(Industrial Growth$_{i,t}$)}+\beta_{2}\text{log(Agricultural Growth$_{i,t}$)}+\beta_{3}\text{log(Total Population$_{i,t}$)}+\alpha_{i})
 \end{equation}
-where $\alpha$ are the country fixed effects for all countries $i$.} One important advantage of this strategy is the ability to account for country-specific effects. For example, fiscal expansion could be a function of country-specific prior state-building capacities.\footnote{I thank Matthias vom Hau for this suggestion.} A number of scholars rightly argue that post-colonial state-capacities are in part a function of pre-colonial state-capacities (\cite[1416]{Wimmer2016}, \cite{Mahoney:2010aa}, \cite[1426]{Lange2006}). Fixed-effects should be able to account for these and other unobserved or hard-to-measure covariates, which if left unaccounted for, would introduce omitted variable biases \parencite{Angrist:2008fk}. \autoref{results:2} in the Online Appendix section shows other models, including one with a different transformation to capture different shapes of the baseline hazard, and another one to account for possible spatial dependency. The results do not vary. All models suggest that the rise of a strong industrial sector largely accelerates the implementation of the income tax law. Moreover, a strong agricultural sector not only has zero impact on fiscal development, but a negative one. 
+where $\alpha$ are the country fixed effects for all countries $i$.} One important advantage of this strategy is the ability to account for country-specific effects. For example, fiscal expansion could be a function of country-specific prior state-building capacities.\footnote{I thank Matthias vom Hau for this suggestion.} A number of scholars rightly argue that post-colonial state-capacities are in part a function of pre-colonial state-capacities (\cite[1416]{Wimmer2016}, \cite{Mahoney:2010aa}, \cite[1426]{Lange2006}). Fixed-effects should be able to account for these and other unobserved or hard-to-measure covariates, which if left unaccounted for, would introduce omitted variable biases \parencite{Angrist:2008fk}. 
 
 
 
-% simulation plot // don't move this one here, since I am loading in-text R information into the next paragraph.
 <<simulation, echo=FALSE, comment=NA, warning=FALSE, message=F,results='asis', cache=FALSE>>=
 
 @
 
-
-
-<<simulation:plots, echo = FALSE, fig.pos='H', warning = FALSE, message = F, fig.cap=simtitle, fig.align='center', fig.width=7, fig.height=3,dpi=10000,cache = FALSE>>=
+\afterpage{
+<<simulation:plots, echo = FALSE, fig.pos='h', warning = FALSE, message = F, fig.cap=simtitle, fig.align='center', fig.width=7, fig.height=3,dpi=10000,cache = FALSE>>=
 
 @
 
-
-
+}
 
 % substantiative interpretation // comments on the simulation
-%Using the estimations from Model 1, I follow \textcite{Gandrud2015} and \textcite{King2000}, and in \autoref{fig:simulation:plots}, simulate \Sexpr{format(nsim,big.mark=",",scientific=FALSE)} times the \Sexpr{tolower(qi)} of implementing the income tax law, conditional on industrial and agricultural growth rates.\footnote{\textcite[15]{Box-Steffensmeier2004} explain that the \Sexpr{tolower(qi)} is the most common quantity of interest analysts focus on. \autoref{fig:simulation:plots} shows \Sexpr{ci*100}\% confidence intervals.} While the outcome of interest does \emph{not} depend \emph{directly} on time (\autoref{fig:survival:plot}), sectoral outputs do grow in time (\autoref{fig:incometax}).\footnote{The economics literature refers to these kinds of time series ``integrated'' or I(1) processes.} Consequently, it will be necessary to account for this tendency by allowing estimations to vary with time as well. Since the \Sexpr{tolower(qi)} ``is the probability that a case will fail at time $t$'' \parencite[231]{Licht2011}, I take advantage of this quantity of interest which allows some dependency on both time, \emph{and} the covariates \parencite[15]{Box-Steffensmeier2004}. \autoref{fig:simulation:plots} strongly suggests that the faster the agricultural sector develops, the less likely the implementation of the income tax. This relationship does not change at later stages of development, suggesting that polities with a strong agricultural elite are not associated with fiscal development. However, rapid industrial development is associated with an earlier implementation of the income tax law. 
+All models suggest that the rise of a strong industrial sector largely accelerates the implementation of the income tax law. Moreover, a strong agricultural sector not only has zero impact on fiscal development, but a negative one. Using the estimations from Model 1, I follow \textcite{Gandrud2015} and \textcite{King2000}, and in \autoref{fig:simulation:plots}, simulate \Sexpr{format(nsim,big.mark=",",scientific=FALSE)} times the \Sexpr{tolower(qi)} of implementing the income tax law, conditional on industrial and agricultural growth rates.\footnote{\textcite[15]{Box-Steffensmeier2004} explain that the \Sexpr{tolower(qi)} is the most common quantity of interest analysts focus on. \autoref{fig:simulation:plots} shows \Sexpr{ci*100}\% confidence intervals.} Since the \Sexpr{tolower(qi)} ``is the probability that a case will fail at time $t$'' \parencite[231]{Licht2011}, I take advantage of this quantity of interest which allows some dependency on both time \emph{and} the covariates \parencite[15]{Box-Steffensmeier2004}. \autoref{fig:simulation:plots} strongly suggests that the faster the agricultural sector develops, the less likely the implementation of the income tax. This relationship does not change at later stages of development, suggesting that polities with a strong agricultural elite are not associated with fiscal development. However, rapid industrial development is associated with an earlier implementation of the income tax law. 
+
+
+
 
 
 \subsection{Positive Spillover Effects of Income Taxation: Chile}
 
+Fiscal sociologists, mostly focusing on the continental cases, have for a long time claimed that the capacity of taxing individuals' incomes fosters overall state capacity. Unfortunately, there are no attempts to study this relationship for the Latin American cases. The results presented in this paper find support for this claim. 
 
-\subsection{Data and Statistical Model}
+Previous section suggests a strong relationship between levels of sectoral conflict and the implementation of the income tax law in most Latin American countries. The stronger the industrial sector, the sooner the tax is implemented. This section seeks to establish an empirical link between the implementation of the tax, and higher levels of state development. Due to data availability, this section focuses on Chile only. 
+
+
+
+
+%\subsection{Data and Statistical Model}
 
 % explain dataset: 
 I constructed a novel hand-collected longitudinal dataset using the \emph{Significant Earthquake Database} compiled by the National Centers for Environmental Information (NOAA) as a starting point \parencite[]{noaa2015}. The dataset ``contains information on destructive earthquakes from 2150 B.C. to the present,'' such as magnitude, date, latitude, longitude, number of deaths, among other variables. Tsunami casualties were excluded. Additionally, since ``most of the damage in major earthquakes occurs within 30 km of the epicenter'' \parencite[172]{Dunbar2003}, earthquakes that did not happen on land were not dropped. While the epicenter might have been a few miles away from the shore, the consequences certainly reached the land. 
 
 % explain dataset: 
 Using archival census data from 1907 to 2012,\footnote{Particularly, censuses of 1907, 1920, 1930, 1940, 1952, 1960, 1970, 1982, 1992, 2002 and 2012. Some of them were kept at the \emph{Biblioteca Nacional} and others at the \emph{National Statistic Institute} historical library.} the NOAA dataset was complemented with local population measures at the municipal level where the quake hit. The local population was used to weight the death toll.\footnote{Around 90\% of the time it was possible to recover the actual local population. For the rest, the population of the most concentrated area nearby was recovered. Consequently, population is used as a control, not to weight the dependent variable directly.} Adding archival census data, I coded the main economic activity of the affected municipality\footnote{This variable was constructed by coding press and official sources (mainly censuses) of the main economic sector at the local level: \text{$\Sexpr{levels(factor(dat$Sector))[1]}$} (n=$\Sexpr{as.character(table(factor(dat$Sector))[1])}$), \text{$\Sexpr{levels(factor(dat$Sector))[2]}$} (n=$\Sexpr{as.character(table(factor(dat$Sector))[2])}$), \text{$\Sexpr{levels(factor(dat$Sector))[3]}$} (n=$\Sexpr{as.character(table(factor(dat$Sector))[3])}$).} and whether the municipality was urban or rural.\footnote{Urban=$\Sexpr{table(dat$Urban[dat$Urban==1])}$, rural=$\Sexpr{table(dat$Urban[dat$Urban==0])}$. If more than 50\% of the population lived in an urban setting, I assigned a 1 to that municipality, 0 otherwise. Urban concentrations are most likely to have vertical constructions rather than one-story buildings, increasing the potential number of casualties. Consequently, it is important to control for this source of variation. I thank Daniel Kelemen for this suggestion.} The death-tolls and magnitudes proportionated by the NOAA dataset were contrasted case by case with historical press archival information.\footnote{\emph{El Mercurio} and \emph{La Naci\'on} newspapers, both kept at the \emph{Archivo Nacional} of the \emph{Biblioteca Nacional de Chile}.} Magnitudes, in particular, were also compared with the \href{http://www.isc.ac.uk/iscbulletin/search/bulletin/}{International Seismological Centre}. 
+
 
 % earthquake:ts:plot:chile:plot
 <<earthquake:ts:plot:chile:plot, echo = FALSE, fig.pos='H', warning = FALSE, message = FALSE,fig.cap=time.series.plot.note, fig.align='center', fig.width=6,fig.height=3,dpi=30000,cache = FALSE,eval=TRUE>>=
@@ -408,9 +416,12 @@ Using archival census data from 1907 to 2012,\footnote{Particularly, censuses of
 
 
 % earthquake:map:plot:chile
-<<earthquake:map:plot:chile, echo = FALSE, fig.pos='H', warning = FALSE, message = FALSE,fig.cap=earthquake.map.note.chile, fig.align='center', fig.width=12,fig.height=12,dpi=30000,cache = FALSE,eval=TRUE>>=
+ \afterpage{
+  <<earthquake:map:plot:chile, echo = FALSE, fig.pos='H', warning = FALSE, message = FALSE,fig.cap=earthquake.map.note.chile, fig.align='center', fig.width=12,fig.height=12,dpi=30000,cache = FALSE,eval=TRUE>>=
+ 
+ @
 
-@
+ }
 
 
 
@@ -418,11 +429,8 @@ Using archival census data from 1907 to 2012,\footnote{Particularly, censuses of
 Following conventional wisdom, the unit of analysis is the earthquake \parencite[273]{Kahn2005}. As an event, each earthquake is associated with a death toll, a location, a magnitude, a local population, and an urban/rural setting. Following statistical convention, a count model was used to test the effect of implementing the income tax law on earthquake death tolls over time (\textcite[1907]{Anbarci2005}, \textcite[276]{Kahn2005}, \textcite[729]{Brancati2007}, \textcite{Escaleras2007}), specifically a Bayesian Poisson regression was employed.
 
 % main QI
-The main quantity of interest is an interaction term---$\beta_{3}$ in \autoref{model:2}---between earthquake magnitude and a binary variable that denotes whether the income tax had been implemented at the time of the event. The idea is to inspect whether the baseline propensity of the earthquake's magnitude of increasing the death toll is modified when combined with the introduction of the income tax. The null hypothesis is that the income tax does not alter this baseline propensity. The alternative, however, is that introducing the income tax decreases (increases) the propensity. 
-
-% fixed effects
-Following standard convention, the model includes year fixed-effects to account for time-varying confounding factors and for unmeasured yearly sources of variation \parencite[729]{Brancati2007}. For instance, fiscal development is also a function of country-specific prior state capacity, and technological changes (advances in construction, for example) should diminish death tolls.\footnote{I thank Hillel Soifer for this suggestion.} Fixed-effects should be able to account for these and other unmeasured yearly factors.
- 
+The main quantity of interest is an interaction term---$\beta_{3}$ in \autoref{model:2}---between earthquake magnitude and a binary variable that denotes whether the income tax had been implemented at the time of the event. The idea is to inspect whether the baseline propensity of the earthquake's magnitude of increasing the death toll is modified when combined with the introduction of the income tax. The null hypothesis is that the income tax does not alter this baseline propensity. The alternative, however, is that introducing the income tax decreases (increases) the propensity.
+\footnote{While the main model does not include year fixed effects (due to multicollinearity issues), another model (not shown) including year fixed effects was fitted. The results are the same. The advantages of the fixed effects model is that it accounts for country-specific prior state capacity levels and other unmeasured yearly factors. I thank Hillel Soifer for this suggestion.}
 
 
 % other covariates 1
@@ -447,15 +455,10 @@ where
 \begin{equation*} \label{indexes:2}
 \begin{split}
 i_{1,...I} & \; \text{and} \; \text{I}=\Sexpr{as.numeric(jags.data.tax$N)} \; \text{events};\\
-k_{1,...K} & \; \text{and} \; \text{K}=\Sexpr{as.numeric(jags.data.tax$NSector)} \; \text{sectors};\\
-t_{1,...T} & \; \text{and} \; \text{T}=\Sexpr{as.numeric(jags.data.tax$yearN)} \; \text{years}.\\
+k_{1,...K} & \; \text{and} \; \text{K}=\Sexpr{as.numeric(jags.data.tax$NSector)} \; \text{sectors}.\\
+%t_{1,...T} & \; \text{and} \; \text{T}=\Sexpr{as.numeric(jags.data.tax$yearN)} \; \text{years}.\\
 \end{split}
 \end{equation*}
-
-\subsection{Spillover Effects of Income Taxation on State Capacity}
-
-% bajada substantiva
-Fiscal sociologists, mostly focusing on the continental cases, have for a long time claimed that the capacity of taxing individuals' incomes fosters overall state capacity. Unfortunately, there are no attempts to study this relationship for the Latin American cases. The results presented in this paper find support for this claim. 
 
 
 % income:tax:model:regression:table:run
@@ -466,9 +469,9 @@ Fiscal sociologists, mostly focusing on the continental cases, have for a long t
 
 % methodological problems
 While \autoref{income:tax:model:regression:table:run} shows the estimated results, the coefficient of the interaction term (i.e. $\beta_{3}$) remains uninterpretable from a substantive standpoint \parencite[74]{Brambor2006}. The problem becomes more complex when it comes to generalized models (such as Poisson models), as a number of challenges arise. In an important paper, \textcite{Ai2003} explain that the interaction effect could be nonzero, even when the coefficient says it is zero; the statistical significance of the interaction effect cannot be tested with a simple t-test on the coefficient of the interaction term; the interaction effect is conditional on the independent variables; and that the interaction effect may have different signs for different values of covariates. In addition to all these challenges, and given that cross-partial derivatives are also not advisable, simulation methods are required \parencite[]{WilliamJ.Wales2013,King2000}. This procedure samples via simulation from the point estimates, generating a new and larger distribution. That is, taking the single estimated parameters (i.e. the regression coefficients), a new distribution of estimated values for each coefficient is constructed. Relying on the central limit theorem, the new simulated distribution is a transformation that approximates with a great degree of precision the (uninterpretable) coefficients with enough sampling draws. Subsequently, means and uncertainty measures can be constructed for each of these distributions. 
-\Sexpr{format(round(as.numeric(n.burnin.tax), 0), nsmall=0, big.mark=",")}
+
 % methodological solution
-Fortunately, Bayesian methods have embedded a systematic and intuitive framework to solve these challenges. In particular, for every coefficient, I estimated \Sexpr{numbers2words(n.chains.tax)} \Sexpr{chain.chains.word} with \Sexpr{format(round(as.numeric(n.iter.tax), 0), nsmall=0, big.mark=",")} \Sexpr{iteration.iterations.word} per chain. Considering the Monte Carlo Markov Chain properties, the first \Sexpr{format(round(as.numeric(n.burnin.tax), 0), nsmall=0, big.mark=",")} iterations of every chain were discarded. Following \parencite[]{Brambor2006}, \autoref{fig:income:tax:model:plot:run} shows the conditional effect of earthquake magnitudes on implementing the income tax.\footnote{Based on \autoref{model:2}, the simulated matrix was constructed following the routine described above, iterating over the next generalized equation: $\beta_{1}+\beta_{3}\times\text{Income Tax}_{i}$.} 
+Fortunately, Bayesian methods have embedded a systematic and intuitive framework to solve these challenges. In particular, for every coefficient, I estimated \Sexpr{numbers2words(n.chains.tax)} \Sexpr{chain.chains.word} with \Sexpr{format(round(as.numeric(n.iter.tax), 0), nsmall=0, big.mark=",")} \Sexpr{iteration.iterations.word} per chain. Considering the Monte Carlo Markov Chain properties, the first \Sexpr{format(round(as.numeric(n.burnin.tax), 0), nsmall=0, big.mark=",")} iterations of every chain were discarded. Following \textcite[]{Brambor2006}, \autoref{fig:income:tax:model:plot:run} shows the conditional effect of earthquake magnitudes on implementing the income tax.\footnote{Based on \autoref{model:2}, the simulated matrix was constructed following the routine described above, iterating over the next generalized equation: $\beta_{1}+\beta_{3}\times\text{Income Tax}_{i}$.} 
 
 
 % income:tax:model:plot:run
@@ -478,15 +481,15 @@ Fortunately, Bayesian methods have embedded a systematic and intuitive framework
 
 
 % substantively
-Substantively, \autoref{fig:income:tax:model:plot:run} shows that the death toll systematically \emph{decreases} over time---i.e. levels of state capacity systematically increase over time---\emph{once the income tax law is implemented}. Particularly, by implementing the income tax, the baseline propensity of an earthquake increasing the death toll decreases from an estimated over time average of $\Sexpr{numbers2words(death.toll.before.tax)}$ to an estimated over time average of $\Sexpr{numbers2words(death.toll.after.tax)}$. Importantly, the fixed-effects approach makes these results robust to considerations of progressive national and local economic/political development. By absorbing yearly sources of variation, \autoref{model:2} is capable of controlling for unobserved heterogeneous factors that might have an impact on the dependent variable (\autoref{fig:year:fixed:effects:plot:plot} shows the estimated year fixed-effects).
+Substantively, \autoref{fig:income:tax:model:plot:run} shows that the death toll systematically \emph{decreases} over time---i.e. levels of state capacity systematically increase over time---\emph{once the income tax law is implemented}. Particularly, by implementing the income tax, the baseline propensity of an earthquake increasing the death toll decreases from an estimated over time average of $\Sexpr{numbers2words(death.toll.before.tax)}$ to an estimated over time average of $\Sexpr{numbers2words(death.toll.after.tax)}$. %Importantly, the fixed-effects approach makes these results robust to considerations of progressive national and local economic/political development. By absorbing yearly sources of variation, \autoref{model:2} is capable of controlling for unobserved heterogeneous factors that might have an impact on the dependent variable (\autoref{fig:year:fixed:effects:plot:plot} shows the estimated year fixed-effects).
 
 
-
-\subsection{Alternative Explanations}
 
 
 % geographical self-selection
-\paragraph{Sectors might self-select into more/less earthquake-prone areas.}As argued before, a potential issue might be that sectors self-select into more/less earthquake-prone geographical locations. For instance, it might be argued that agricultural areas, being mostly rural, might have lower constructions and less populated areas, potentially having lower earthquake death tolls. Industrialists, in turn, being a more urban-oriented sector, might have highly populated municipalities and higher constructions (edifices), potentially showing higher death tolls. 
+%\paragraph{Sectors might self-select into more/less earthquake-prone areas.}
+
+As argued before, a potential issue might be that sectors self-select into more/less earthquake-prone geographical locations. For instance, it might be argued that agricultural areas, being mostly rural, might have lower constructions and less populated areas, potentially having lower earthquake death tolls. Industrialists, in turn, being a more urban-oriented sector, might have highly populated municipalities and higher constructions (edifices), potentially showing higher death tolls. 
 
 
 
@@ -500,11 +503,11 @@ To rule out this possibility, $\beta_{7,k}$ in \autoref{model:2} has a hierarchi
 
 
 % sectoral unity
-\paragraph{Blurry distinction between the two sectors.} Finally, it could be argued that the idea of sectoral conflict is overstated and that they were not conflicting sectors. 
+%\paragraph{Blurry distinction between the two sectors.} 
 
-%Some historians claim that there was just one economic and political elite, invested in both sectors. Since landowners also invested in industry (\textcite[57, 95]{Kirsch:1977aa}, \textcite[]{Bauer:2008kx}, \textcite[23]{Coatsworth2002}), it could be argued that there was a blurry class division between the industrial and agricultural sectors \parencite[30, 44, 94, 108]{Bauer:2008kx}. Perhaps the most cited reference regarding this issue is \textcite[231-247]{Veliz1963}. 
+Finally, it could be argued that the idea of sectoral conflict is overstated and that they were not conflicting sectors. Some historians claim that there was just one economic and political elite, invested in both sectors. Since landowners also invested in industry (\textcite[57, 95]{Kirsch:1977aa}, \textcite[]{Bauer:2008kx}, \textcite[23]{Coatsworth2002}), it could be argued that there was a blurry class division between the industrial and agricultural sectors \parencite[30, 44, 94, 108]{Bauer:2008kx}. Perhaps the most cited reference regarding this issue is \textcite[231-247]{Veliz1963}. 
 
-However, there are a number of stylized facts that strongly suggest that there was indeed a structural cleavage between the two sectors. For example, it was common that industrialists invested in real estate, yet, in many instances, they did so \emph{just} to obtain credit. \textcite[59]{Kirsch:1977aa} explains that ``in a \emph{rural society} land offered one of the best guarantees for loans [since] loans could not be secured by equipment, machinery, or inventory. Only real estate was acceptable collateral.''\footnote{My emphases.} In fact, this practice shows how the credit system was oriented to give an unfair advantage to the landed elites. \textcite[9]{UndaGutierrez2017}, for instance, explains that in Mexico, industrial elites complied with the income tax in exchange for having a credit system more adequate for them. Similarly, \textcite[174]{Zeitlin:1984aa} finds ``the combined ownership of capital and landed property was a distinctive quality of \emph{certain} [elites] actors,''\footnote{My emphasis.} not \emph{all} their members. There were also other instances where miners invested in banking, yet, \textcite{Segall1953} argues that Chilean bankers, after the crisis of the mining sector around the 1870s, had acquired a number of mineral deposits given as collateral years before. And finally, but for the Argentinean case, \textcite[609]{Hora2002} explains that ``the image of an entrepreneurial elite with assets \emph{scattered throughout several spheres of investment} does not appear entirely correct.''\footnote{My emphasis.}
+However, there are a number of stylized facts that strongly suggest that there was indeed a structural cleavage between the two sectors. For example, it was common that industrialists invested in real estate, yet, in many instances, they did so \emph{just} to obtain credit. \textcite[59]{Kirsch:1977aa} explains that ``in a \emph{rural society} land offered one of the best guarantees for loans [since] loans could not be secured by equipment, machinery, or inventory. Only real estate was acceptable collateral.''\footnote{My emphases.} In fact, this practice shows how the credit system was oriented to give an unfair advantage to the landed elites. \textcite[9]{UndaGutierrez2017}, for instance, explains that in Mexico, industrial elites complied with the income tax in exchange for having a credit system more adequate for them. Similarly, \textcite[174]{Zeitlin:1984aa} finds ``the combined ownership of capital and landed property was a distinctive quality of \emph{certain} [elites] actors,''\footnote{My emphasis.} not \emph{all} their members. There were also other instances where miners invested in banking, yet, \textcite{Segall1953} argues that Chilean bankers, after the crisis of the mining sector around the 1870s, had acquired a number of mineral deposits given as collateral years before. And finally, but for the Argentinean case, \textcite[609]{Hora2002} explains that ``the image of an entrepreneurial elite with assets scattered throughout several spheres of investment does not appear entirely correct.''
 
 
 
@@ -713,7 +716,7 @@ The paper sketched an argument about how higher levels of sectoral contestation 
 
 The empirical analyses showed that earthquake death tolls decrease (i.e. state capacity increases) after the income tax law is implemented and that the emergence of the industrial sector accelerated the implementation of the income tax. % Additional analyses also suggest that there was a structural, sectoral cleavage rather than a blurred elite separation. 
 
-Enforcing quake-sensitive building codes embodies the most basic form of social contract that exists between the state and its subjects. Earthquake damage poses a major threat to commercial, official, and residential buildings, potentially triggering higher levels of looting and social unrest. Any kind of political leader should be interested in preventing looting and social unrest. Leaders not only care about their own survival but also about the legitimacy of the state. In the event of heavy social unrest, not only is the essential social Hobbesian-like contract broken, but the expectations of social peace are also questioned \parencite[419]{Carlin2014a}. The physical presence of the state literally \emph{crumbles} when institutions of social coercion and discipline, such as state schools, prisons, and police stations, collapse. For example, when the magnitude 7.0 earthquake hit Haiti in 2010, the \emph{Prison Civile de Port-au-Prince} had a population of 4,500 inmates. During the quake, five inmates died. As a prison guard describes it, ``everyone escaped. Everyone. Except the dead.'' This natural disaster exacerbated the already existent chaos, freeing ``gang bosses, kidnappers, gunmen,'' among others \parencite{Reed:2011,Laursen2010}, reducing the legitimacy of the state to zero.
+Enforcing quake-sensitive building codes embodies the most basic form of social contract that exists between the state and its subjects. Earthquake damage poses a major threat to commercial, official, and residential buildings, potentially triggering higher levels of looting and social unrest. Any kind of political leader should be interested in preventing looting and social unrest. Leaders not only care about their own survival but also about the legitimacy of the state. In the event of heavy social unrest, not only is the essential social Hobbesian-like contract broken, but the expectations of social peace are also questioned \parencite[419]{Carlin2014a}. The physical presence of the state literally crumbles when institutions of social coercion and discipline, such as state schools, prisons, and police stations, collapse. For example, when the magnitude 7.0 earthquake hit Haiti in 2010, the \emph{Prison Civile de Port-au-Prince} had a population of 4,500 inmates. During the quake, five inmates died. As a prison guard describes it, ``everyone escaped. Everyone. Except the dead.'' This natural disaster exacerbated the already existent chaos, freeing ``gang bosses, kidnappers, gunmen,'' among others \parencite{Reed:2011,Laursen2010}, reducing the legitimacy of the state to zero.
 
 
 Finally, income taxation did even more than just trigger other state capacities. Via a process of assimilation, it also helped in constructing the figure of the citizen, centered on the concept of the taxpayer. Regardless of an individual's race, religion, culture, or any other kind of status, the state classifies its subjects according to their incomes and obliges them to pay, punishing whoever refuses to do so. From a sociological standpoint, this ``generality makes taxation a crucial element in the development of the ``imagined community'' \parencite[]{Anderson2006a}, of the modern nation-state [...] Taxation enmeshes us in the web of generalized reciprocity that constitutes modern society'' (Martin et al., in \cite[3]{Martin2009a}).
@@ -797,7 +800,7 @@ count <- comma(as.numeric(count)) # add comma
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\newpage
+% \newpage
 %% define text warpping in table
 \newcolumntype{C}{>{\centering\arraybackslash}m{3cm}}
 
@@ -847,14 +850,6 @@ count <- comma(as.numeric(count)) # add comma
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
-
-\newpage
-<<predicted:observed:plot:plot, echo = FALSE, fig.pos='h', warning = FALSE, message = F, fig.cap=predicted.observed.plot.note, fig.align='center', fig.width=8, fig.height=3,dpi=30000,cache = FALSE,eval=TRUE>>=
-
-@
-\clearpage
-
 
 
 

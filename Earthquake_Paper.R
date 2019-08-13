@@ -1200,9 +1200,9 @@ income.tax.model.plot = ggplot(int.sim, aes(x=x, fill= Income.Tax, y=..scaled..)
 ## ---- income:tax:model:plot:run ----
 income.tax.model.plot
 income.tax.model.plot.note <- paste(
-  "{\\bf Conditional Effects of Earthquake Magnitudes on Implementing the Income Tax Over Time}.",
+  "{\\bf Conditional Effects of Earthquake Magnitudes on Implementing the Income Tax Over Time in Chile}.",
   "\\\\\\hspace{\\textwidth}",
-  paste("{\\bf Note}: Using the estimations from \\autoref{income:tax:model:regression:table:run} (\\autoref{model:2}), and following the advice of \\textcite{Brambor2006}, the figure shows the conditional effect of earthquake magnitudes on implementing the income tax in 1924 ($\\beta_{1}+\\beta_{3}\\times\\text{Income Tax}_{i}$). Particularly, by implementing the income tax, the baseline propensity of the earthquake's magnitude of increasing the death toll \\emph{decreases} from an estimated overtime average of", numbers2words(death.toll.before.tax), "to an estimated overtime average of", numbers2words(death.toll.after.tax), "\\unskip. Hence, the figure suggests that implementing the income tax law had positive effects on state capacity over time.", "Both distributions were computed via a MCMC routine, particularly the iteration of", numbers2words(n.chains.tax), "chains", "with", format(round(as.numeric(n.iter.tax), 0), nsmall=0, big.mark=","), "iterations per chain. Considering the Monte Carlo Markov Chain properties, the first", format(round(as.numeric(n.burnin.tax), 0), nsmall=0, big.mark=","), "observations of every chain were discarded.")
+  paste("{\\bf Note}: Using the estimations from \\autoref{income:tax:model:regression:table:run} (\\autoref{model:2}), and following the advice of \\textcite{Brambor2006}, the figure shows the conditional effect of earthquake magnitudes on implementing the income tax in Chile in 1924 ($\\beta_{1}+\\beta_{3}\\times\\text{Income Tax}_{i}$). Particularly, by implementing the income tax, the baseline propensity of the earthquake's magnitude of increasing the death toll \\emph{decreases} from an estimated overtime average of", numbers2words(death.toll.before.tax), "to an estimated overtime average of", numbers2words(death.toll.after.tax), "\\unskip. Hence, the figure suggests that implementing the income tax law had positive effects on state capacity over time.", "Both distributions were computed via a MCMC routine, particularly the iteration of", numbers2words(n.chains.tax), "chains", "with", format(round(as.numeric(n.iter.tax), 0), nsmall=0, big.mark=","), "iterations per chain. Considering the Monte Carlo Markov Chain properties, the first", format(round(as.numeric(n.burnin.tax), 0), nsmall=0, big.mark=","), "observations of every chain were discarded.")
   )
 ## ----
 
@@ -1312,13 +1312,13 @@ if (!require("pacman")) install.packages("pacman"); library(pacman)
 p_load(xtable)
 
 note.tax <- paste0(
-  "\\hline \n \\multicolumn{6}{l}", "{ \\scriptsize {\\bf Note}: ", format(round(as.numeric(n.iter.tax), 0), nsmall=0, big.mark=","), " iterations with a burn-in period of n = ", format(round(as.numeric(n.burnin.tax), 0), nsmall=0, big.mark=",") , " iterations discarded.}\\\\", "\n \\multicolumn{6}{l}", "{ \\scriptsize ", ci.number.tax*100 ,"\\% credible intervals (upper/lower bounds). All R-Hat statistics are below critical levels.}\\\\" ,"\n \\multicolumn{6}{l}", "{ \\scriptsize Standard convergence diagnostics suggest good mixing and convergence.}\\\\","\n \\multicolumn{6}{l}","{ \\scriptsize A total of ", numbers2words(n.chains.tax), " chains were run. \\autoref{fig:predicted:observed:plot:plot} shows that the model fits well the data.} \\\\")
+  "\\hline \n \\multicolumn{6}{l}", "{ \\scriptsize {\\bf Note}: ", format(round(as.numeric(n.iter.tax), 0), nsmall=0, big.mark=","), " iterations with a burn-in period of n = ", format(round(as.numeric(n.burnin.tax), 0), nsmall=0, big.mark=",") , " iterations discarded.}\\\\", "\n \\multicolumn{6}{l}", "{ \\scriptsize ", ci.number.tax*100 ,"\\% credible intervals (upper/lower bounds). All R-Hat statistics are below critical levels.}\\\\" ,"\n \\multicolumn{6}{l}", "{ \\scriptsize Standard convergence diagnostics suggest good mixing and convergence.}\\\\","\n \\multicolumn{6}{l}","{ \\scriptsize A total of ", numbers2words(n.chains.tax), " chains were run.} \\\\")
 ## ----
 
 ## ---- income:tax:model:regression:table:run ----
 print.xtable(xtable(
   reg.results.table.tax, 
-  caption = "{\\bf Income Tax Adoption Model: Simulated Posterior Predictions (Poisson Regression, \\autoref{model:2})}.",
+  caption = "{\\bf The Spillover Effects of Income Taxation in Chile: Simulated Posterior Predictions (Poisson Regression, \\autoref{model:2})}.",
   label = "income:tax:model:regression:table:run"), 
   auto = TRUE,
   hline.after=c(-1, 0),
