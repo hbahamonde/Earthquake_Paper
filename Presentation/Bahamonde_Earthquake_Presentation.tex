@@ -201,7 +201,7 @@
 %	%	%	%	%	%	%	%	%	%	%	%	%	%	%
 
 \title{\href{https://github.com/hbahamonde/Earthquake_Paper/raw/master/Bahamonde_Earthquake_Paper.pdf}{\input{/Users/hectorbahamonde/RU/Dissertation/Papers/Earthquake_Paper/title.txt}\unskip}}
-\author{Hector Bahamonde $\bullet$ Assistant Professor $\bullet$ Universidad de O$'$Higgins}
+\author{H\'ector Bahamonde $\bullet$ Assistant Professor $\bullet$ O$'$Higgins University (Chile)}
 \date{\today}
 
 %to to see shadows of previous blocks
@@ -232,7 +232,7 @@
 \miniframeson
 \begin{frame}\frametitle{Theory}
   \begin{itemize}
-    \item Scholarly work has explored the positive influence of direct taxation on state development.
+    \item Others have explored the positive influence of direct taxation on state development.
     \item Unfortunately:
       \begin{enumerate}
         \item Most accounts focus on European cases.\pause
@@ -244,11 +244,8 @@
 \miniframesoff
 \begin{frame}\frametitle{Measurement}
 	\begin{itemize}
-    \item Most state formation theories put their emphasis on pre-colonial, early, or independent Latin America.
-    \item Unfortunately:
-      \begin{enumerate}
-        \item These theories lack of a measurement able to capture levels of state capacity \emph{overtime}.
-      \end{enumerate}
+    \item Most state formation theories put their emphasis on pre-colonial, early, or independent Latin America.\pause
+    \item Unfortunately, these theories lack of a measurement able to capture levels of state capacity \emph{overtime}.
 	\end{itemize}
 \end{frame}
 
@@ -317,7 +314,7 @@
 		
 		\begin{figure}[H]
 		\caption*{{\tiny {\color{black!30!green}{\bf 2010 Chile: 8.8M, 525 casualties}\\{\color{white}One of the {\bf few} buildings that actually collapsed}}}}
-		\hspace{-7mm}\frame{\includegraphics[scale=0.2]{/Users/hectorbahamonde/RU/Dissertation/Papers/Earthquake_Paper/Resources/alto_rio_quake}}
+		\hspace{-7mm}\frame{\includegraphics[scale=0.8]{/Users/hectorbahamonde/RU/Dissertation/Papers/Earthquake_Paper/Resources/la_moneda}}
 		\end{figure}
 	
 	\end{columns}
@@ -374,11 +371,11 @@
 	\begin{itemize}
 		
 
-    \item \emph{``Lewis model:''} Industrialists and agriculturalists are in permanent {\bf {\color{red}conflict}}.\pause\; I {\color{red}extrapolate this conflict to politics}:\pause
+    \item \emph{``Lewis model:''} Industrialists and agriculturalists are in permanent {\bf {\color{red} economic conflict}}.\pause\; I {\bf extrapolate this conflict to politics}:\pause
 
             \begin{itemize}
 
-                \item[] There are different {\color{red}sectoral preferences towards income taxation}, and consequently, {\bf state centralization}\pause:
+                \item[] There are different {\bf sectoral preferences towards income taxation}, and consequently, {\bf state centralization}\pause:
 
                  %\item Since taxation {\color{red}affects} landowners and industrialists in {\color{red}different} ways, both sectors have different preferences towards state centralization.\pause
 
@@ -414,14 +411,14 @@
 	\begin{itemize}
 		\item \emph{``Fiscal sociology:''} Income taxation offers a theory of state formation.\pause
 
-		\item Monitoring private incomes, and converting them into {\color{red}public property}, \emph{fosters} state development:\pause
+		\item Monitoring private incomes, and converting them into public property, \emph{fosters} state development:\pause
 
 			\begin{itemize}
-				\item  ``{\bf Learning-By-Doing}'': If states really want to {\color{red}{\bf tax}} its population, they \emph{will} develop---{\color{red}{\bf endogenously}}---the {\bf {\color{red}{\bf capacity}}} to do it.\pause
+				\item  ``{\bf Learning-By-Doing}'': If states want to {\color{red}{\bf tax}} its population, they \emph{will} develop---{\color{red}{\bf endogenously}}---the {\bf {\color{red}{\bf capacity}}} to do it.\pause
         \item ``{\bf Spillover Effects}'': Income taxation generated positive {\bf {\color{red}spillover effects}} for state-making, rising {\bf {\color{red}economies of scale}} of the {\bf {\color{red}operational efficiencies}} of the bureaucracy:\pause
                 \begin{itemize}
                   \item Income taxation represented the {\bf first layer of state-complexity}.
-                  \item {\bf Additional layers} (bureaucracies) was cheaper at the margin.
+                  \item {\bf Additional layers} (bureaucracies) cheaper at the margin.
                 \end{itemize}
 			\end{itemize}
 
@@ -627,10 +624,10 @@
 \miniframeson
 \subsection{Preliminaries}
 
-\begin{frame}\frametitle{The Theory Should Pass The Following Test}
+\begin{frame}\frametitle{The Theory Should Pass The Following Tests}
 	
 	\begin{itemize}
-		%\item[{\scriptsize Not here}] The income tax law should be {\bf implemented {\color{red}earlier}} under scenarios of {\color{red}\emph{high} sectoral contestation}.\\{\footnotesize [\emph{rapid} industrial expansion]} \hyperlink{cox}{\beamerbutton{Data/Equation}} \hyperlink{cox_simulations}{\beamerbutton{Results}}\pause
+		\item[] The income tax law should be {\bf implemented {\color{red}earlier}} under scenarios of {\color{red}\emph{high} sectoral contestation}.\\{\footnotesize [\emph{rapid} industrial expansion]} \hyperlink{cox}{\beamerbutton{Data/Equation}} \hyperlink{cox_simulations}{\beamerbutton{Results}}\pause
 
 		\item[] Implementation of the {\color{red}income tax} should foster {\color{red}\emph{higher} state-capacity}.\\{\footnotesize [\emph{lower} death tolls overtime]} \hyperlink{temp:dist}{\beamerbutton{Temp. Distribution of EQs}}
     
@@ -641,6 +638,172 @@
 
 
 
+
+
+
+
+\subsection{Duration Models: Income Taxation and Sectoral Contestation}
+
+    \begin{frame}[label=cox]\frametitle{Early and Late Income-Tax Implementers}
+
+
+        \begin{enumerate}
+          \item[] {\bf Cox Model}. Sectoral outputs (\href{http://moxlad-staging.herokuapp.com/home/en?}{MOxLAD dataset}) to investigate the sectoral contribution to the {\color{red}timing} of the implementation of the income tax in 9 Latin American countries.\pause
+
+          \item[] 
+            \begin{equation*}\label{cox:eq}
+              {\footnotesize h_{i}(t) = exp(\beta_{1}\text{Industrial Growth}_{i,t} + \beta_{2}\text{Agricultural Growth}_{i,t} + \beta_{3}\text{Total Population}_{i,t})h_{0}(t)}
+            \end{equation*}
+        \end{enumerate} 
+  \hyperlink{duration_models}{\beamerbutton{reg table}}
+
+\end{frame}
+
+\miniframesoff
+\begin{frame}\frametitle{Early and Late Income-Tax Implementers}
+
+        \begin{enumerate}
+          \item[] {\bf Cox Model}. Sectoral outputs (\href{http://moxlad-staging.herokuapp.com/home/en?}{MOxLAD dataset}) to investigate the sectoral contribution of the {\color{red}timing}  of the implementation of the income tax in 9 Latin American countries.
+
+          \item[] 
+            \begin{equation*}\label{cox:eq}
+              {\footnotesize h_{i}(t) = exp(\beta_{1}\text{{\color{black!30!green}Industrial Growth}}_{i,t} + \beta_{2}\text{Agricultural Growth}_{i,t} + \beta_{3}\text{Total Population}_{i,t})h_{0}(t)}
+            \end{equation*}
+        \end{enumerate} 
+
+  \hyperlink{duration_models}{\beamerbutton{reg table}}
+
+\end{frame}
+
+
+\begin{frame}\frametitle{Early and Late Income-Tax Implementers}
+
+        \begin{enumerate}
+          \item[] {\bf Cox Model}. Sectoral outputs (\href{http://moxlad-staging.herokuapp.com/home/en?}{MOxLAD dataset}) to investigate the sectoral contribution of the {\color{red}timing}  of the implementation of the income tax in 9 Latin American countries.
+
+          \item[] 
+            \begin{equation*}\label{cox:eq}
+              {\footnotesize h_{i}(t) = exp(\beta_{1}\text{Industrial Growth}_{i,t} + \beta_{2}\text{{\color{red}Agricultural Growth}}_{i,t} + \beta_{3}\text{Total Population}_{i,t})h_{0}(t)}
+            \end{equation*}
+        \end{enumerate} 
+  \hyperlink{duration_models}{\beamerbutton{reg table}}
+
+\end{frame}    
+
+
+        
+        \miniframesoff
+        \begin{frame}[plain]\frametitle{The Timming of the Implementation of the Income Tax}
+ %\vspace{-0.5cm}
+  \centering\includegraphics[scale=0.4]{/Users/hectorbahamonde/RU/Dissertation/Papers/IncomeTaxAdoption/chile_income_tax_plot.pdf}
+  \end{frame} 
+        
+        \miniframesoff
+        \begin{frame}[plain]\frametitle{The Timming of the Implementation of the Income Tax}
+ %\vspace{-0.5cm}
+  \centering\includegraphics[scale=0.4]{/Users/hectorbahamonde/RU/Dissertation/Papers/IncomeTaxAdoption/ecuador_income_tax_plot}
+  \end{frame}
+        
+        \miniframesoff
+        \begin{frame}[plain]\frametitle{The Timming of the Implementation of the Income Tax}
+ %\vspace{-0.5cm}
+  \centering\includegraphics[scale=0.4]{/Users/hectorbahamonde/RU/Dissertation/Papers/IncomeTaxAdoption/nicaragua_income_tax_plot}
+  \end{frame}
+        
+        \miniframesoff
+        \begin{frame}[plain]\frametitle{The Timming of the Implementation of the Income Tax}
+ %\vspace{-0.5cm}
+  \centering\includegraphics[scale=0.4]{/Users/hectorbahamonde/RU/Dissertation/Papers/IncomeTaxAdoption/venezuela_income_tax_plot}
+  \end{frame}
+        
+        \miniframesoff
+        \begin{frame}[plain]\frametitle{The Timming of the Implementation of the Income Tax}
+ %\vspace{-0.5cm}
+  \centering\includegraphics[scale=0.4]{/Users/hectorbahamonde/RU/Dissertation/Papers/IncomeTaxAdoption/peru_income_tax_plot}
+  \end{frame}
+        
+        \miniframesoff
+        \begin{frame}[plain]\frametitle{The Timming of the Implementation of the Income Tax}
+ %\vspace{-0.5cm}
+  \centering\includegraphics[scale=0.4]{/Users/hectorbahamonde/RU/Dissertation/Papers/IncomeTaxAdoption/colombia_income_tax_plot}
+  \end{frame}
+        
+        \miniframesoff
+        \begin{frame}[plain]\frametitle{The Timming of the Implementation of the Income Tax}
+ %\vspace{-0.5cm}
+  \centering\includegraphics[scale=0.4]{/Users/hectorbahamonde/RU/Dissertation/Papers/IncomeTaxAdoption/guatemala_income_tax_plot}
+  \end{frame}
+        
+        \miniframesoff
+        \begin{frame}[plain]\frametitle{The Timming of the Implementation of the Income Tax}
+ %\vspace{-0.5cm}
+  \centering\includegraphics[scale=0.4]{/Users/hectorbahamonde/RU/Dissertation/Papers/IncomeTaxAdoption/argentina_income_tax_plot}
+  \end{frame}
+        
+        \miniframesoff
+        \begin{frame}[plain]\frametitle{The Timming of the Implementation of the Income Tax}
+ %\vspace{-0.5cm}
+  \centering\includegraphics[scale=0.4]{/Users/hectorbahamonde/RU/Dissertation/Papers/IncomeTaxAdoption/mexico_income_tax_plot.pdf}
+  \end{frame}
+        
+        \miniframesoff
+        \begin{frame}[plain]\frametitle{The Timming of the Implementation of the Income Tax}
+ %\vspace{-0.5cm}
+  \centering\includegraphics[scale=0.4]{/Users/hectorbahamonde/RU/Dissertation/Papers/IncomeTaxAdoption/brazil_income_tax_plot.pdf}
+  \end{frame}
+        
+        \miniframesoff
+        \begin{frame}[plain]\frametitle{The Timming of the Implementation of the Income Tax}
+ %\vspace{-0.5cm}
+  \centering\includegraphics[scale=0.4]{/Users/hectorbahamonde/RU/Dissertation/Papers/IncomeTaxAdoption/bolivia_income_tax_plot.pdf}
+  \end{frame}
+        
+        \miniframesoff
+        \begin{frame}[plain]\frametitle{The Timming of the Implementation of the Income Tax}
+ %\vspace{-0.5cm}
+  \centering\includegraphics[scale=0.4]{/Users/hectorbahamonde/RU/Dissertation/Papers/IncomeTaxAdoption/costa_rica_income_tax_plot.pdf}
+  \end{frame}
+        
+        \miniframesoff
+        \begin{frame}[plain]\frametitle{The Timming of the Implementation of the Income Tax}
+ %\vspace{-0.5cm}
+  \centering\includegraphics[scale=0.4]{/Users/hectorbahamonde/RU/Dissertation/Papers/IncomeTaxAdoption/honduras_income_tax_plot}
+  \end{frame}
+        
+        \miniframesoff
+        \begin{frame}[plain]\frametitle{The Timming of the Implementation of the Income Tax}
+ %\vspace{-0.5cm}
+  \centering\includegraphics[scale=0.4]{/Users/hectorbahamonde/RU/Dissertation/Papers/IncomeTaxAdoption/paraguay_income_tax_plot}
+  \end{frame}
+        
+        \miniframesoff
+        \begin{frame}[plain]\frametitle{The Timming of the Implementation of the Income Tax}
+ %\vspace{-0.5cm}
+  \centering\includegraphics[scale=0.4]{/Users/hectorbahamonde/RU/Dissertation/Papers/IncomeTaxAdoption/uruguay_income_tax_plot.pdf}
+  \end{frame}
+
+
+
+\miniframesoff
+\begin{frame}[plain]
+\centering\huge Results
+\end{frame}
+
+\miniframesoff
+\begin{frame}[plain]\frametitle{{\large Implementing the Income Tax: Simulated Hazards}}
+ %\vspace{-0.5cm}
+  \centering\includegraphics[scale=0.8]{/Users/hectorbahamonde/RU/Dissertation/Papers/IncomeTaxAdoption/figure/simulation:plots-1.pdf}
+\end{frame}
+
+
+
+\subsection{Count Model: Spillover Effects of Income Taxation}
+
+\miniframesoff
+\begin{frame}
+\centering\huge Did the income tax foster state consolidation over time?
+\end{frame}
+
 \miniframesoff
 \begin{frame}[plain]\frametitle{{\large Geographic Distribution of EQs }}
  %\vspace{-0.5cm}
@@ -648,24 +811,22 @@
 \end{frame}
 
 
-\subsection{Count Model}
 
 
-\miniframeson
 
 \begin{frame}\frametitle{State Capacity Overtime in Chile}
 
-{\bf {\footnotesize Bayesian Poisson model with year fixed-effects. \hyperlink{jags_code}{\beamerbutton{Jags Code}}}}
+{\bf {\footnotesize Bayesian Poisson model. \hyperlink{jags_code}{\beamerbutton{Jags Code}}}}
 
 
-{\input{model_poisson.txt}\unskip}
+{\input{/Users/hectorbahamonde/RU/Dissertation/Papers/Earthquake_Paper/model_poisson.txt}\unskip}
 
 
 \begin{equation*} \label{indexes:2}
 \begin{split}
 i_{1,...I} & \; \text{and} \; \text{I}=103\; \text{events};\\
 k_{1,...K} & \; \text{and} \; \text{K}=3 \; \text{sectors};\\
-t_{1,...T} & \; \text{and} \; \text{T}=64 \; \text{years}.\\
+%t_{1,...T} & \; \text{and} \; \text{T}=64 \; \text{years}.\\
 \end{split}
 \end{equation*}
 
@@ -711,7 +872,7 @@ t_{1,...T} & \; \text{and} \; \text{T}=64 \; \text{years}.\\
 \miniframesoff
 \begin{frame}\frametitle{Summary}
 	\begin{itemize}
-		 %\item The {\bf emergence of a strong industrial sector}, accelerated the implementation of the \emph{income tax} in nine countries in Latin America.
+		 \item The {\bf emergence of a strong industrial sector}, accelerated the implementation of the \emph{income tax} in nine countries in Latin America.
 
 		 \item {\bf Income taxation} increased \emph{state capacity} overtime in Chile.
      \item Via spillover effects, the \emph{act} of collecting taxes, improved other state activities (providing public goods and enforcing building codes).
@@ -1593,148 +1754,6 @@ For example, the historian Barros (1970) explains that before the civil war, \em
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 
-
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\begin{frame}[label=cox]\frametitle{Early and Late Income-Tax Implementers}
-
-
-        \begin{enumerate}
-          \item[] {\bf Cox Model}. Sectoral outputs (\href{http://moxlad-staging.herokuapp.com/home/en?}{MOxLAD dataset}) to investigate the sectoral contribution to the {\color{red}timing} of the implementation of the income tax in 9 Latin American countries.\pause
-
-          \item[] 
-            \begin{equation*}\label{cox:eq}
-              {\footnotesize h_{i}(t) = exp(\beta_{1}\text{Industrial Growth}_{i,t} + \beta_{2}\text{Agricultural Growth}_{i,t} + \beta_{3}\text{Total Population}_{i,t})h_{0}(t)}
-            \end{equation*}
-        \end{enumerate} 
-  \hyperlink{duration_models}{\beamerbutton{reg table}}
-
-\end{frame}
-
-\miniframesoff
-\begin{frame}\frametitle{Early and Late Income-Tax Implementers}
-
-        \begin{enumerate}
-          \item[] {\bf Cox Model}. Sectoral outputs (\href{http://moxlad-staging.herokuapp.com/home/en?}{MOxLAD dataset}) to investigate the sectoral contribution of the {\color{red}timing}  of the implementation of the income tax in 9 Latin American countries.
-
-          \item[] 
-            \begin{equation*}\label{cox:eq}
-              {\footnotesize h_{i}(t) = exp(\beta_{1}\text{{\color{black!30!green}Industrial Growth}}_{i,t} + \beta_{2}\text{Agricultural Growth}_{i,t} + \beta_{3}\text{Total Population}_{i,t})h_{0}(t)}
-            \end{equation*}
-        \end{enumerate} 
-
-  \hyperlink{duration_models}{\beamerbutton{reg table}}
-
-\end{frame}
-
-
-\begin{frame}\frametitle{Early and Late Income-Tax Implementers}
-
-        \begin{enumerate}
-          \item[] {\bf Cox Model}. Sectoral outputs (\href{http://moxlad-staging.herokuapp.com/home/en?}{MOxLAD dataset}) to investigate the sectoral contribution of the {\color{red}timing}  of the implementation of the income tax in 9 Latin American countries.
-
-          \item[] 
-            \begin{equation*}\label{cox:eq}
-              {\footnotesize h_{i}(t) = exp(\beta_{1}\text{Industrial Growth}_{i,t} + \beta_{2}\text{{\color{red}Agricultural Growth}}_{i,t} + \beta_{3}\text{Total Population}_{i,t})h_{0}(t)}
-            \end{equation*}
-        \end{enumerate} 
-  \hyperlink{duration_models}{\beamerbutton{reg table}}
-
-\end{frame}
-
-
-
-\miniframesoff
-\begin{frame}[plain]\frametitle{Mexico: 1925}
-     \begin{figure}[H]
-  %   \vspace{4mm}
-  %   \hspace{-7.5mm}
-  \includegraphics[scale=0.3]{/Users/hectorbahamonde/RU/Dissertation/Papers/IncomeTaxAdoption/Mexico_Income_Tax.pdf}
-     \end{figure}
-\end{frame}
-
-
-\miniframesoff
-\begin{frame}[plain]\frametitle{Argentina: 1933}
-     \begin{figure}[H]
-  %   \vspace{4mm}
-  %   \hspace{-7.5mm}
-  \includegraphics[scale=0.3]{/Users/hectorbahamonde/RU/Dissertation/Papers/IncomeTaxAdoption/Argentina_Income_Tax.pdf}
-     \end{figure}
-\end{frame}
-
-
-\miniframesoff
-\begin{frame}[plain]\frametitle{Guatemala: 1963}
-     \begin{figure}[H]
-  %   \vspace{4mm}
-  %   \hspace{-7.5mm}
-  \includegraphics[scale=0.3]{/Users/hectorbahamonde/RU/Dissertation/Papers/IncomeTaxAdoption/Guatemala_Income_Tax.pdf}
-     \end{figure}
-\end{frame}
-
-
-\miniframesoff
-\begin{frame}[plain]\frametitle{Nicaragua: 1974}
-     \begin{figure}[H]
-  %   \vspace{4mm}
-  %   \hspace{-7.5mm}
-  \includegraphics[scale=0.3]{/Users/hectorbahamonde/RU/Dissertation/Papers/IncomeTaxAdoption/Nicaragua_Income_Tax.pdf}
-     \end{figure}
-\end{frame}
-
-
-\miniframesoff
-\begin{frame}[plain]\frametitle{Venezuela: 1943}
-     \begin{figure}[H]
-  %   \vspace{4mm}
-  %   \hspace{-7.5mm}
-  \includegraphics[scale=0.3]{/Users/hectorbahamonde/RU/Dissertation/Papers/IncomeTaxAdoption/Venezuela_Income_Tax.pdf}
-     \end{figure}
-\end{frame}
-
-
-
-\miniframesoff
-\begin{frame}[plain]\frametitle{Ecuador: 1945}
-     \begin{figure}[H]
-  %   \vspace{4mm}
-  %   \hspace{-7.5mm}
-  \includegraphics[scale=0.3]{/Users/hectorbahamonde/RU/Dissertation/Papers/IncomeTaxAdoption/Ecuador_Income_Tax.pdf}
-     \end{figure}
-\end{frame}
-
-
-
-\miniframesoff
-\begin{frame}[plain]\frametitle{Colombia: 1935}
-     \begin{figure}[H]
-  %   \vspace{4mm}
-  %   \hspace{-7.5mm}
-  \includegraphics[scale=0.3]{/Users/hectorbahamonde/RU/Dissertation/Papers/IncomeTaxAdoption/Colombia_Income_Tax.pdf}
-     \end{figure}
-\end{frame}
-
-
-\miniframesoff
-\begin{frame}[plain]\frametitle{Peru: 1934}
-     \begin{figure}[H]
-  %   \vspace{4mm}
-  %   \hspace{-7.5mm}
-  \includegraphics[scale=0.3]{/Users/hectorbahamonde/RU/Dissertation/Papers/IncomeTaxAdoption/Peru_Income_Tax.pdf}
-     \end{figure}
-\end{frame}
-
-
-\miniframesoff
-\begin{frame}[plain]\frametitle{Chile: 1924}
-     \begin{figure}[H]
-  %   \vspace{4mm}
-  %   \hspace{-7.5mm}
-  \includegraphics[scale=0.3]{/Users/hectorbahamonde/RU/Dissertation/Papers/IncomeTaxAdoption/Chile_Income_Tax.pdf}
-     \end{figure}
-\end{frame}
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 
 
