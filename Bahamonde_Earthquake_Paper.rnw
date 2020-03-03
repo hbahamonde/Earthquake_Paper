@@ -362,11 +362,11 @@ Generalized estimating equations were introduced by \textcite{Liang1986} to fit 
 
   
 
-Substantively, GEE models provide an estimated marginal mean, or the \emph{weighted average} of all cluster-specific effects (or conditional means). Model 3 is a conditional logit model (``fixed effects'').\footnote{More formally,
+Substantively, GEE models provide an estimated marginal mean, or the weighted average of all cluster-specific effects (or conditional means). Model 3 is a conditional logit model (``fixed effects'').\footnote{More formally,
 \begin{equation}\label{clogit:eq}
 \pi_{i,t}=\Phi(\beta_{0} + \beta_{1}\text{log(Industrial Growth$_{i,t}$)}+\beta_{2}\text{log(Agricultural Growth$_{i,t}$)}+\beta_{3}\text{log(Total Population$_{i,t}$)}+\alpha_{i})
 \end{equation}
-where $\alpha$ are the country fixed effects for all countries $i$.} One important advantage of this strategy is the ability to account for country-specific effects. For example, fiscal expansion could be a function of country-specific prior state-building capacities.\footnote{I thank \fbox{\phantom{Matthias vom Hau}}} for this suggestion.} A number of scholars rightly argue that post-colonial state-capacities are in part a function of pre-colonial state-capacities (\cite[1416]{Wimmer2016}, \cite{Mahoney:2010aa}, \cite[1426]{Lange2006}). Fixed-effects should be able to account for these and other unobserved or hard-to-measure covariates, which if left unaccounted for, would introduce omitted variable biases \parencite{Angrist:2008fk}. 
+where $\alpha$ are the country fixed effects for all countries $i$.} One important advantage of this strategy is the ability to account for country-specific effects. For example, fiscal expansion could be a function of country-specific prior state-building capacities.\footnote{I thank \fbox{\phantom{Matthias vom Hau}} for this suggestion.} A number of scholars rightly argue that post-colonial state-capacities are in part a function of pre-colonial state-capacities (\cite[1416]{Wimmer2016}, \cite{Mahoney:2010aa}, \cite[1426]{Lange2006}). Fixed-effects should be able to account for these and other unobserved or hard-to-measure covariates, which if left unaccounted for, would introduce omitted variable biases \parencite{Angrist:2008fk}. 
 
 
 
@@ -481,7 +481,7 @@ Fortunately, Bayesian methods have embedded a systematic and intuitive framework
 
 
 % substantively
-Substantively, \autoref{fig:income:tax:model:plot:run} shows that the death toll systematically \emph{decreases} over time---i.e. levels of state capacity systematically increase over time---\emph{once the income tax law is implemented}. Particularly, by implementing the income tax, the baseline propensity of an earthquake increasing the death toll decreases from an estimated over time average of $\Sexpr{numbers2words(death.toll.before.tax)}$ to an estimated over time average of $\Sexpr{numbers2words(death.toll.after.tax)}$. %Importantly, the fixed-effects approach makes these results robust to considerations of progressive national and local economic/political development. By absorbing yearly sources of variation, \autoref{model:2} is capable of controlling for unobserved heterogeneous factors that might have an impact on the dependent variable (\autoref{fig:year:fixed:effects:plot:plot} shows the estimated year fixed-effects).
+Substantively, \autoref{fig:income:tax:model:plot:run} shows that the death toll systematically \emph{decreases} over time---i.e. levels of state capacity systematically increase over time---\emph{once the income tax law is implemented}. Particularly, by implementing the income tax, the baseline propensity of an earthquake increasing the death toll decreases from an estimated over time average of \Sexpr{numbers2words(death.toll.before.tax)} to an estimated over time average of \Sexpr{numbers2words(death.toll.after.tax)}. %Importantly, the fixed-effects approach makes these results robust to considerations of progressive national and local economic/political development. By absorbing yearly sources of variation, \autoref{model:2} is capable of controlling for unobserved heterogeneous factors that might have an impact on the dependent variable (\autoref{fig:year:fixed:effects:plot:plot} shows the estimated year fixed-effects).
 
 
 
