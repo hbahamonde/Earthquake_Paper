@@ -5,18 +5,18 @@ graphics.off()
 
 ## ---- number:of:simulations ----
 # Hazard Rate simulations 
-nsim = 100 # original: 10000
+nsim = 10000 # original: 10000
 qi = "Hazard Rate" # original: Hazard Rate
 ci = 0.95
 
 # Bayesian: Sectoral Model
-n.iter.sectoral = 500  # n.iter.sectoral = 300000 // this is for working model
-n.burnin.sectoral = 10 # n.burnin.sectoral = 30000 // this is for working model
+n.iter.sectoral = 300000  # n.iter.sectoral = 300000 // this is for working model
+n.burnin.sectoral = 30000 # n.burnin.sectoral = 30000 // this is for working model
 n.chains.sectoral = 5 # n.chains.sectoral = 5 for the working model
 
 # Bayesian: Tax Model
-n.iter.tax = 500  # n.iter.tax = 300000 // this is for working model
-n.burnin.tax = 10 # n.burnin.tax = 30000 // this is for working model
+n.iter.tax = 300000  # n.iter.tax = 300000 // this is for working model
+n.burnin.tax = 30000 # n.burnin.tax = 30000 // this is for working model
 n.chains.tax = 5 # n.chains.tax = 5 for the working model
 
 

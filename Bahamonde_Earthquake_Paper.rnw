@@ -166,12 +166,6 @@ The paper also contributes to the literature from an empirical perspective. Expl
 %Additionally, the article outlines a theory that explains the \emph{timing} of the implementation of the income tax. Given that industrialists were more dependent on capital (relative to landowners), they opposed import taxes, favoring the implementation of the income tax. These fiscal resources paid for public goods that benefited the industrial class in the long run, such as roads and bridges. Leveraging sectoral outputs since 1900 for a sample of nine Latin American countries, including Chile, and employing a number of survival models, we present evidence that suggests that the emergence of the industrial sector \emph{accelerated} the implementation of the income tax. Also, using vector auto-regressive time-series models and Granger-causality tests, we also challenge the stereotypical idea that Chilean landowners and industrialists conformed a single entrepreneurial elite with assets scattered throughout several spheres of investment. These tests strongly suggest that both sectors were, in fact, in constant opposition and that levels of inter-sectoral asset diversification were weak.
 
 
-\begin{figure}[h]
-\includegraphics[scale=1, center]{causal_path.pdf}
-\caption{{\bf Causal Mechanism}.\label{causal:mechanism:fig}}\centering
-\end{figure}
-
-
 
 % framework
 The paper argues, in more detail, that (a) the emergence of the industrial sector caused higher levels of sectoral conflicts, triggering the implementation of the income tax, which in turn, (b) fostered state development over time via spillover effects (\autoref{causal:mechanism:fig}). The article empirically tests both hypotheses, while providing a short Chilean case study.
@@ -327,22 +321,10 @@ This section seeks to establish an empirical connection between sectoral conflic
 % sectoral outputs plot
 
 
-\afterpage{
-<<incometax, echo = FALSE, fig.pos='H', warning = FALSE, message = F, fig.cap=outputstitle, fig.align='center', fig.width=13, fig.height=12,dpi=1000,cache = FALSE>>=
-
-@
-
-}
-
 Using secondary information, \autoref{sample:data:income:tax:tab} states when the income tax was implemented. \autoref{fig:incometax} shows both sectoral outputs (independent variables), and the year when the income tax law was passed (dependent variable). Since population has been associated with the probability elites expand the franchise---and consequently the tax base, \textcite[892-893]{Engerman2005}---the total country-year population as a control variable was included. % \todo{complete table}
 
 
-\afterpage{
- <<results:1:table, echo=FALSE, comment=NA, warning=FALSE, message=F, results='asis', cache=FALSE>>=
 
-@
-
-}
 
 
 % models
@@ -370,17 +352,6 @@ where $\alpha$ are the country fixed effects for all countries $i$.} One importa
 
 
 
-<<simulation, echo=FALSE, comment=NA, warning=FALSE, message=F,results='asis', cache=FALSE>>=
-
-@
-
-\afterpage{
-<<simulation:plots, echo = FALSE, fig.pos='h', warning = FALSE, message = F, fig.cap=simtitle, fig.align='center', fig.width=7, fig.height=3,dpi=10000,cache = FALSE>>=
-
-@
-
-}
-
 % substantiative interpretation // comments on the simulation
 All models suggest that the rise of a strong industrial sector largely accelerates the implementation of the income tax law. Moreover, a strong agricultural sector not only has zero impact on fiscal development, but a negative one. Using the estimations from Model 1, I follow \textcite{Gandrud2015} and \textcite{King2000}, and in \autoref{fig:simulation:plots}, simulate \Sexpr{format(nsim,big.mark=",",scientific=FALSE)} times the \Sexpr{tolower(qi)} of implementing the income tax law, conditional on industrial and agricultural growth rates.\footnote{\textcite[15]{Box-Steffensmeier2004} explain that the \Sexpr{tolower(qi)} is the most common quantity of interest analysts focus on. \autoref{fig:simulation:plots} shows \Sexpr{ci*100}\% confidence intervals.} Since the \Sexpr{tolower(qi)} ``is the probability that a case will fail at time $t$'' \parencite[231]{Licht2011}, I take advantage of this quantity of interest which allows some dependency on both time \emph{and} the covariates \parencite[15]{Box-Steffensmeier2004}. \autoref{fig:simulation:plots} strongly suggests that the faster the agricultural sector develops, the less likely the implementation of the income tax. This relationship does not change at later stages of development, suggesting that polities with a strong agricultural elite are not associated with fiscal development. However, rapid industrial development is associated with an earlier implementation of the income tax law. 
 
@@ -406,23 +377,10 @@ I constructed a novel hand-collected longitudinal dataset using the \emph{Signif
 Using archival census data from 1907 to 2012,\footnote{Particularly, censuses of 1907, 1920, 1930, 1940, 1952, 1960, 1970, 1982, 1992, 2002 and 2012. Some of them were kept at the \emph{Biblioteca Nacional} and others at the \emph{National Statistic Institute} historical library.} the NOAA dataset was complemented with local population measures at the municipal level where the quake hit. The local population was used to weight the death toll.\footnote{Around 90\% of the time it was possible to recover the actual local population. For the rest, the population of the most concentrated area nearby was recovered. Consequently, population is used as a control, not to weight the dependent variable directly.} Adding archival census data, I coded the main economic activity of the affected municipality\footnote{This variable was constructed by coding press and official sources (mainly censuses) of the main economic sector at the local level: \text{$\Sexpr{levels(factor(dat$Sector))[1]}$} (n=$\Sexpr{as.character(table(factor(dat$Sector))[1])}$), \text{$\Sexpr{levels(factor(dat$Sector))[2]}$} (n=$\Sexpr{as.character(table(factor(dat$Sector))[2])}$), \text{$\Sexpr{levels(factor(dat$Sector))[3]}$} (n=$\Sexpr{as.character(table(factor(dat$Sector))[3])}$).} and whether the municipality was urban or rural.\footnote{Urban=$\Sexpr{table(dat$Urban[dat$Urban==1])}$, rural=$\Sexpr{table(dat$Urban[dat$Urban==0])}$. If more than 50\% of the population lived in an urban setting, I assigned a 1 to that municipality, 0 otherwise. Urban concentrations are most likely to have vertical constructions rather than one-story buildings, increasing the potential number of casualties. Consequently, it is important to control for this source of variation. I thank \fbox{\phantom{Daniel Kelemen}} for this suggestion.} The death-tolls and magnitudes proportionated by the NOAA dataset were contrasted case by case with historical press archival information.\footnote{\emph{El Mercurio} and \emph{La Naci\'on} newspapers, both kept at the \emph{Archivo Nacional} of the \emph{Biblioteca Nacional de Chile}.} Magnitudes, in particular, were also compared with the \href{http://www.isc.ac.uk/iscbulletin/search/bulletin/}{International Seismological Centre}. 
 
 
-% earthquake:ts:plot:chile:plot
-<<earthquake:ts:plot:chile:plot, echo = FALSE, fig.pos='H', warning = FALSE, message = FALSE,fig.cap=time.series.plot.note, fig.align='center', fig.width=6,fig.height=3,dpi=30000,cache = FALSE,eval=TRUE>>=
 
-@
 
 % case justification
 \autoref{fig:earthquake:ts:plot:chile:plot} plots the over time variation, while \autoref{fig:earthquake:map:plot:chile} plots the geographical variation, and the dominant productive sector at the municipal level. Both figures suggest that Chile is a good case to study infrastructural state capacity using the earthquake framework: Chile has considerable variance regarding quake magnitudes, locations, and sectoral variation. The northern part of Chile has historically been an industrial region, while the southern part of Chile has traditionally been agricultural. Both have been affected by earthquakes in a similar fashion.  Relatedly, both regions vary according to their climate (which correlates with agriculture). Furthermore, the distance from Santiago, which is located near latitude 33$^{\circ}$, might impose some degree of difficulty for the central government to reach the farthest northern/southern parts of the territory \parencite[418]{Foa2016}. However, the central part also has considerable earthquake activity. There is also variance considering longitude. Closeness to the Andean mountains (around longitude 70$^{\circ}$) determines the ruggedness of the terrain, presumably making it harder for the state to penetrate these areas. In fact, \textcite[729]{Brancati2007} explains that ``[e]arthquakes often occur in mountainous areas.'' All things considered, earthquakes have affected the territory from coast to mountain, both north and south, close and far away from Santiago, and in both agricultural and industrial areas, solving potential concerns about geographical sectoral self-selection. For instance, it would have been a problem that a specific sector, say the industrialists, were located \emph{only} in the northern part, which is the most earthquake-prone area.
-
-
-% earthquake:map:plot:chile
- \afterpage{
-  <<earthquake:map:plot:chile, echo = FALSE, fig.pos='H', warning = FALSE, message = FALSE,fig.cap=earthquake.map.note.chile, fig.align='center', fig.width=12,fig.height=12,dpi=30000,cache = FALSE,eval=TRUE>>=
- 
- @
-
- }
-
 
 
 % Poisson model // main IVs
@@ -461,23 +419,11 @@ k_{1,...K} & \; \text{and} \; \text{K}=\Sexpr{as.numeric(jags.data.tax$NSector)}
 \end{equation*}
 
 
-% income:tax:model:regression:table:run
-<<income:tax:model:regression:table:run, echo=FALSE, comment=NA, warning=FALSE, message=F, results='asis', cache=FALSE,eval=TRUE>>=
-
-@
-
-
 % methodological problems
 While \autoref{income:tax:model:regression:table:run} shows the estimated results, the coefficient of the interaction term (i.e. $\beta_{3}$) remains uninterpretable from a substantive standpoint \parencite[74]{Brambor2006}. The problem becomes more complex when it comes to generalized models (such as Poisson models), as a number of challenges arise. In an important paper, \textcite{Ai2003} explain that the interaction effect could be nonzero, even when the coefficient says it is zero; the statistical significance of the interaction effect cannot be tested with a simple t-test on the coefficient of the interaction term; the interaction effect is conditional on the independent variables; and that the interaction effect may have different signs for different values of covariates. In addition to all these challenges, and given that cross-partial derivatives are also not advisable, simulation methods are required \parencite[]{WilliamJ.Wales2013,King2000}. This procedure samples via simulation from the point estimates, generating a new and larger distribution. That is, taking the single estimated parameters (i.e. the regression coefficients), a new distribution of estimated values for each coefficient is constructed. Relying on the central limit theorem, the new simulated distribution is a transformation that approximates with a great degree of precision the (uninterpretable) coefficients with enough sampling draws. Subsequently, means and uncertainty measures can be constructed for each of these distributions. 
 
 % methodological solution
 Fortunately, Bayesian methods have embedded a systematic and intuitive framework to solve these challenges. In particular, for every coefficient, I estimated \Sexpr{numbers2words(n.chains.tax)} \Sexpr{chain.chains.word} with \Sexpr{format(round(as.numeric(n.iter.tax), 0), nsmall=0, big.mark=",")} \Sexpr{iteration.iterations.word} per chain. Considering the Monte Carlo Markov Chain properties, the first \Sexpr{format(round(as.numeric(n.burnin.tax), 0), nsmall=0, big.mark=",")} iterations of every chain were discarded. Following \textcite[]{Brambor2006}, \autoref{fig:income:tax:model:plot:run} shows the conditional effect of earthquake magnitudes on implementing the income tax.\footnote{Based on \autoref{model:2}, the simulated matrix was constructed following the routine described above, iterating over the next generalized equation: $\beta_{1}+\beta_{3}\times\text{Income Tax}_{i}$.} 
-
-
-% income:tax:model:plot:run
-<<income:tax:model:plot:run, echo = FALSE, fig.pos='h', warning = FALSE, message = FALSE,fig.cap=income.tax.model.plot.note, fig.align='center', fig.width=5 ,fig.height=3,dpi=30000,cache = FALSE,eval=TRUE>>=
-
-@
 
 
 % substantively
@@ -779,6 +725,76 @@ count <- comma(as.numeric(count)) # add comma
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 
+\begin{figure}[h]
+\includegraphics[scale=1, center]{causal_path.pdf}
+\caption{{\bf Causal Mechanism}.\label{causal:mechanism:fig}}\centering
+\end{figure}
+
+
+\afterpage{
+<<incometax, echo = FALSE, fig.pos='H', warning = FALSE, message = F, fig.cap=outputstitle, fig.align='center', fig.width=13, fig.height=12,dpi=1000,cache = FALSE>>=
+
+@
+
+}
+
+\clearpage
+\newpage
+\afterpage{
+ <<results:1:table, echo=FALSE, comment=NA, warning=FALSE, message=F, results='asis', cache=FALSE>>=
+
+@
+
+}
+
+
+\clearpage
+\newpage
+<<simulation, echo=FALSE, comment=NA, warning=FALSE, message=F,results='asis', cache=FALSE>>=
+
+@
+
+\clearpage
+\newpage
+\afterpage{
+<<simulation:plots, echo = FALSE, fig.pos='h', warning = FALSE, message = F, fig.cap=simtitle, fig.align='center', fig.width=7, fig.height=3,dpi=10000,cache = FALSE>>=
+
+@
+
+}
+
+\clearpage
+\newpage
+% earthquake:ts:plot:chile:plot
+<<earthquake:ts:plot:chile:plot, echo = FALSE, fig.pos='H', warning = FALSE, message = FALSE,fig.cap=time.series.plot.note, fig.align='center', fig.width=6,fig.height=3,dpi=30000,cache = FALSE,eval=TRUE>>=
+
+@
+
+\clearpage
+\newpage
+% earthquake:map:plot:chile
+ \afterpage{
+  <<earthquake:map:plot:chile, echo = FALSE, fig.pos='H', warning = FALSE, message = FALSE,fig.cap=earthquake.map.note.chile, fig.align='center', fig.width=12,fig.height=12,dpi=30000,cache = FALSE,eval=TRUE>>=
+ 
+ @
+
+ }
+
+\clearpage
+\newpage
+% income:tax:model:regression:table:run
+<<income:tax:model:regression:table:run, echo=FALSE, comment=NA, warning=FALSE, message=F, results='asis', cache=FALSE,eval=TRUE>>=
+
+@
+
+
+
+\clearpage
+\newpage
+% income:tax:model:plot:run
+<<income:tax:model:plot:run, echo = FALSE, fig.pos='h', warning = FALSE, message = FALSE,fig.cap=income.tax.model.plot.note, fig.align='center', fig.width=5 ,fig.height=3,dpi=30000,cache = FALSE,eval=TRUE>>=
+
+@
 
 
 
