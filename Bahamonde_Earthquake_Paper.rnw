@@ -1,6 +1,6 @@
 \documentclass[onesided]{article}
 \usepackage{import}
-\subimport{/Users/hectorbahamonde/RU/Bibliografia_PoliSci/}{LaTeX_Paper_Packages_And_Style}
+\subimport{/Users/hectorbahamonde/Bibliografia_PoliSci/}{LaTeX_Paper_Packages_And_Style}
 
 
 
@@ -9,7 +9,7 @@
 
 % TITLE SECTION
 
-\title{\vspace{-15mm}\fontsize{18pt}{7pt}\selectfont\textbf{\input{/Users/hectorbahamonde/RU/Dissertation/Papers/Earthquake_Paper/title.txt}\unskip}} % Article title
+\title{\vspace{-15mm}\fontsize{18pt}{7pt}\selectfont\textbf{\input{/Users/hectorbahamonde/Dissertation/Papers/Earthquake_Paper/title.txt}\unskip}} % Article title
 
 
 \author[1]{
@@ -38,20 +38,20 @@
 %----------------------------------------------------------------------------------------
 %\vspace{-2cm}
 \begin{abstract}
-\input{/Users/hectorbahamonde/RU/Dissertation/Papers/Earthquake_Paper/abstract.txt}\unskip
+\input{/Users/hectorbahamonde/Dissertation/Papers/Earthquake_Paper/abstract.txt}\unskip
 \end{abstract}
 
 %\hspace*{1.3cm}{\bf Please consider downloading the last version of the paper} \href{https://github.com/hbahamonde/Earthquake_Paper/raw/master/Bahamonde_Earthquake_Paper.pdf}{\texttt{{\color{red}here}}}.
 
 %\hspace*{1.2cm}
-%\input{/Users/hectorbahamonde/RU/Dissertation/Papers/Earthquake_Paper/status.txt}\unskip
+%\input{/Users/hectorbahamonde/Dissertation/Papers/Earthquake_Paper/status.txt}\unskip
 
 
 \providecommand{\keywords}[1]{\textbf{\textit{Keywords---}} #1} % keywords.  
 \keywords{state-building; fiscal sociology; development; Latin America; time-series and panel data econometrics.}
 
 
-%\input{/Users/hectorbahamonde/RU/Dissertation/Papers/Earthquake_Paper/keywords.txt}\unskip
+%\input{/Users/hectorbahamonde/Dissertation/Papers/Earthquake_Paper/keywords.txt}\unskip
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -73,8 +73,8 @@ p_load(knitr)
 @
 
 <<echo=FALSE, cache= F, warning = FALSE, message = F, eval=TRUE>>=
-read_chunk('/Users/hectorbahamonde/RU/Dissertation/Papers/Earthquake_Paper/Earthquake_Paper.R') # earthquake
-read_chunk('/Users/hectorbahamonde/RU/Dissertation/Papers/IncomeTaxAdoption/IncomeTaxAdoption.R') # p.2
+read_chunk('/Users/hectorbahamonde/Dissertation/Papers/Earthquake_Paper/Earthquake_Paper.R') # earthquake
+read_chunk('/Users/hectorbahamonde/Dissertation/Papers/IncomeTaxAdoption/IncomeTaxAdoption.R') # p.2
 
 @
 
@@ -176,7 +176,7 @@ The paper also contributes to the literature from an empirical perspective. Expl
 % framework
 The paper argues, in more detail, that (a) the emergence of the industrial sector caused higher levels of sectoral conflicts, triggering the implementation of the income tax, which in turn, (b) fostered state development over time via spillover effects (\autoref{causal:mechanism:fig}). The article empirically tests both hypotheses, while providing a short Chilean case study.
 
-The paper not only builds on the fiscal sociology literature \parencite{Musgrave1992}, but on the sectoral politics approach, too \parencite{Moore,Rueschemeyer:1992,Ansell:2014ty,Boix:2003db,Acemoglu:1996rm}. In particular, it argues that elites whose assets are allocated in different sectors of the economy have different preferences over direct taxation, and consequently, state centralization (\textcite[289]{Acemoglu:1996rm}, \textcite[50]{Best1976}, \textcite[109]{Mamalakis1971}). The framework follows \textcite{Mamalakis1969,Mamalakis1971}, who introduced the sectoral conflict approach for the Latin American cases but also \textcite[1085]{Hechter1980a} who explain,  ``state formation will be most likely to the degree that powerful individual actors form two groups on the basis of divergent economic and political interests.'' 
+The paper not only builds on the fiscal sociology literature \parencite{Musgrave1992}, but on the sectoral politics approach, too \parencite{Moore:1966tn,Rueschemeyer:1992,Ansell:2014ty,Boix:2003db,Acemoglu:1996rm}. In particular, it argues that elites whose assets are allocated in different sectors of the economy have different preferences over direct taxation, and consequently, state centralization (\textcite[289]{Acemoglu:1996rm}, \textcite[50]{Best1976}, \textcite[109]{Mamalakis1971}). The framework follows \textcite{Mamalakis1969,Mamalakis1971}, who introduced the sectoral conflict approach for the Latin American cases but also \textcite[1085]{Hechter1980a} who explain,  ``state formation will be most likely to the degree that powerful individual actors form two groups on the basis of divergent economic and political interests.'' 
 
 As such, this article is an attempt to provide an alternative explanation of state development to the bellicist approach \parencite{Tilly:1992rr,Dincecco2016} and extended to the Latin American case by \textcite{Thies2005a,Thies2016,Kurtz2006}---but see \textcite{Centeno:2002qf}. And while \textcite{Kurtz2009,Kurtz:2013aa,Soifer2015a} situate the relevant state-building critical juncture at the end of the colonial period, before the class compromises that this paper identifies, the argument pursued in this paper explains that the implementation of the income tax was an important building block in this process. 
 
@@ -448,7 +448,7 @@ Undoubtedly, there are many more factors that might increase death tolls. \textc
 All in all, the next equation was fitted:\footnote{All parameters $\beta \;\sim\; \mathcal{N}(0,0.0001)$, all precisions $\tau \;\sim\; \mathcal{G}(1,1)$, while $\mu \;\sim\; \mathcal{N}(0,0.0001)$. Traceplots---not shown but available upon request---indicate that the model has good mixing.} 
 
 
-{\input{/Users/hectorbahamonde/RU/Dissertation/Papers/Earthquake_Paper/model_poisson.txt}}
+{\input{/Users/hectorbahamonde/Dissertation/Papers/Earthquake_Paper/model_poisson.txt}}
 
 where
 
@@ -561,7 +561,7 @@ There are also structural reasons to believe that cross-sectoral investments wer
 
 
 %\begin{figure}[h]
-%	\includegraphics[scale=.75, center]{/Users/hectorbahamonde/RU/Dissertation/Papers/NegativeLink/Chile_IRF_paper.pdf}
+%	\includegraphics[scale=.75, center]{/Users/hectorbahamonde/Dissertation/Papers/NegativeLink/Chile_IRF_paper.pdf}
 %	\caption[VAR Impulse Response Functions]{{\bf VAR Impulse Response Functions: Sectoral Responses to Each Other's Growths}. \\\hspace{\textwidth} {\bf Note}: Granger-causality tests in \autoref{granger:table} show the instantaneous causality between industrial and agricultural expansion and vice versa. Impulse response functions, however, show via forecasting methods the inter-sectoral long-run equilibrium. In particular, the figure shows that the instantaneous Granger-causal relationships established in \autoref{granger:table} (i.e. the reversal of institutions after implementing the income tax) persist in the long run.}
 %	\label{irf:fig:1}
 %\end{figure}

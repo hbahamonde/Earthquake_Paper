@@ -5,18 +5,18 @@ graphics.off()
 
 ## ---- number:of:simulations ----
 # Hazard Rate simulations 
-nsim = 10000 # original: 10000
+nsim = 100 # original: 10000
 qi = "Hazard Rate" # original: Hazard Rate
 ci = 0.95
 
 # Bayesian: Sectoral Model
-n.iter.sectoral = 300000  # n.iter.sectoral = 300000 // this is for working model
-n.burnin.sectoral = 30000 # n.burnin.sectoral = 30000 // this is for working model
+n.iter.sectoral = 500  # n.iter.sectoral = 300000 // this is for working model
+n.burnin.sectoral = 10 # n.burnin.sectoral = 30000 // this is for working model
 n.chains.sectoral = 5 # n.chains.sectoral = 5 for the working model
 
 # Bayesian: Tax Model
-n.iter.tax = 300000  # n.iter.tax = 300000 // this is for working model
-n.burnin.tax = 30000 # n.burnin.tax = 30000 // this is for working model
+n.iter.tax = 500  # n.iter.tax = 300000 // this is for working model
+n.burnin.tax = 10 # n.burnin.tax = 30000 // this is for working model
 n.chains.tax = 5 # n.chains.tax = 5 for the working model
 
 
@@ -88,7 +88,7 @@ p_load(foreign)
 
 
 ###### CHILE ##############
-dat.chile <- read.csv("/Users/hectorbahamonde/RU/Dissertation/Papers/Earthquake_Paper/Data/Chile_Data_Earthquake.csv")
+dat.chile <- read.csv("/Users/hectorbahamonde/Dissertation/Papers/Earthquake_Paper/Data/Chile_Data_Earthquake.csv")
 
 # Transformations
 dat.chile$ln.Magnitude = log(dat.chile$Magnitude)
@@ -97,7 +97,7 @@ dat.chile$W.Deaths = (dat.chile$Deaths/dat.chile$Population)*100
 
 
 # save dataset
-save(dat.chile, file = "/Users/hectorbahamonde/RU/Dissertation/Papers/Earthquake_Paper/Chile_Data_Earthquake.RData")
+save(dat.chile, file = "/Users/hectorbahamonde/Dissertation/Papers/Earthquake_Paper/Chile_Data_Earthquake.RData")
 
 
 
@@ -105,7 +105,7 @@ save(dat.chile, file = "/Users/hectorbahamonde/RU/Dissertation/Papers/Earthquake
 ############################
 #### Loadings: Peru
 ############################
-dat.peru <- read.csv("/Users/hectorbahamonde/RU/Dissertation/Papers/Earthquake_Paper/Data/Peru_Data_Earthquake.csv")
+dat.peru <- read.csv("/Users/hectorbahamonde/Dissertation/Papers/Earthquake_Paper/Data/Peru_Data_Earthquake.csv")
 
 
 dat.peru$Magnitude = as.numeric(as.character(dat.peru$Magnitude))
@@ -114,7 +114,7 @@ dat.peru$W.Deaths = (dat.peru$Deaths/dat.peru$Population)*100
 
 
 # save dataset
-save(dat.peru, file = "/Users/hectorbahamonde/RU/Dissertation/Papers/Earthquake_Paper/Peru_Data_Earthquake.RData")
+save(dat.peru, file = "/Users/hectorbahamonde/Dissertation/Papers/Earthquake_Paper/Peru_Data_Earthquake.RData")
 
 
 
@@ -134,7 +134,7 @@ earthquakes.d <- rbind(dat.chile,dat.peru)
 
 # Output dataset
 ## loading output dataset
-load("/Users/hectorbahamonde/RU/Dissertation/Papers/IncomeTaxAdoption/logitgee.RData") # Logit GEE
+load("/Users/hectorbahamonde/Dissertation/Papers/IncomeTaxAdoption/logitgee.RData") # Logit GEE
 ## subseting EQ datasets (Only Chile and Peru)
 logitgee <- logitgee[which(logitgee$country=='Chile' | logitgee$country=='Peru'), ]
 
@@ -148,8 +148,14 @@ eq.output.d <- merge(earthquakes.d, logitgee,by=c("country", "year"), all.x = T)
 if (!require("pacman")) install.packages("pacman"); library(pacman)
 p_load(car)
 
-
-eq.output.d$Sector2 <- recode(as.factor(eq.output.d$Sector), "1 = 'Industry' ; 2 = 'Mining' ; 3 = 'Agriculture' ; '1 y 2' = 'Ind and Min' ; '1 y 3' = 'Ind and Agr' ; '2 y 3' = 'Min and Agr' ")
+eq.output.d$Sector2 <- car::recode(as.factor(eq.output.d$Sector), 
+                              "1 = 'Industry' ; 
+                              2 = 'Mining' ; 
+                              3 = 'Agriculture' ; 
+                              '1 y 2' = 'Ind and Min' ; 
+                              '1 y 3' = 'Ind and Agr' ; 
+                              '2 y 3' = 'Min and Agr' "
+                              )
 
 
 ## packages
@@ -157,13 +163,14 @@ if (!require("pacman")) install.packages("pacman"); library(pacman)
 p_load(dplyr)
 
 
-dat$Sector = as.factor(recode(as.character(dat$Sector), 
+dat.chile$Sector = as.factor(dplyr::recode(as.character(dat.chile$Sector), 
                               "1" = "Industry", 
                               "2" = "Industry",
                               "3" = "Agriculture",
                               "1 y 2" = "Industry",
                               "1 y 3" = "Mixed",
-                              "2 y 3" = "Mixed"))
+                              "2 y 3" = "Mixed")
+                       )
 
 
 # income tax variables
@@ -178,7 +185,7 @@ colnames(eq.output.d)[1] = "incometax.d"
 
 
 # save dataset
-save(eq.output.d, file = "/Users/hectorbahamonde/RU/Dissertation/Papers/Earthquake_Paper/eq_output_d.RData")
+save(eq.output.d, file = "/Users/hectorbahamonde/Dissertation/Papers/Earthquake_Paper/eq_output_d.RData")
 
 
 
@@ -198,7 +205,7 @@ rm(list=ls())
 if (!require("pacman")) install.packages("pacman"); library(pacman)
 p_load(ggplot2)
 
-load("/Users/hectorbahamonde/RU/Dissertation/Papers/Earthquake_Paper/Chile_Data_Earthquake.RData")
+load("/Users/hectorbahamonde/Dissertation/Papers/Earthquake_Paper/Chile_Data_Earthquake.RData")
 
 
 # subsetting: 1500s-2010
@@ -290,7 +297,7 @@ ggplot(na.omit(Deaths), aes(factor(Deaths))) +
         theme_bw() + 
         ggtitle("") + #Death Tolls Associated to Earthquakes: Chile 1500-2010
         coord_flip() +
-        ggsave("/Users/hectorbahamonde/RU/Dissertation/Presentation/Resources/count_plot.pdf", dpi = 1000, width = 128, height = 96, units = c("mm"))
+        ggsave("/Users/hectorbahamonde/Dissertation/Presentation/Resources/count_plot.pdf", dpi = 1000, width = 128, height = 96, units = c("mm"))
 
 
 
@@ -298,7 +305,7 @@ ggplot(na.omit(Deaths), aes(factor(Deaths))) +
 # ggplot(na.omit(dat.chile), aes(x=year, y=Deaths)) + geom_line() + theme_bw()                    
 
 ## PERU
-load("/Users/hectorbahamonde/RU/Dissertation/Papers/Earthquake_Paper/Peru_Data_Earthquake.RData")
+load("/Users/hectorbahamonde/Dissertation/Papers/Earthquake_Paper/Peru_Data_Earthquake.RData")
 
 # Load the earthquake data
 if (!require("pacman")) install.packages("pacman"); library(pacman)
@@ -368,7 +375,7 @@ p_load(rgdal, foreign, rgeos, ggplot2)
 
 
 # load shape file
-chile.provinces <- readOGR(dsn = "/Users/hectorbahamonde/RU/Data/shape_files/division_provincial", 
+chile.provinces <- readOGR(dsn = "/Users/hectorbahamonde/Data/shape_files/division_provincial", 
                            layer = "division_provincial",
                            verbose = FALSE)
 
@@ -380,7 +387,7 @@ chile.provinces <- fortify(chile.provinces)
 
 
 # load eq data
-load("/Users/hectorbahamonde/RU/Dissertation/Papers/Earthquake_Paper/eq_output_d_Chile.RData") 
+load("/Users/hectorbahamonde/Dissertation/Papers/Earthquake_Paper/eq_output_d_Chile.RData") 
 
 # rename df
 dat.chile = dat
@@ -456,10 +463,10 @@ if (!require("pacman")) install.packages("pacman"); library(pacman)
 p_load(rgdal, foreign, rgeos, ggplot2)
 
 # load eq data
-load("/Users/hectorbahamonde/RU/Dissertation/Papers/Earthquake_Paper/Peru_Data_Earthquake.RData")
+load("/Users/hectorbahamonde/Dissertation/Papers/Earthquake_Paper/Peru_Data_Earthquake.RData")
 
 # load shape file
-peru.provinces <- readOGR(dsn = "/Users/hectorbahamonde/RU/Dissertation/Papers/Earthquake_Paper/Data/PER_adm_shp", layer = "PER_adm2")
+peru.provinces <- readOGR(dsn = "/Users/hectorbahamonde/Dissertation/Papers/Earthquake_Paper/Data/PER_adm_shp", layer = "PER_adm2")
 
 
 #peru.provinces <- gSimplify(peru.provinces, tol=10000, topologyPreserve=T)
@@ -522,7 +529,7 @@ cat("\014")
 rm(list=ls()) 
 
 # loading data 
-load("/Users/hectorbahamonde/RU/Dissertation/Papers/Earthquake_Paper/Chile_Data_Earthquake.RData")
+load("/Users/hectorbahamonde/Dissertation/Papers/Earthquake_Paper/Chile_Data_Earthquake.RData")
 
 # subsetting: 1900-2010
 dat.chile.post1900 <- dat.chile[which(dat.chile$year >= 1900 & dat.chile$country == "Chile"), ] # drop early earthquakes 
@@ -554,6 +561,8 @@ dat$w.Deaths = round((dat$Deaths/dat$Population),5)*10
 
 
 # recode sector
+if (!require("pacman")) install.packages("pacman"); library(pacman)
+p_load(car)
 dat$Sector = as.factor(recode(as.character(dat$Sector), 
                               "1" = "Industry", 
                               "2" = "Industry",
@@ -564,7 +573,7 @@ dat$Sector = as.factor(recode(as.character(dat$Sector),
 
 # proportion of Population 
 dat$p.Population = dat$Population/1000 
-save(dat, file = "/Users/hectorbahamonde/RU/Dissertation/Papers/Earthquake_Paper/eq_output_d_Chile.RData")
+save(dat, file = "/Users/hectorbahamonde/Dissertation/Papers/Earthquake_Paper/eq_output_d_Chile.RData")
 # ----
 
 
@@ -577,7 +586,7 @@ save(dat, file = "/Users/hectorbahamonde/RU/Dissertation/Papers/Earthquake_Paper
 cat("\014") 
 rm(list=ls()) 
 
-load("/Users/hectorbahamonde/RU/Dissertation/Papers/Earthquake_Paper/eq_output_d_Chile.RData") 
+load("/Users/hectorbahamonde/Dissertation/Papers/Earthquake_Paper/eq_output_d_Chile.RData") 
 
 
 # overdispersion
@@ -609,17 +618,19 @@ dispersiontest(o.Deaths,alternative = c("greater"), trafo=1) # overdispersion is
 
 
 # How to set up JAGS and R on a Mac
-# Install the most recent version of R from the CRAN website.
-# Download and install RStudio™.
-# Install Clang (clang-6.0.0.pkg) and GNU Fortran (gfortran-6.1.pkg.dmg) from the CRAN tools directory.
-# Now install JAGS version 4.3.0 (JAGS-4.3.0.dmg) from Martyn Plummer's repository. Detailed instructions quoted from the JAGS readme file:
+# 1. Install the most recent version of R from the CRAN website.
+# 2. Download and install RStudio™.
+# 3. Install Clang (clang-6.0.0.pkg) and GNU Fortran (gfortran-6.1.pkg.dmg) from the CRAN tools directory: https://cran.r-project.org/bin/macosx/tools/
+# Now install JAGS version 4.3.0 (JAGS-4.3.0.dmg) from Martyn Plummer's repository.
+### https://sourceforge.net/projects/mcmc-jags/files/JAGS/
+## Detailed instructions quoted from the JAGS readme file:
 # Download the disk image from the JAGS website.
 # Ensure that the 'Allow apps downloaded from anywhere' box is selected in the Security and Privacy (General) pane of System Preferences.
 # Double click on the disk image to mount (this may not be required).
 # Double click on the 'JAGS-4.3.0.mpkg' file within the mounted disk image.
 # Follow the instructions in the installer.
 # Authenticate as the administrative user. The first user you create when setting up Mac OS X has administrator privileges by default.
-# Start the Terminal and type jags to see if you receive the message: Welcome to JAGS 4.3.0.
+# Start the Terminal and type "jags" to see if you receive the message: Welcome to JAGS 4.3.0.
 # from: http://www.jkarreth.net/bayes-icpsr.html
 
 
@@ -627,7 +638,7 @@ dispersiontest(o.Deaths,alternative = c("greater"), trafo=1) # overdispersion is
 ## ---- sectoral:model:and:data:not:run ----
 
 # load data
-load("/Users/hectorbahamonde/RU/Dissertation/Papers/Earthquake_Paper/eq_output_d_Chile.RData")
+load("/Users/hectorbahamonde/Dissertation/Papers/Earthquake_Paper/eq_output_d_Chile.RData")
 
 
 # load libraries
@@ -760,7 +771,7 @@ p_load(ggmcmc)
 
 fit.mcmc.sectoral <- as.mcmc(earthquakefit.sectoral)
 bayes.mod.fit.gg.sectoral <- ggs(fit.mcmc.sectoral)
-ggmcmc(bayes.mod.fit.gg.sectoral, file = "/Users/hectorbahamonde/RU/Dissertation/Papers/Earthquake_Paper/Bahamonde_Earthquake_Paper_Diagnostic_Plots_Sectoral_Competition.pdf")
+ggmcmc(bayes.mod.fit.gg.sectoral, file = "/Users/hectorbahamonde/Dissertation/Papers/Earthquake_Paper/Bahamonde_Earthquake_Paper_Diagnostic_Plots_Sectoral_Competition.pdf")
 graphics.off()
 ## ----
 
@@ -999,7 +1010,7 @@ print.xtable(xtable(
 
 ## ---- income:tax:model:and:data:not:run ----
 # load data 
-load("/Users/hectorbahamonde/RU/Dissertation/Papers/Earthquake_Paper/eq_output_d_Chile.RData") 
+load("/Users/hectorbahamonde/Dissertation/Papers/Earthquake_Paper/eq_output_d_Chile.RData") 
 
 
 
@@ -1141,7 +1152,7 @@ p_load(ggmcmc)
 
 fit.mcmc.tax <- as.mcmc(earthquakefit.tax)
 bayes.mod.fit.gg.tax <- ggs(fit.mcmc.tax)
-ggmcmc(bayes.mod.fit.gg.tax, file = "/Users/hectorbahamonde/RU/Dissertation/Papers/Earthquake_Paper/Bahamonde_Earthquake_Paper_Diagnostic_Plots_Income_Tax_Model.pdf")
+ggmcmc(bayes.mod.fit.gg.tax, file = "/Users/hectorbahamonde/Dissertation/Papers/Earthquake_Paper/Bahamonde_Earthquake_Paper_Diagnostic_Plots_Income_Tax_Model.pdf")
 graphics.off()
 ## ----
 
@@ -1232,6 +1243,9 @@ income.tax.model.plot.note <- paste(
 # ci: desired credible interval, default: 0.95
 # digits: desired number of digits in the table, default: 2
 
+# load libraries
+if (!require("pacman")) install.packages("pacman"); library(pacman) 
+p_load(rstan)
 
 ci.number.tax = .95 # modify this parameter to get desired credible intervals.
 
@@ -1630,7 +1644,7 @@ p_load(ggplot2,grid,gridExtra)
 
 
 # Load data
-load("/Users/hectorbahamonde/RU/Dissertation/Data/dissertation.Rdata") 
+load("/Users/hectorbahamonde/Dissertation/Data/dissertation.Rdata") 
 
 # par(mar=c(3,3,3,3)) # bottom, then left margin, upper and right margins
 
@@ -1657,7 +1671,7 @@ p1 = ggplot() +
 
 #### Proportion Plot
 # load data 
-load("/Users/hectorbahamonde/RU/Dissertation/Papers/Earthquake_Paper/eq_output_d_Chile.RData") 
+load("/Users/hectorbahamonde/Dissertation/Papers/Earthquake_Paper/eq_output_d_Chile.RData") 
 
 # par(mar=c(3,3,3,3)) # bottom, then left margin, upper and right margins
 
