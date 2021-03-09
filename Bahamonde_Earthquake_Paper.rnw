@@ -1,9 +1,13 @@
 \documentclass[onesided]{article}
 \usepackage{import}
+
 \subimport{/Users/hectorbahamonde/Bibliografia_PoliSci/}{LaTeX_Paper_Packages_And_Style}
 
 
-
+% endnotes begin
+\usepackage{endnotes}
+\let\footnote=\endnote
+% endnotes end
 
 
 
@@ -316,7 +320,7 @@ The theory should pass two tests. First, the implementation of the income tax sh
 
 
 \subsection{Income Tax Adoption: Latin America}
-This section seeks to establish an empirical connection between sectoral conflict and the implementation of the income tax. All countries began as agricultural economies. Thus, sectoral conflict was proxied by measuring industrial development relative to agricultural sectoral growth rates, as presented in the  \href{http://moxlad-staging.herokuapp.com/home/en?}{MOxLAD} data.\footnote{Particularly, the \emph{agriculture value-added} and \emph{manufacturing value-added} variables. Both are expressed in local currency at 1970 constant prices.} The dataset spans from 1900 to potentially 2010.\footnote{Since countries are ``censored'' once they implement the income tax law, they leave the sample (potentially) before 2010. According to \textcite[790]{Astorga2005}, these data provide extended comparable sectoral value-added series in constant purchasing power parity prices. These data, and similar strategies, have been employed before (see \cite{Thies2005a})} Since the idea is to capture the contribution of each individual sector, sectoral growths rates were not combined. 
+This section seeks to establish an empirical connection between sectoral conflict and the implementation of the income tax. All countries began as agricultural economies. Thus, sectoral conflict was proxied by measuring industrial development relative to agricultural sectoral growth rates, as presented in the  \href{http://moxlad-staging.herokuapp.com/home/en?}{MOxLAD} data.\footnote{Particularly, the \emph{agriculture value-added} and \emph{manufacturing value-added} variables. Both are expressed in local currency at 1970 constant prices.} The dataset spans from 1900 to potentially 2010.\footnote{Since countries are ``censored'' once they implement the income tax law, they leave the sample (potentially) before 2010. According to \textcite[790]{Astorga2005}, these data provide extended comparable sectoral value-added series in constant purchasing power parity prices. These data, and similar strategies, have been employed before (see \cite{Thies2005a}).} Since the idea is to capture the contribution of each individual sector, sectoral growths rates were not combined. 
 
 % sectoral outputs plot
 
@@ -863,6 +867,8 @@ count <- comma(as.numeric(count)) # add comma
 \end{table}
 \clearpage
 
+
+\newpage\theendnotes
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
